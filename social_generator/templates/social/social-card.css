@@ -1,0 +1,329 @@
+@font-face {
+  font-family: "Source Sans 3 Local";
+  src: url("__FONT_REGULAR_DATA_URI__") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Source Sans 3 Local";
+  src: url("__FONT_SEMIBOLD_DATA_URI__") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+}
+
+:root {
+  --navy: #1b2040;
+  --gold: #b57f56;
+  --page-bg: #f7f3ed;
+  --header-bg: #ffffff;
+  --button-text: #ffffff;
+
+  --header-height: 106px;
+  --footer-band-height: 46px;
+  --footer-accent-height: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  animation: none !important;
+  transition: none !important;
+  caret-color: transparent !important;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  color: var(--navy);
+  font-family: "Source Sans 3 Local";
+  font-style: normal;
+}
+
+.social-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--page-bg);
+  color: var(--navy);
+}
+
+.card-header {
+  height: var(--header-height);
+  padding: 0 58px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--navy);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 16px;
+}
+
+.brand-logo {
+  display: block;
+  width: auto;
+  height: 58px;
+  object-fit: contain;
+}
+
+.brand-name {
+  color: var(--navy);
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.08;
+  white-space: nowrap;
+}
+
+.nav-pill-slot {
+  width: 250px;
+  height: 62px;
+  margin-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 250px;
+}
+
+.nav-pill {
+  width: auto;
+  min-width: 128px;
+  max-width: 250px;
+  height: 62px;
+  padding: 0 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--navy);
+  color: var(--button-text);
+  font-size: 33px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transform: translateY(-1px);
+}
+
+.card-main {
+  position: relative;
+  height: calc(
+    100%
+    - var(--header-height)
+    - var(--footer-band-height)
+    - var(--footer-accent-height)
+  );
+  padding: 56px 64px 24px;
+}
+
+.content-stack {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1060px;
+}
+
+.title {
+  width: 100%;
+  margin: 0;
+  padding: 0 0 10px;
+  overflow: visible;
+  color: var(--navy);
+  font-size: 94px;
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  white-space: pre-line;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.accent-line {
+  width: 220px;
+  height: 4px;
+  margin: 14px 0 22px;
+  background: var(--gold);
+}
+
+.subtitle {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0;
+  overflow: visible;
+  color: var(--navy);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.24;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.footer-accent {
+  position: absolute;
+  right: 0;
+  bottom: var(--footer-band-height);
+  left: 0;
+  height: var(--footer-accent-height);
+  background: var(--gold);
+}
+
+.footer-band {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--footer-band-height);
+  background: var(--navy);
+}
+
+/* Default: broad site-level statement. */
+.social-card--default .card-main {
+  padding-top: 72px;
+}
+
+.social-card--default .content-stack {
+  max-width: 1080px;
+}
+
+.social-card--default .title {
+  font-size: 84px;
+  line-height: 1.05;
+}
+
+.social-card--default .subtitle {
+  max-width: 920px;
+  font-size: 36px;
+}
+
+/* GitHub: concise technical repository description. */
+.social-card--github .card-header {
+  border-bottom-width: 4px;
+  border-bottom-color: var(--gold);
+}
+
+.social-card--github .card-main {
+  padding-top: 70px;
+}
+
+.social-card--github .content-stack {
+  max-width: 1120px;
+}
+
+.social-card--github .title {
+  font-size: 82px;
+  line-height: 1.04;
+  letter-spacing: -0.016em;
+}
+
+.social-card--github .accent-line {
+  width: 150px;
+}
+
+.social-card--github .subtitle {
+  max-width: 1000px;
+  font-size: 34px;
+}
+
+/* Section: curriculum-oriented landing-page treatment. */
+.social-card--section .card-main {
+  padding-top: 60px;
+}
+
+.social-card--section .content-stack {
+  max-width: 1000px;
+}
+
+.social-card--section .title {
+  font-size: 90px;
+  line-height: 1.04;
+}
+
+.social-card--section .accent-line {
+  width: 260px;
+}
+
+.social-card--section .subtitle {
+  max-width: 980px;
+  font-size: 35px;
+}
+
+/* Article: largest question-led title treatment. */
+.social-card--article .card-main {
+  padding-top: 52px;
+}
+
+.social-card--article .content-stack {
+  max-width: 1060px;
+}
+
+.social-card--article .title {
+  font-size: 94px;
+  line-height: 1.03;
+}
+
+.social-card--article .subtitle {
+  max-width: 1000px;
+  font-size: 36px;
+}
+
+/* Tool: tighter and more technical composition. */
+.social-card--tool .card-main {
+  padding-top: 64px;
+}
+
+.social-card--tool .content-stack {
+  max-width: 960px;
+}
+
+.social-card--tool .title {
+  font-size: 86px;
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+}
+
+.social-card--tool .accent-line {
+  width: 170px;
+}
+
+.social-card--tool .subtitle {
+  max-width: 900px;
+  font-size: 34px;
+}
+
+/* Benchmark: stronger evidence-oriented typography, no illustration. */
+.social-card--benchmark .card-main {
+  padding-top: 58px;
+}
+
+.social-card--benchmark .content-stack {
+  max-width: 1060px;
+}
+
+.social-card--benchmark .title {
+  font-size: 88px;
+  line-height: 1.035;
+}
+
+.social-card--benchmark .accent-line {
+  width: 320px;
+  height: 6px;
+  margin-top: 16px;
+}
+
+.social-card--benchmark .subtitle {
+  max-width: 1040px;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.2;
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width={{ card.width }}, initial-scale=1"
+  >
+  <title>{{ card.title }}</title>
+  <style>{{ css_inline | safe }}</style>
+</head>
+
+<body>
+  <article
+    class="social-card social-card--{{ card.kind }}"
+    data-card-slug="{{ card.slug }}"
+    data-card-kind="{{ card.kind }}"
+  >
+    <header class="card-header">
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src="{{ logo_data_uri }}"
+          alt=""
+          aria-hidden="true"
+        >
+        <div class="brand-name">Backgammon Made Simple</div>
+      </div>
+
+      <div class="nav-pill-slot">
+        {% if card.category %}
+        <div class="nav-pill">{{ card.category }}</div>
+        {% endif %}
+      </div>
+    </header>
+
+    <main class="card-main">
+      <div class="content-stack">
+        <h1 class="title">{{ card.title }}</h1>
+
+        {% if card.subtitle %}
+        <div class="accent-line" aria-hidden="true"></div>
+        <p class="subtitle">{{ card.subtitle }}</p>
+        {% endif %}
+      </div>
+    </main>
+
+    <div class="footer-accent" aria-hidden="true"></div>
+    <div class="footer-band" aria-hidden="true"></div>
+  </article>
+</body>
+</html>

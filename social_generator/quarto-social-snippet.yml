@@ -1,0 +1,12 @@
+# Merge these entries into the existing _quarto.yml.
+# Keep your existing R content/QMD/manifest generation commands before this one.
+
+project:
+  pre-render:
+    - python scripts/social/run_social_pipeline.py
+
+website:
+  image: /assets/social/generated/social-default.png
+  open-graph: true
+  twitter-card:
+    card-style: summary_large_image

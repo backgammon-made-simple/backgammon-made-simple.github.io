@@ -1,0 +1,41 @@
+cards:
+- slug: social-default
+  kind: default
+  width: 1200
+  height: 630
+  output: site/assets/social/generated/social-default.png
+  title: Backgammon Made Simple
+  subtitle: Questions players ask. Ideas you can use.
+  category: ''
+  visual: ''
+- slug: github-backgammon-made-simple
+  kind: github
+  width: 1280
+  height: 640
+  output: site/assets/social/generated/github-backgammon-made-simple.png
+  title: Backgammon Made Simple
+  subtitle: Question-driven lessons, position analysis and backgammon research.
+  category: ''
+  visual: ''
+- slug: when-should-you-offer-the-cube
+  kind: article
+  width: 1200
+  height: 630
+  output: site/assets/social/generated/social-when-should-you-offer-the-cube.png
+  title: 'When Should You
+
+    Offer the Cube?'
+  subtitle: A practical guide to recognizing a real doubling opportunity.
+  category: Learn
+  visual: ''
+- slug: sage-vs-gnu-show-match
+  kind: benchmark
+  width: 1200
+  height: 630
+  output: site/assets/social/generated/social-sage-vs-gnu-show-match.png
+  title: 'Sage vs GNU:
+
+    The Show Match'
+  subtitle: Mirrored matches, public methodology and reproducible release artifacts.
+  category: Sage vs GNU
+  visual: ''
