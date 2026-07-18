@@ -1,0 +1,4 @@
+release-manifest.txt
+checksums.txt
+notable-positions.csv
+

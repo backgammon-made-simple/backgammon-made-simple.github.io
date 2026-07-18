@@ -1,0 +1,18 @@
+---
+title: "Who This Site Is For"
+description: "How to use Backgammon Made Simple if you know the rules and want to understand decisions."
+sidebar: learn
+---
+
+Backgammon Made Simple is for players who know the rules and want to understand why strong moves and cube decisions work.
+
+You do not need to be an advanced player to start here. If you know the rules, the lessons explain the strategic ideas step by step, with special care given to the doubling cube.
+
+## How to Use the Lessons
+
+Start with the cube path if cube decisions feel mysterious. Use the game-plan refresher when a lesson mentions races, primes, blitzes, holding games, or backgames.
+
+## What Comes Next
+
+- [Review the main game plans](../game-plans/index.qmd)
+- [Start the cube path](../cube/index.qmd)

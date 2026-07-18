@@ -1,0 +1,12 @@
+---
+title: "About Section Template"
+description: "A reusable About page section skeleton."
+bibliography: ../references.bib
+---
+
+::: {.bms-card}
+#### Section title
+
+Short identity or policy text.
+:::
+

@@ -1,0 +1,16 @@
+---
+title: "Position Study Template"
+description: "A reusable position study skeleton."
+author: "Marty Gale"
+categories: [Strategy]
+bibliography: ../references.bib
+---
+
+## Position Summary
+
+Describe the study using fixture values only.
+
+## Main Question
+
+State the decision to evaluate.
+

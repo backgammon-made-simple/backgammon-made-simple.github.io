@@ -1,0 +1,30 @@
+---
+title: "Split, Slot, or Run?"
+description: "A private opening-play article fixture."
+author: "Marty Gale"
+date: "2026-07-11"
+updated: "2026-07-15"
+categories: [Openings]
+tags: [fixture, opening, example]
+image: ../assets/logo.svg
+bibliography: ../references.bib
+---
+
+## Opening Play Fixture
+
+This is an early opening-play article example. It keeps the position claim generic and fixture-based.
+
+### Main Question
+
+Should the opening roll split, slot, or run?
+
+### Component Playground
+
+::: {.bms-card}
+#### Copyable source
+
+```markdown
+## Opening Play Fixture
+This is an early opening-play article example.
+```
+:::

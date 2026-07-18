@@ -1,0 +1,19 @@
+---
+title: "Opening Play Lab"
+description: "A parallel track for opening principles, opening rolls, and second-roll replies."
+sidebar: learn
+---
+
+Opening Play Lab is a parallel learning track. It does not need to come before the cube curriculum.
+
+## Opening Principles
+
+- Fight for the important points.
+- Understand builders, stacks, and flexibility.
+- Choose between split, slot, run, or bring two down.
+- Compare prime structure and blitz structure.
+- Notice how the opponent's roll changes your plan.
+
+## Second-Roll Replies
+
+Future articles will cover hitting, splitting, running, advanced anchors, counter-slotting, and double-hit decisions.

@@ -1,0 +1,8 @@
+---
+title: "Sage vs GNU"
+description: "The Sage and GNU head-to-head experiment, methodology, and disagreement notes."
+aliases:
+  - /bot-arena/
+---
+
+This route is preserved for older links. The current public page is [Sage vs GNU](../sage-vs-gnu/index.qmd).

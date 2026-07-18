@@ -1,0 +1,30 @@
+---
+title: "Reading Positions and Engine Analysis"
+description: "How to read position context, engine output, and uncertainty before turning an answer into a lesson."
+sidebar: learn
+---
+
+Engine analysis is useful when it helps you understand a decision, not when it becomes a substitute for reading the position.
+
+## Position Context
+
+Before looking for an answer, identify the player on roll, score, cube value and ownership, game type, race shape, contact, anchors, primes, threats, and gammon chances.
+
+## Engine Output
+
+Treat the top play as the beginning of the explanation. Record the engine, version, analysis depth, rollout settings where available, equity, winning chances, gammons, backgammons, and the margin between close choices.
+
+## Close Decisions
+
+Close results deserve humility. A tiny equity difference may be a practical tie, a rollout may have sampling error, and a position can teach more through its alternatives than through a single label.
+
+## Practical Use
+
+Use the analyzer to test one changed feature at a time. Ask what moved the decision: race, timing, threats, cube ownership, gammons, or match score.
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Teaching rule
+:::
+Engine evidence should explain transferable ideas. It should not present every numerical output as a permanent truth.
+:::

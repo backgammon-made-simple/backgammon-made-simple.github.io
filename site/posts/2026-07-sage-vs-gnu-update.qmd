@@ -1,0 +1,32 @@
+---
+title: "Sage vs GNU Update: Pair Completion Snapshot"
+description: "A private status note for the Sage vs GNU study."
+author: "Marty Gale"
+date: "2026-07-14"
+updated: "2026-07-15"
+categories: [Research, Updates]
+tags: [sage, gnu, fixture]
+image: ../assets/logo.svg
+bibliography: ../references.bib
+---
+
+## Update Snapshot
+
+This note records fixture progress only. It does not claim one engine is stronger.
+
+### Status
+
+- Pair count: `12`
+- Completed: `6`
+- Still running: `6`
+
+### Component Playground
+
+::: {.bms-card}
+#### Copyable source
+
+```markdown
+## Update Snapshot
+This note records fixture progress only.
+```
+:::

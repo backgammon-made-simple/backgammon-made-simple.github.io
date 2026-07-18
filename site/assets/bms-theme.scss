@@ -1,0 +1,55 @@
+/*-- scss:defaults --*/
+
+$body-bg: #FAF7F2;
+$body-color: #1B2040;
+$link-color: #915634;
+$navbar-bg: #FFFDFC;
+$navbar-fg: #1B2040;
+$navbar-hl: #915634;
+$border-color: #D9CCC0;
+$font-family-sans-serif: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$font-family-monospace: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+$headings-font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$headings-color: #11182F;
+$headings-font-weight: 700;
+$enable-rounded: true;
+$border-radius: 0.45rem;
+$border-radius-sm: 0.35rem;
+$border-radius-lg: 0.55rem;
+
+/*-- scss:rules --*/
+
+.navbar {
+  border-bottom: 1px solid var(--bms-border);
+}
+
+.navbar-logo {
+  max-height: 42px;
+  width: auto;
+}
+
+.navbar-title {
+  color: var(--bms-navy-dark);
+  font-weight: 800;
+}
+
+.navbar .nav-link.active,
+.navbar-nav .show > .nav-link {
+  background: var(--bms-navy-dark);
+  border-radius: 6px;
+  color: #fff !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--bms-copper-dark) !important;
+}
+
+.navbar .nav-link.active:hover {
+  background: var(--bms-navy);
+  color: #fff !important;
+}
+
+.quarto-title-banner {
+  background: var(--bms-page-background);
+  color: var(--bms-text);
+}

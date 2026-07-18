@@ -1,0 +1,40 @@
+---
+title: "Engine Methodology for a Fixture Review"
+description: "A research note on how the private comparison is framed."
+author: "Marty Gale"
+date: "2026-07-13"
+updated: "2026-07-15"
+categories: [Research]
+tags: [fixture, methodology, engines]
+image: ../assets/logo.svg
+bibliography: ../references.bib
+---
+
+## Methodology Note
+
+This private research note explains the fixture workflow and keeps the example data clearly labelled.
+
+### Checklist
+
+- Fix the position set.
+- Keep the settings visible.
+- Separate raw and adjusted output.
+
+### Equation
+
+$$n = p \times r$$
+
+### Citation
+
+The structure follows the same fixture methodology note used elsewhere [@bms-fixture-methodology].
+
+### Component Playground
+
+::: {.bms-card}
+#### Copyable source
+
+```markdown
+## Methodology Note
+This private research note explains the fixture workflow.
+```
+:::

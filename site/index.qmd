@@ -1,0 +1,339 @@
+---
+title: "Backgammon Made Simple"
+subtitle: "Learn the ideas behind better backgammon decisions, one concept and one position at a time."
+page-layout: full
+bibliography: references.bib
+---
+
+::::::::::: bms-page-shell
+:::::::::: grid
+::::: {.g-col-12 .g-col-lg-8}
+:::: bms-hero
+# Understand the Game. Make Better Decisions.
+
+Build a clearer mental model of backgammon through structured lessons, real positions, and engine-supported analysis.
+
+::: bms-button-row
+[Explore the Learning Path](learn/index.qmd){.bms-button-primary} [Analyze a Position](analyze/index.qmd){.bms-button-outline}
+:::
+::::
+:::::
+
+:::::: {.g-col-12 .g-col-lg-4}
+::: bms-right-rail-card
+{{< include includes/analyzer-form.html >}}
+:::
+
+:::: bms-callout
+::: bms-callout-title
+On this page
+:::
+
+Start with the cube path, then move into the curriculum, the blog, and the current Sage vs GNU project status.
+::::
+::::::
+::::::::::
+:::::::::::
+
+:::::::::::::::::::::::::::::: grid
+::::::::::::::::: {.g-col-12 .g-col-lg-8}
+## Featured Learning Path
+
+::: bms-card
+### Demystifying the Doubling Cube
+
+The first learning path explains why cube decisions work, what the cube is asking, and how to think about take points before you memorize exceptions.
+
+- Start with the cube.
+- Add gammon value.
+- Layer on volatility and timing.
+- Bring match score in later.
+
+[Open the learning path](learn/cube/index.qmd){.bms-button-primary}
+:::
+
+## Learn Backgammon by Idea
+
+::::::::::::::: grid
+:::: {.g-col-12 .g-col-md-6 .g-col-xl-4}
+::: bms-card
+#### Start Here
+
+Build the shared language for the rest of the site.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6 .g-col-xl-4}
+::: bms-card
+#### Checker Play
+
+Learn how contact positions change priorities.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6 .g-col-xl-4}
+::: bms-card
+#### Opening Play
+
+See how early-roll choices create structure.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6 .g-col-xl-4}
+::: bms-card
+#### The Doubling Cube
+
+Start with money-game cube decisions.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6 .g-col-xl-4}
+::: bms-card
+#### Match Play
+
+Add score context after the basic model is stable.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6 .g-col-xl-4}
+::: bms-card
+#### Engines and Analysis
+
+Learn how to read engine output without overclaiming.
+:::
+::::
+:::::::::::::::
+:::::::::::::::::
+
+## Recently Added
+
+::::::::::: grid
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Strategy Study
+
+`When to Send, Take, or Pass the Cube`
+
+Short strategy summary with placeholder positions and visible fixture values.
+
+[Read the post](posts/2026-07-cube-basics/index.qmd){.bms-button-outline}
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Research Note
+
+`Engine methodology for a fixture review`
+
+Compact research-style update that can be simplified later.
+
+[Open Blog](posts/2026-07-research-methodology.qmd){.bms-button-outline}
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Site Update
+
+`Analyzer and navigation notes`
+
+Notes about the current private playground state and layout changes.
+
+[Open Blog](posts/2026-07-site-update.qmd){.bms-button-outline}
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Opening Article
+
+`Split, slot, or run?`
+
+An opening-play example with no invented position claims.
+
+[Open Blog](posts/2026-07-opening-play-article.qmd){.bms-button-outline}
+:::
+::::
+:::::::::::
+
+## Sage vs GNU
+
+:::: bms-callout
+::: bms-callout-title
+Current project
+:::
+
+The Sage vs GNU study is available as a normal navigation item, with progress, methodology, and artifact notes kept separate from the learning track.
+::::
+
+::: bms-card
+Fixture status: `running`<br> Pair count: `12`<br> Latest note: `No conclusion is claimed here.` [@bms-fixture-update]
+:::
+::::::::::::::::::::::::::::::
+
+## Subscribe
+
+{{< include includes/subscribe.html >}}
+
+### Utility
+
+::: bms-right-rail-card
+**Analyzer entry**<br> Use the lightweight form above to jump to the analyzer route.
+:::
+
+::: bms-right-rail-card
+**Subscribe**<br> Get new lessons, position breakdowns, Sage vs GNU reports, and analyzer updates.
+:::
+
+::: bms-right-rail-card
+**Search**<br> Quarto search is enabled in the navbar for the full site.
+:::
+
+## Component Playground
+
+::: callout-warning
+This private section demonstrates components available for the homepage. Remove, rewrite, or rearrange these examples before public release.
+:::
+
+### Alternate Hero Layouts
+
+::::::: grid
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Hero option A
+
+Understand the Game. Make Better Decisions.
+
+Build a clearer mental model of backgammon through structured lessons, real positions, and engine-supported analysis.
+
+[Explore the Learning Path](learn/index.qmd){.bms-button-primary}
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Hero option B
+
+Learn the ideas behind better backgammon decisions, one concept and one position at a time.
+
+[Analyze a Position](analyze/index.qmd){.bms-button-outline}
+:::
+::::
+:::::::
+
+::: details Source
+
+``` markdown
+::: {.grid}
+::: {.g-col-12 .g-col-md-6}
+::: {.bms-card}
+#### Hero option A
+Understand the Game. Make Better Decisions.
+:::
+:::
+```
+
+:::
+
+### Compact Statistics
+
+::::::::: grid
+:::: {.g-col-12 .g-col-md-4}
+::: bms-card
+#### Lessons
+
+`18` fixture lessons
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-4}
+::: bms-card
+#### Posts
+
+`5` fixture blog posts
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-4}
+::: bms-card
+#### Status
+
+`private playground`
+:::
+::::
+:::::::::
+
+### Quotations And Announcements
+
+:::: bms-callout
+::: bms-callout-title
+Fixture quote
+:::
+
+"The page should make it obvious what to learn first, and why."
+::::
+
+:::: bms-callout
+::: bms-callout-title
+Announcement
+:::
+
+This is a placeholder announcement style that Marty can keep, move, or delete.
+::::
+
+### Subscription Styles
+
+::: bms-card
+## Stay Updated
+
+Enjoyed this explanation? Get new lessons, position breakdowns, Sage vs GNU reports, and analyzer updates.
+
+[Subscribe](blog/index.qmd){.bms-button-secondary}
+:::
+
+### Footer Variations
+
+::::::: grid
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Minimal footer
+
+Copyright and license only.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Full footer
+
+Copyright, license, feedback, and update links.
+:::
+::::
+:::::::
+
+### Mobile Stacking
+
+::: bms-card
+This column stack is the intended narrow-screen fallback. Marty can simplify it later without touching the rest of the page.
+:::
+
+::: details Source
+
+``` markdown
+::: {.bms-card}
+This column stack is the intended narrow-screen fallback.
+:::
+```
+
+:::
+
+::: bms-card
+## Component Source Example
+
+``` markdown
+[Explore the Learning Path](learn/index.qmd){.bms-button-primary}
+```
+:::
+
+::::::

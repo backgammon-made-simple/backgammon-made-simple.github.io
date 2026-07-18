@@ -1,0 +1,146 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --bms-navy-dark: #11182F;
+  --bms-navy: #1B2040;
+  --bms-slate: #39415F;
+  --bms-copper: #AC7652;
+  --bms-copper-dark: #915634;
+  --bms-ivory: #F3E8DC;
+  --bms-page-background: #FAF7F2;
+  --bms-surface: #FFFDFC;
+  --bms-sidebar-background: #F3E8DC;
+  --bms-border: #D9CCC0;
+  --bms-border-subtle: #D9CCC0;
+  --bms-border-strong: #9A8B80;
+  --bms-text: #1B2040;
+  --bms-text-secondary: #39415F;
+  --bms-text-muted: #686B78;
+  --bms-success: #2F6B4F;
+  --bms-info: #3D5F87;
+  --bms-close: #8A6A25;
+  --bms-warning: #A7611B;
+  --bms-mistake: #A54C35;
+  --bms-danger: #923B45;
+  --bms-focus: #0072B2;
+  --bms-shadow-soft: 0 12px 32px rgba(17, 24, 47, 0.08);
+}
+
+[data-theme="dark"],
+[data-bs-theme="dark"] {
+  --bms-page-background: #0D1327;
+  --bms-surface: #151D37;
+  --bms-sidebar-background: #11182F;
+  --bms-border: #35405D;
+  --bms-text: #F5EDE6;
+  --bms-text-secondary: #D9D1CA;
+  --bms-text-muted: #C1B8B1;
+  --bms-copper: #E0AE88;
+  --bms-copper-dark: #C28A63;
+  --bms-shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+html {
+  background: var(--bms-page-background);
+}
+
+body {
+  background: var(--bms-page-background);
+  color: var(--bms-text);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.68;
+}
+
+h1,
+h2,
+h3,
+.bms-serif {
+  color: var(--bms-navy-dark);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+code,
+kbd,
+pre,
+.bms-code {
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+[data-bs-theme="dark"] h1,
+[data-bs-theme="dark"] h2,
+[data-bs-theme="dark"] h3,
+[data-bs-theme="dark"] .bms-serif {
+  color: var(--bms-text);
+}
+
+a {
+  color: var(--bms-copper-dark);
+}
+
+a:hover {
+  color: var(--bms-copper);
+}
+
+:focus-visible {
+  outline: 3px solid var(--bms-focus);
+  outline-offset: 3px;
+}
+
+.bms-page-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.bms-surface {
+  background: var(--bms-surface);
+  border: 1px solid var(--bms-border);
+  border-radius: 8px;
+  box-shadow: var(--bms-shadow-soft);
+}
+
+.bms-muted {
+  color: var(--bms-text-muted);
+}
+
+.navbar .nav-link {
+  border-radius: 6px;
+  font-weight: 650;
+  padding: 0.55rem 0.8rem !important;
+}
+
+.navbar-brand,
+.navbar-title {
+  color: var(--bms-navy-dark) !important;
+  font-weight: 800;
+}
+
+.navbar .nav-link.active,
+.navbar-nav .show > .nav-link {
+  background: var(--bms-navy-dark);
+  color: #fff !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--bms-copper-dark) !important;
+}
+
+.navbar .nav-link.active:hover {
+  background: var(--bms-navy);
+  color: #fff !important;
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+
+  .navbar-logo {
+    max-height: 34px;
+  }
+
+  .navbar .nav-link {
+    min-height: 42px;
+  }
+}

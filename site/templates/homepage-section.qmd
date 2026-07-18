@@ -1,0 +1,13 @@
+---
+title: "Homepage Section Template"
+description: "A reusable homepage section skeleton."
+---
+
+::: {.bms-card}
+#### Section title
+
+Short supporting copy that explains what this section is for.
+
+[Primary action](../index.qmd){.bms-button-primary} [Secondary action](../learn/index.qmd){.bms-button-outline}
+:::
+

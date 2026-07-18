@@ -1,0 +1,28 @@
+---
+title: "Demystifying the Doubling Cube"
+description: "A middle-out curriculum for understanding cube decisions."
+sidebar: learn
+---
+
+The cube asks whether the stakes should change now. This path starts with the core money-game ideas, then adds cube ownership, gammons, volatility, market losers, and match score.
+
+## Part I
+
+1. [What the Cube Is Really Asking](what-the-cube-is-asking/index.qmd)
+2. Double, Take, or Pass: Three Different Decisions
+3. The 25% Starting Point
+4. Why Owning the Cube Has Value
+5. Recube Vigorish and the Real Take Point
+6. How Gammons Change the Decision
+7. The Doubling Window
+8. Market Losers: Why Waiting Can Cost You
+9. A Practical Cube-Decision Checklist
+10. Practice Positions
+
+## Part II
+
+The cube by game plan: racing, holding games, blitzes, primes, backgames, closeouts, and bear-offs.
+
+## Part III
+
+Match-play cube strategy: match score, gammon go, gammon save, Crawford, post-Crawford, and practical scores.

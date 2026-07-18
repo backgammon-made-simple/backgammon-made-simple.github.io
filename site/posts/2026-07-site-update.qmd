@@ -1,0 +1,32 @@
+---
+title: "Site Update: Analyzer and Navigation Notes"
+description: "A private release note for the site playground."
+author: "Marty Gale"
+date: "2026-07-15"
+updated: "2026-07-15"
+categories: [Updates]
+tags: [site, analyzer, navigation]
+image: ../assets/logo.svg
+bibliography: ../references.bib
+---
+
+## Site Update
+
+This is a private update note for the navigation and analyzer shell.
+
+### Changes
+
+- Blog replaces Articles.
+- Analyze keeps the current placeholder flow.
+- Learn stays structured and curriculum-based.
+
+### Component Playground
+
+::: {.bms-card}
+#### Copyable source
+
+```markdown
+## Site Update
+This is a private update note for the navigation and analyzer shell.
+```
+:::

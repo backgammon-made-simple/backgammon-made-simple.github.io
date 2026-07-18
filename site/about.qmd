@@ -1,0 +1,168 @@
+---
+title: "About"
+description: "About Backgammon Made Simple."
+page-layout: full
+bibliography: references.bib
+---
+
+:::::::::::::: bms-page-shell
+# About
+
+Backgammon Made Simple is an educational backgammon site for players who know the rules and want to understand stronger decisions. It is built, written, and maintained by Marty Gale.
+
+## Project Purpose
+
+The site teaches backgammon as a decision system. The curriculum starts with the cube because cube decisions create a clear mental model for risk, volatility, and timing.
+
+## Learning Philosophy
+
+- Teach the idea before the exception.
+- Label fixture data as fixture data.
+- Prefer structured lessons over loose commentary.
+- Keep uncertainty visible when the evidence is incomplete.
+
+## Role of Engines
+
+Engines help explain patterns, but they do not replace the lesson. The site uses engine output as evidence and keeps the method visible so readers can judge the result.
+
+## Methodology And Uncertainty
+
+The pages separate raw notes, fixture data, and conclusions. When a position or result is not final, the page should say so plainly [@bms-fixture-methodology].
+
+## Marty Gale
+
+Marty Gale is the author identity used throughout the site. The project keeps that identity visible so edits, corrections, and licensing remain straightforward.
+
+## Acknowledgements
+
+Thanks go to the people and tools that shaped the site structure, including the private coordination notes and the Quarto/R/Shiny stack.
+
+## Licensing
+
+Site lessons and substantial project material are available for non-commercial use under the PolyForm Noncommercial License 1.0.0 with attribution to Backgammon Made Simple and Marty Gale.
+
+## Corrections And Feedback
+
+Use the correction link and the site notes to report mistakes or suggest improvements.
+
+## Component Playground
+
+::: callout-warning
+This private section demonstrates components available for the About page. Remove, rewrite, or rearrange these examples before public release.
+:::
+
+### Biography Layouts
+
+::::::: grid
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Short biography
+
+Marty Gale writes Backgammon Made Simple as a private educational playground that explains how backgammon decisions work.
+:::
+::::
+
+:::: {.g-col-12 .g-col-md-6}
+::: bms-card
+#### Long biography
+
+Backgammon Made Simple is Marty Gale's educational backgammon project, designed to teach the reasoning behind better cube and checker decisions with a structured curriculum and fixture-driven examples.
+:::
+::::
+:::::::
+
+### Mission Statement
+
+::: bms-card
+Teach the ideas behind better backgammon decisions, one concept and one position at a time.
+:::
+
+### Guiding Principles
+
+1.  Be explicit about uncertainty.
+2.  Use fixture values when the data is not real.
+3.  Make the curriculum easy to edit.
+4.  Keep the site useful before it is polished.
+
+### Contributor List
+
+- Marty Gale
+- Quarto
+- R
+- Shiny
+
+### Citation Block
+
+This page references the same fixture methodology entry as the guide [@bms-fixture-methodology].
+
+### License Notice
+
+:::: bms-callout
+::: bms-callout-title
+License
+:::
+
+This example page keeps the licensing language visible so Marty can copy it into the final public version.
+::::
+
+### Correction Link
+
+[Report a correction](includes/report-problem.html){.bms-button-outline}
+
+### Contact Block
+
+::: bms-card
+`marty@example.invalid`<br> `Private playground contact block`
+:::
+
+### FAQ
+
+::: panel-tabset
+#### What is this site?
+
+An educational backgammon project.
+
+#### Why is there a playground?
+
+So Marty can copy and simplify components by hand.
+
+#### Does the site claim final conclusions?
+
+No.
+:::
+
+### Disclosure
+
+The site uses fixture data, placeholder positions, and private examples where needed.
+
+### Limitations
+
+This page does not claim to solve every backgammon question or represent final public copy.
+
+### Changelog
+
+- 2026-07-15: About page expanded into the private playground.
+
+### Version History
+
+- v0.1: short about text.
+- v0.2: site identity and educational framing.
+
+### Technical Details
+
+::: details Collapsible technical details
+
+The About page is rendered by Quarto and styled by the shared site CSS. Any generated content should stay out of this source file.
+::::::::::::::
+
+### Privacy Wording
+
+No private credentials, tokens, or active internal endpoints should appear on this page.
+
+### Support Example
+
+::: bms-card
+Donate / support / membership block example only. Marty can delete this when the site leaves the private stage.
+:::
+
+:::::

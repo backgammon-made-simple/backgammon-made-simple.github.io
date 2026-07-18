@@ -1,0 +1,59 @@
+---
+title: "Lesson Title"
+description: "One-sentence lesson description."
+sidebar: learn
+---
+
+::: {.bms-lesson-meta}
+Concept:  
+Prerequisite:  
+Reading time:  
+:::
+
+::: {.column-margin}
+::: {.bms-right-rail-card}
+{{< include ../includes/analyzer-form.html >}}
+:::
+:::
+
+## The Decision
+
+Open with a concrete question or position.
+
+## The Simple Answer
+
+State the main idea in ordinary language.
+
+## Why It Works
+
+Explain the equity or strategic reasoning.
+
+## A Clean Model
+
+Introduce only the mathematics needed for this lesson.
+
+## Worked Position
+
+::: bms-placeholder-board
+Verified board position placeholder
+:::
+
+## What Changes the Answer?
+
+Modify one important variable at a time.
+
+## Engine Evidence
+
+Document engine, version, analysis level, settings, result, and caveats.
+
+## Practical Checklist
+
+Give the reader something usable over the board.
+
+## Try Another Position
+
+Link to another position or the analyzer.
+
+## Continue
+
+Add previous and next lesson links.

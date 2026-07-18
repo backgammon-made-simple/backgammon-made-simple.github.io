@@ -1,0 +1,189 @@
+---
+title: "Blog"
+description: "Chronological research notes, lessons, releases, and site updates."
+page-layout: full
+aliases:
+  - /articles/
+listing:
+  contents: ../posts/**/*.qmd
+  type: default
+  sort: "date desc"
+bibliography: ../references.bib
+---
+
+::::: bms-page-shell
+# Blog
+
+This is the chronological part of the site. It collects research notes, strategy studies, engine discussions, Sage vs GNU updates, and site changes.
+
+::: {.bms-button-row}
+[Featured post](../posts/2026-07-cube-basics/index.qmd){.bms-button-primary} [Read Learn](../learn/index.qmd){.bms-button-outline}
+:::
+
+## Categories
+
+| Category | What it holds |
+|---|---|
+| `All` | Every post in chronological order |
+| `Strategy` | Position studies, cube work, and decision writeups |
+| `Openings` | Opening rolls, replies, and early-game plans |
+| `Doubling Cube` | Money-game cube theory and practical thresholds |
+| `Research` | Methodology, engine notes, and data summaries |
+| `Updates` | Site changes, releases, and short project notes |
+
+## Featured Post
+
+::: {.grid}
+::: {.g-col-12 .g-col-lg-7}
+::: {.bms-card}
+#### When to Send, Take, or Pass the Cube
+
+Fixture strategy study with a clear note that the examples are placeholders.
+
+- Category: `Strategy`
+- Tags: `fixture`, `cube`, `example`
+- Reading time: `5 min`
+- Status: `Published playground example`
+
+[Open the post](../posts/2026-07-cube-basics/index.qmd){.bms-button-outline}
+:::
+:::
+::: {.g-col-12 .g-col-lg-5}
+::: {.bms-right-rail-card}
+## Post Image Example
+
+![Fixture featured image using the site logo](../assets/logo.svg){fig-cap="Fixture featured image caption."}
+:::
+:::
+:::
+
+## Recent Posts
+
+- [Strategy study: When to Send, Take, or Pass the Cube](../posts/2026-07-cube-basics/index.qmd)
+- [Research note: Engine methodology for a fixture review](../posts/2026-07-research-methodology.qmd)
+- [Sage vs GNU update: pair completion snapshot](../posts/2026-07-sage-vs-gnu-update.qmd)
+- [Site update: analyzer and navigation notes](../posts/2026-07-site-update.qmd)
+- [Opening play article: split, slot, or run?](../posts/2026-07-opening-play-article.qmd)
+
+## Series Navigation
+
+1. Strategy study.
+2. Research note.
+3. Sage vs GNU update.
+4. Site update.
+5. Opening play article.
+
+## Listing Notes
+
+The listing above stays chronological. The cards below show the shapes Marty can copy into future posts.
+
+## Component Playground
+
+::: {.callout-warning}
+This private section demonstrates components available for the Blog page.
+Remove, rewrite, or rearrange these examples before public release.
+:::
+
+### Featured Card Layout
+
+::: {.bms-card}
+#### Example post card
+
+<span class="bms-status bms-status--info">Research</span> <span class="bms-status bms-status--neutral">Draft preview</span>
+
+Fixture headline and summary for a future blog card. Use this shape for a post preview with title, date, and category chips.
+
+::: details Source
+
+```markdown
+::: {.bms-card}
+#### Example post card
+<span class="bms-status bms-status--info">Research</span>
+Fixture headline and summary.
+:::
+```
+
+:::
+:::
+
+### Category Tabs
+
+::: {.panel-tabset}
+#### All
+All posts appear here in chronological order.
+
+#### Strategy
+Position studies and cube decisions live here.
+
+#### Research
+Methodology notes and fixture analysis live here.
+
+#### Updates
+Site changes and release notes live here.
+:::
+
+### Post Metadata Block
+
+::: {.bms-lesson-meta}
+Author: Marty Gale  
+Date: July 15, 2026  
+Updated: July 15, 2026  
+Read time: 6 minutes  
+Series: Fixture Playground
+:::
+
+::: details Source
+
+```markdown
+::: {.bms-lesson-meta}
+Author: Marty Gale
+Date: July 15, 2026
+Updated: July 15, 2026
+Read time: 6 minutes
+:::
+```
+
+:::
+
+### Notes And Notices
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Correction notice
+:::
+This post is an example only and may be superseded without warning.
+:::
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Archived note
+:::
+This older copy is kept for compatibility while Marty edits the page structure.
+:::
+
+### Code And Artifacts
+
+```r
+summary(c(1, 2, 2, 3, 5))
+```
+
+```python
+# Example only, not evaluated in the browser.
+values = ["strategy", "research", "updates"]
+print(", ".join(values))
+```
+
+::: details Source
+
+```markdown
+```r
+summary(c(1, 2, 2, 3, 5))
+```
+```python
+values = ["strategy", "research", "updates"]
+print(", ".join(values))
+```
+```
+
+:::
+:::::

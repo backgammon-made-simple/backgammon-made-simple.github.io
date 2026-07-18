@@ -1,0 +1,48 @@
+---
+title: "When to Send, Take, or Pass the Cube in Unlimited Games"
+description: "A mathematical breakdown of money-game cube thresholds."
+author: "Marty Gale"
+date: "2026-07-12"
+updated: "2026-07-15"
+categories: [Strategy, Doubling Cube]
+tags: [fixture, cube, example]
+image: ../../assets/logo.svg
+bibliography: ../../references.bib
+---
+
+## Strategy Study
+
+This post is a private fixture example. It keeps the cube question visible without pretending to solve a real board.
+
+### The Core Question
+
+When should the player send the cube, take the cube, or pass it?
+
+### Fixture Equation
+
+$$TP_{dead} = \frac{L}{W + L}$$
+
+### Featured Image
+
+![Fixture strategy image using the site logo](../../assets/logo.svg){#fig-cube-study fig-cap="Fixture strategy image."}
+
+See @fig-cube-study for the image slot Marty can replace later.
+
+### Downloadable Artifact
+
+[Worksheet download](../../downloads/learn-worksheet.csv){.bms-button-outline}
+
+### Component Playground
+
+::: {.callout-warning}
+This post is a copyable strategy-study fixture example.
+:::
+
+::: {.bms-card}
+#### Copyable source
+
+```markdown
+## Strategy Study
+This post is a private fixture example.
+```
+:::

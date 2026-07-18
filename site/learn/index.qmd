@@ -1,0 +1,275 @@
+---
+title: "Learn"
+description: "A structured curriculum for understanding backgammon decisions."
+sidebar: learn
+page-layout: full
+bibliography: ../references.bib
+---
+
+::::: bms-page-shell
+# Learn
+
+Backgammon Made Simple uses a structured curriculum. Start with the decisions that confuse real players, then add foundations exactly when they help. The doubling cube is the first featured learning path, but it is not the whole identity of the site [@bms-fixture-curriculum].
+
+## Curriculum
+
+| Track | Status | What it covers |
+|---|---|---|
+| Start Here | Available | Shared language, orientation, and the main game plans |
+| Checker Play | Current | Contact positions, priorities, and tactical tradeoffs |
+| Opening Play | Available | Early-roll choices and position-building |
+| The Doubling Cube | Current | Money-game cube decisions and take points |
+| Match Play | Coming later | Score-dependent cube and checker choices |
+| Endgames | Coming later | Racing and bear-off technique |
+| Engines and Analysis | Available | How to read evaluations, rollouts, and uncertainty |
+
+> Start with the learning track that matches the decisions you want to understand now.
+
+## Learning Path
+
+1. Start Here.
+2. Checker Play.
+3. Opening Play.
+4. The Doubling Cube.
+5. Match Play.
+6. Endgames.
+7. Engines and Analysis.
+
+## Track Status
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-4}
+::: {.bms-card}
+#### Available
+
+- Start Here
+- Opening Play
+- Engines and Analysis
+:::
+:::
+::: {.g-col-12 .g-col-md-4}
+::: {.bms-card}
+#### Current
+
+- Checker Play
+- The Doubling Cube
+:::
+:::
+::: {.g-col-12 .g-col-md-4}
+::: {.bms-card}
+#### Coming Later
+
+- Match Play
+- Endgames
+:::
+:::
+:::
+
+## Course Notes
+
+The first lessons use short positions, simple language, and a fixed vocabulary. The later lessons add score state, volatility, and engine evidence.^[This footnote is a fixture example and can be removed without changing the page structure.]
+
+### Learning Model
+
+Term
+: A word the reader should recognize.
+
+Take point
+: The threshold where taking starts to make sense in a money-game context.
+
+### A Small Equation
+
+$$EV = P_{win} \times W - P_{lose} \times L$$
+
+### A Fixture Figure
+
+![Fixture board placeholder using the site logo](../assets/logo.svg){#fig-learn-placeholder fig-cap="Fixture board-position placeholder."}
+
+See @fig-learn-placeholder for the style of figure Marty can replace with a real position later.
+
+### A Fixture Table
+
+Table: Curriculum overview {#tbl-curriculum}
+
+| Level | What the reader gets | Typical use |
+|---|---|---|
+| Intro | Shared language | Start Here |
+| Core | Decision model | Cube and checker play |
+| Context | Score and engine evidence | Match Play and analysis |
+
+## Component Playground
+
+::: {.callout-warning}
+This private section demonstrates components available for the Learn page. Remove, rewrite, or rearrange these examples before public release.
+:::
+
+### Curriculum Cards
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-4}
+::: {.bms-card}
+#### Start Here
+Available
+
+Who this site is for, how to read the lessons, and how to interpret a position.
+:::
+:::
+::: {.g-col-12 .g-col-md-4}
+::: {.bms-card}
+#### The Doubling Cube
+Current
+
+The first featured learning path.
+:::
+:::
+::: {.g-col-12 .g-col-md-4}
+::: {.bms-card}
+#### Match Play
+Coming later
+
+Score-dependent decisions after the base model is stable.
+:::
+:::
+:::
+
+### Lesson Metadata
+
+::: {.bms-lesson-meta}
+Concept: cube decisions<br>
+Prerequisite: knows the rules<br>
+Reading time: 8 minutes<br>
+Difficulty: intermediate
+:::
+
+### Definition List
+
+Term
+: A word the reader should recognize.
+
+Take point
+: The percentage threshold where a take begins to make sense.
+
+### Equations
+
+$$EV = P_{win} \times W - P_{lose} \times L$$
+
+$$TP = \frac{L}{W + L}$$
+
+### Callouts
+
+::: {.callout-note}
+This is a note callout for neutral reminders.
+:::
+
+::: {.callout-tip}
+This is a tip callout for a practical cue.
+:::
+
+::: {.callout-important}
+This is an important callout for a key concept.
+:::
+
+::: {.callout-caution}
+This is a caution callout for a mistake to avoid.
+:::
+
+::: {.callout-warning}
+This is a warning callout for a tricky edge case.
+:::
+
+### Decision Prompt
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Fixture decision
+:::
+Would you double, take, or pass?
+:::
+
+### Collapsible Answer
+
+::: details Show an example answer
+
+The example answer is intentionally generic: choose the move that best matches the position, the score, and the cube state.
+
+:::
+
+### Tabset
+
+::: {.panel-tabset}
+#### Current
+Tracks Marty can open first.
+
+#### Later
+Tracks that stay hidden until the curriculum grows.
+
+#### Notes
+Leave a short explanation here.
+:::
+
+### Board Placeholder
+
+::: bms-placeholder-board
+Verified board position placeholder
+:::
+
+### Checklist
+
+- Identify the game plan.
+- Check cube ownership.
+- Look for volatility.
+- Compare the take point to the position.
+
+### R Output
+
+```r
+c(available = 3, current = 2, later = 2)
+```
+
+### R Plot
+
+```{r}
+#| echo: false
+plot(cars$speed, cars$dist,
+  pch = 19,
+  col = "#915634",
+  xlab = "Speed",
+  ylab = "Distance",
+  main = "Fixture R plot"
+)
+```
+
+### Python Example
+
+```python
+# Example only, not evaluated.
+tracks = ["Start Here", "Checker Play", "Opening Play"]
+```
+
+### Source For A Card
+
+::: details Quarto source
+
+```markdown
+::: {.bms-card}
+#### The Doubling Cube
+Current
+The first featured learning path.
+:::
+```
+
+:::
+
+### Bibliography
+
+- Backgammon Made Simple curriculum brief.
+- Current design and colour guidance.
+- Fixture learning path examples.
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Next step
+:::
+Open a lesson page or the lesson template to copy the component shapes you want to keep.
+:::
+:::::

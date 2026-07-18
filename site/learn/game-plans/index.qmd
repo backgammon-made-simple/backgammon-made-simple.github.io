@@ -1,0 +1,27 @@
+---
+title: "The Main Game Plans"
+description: "A compact refresher on race, holding game, prime, blitz, and backgame plans."
+sidebar: learn
+---
+
+This refresher is a bridge into the cube curriculum, not a complete beginner unit.
+
+## Race
+
+The race is about efficient checkers, wastage, and timing. Cube decisions often become clearer because contact threats are reduced.
+
+## Holding Game
+
+A holding game preserves contact from an advanced anchor. Cube timing depends on racing lead, shot equity, and the strength of the anchor.
+
+## Prime
+
+A prime tries to trap opposing checkers behind connected points. Gammons and market losers can appear quickly when the trapped checkers cannot escape.
+
+## Blitz
+
+A blitz attacks loose checkers and aims to close points while the opponent is on the bar. Cube timing can become volatile because gammons matter.
+
+## Backgame
+
+A backgame keeps deep anchors and waits for late shots. Cube action depends heavily on timing, containment, and whether the defender still has a real game.
