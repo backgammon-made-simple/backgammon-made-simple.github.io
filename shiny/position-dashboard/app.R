@@ -15,54 +15,61 @@ allowed_levels <- c("1ply", "2ply", "3ply", "4ply", "truncated1", "truncated2", 
   x
 }
 
+xgid_payload_pattern <- "^[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$"
+complete_xgid_pattern <- "^XGID=[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$"
+
 normalize_position_id <- function(position_id) {
   if (is.null(position_id) || length(position_id) == 0) {
     return(list(ok = FALSE, value = "", message = "Enter an XGID to preview the board."))
   }
-
+  
   if (length(position_id) != 1) {
-    return(list(ok = FALSE, value = "", message = "Enter exactly one position identifier."))
+    return(list(ok = FALSE, value = "", message = "Enter exactly one XGID."))
   }
-
+  
   position_id <- as.character(position_id)
   if (is.na(position_id)) {
     return(list(ok = FALSE, value = "", message = "Enter an XGID to preview the board."))
   }
-
+  
   if (grepl("[\r\n]", position_id)) {
-    return(list(ok = FALSE, value = "", message = "Enter one XGID or GNUID on a single line."))
+    return(list(ok = FALSE, value = "", message = "Enter one XGID on a single line."))
   }
-
+  
   position_id <- trimws(position_id)
   if (!nzchar(position_id)) {
     return(list(ok = FALSE, value = "", message = "Enter an XGID to preview the board."))
   }
-
+  
+  if (grepl(xgid_payload_pattern, position_id)) {
+    position_id <- paste0("XGID=", position_id)
+  }
+  
   list(ok = TRUE, value = position_id, message = "")
 }
 
 is_xgid <- function(position_id) {
   normalized <- normalize_position_id(position_id)
   isTRUE(normalized$ok) &&
-    grepl("^XGID=[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$", normalized$value)
+    grepl(complete_xgid_pattern, normalized$value)
 }
 
 board_state <- function(position_id) {
   normalized <- normalize_position_id(position_id)
-
+  
   if (!isTRUE(normalized$ok)) {
     return(list(kind = "empty", message = normalized$message))
   }
-
+  
   position_id <- normalized$value
-
+  
   if (!is_xgid(position_id)) {
     return(list(
       kind = "unsupported",
-      message = "Board preview currently requires one complete XGID. GNUID analysis can use the configured worker, but local preview is XGID-only."
+      message = "Enter a complete XGID or a valid bare XGID payload."
     ))
   }
-
+  
   missing_packages <- c("bglab", "ggplot2")[!vapply(c("bglab", "ggplot2"), requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing_packages) > 0) {
     return(list(
@@ -70,7 +77,7 @@ board_state <- function(position_id) {
       message = paste("Board rendering requires these R packages:", paste(missing_packages, collapse = ", "))
     ))
   }
-
+  
   list(kind = "renderable", xgid = position_id, message = "Board preview")
 }
 
@@ -116,14 +123,14 @@ run_worker_analysis <- function(position_id, level) {
       assumptions = c("set_BMS_WORKER_BASE_URL_for_analysis_results")
     ))
   }
-
+  
   response_text <- tryCatch(
     read_remote_text(worker_url(base_url, position_id, level)),
     error = function(error) {
       return(list(error = conditionMessage(error)))
     }
   )
-
+  
   if (is.list(response_text) && !is.null(response_text$error)) {
     return(list(
       schema_version = "worker-analysis-result-v0",
@@ -136,7 +143,7 @@ run_worker_analysis <- function(position_id, level) {
       assumptions = c("worker_request_failed")
     ))
   }
-
+  
   output_url <- Sys.getenv("BMS_ANALYSIS_OUTPUT_URL", unset = "")
   result_text <- if (nzchar(output_url)) {
     tryCatch(
@@ -146,16 +153,16 @@ run_worker_analysis <- function(position_id, level) {
   } else {
     response_text
   }
-
+  
   parsed <- tryCatch(
     jsonlite::fromJSON(result_text, simplifyVector = FALSE),
     error = function(error) NULL
   )
-
+  
   if (!is.null(parsed)) {
     return(parsed)
   }
-
+  
   list(
     schema_version = "worker-analysis-result-v0",
     analysis_id = NA,
@@ -173,7 +180,7 @@ run_analysis <- function(position_id, level) {
   if (!(level %in% allowed_levels)) {
     stop("Unsupported analysis level: ", level)
   }
-
+  
   run_worker_analysis(position_id, level)
 }
 
@@ -187,37 +194,28 @@ ui <- fluidPage(
     div(
       class = "bms-hero bms-shiny-hero",
       h1("Position Analyzer"),
-      p("Preview an XGID board immediately, then request analysis when a server-side worker is configured.")
+      p("Preview an XGID board immediately. Engine analysis is not yet connected.")
     ),
     div(
       class = "bms-analysis-shell",
       div(
         class = "bms-card bms-control-panel",
-        h2("Analyze"),
+        h2("Preview"),
         textInput(
           "position_id",
-          "Position identifier",
+          "XGID position",
           value = "",
-          placeholder = "XGID=... or GNUID"
+          placeholder = "XGID=-b----E-D---dDa--c-da---AA:0:0:1:53:0:0:0:5:8"
         ),
-        selectInput(
-          "level",
-          "Sage level",
-          choices = allowed_levels,
-          selected = "1ply"
+        tags$p(
+          class = "bms-muted",
+          "Enter a complete XGID or open a link using ?position=<URL-encoded XGID>."
         ),
-        actionButton("analyze", "Analyze Position", class = "bms-button-primary"),
-        div(
-          class = "bms-callout bms-compact-callout",
-          div(class = "bms-callout-title", "Preview support"),
-          "Local board preview is XGID-only. GNUID analysis is reserved for the configured worker path."
-        )
+        actionButton("preview", "Preview Position", class = "bms-button-primary")
       ),
       div(
         class = "bms-analysis-main",
-        uiOutput("board_panel"),
-        uiOutput("status_panel"),
-        uiOutput("result_panel")
+        uiOutput("board_panel")
       )
     ),
     tags$footer(
@@ -231,26 +229,39 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   observeEvent(session$clientData$url_search, {
     url_search <- session$clientData$url_search
-    query <- parseQueryString(url_search)
+    
+    if (is.null(url_search) || length(url_search) != 1L || is.na(url_search)) {
+      return()
+    }
+    
+    query <- shiny::parseQueryString(url_search)
     position <- query[["position"]]
     
-    if (!is.null(position) && length(position) == 1L && !is.na(position) && nzchar(position)) {
-      updateTextInput(session, "position_id", value = position)
+    if (is.null(position) || length(position) != 1L || is.na(position) || !nzchar(position)) {
+      return()
+    }
+    
+    normalized <- normalize_position_id(position)
+    if (isTRUE(normalized$ok)) {
+      updateTextInput(session, "position_id", value = normalized$value)
     }
   }, once = TRUE, ignoreInit = FALSE)
   
-  result <- eventReactive(input$analyze, {
+  observeEvent(input$preview, {
     normalized <- normalize_position_id(input$position_id)
-    validate(need(isTRUE(normalized$ok), normalized$message))
-    withProgress(message = "Analyzing position", value = 0.5, {
-      run_analysis(normalized$value, input$level)
-    })
+    
+    if (
+      isTRUE(normalized$ok) &&
+      !identical(normalized$value, trimws(as.character(input$position_id)))
+    ) {
+      updateTextInput(session, "position_id", value = normalized$value)
+    }
   })
-
+  
   current_board_state <- reactive({
     board_state(input$position_id)
   })
-
+  
   output$board_panel <- renderUI({
     state <- current_board_state()
     if (identical(state$kind, "renderable")) {
@@ -261,14 +272,18 @@ server <- function(input, output, session) {
         tags$p(class = "bms-identifier", state$xgid)
       ))
     }
-
+    
     div(
       class = "bms-card",
       h2("Board Preview"),
-      div(class = "bms-callout", div(class = "bms-callout-title", "Board unavailable"), state$message)
+      div(
+        class = "bms-callout",
+        div(class = "bms-callout-title", "Board unavailable"),
+        state$message
+      )
     )
   })
-
+  
   output$board_plot <- renderPlot({
     state <- current_board_state()
     validate(need(identical(state$kind, "renderable"), state$message))
@@ -284,87 +299,6 @@ server <- function(input, output, session) {
       }
     )
   }, res = 120)
-
-  output$status_panel <- renderUI({
-    if (input$analyze == 0) {
-      div(
-        class = "bms-card",
-        h2("Analysis Queue"),
-        tags$p(class = "bms-status bms-status--neutral", "Pending"),
-        div(
-          class = "bms-result-grid",
-          div(
-            class = "bms-result-slot",
-            h3("Quick result"),
-            p(class = "bms-muted", "Waiting for a worker-backed request.")
-          ),
-          div(
-            class = "bms-result-slot",
-            h3("Full result"),
-            p(class = "bms-muted", "Streaming rows will appear here after the event contract is finalized.")
-          )
-        )
-      )
-    }
-  })
-
-  output$result_panel <- renderUI({
-    data <- result()
-    cache_status <- data$cache_status %||% "unknown"
-    status_class <- if (identical(cache_status, "worker-not-configured")) {
-      "bms-status bms-status--neutral"
-    } else if (identical(cache_status, "error")) {
-      "bms-status bms-status--mistake"
-    } else {
-      "bms-status bms-status--info"
-    }
-
-    tagList(
-      div(
-        class = "bms-card",
-        h2("Result"),
-        tags$p(class = status_class, cache_status),
-        div(
-          class = "bms-result-grid",
-          div(
-            class = "bms-result-slot",
-            h3("Quick result"),
-            p(class = "bms-muted", data$recommended_action %||% "No quick result returned.")
-          ),
-          div(
-            class = "bms-result-slot",
-            h3("Full result"),
-            p(class = "bms-muted", "Detailed streamed rows are not wired until the worker event contract is final.")
-          )
-        ),
-        tags$dl(
-          tags$dt("Analysis ID"), tags$dd(data$analysis_id %||% "Not available"),
-          tags$dt("Request hash"), tags$dd(data$request_hash %||% "Not available"),
-          tags$dt("Cache status"), tags$dd(cache_status),
-          tags$dt("Source"), tags$dd(data$source %||% "Not available"),
-          tags$dt("Recommended action"), tags$dd(data$recommended_action %||% "No recommendation returned.")
-        ),
-        if (length(data$warnings) > 0) {
-          tags$details(
-            tags$summary("Warnings and assumptions"),
-            tags$ul(lapply(c(data$warnings, data$assumptions), tags$li))
-          )
-        },
-        if (!is.null(data$result_text)) {
-          tags$details(
-            open = TRUE,
-            tags$summary("Worker output"),
-            tags$pre(data$result_text)
-          )
-        },
-        tags$details(
-          tags$summary("Raw JSON"),
-          tags$pre(jsonlite::toJSON(data, auto_unbox = TRUE, pretty = TRUE))
-        )
-      ),
-      br()
-    )
-  })
 }
 
 shinyApp(ui, server)
