@@ -229,6 +229,16 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+  observeEvent(session$clientData$url_search, {
+    url_search <- session$clientData$url_search
+    query <- parseQueryString(url_search)
+    position <- query[["position"]]
+    
+    if (!is.null(position) && length(position) == 1L && !is.na(position) && nzchar(position)) {
+      updateTextInput(session, "position_id", value = position)
+    }
+  }, once = TRUE, ignoreInit = FALSE)
+  
   result <- eventReactive(input$analyze, {
     normalized <- normalize_position_id(input$position_id)
     validate(need(isTRUE(normalized$ok), normalized$message))
