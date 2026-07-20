@@ -176,14 +176,23 @@ a:hover {
 /*
   Reusable centred editorial layout.
 
-  The About page already uses body-classes: bms-about-page.
-  To reuse the same title, subtitle, rule, reading width, and technical accents
-  on another full-width Quarto page, use:
+  Standard editorial page:
 
       format:
         html:
           title-block-style: plain
           body-classes: bms-editorial-page
+
+  Reusable technical eyebrow above the title:
+
+      subtitle: "SECTION :: PAGE TYPE"
+      format:
+        html:
+          title-block-style: plain
+          body-classes: "bms-editorial-page bms-title-eyebrow"
+
+  The subtitle metadata is visually restyled as an eyebrow. It is not rendered
+  as descriptive subtitle copy below the title.
 */
 :is(body.bms-about-page, body.bms-editorial-page) {
   --bms-editorial-frame-width: 960px;
@@ -219,6 +228,35 @@ body.bms-about-page #title-block-header::before {
   margin: 0 auto 0.7rem;
   color: var(--bms-copper-dark);
   font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+/*
+  Generic title eyebrow. Quarto's subtitle field supplies the text, while this
+  class moves it above the title and gives it the shared technical treatment.
+*/
+body.bms-title-eyebrow #title-block-header .quarto-title {
+  display: flex;
+  flex-direction: column;
+}
+
+body.bms-title-eyebrow #title-block-header .title {
+  order: 2;
+}
+
+body.bms-title-eyebrow #title-block-header .subtitle {
+  order: 1;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 0.7rem;
+  padding: 0;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -457,6 +495,11 @@ body.bms-editorial-page .bms-editorial-lead p {
   }
 
   body.bms-about-page #title-block-header::before {
+    margin-bottom: 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  body.bms-title-eyebrow #title-block-header .subtitle {
     margin-bottom: 0.55rem;
     font-size: 0.7rem;
   }

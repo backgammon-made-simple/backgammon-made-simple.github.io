@@ -383,3 +383,194 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================
+   Reusable editorial and tool components
+
+   These classes are intentionally page-neutral. Use them on Analyze,
+   Research, Sage vs GNU, Match Predictor, lessons, and future tool pages.
+   ========================================================= */
+
+.bms-status-panel,
+.bms-analyze-status {
+  margin: 1.75rem 0 2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--bms-border);
+  border-left: 3px solid var(--bms-copper);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bms-ivory) 72%, var(--bms-surface));
+}
+
+.bms-status-panel p,
+.bms-analyze-status p {
+  margin: 0.35rem 0 0;
+}
+
+.bms-status-panel > :last-child,
+.bms-analyze-status > :last-child {
+  margin-bottom: 0;
+}
+
+.bms-status-label,
+.bms-status-panel .bms-technical-label,
+.bms-analyze-status .bms-technical-label {
+  display: block;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.055em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.bms-step-row,
+.bms-analyze-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 2rem 0 0;
+  border-top: 1px solid var(--bms-border);
+  border-bottom: 1px solid var(--bms-border);
+}
+
+.bms-step,
+.bms-analyze-step {
+  min-width: 0;
+  padding: 1.15rem 1.1rem 1.2rem;
+}
+
+.bms-step + .bms-step,
+.bms-analyze-step + .bms-analyze-step {
+  border-left: 1px solid var(--bms-border);
+}
+
+.bms-step p,
+.bms-analyze-step p {
+  margin: 0.35rem 0 0;
+  color: var(--bms-text-secondary);
+  font-size: 0.94rem;
+  line-height: 1.52;
+}
+
+.bms-step-number,
+.bms-analyze-step-number {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+}
+
+.bms-tool-area,
+.bms-analyze-tool {
+  width: 100%;
+  margin: 2.25rem auto 3.5rem;
+}
+
+.bms-tool-frame,
+.bms-analyzer-frame {
+  width: min(100%, var(--bms-editorial-reading-width, 820px));
+  margin-right: auto;
+  margin-left: auto;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.bms-tool-frame iframe,
+.bms-analyzer-frame iframe {
+  display: block;
+  width: 100%;
+  height: 760px;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+
+.bms-external-link,
+.bms-analyzer-fallback {
+  width: min(100%, var(--bms-editorial-reading-width, 820px));
+  margin: 0.75rem auto 0;
+  color: var(--bms-text-muted);
+  font-size: 0.93rem;
+  text-align: right;
+}
+
+.bms-external-link p,
+.bms-analyzer-fallback p {
+  margin: 0;
+}
+
+.bms-external-link a,
+.bms-analyzer-fallback a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.bms-inline-note,
+.bms-analyze-note {
+  margin: 2rem 0 0;
+  padding: 1rem 1.1rem;
+  border-top: 1px solid var(--bms-border);
+  border-bottom: 1px solid var(--bms-border);
+  color: var(--bms-text-secondary);
+}
+
+.bms-inline-note .bms-technical-label,
+.bms-analyze-note .bms-technical-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--bms-copper-dark);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.055em;
+}
+
+.bms-inline-note p,
+.bms-analyze-note p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .bms-step-row,
+  .bms-analyze-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .bms-step + .bms-step,
+  .bms-analyze-step + .bms-analyze-step {
+    border-top: 1px solid var(--bms-border);
+    border-left: 0;
+  }
+
+  .bms-tool-frame iframe,
+  .bms-analyzer-frame iframe {
+    height: 780px;
+  }
+}
+
+@media (max-width: 640px) {
+  .bms-tool-area,
+  .bms-analyze-tool {
+    margin-top: 2rem;
+  }
+
+  .bms-tool-frame,
+  .bms-analyzer-frame {
+    width: 100%;
+  }
+
+  .bms-tool-frame iframe,
+  .bms-analyzer-frame iframe {
+    height: 820px;
+  }
+
+  .bms-external-link,
+  .bms-analyzer-fallback {
+    text-align: left;
+  }
+}

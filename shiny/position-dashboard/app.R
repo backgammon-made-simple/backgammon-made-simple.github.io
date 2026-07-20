@@ -1,300 +1,283 @@
 library(shiny)
 
-repo_root <- normalizePath(file.path(getwd(), "../.."), mustWork = FALSE)
-shared_css_files <- c(
-  file.path(repo_root, "site", "assets", "bms-shared.css"),
-  file.path(repo_root, "site", "assets", "bms-components.css"),
-  file.path(repo_root, "shiny", "shared", "bms-shiny.css")
-)
-allowed_levels <- c("1ply", "2ply", "3ply", "4ply", "truncated1", "truncated2", "truncated3", "rollout")
+# Public position-preview prototype:
+# accept an XGID, normalize it, and render the position with bglab::ggboard().
 
 `%||%` <- function(x, y) {
-  if (is.null(x) || length(x) == 0 || all(is.na(x))) {
+  if (is.null(x) || length(x) == 0L || all(is.na(x))) {
     return(y)
   }
   x
 }
 
-xgid_payload_pattern <- "^[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$"
-complete_xgid_pattern <- "^XGID=[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$"
+invalid_xgid_message <- "Check that the identifier was copied in full."
 
-normalize_position_id <- function(position_id) {
-  if (is.null(position_id) || length(position_id) == 0) {
-    return(list(ok = FALSE, value = "", message = "Enter an XGID to preview the board."))
+normalize_xgid <- function(value) {
+  if (is.null(value) || length(value) == 0L) {
+    return(list(ok = FALSE, value = "", message = invalid_xgid_message))
   }
   
-  if (length(position_id) != 1) {
-    return(list(ok = FALSE, value = "", message = "Enter exactly one XGID."))
+  if (length(value) != 1L) {
+    return(list(ok = FALSE, value = "", message = invalid_xgid_message))
   }
   
-  position_id <- as.character(position_id)
-  if (is.na(position_id)) {
-    return(list(ok = FALSE, value = "", message = "Enter an XGID to preview the board."))
+  value <- as.character(value)
+  
+  if (is.na(value) || grepl("[\r\n]", value)) {
+    return(list(ok = FALSE, value = "", message = invalid_xgid_message))
   }
   
-  if (grepl("[\r\n]", position_id)) {
-    return(list(ok = FALSE, value = "", message = "Enter one XGID on a single line."))
+  value <- trimws(value)
+  
+  if (!nzchar(value)) {
+    return(list(ok = FALSE, value = "", message = invalid_xgid_message))
   }
   
-  position_id <- trimws(position_id)
-  if (!nzchar(position_id)) {
-    return(list(ok = FALSE, value = "", message = "Enter an XGID to preview the board."))
+  complete_pattern <- "^XGID=[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$"
+  bare_pattern <- "^[A-Za-z0-9+\\-]{26}(:-?[0-9]+){9}$"
+  
+  if (grepl(complete_pattern, value)) {
+    return(list(ok = TRUE, value = value, message = ""))
   }
   
-  if (grepl(xgid_payload_pattern, position_id)) {
-    position_id <- paste0("XGID=", position_id)
+  if (grepl(bare_pattern, value)) {
+    return(list(ok = TRUE, value = paste0("XGID=", value), message = ""))
   }
   
-  list(ok = TRUE, value = position_id, message = "")
-}
-
-is_xgid <- function(position_id) {
-  normalized <- normalize_position_id(position_id)
-  isTRUE(normalized$ok) &&
-    grepl(complete_xgid_pattern, normalized$value)
-}
-
-board_state <- function(position_id) {
-  normalized <- normalize_position_id(position_id)
-  
-  if (!isTRUE(normalized$ok)) {
-    return(list(kind = "empty", message = normalized$message))
-  }
-  
-  position_id <- normalized$value
-  
-  if (!is_xgid(position_id)) {
-    return(list(
-      kind = "unsupported",
-      message = "Enter a complete XGID or a valid bare XGID payload."
-    ))
-  }
-  
-  missing_packages <- c("bglab", "ggplot2")[!vapply(c("bglab", "ggplot2"), requireNamespace, logical(1), quietly = TRUE)]
-  if (length(missing_packages) > 0) {
-    return(list(
-      kind = "missing-package",
-      message = paste("Board rendering requires these R packages:", paste(missing_packages, collapse = ", "))
-    ))
-  }
-  
-  list(kind = "renderable", xgid = position_id, message = "Board preview")
+  list(
+    ok = FALSE,
+    value = value,
+    message = invalid_xgid_message
+  )
 }
 
 render_bglab_board <- function(xgid) {
   withCallingHandlers(
     print(bglab::ggboard(xgid, scheme = "soft")),
     warning = function(warning) {
-      message <- conditionMessage(warning)
-      if (grepl("Using `size` aesthetic for lines was deprecated", message, fixed = TRUE)) {
+      warning_message <- conditionMessage(warning)
+      if (grepl("Using `size` aesthetic for lines was deprecated", warning_message, fixed = TRUE)) {
         invokeRestart("muffleWarning")
       }
     }
   )
 }
 
-read_remote_text <- function(url) {
-  con <- url(url, open = "rb")
-  on.exit(close(con), add = TRUE)
-  paste(readLines(con, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
-}
+css_path <- file.path(getwd(), "www", "bms-shiny.css")
 
-worker_url <- function(base_url, position_id, level) {
-  separator <- if (grepl("\\?", base_url, fixed = FALSE)) "&" else "?"
-  paste0(
-    base_url,
-    separator,
-    "xgid=", utils::URLencode(position_id, reserved = TRUE),
-    "&ply=", utils::URLencode(level, reserved = TRUE)
-  )
-}
+iframe_resize_script <- HTML(
+  "
+(function () {
+  const messageType = 'bms-iframe-height';
+  const requestType = 'bms-request-height';
+  const sourceName = 'position-dashboard';
 
-run_worker_analysis <- function(position_id, level) {
-  base_url <- Sys.getenv("BMS_WORKER_BASE_URL", unset = "")
-  if (!nzchar(base_url)) {
-    return(list(
-      schema_version = "worker-analysis-result-v0",
-      analysis_id = NA,
-      request_hash = NA,
-      cache_status = "worker-not-configured",
-      source = "worker-unconfigured",
-      recommended_action = "Analysis worker is not configured in this environment.",
-      warnings = character(),
-      assumptions = c("set_BMS_WORKER_BASE_URL_for_analysis_results")
-    ))
+  let lastHeight = 0;
+  let scheduledFrame = null;
+
+  if (window.self !== window.top) {
+    document.documentElement.classList.add('bms-embedded');
   }
-  
-  response_text <- tryCatch(
-    read_remote_text(worker_url(base_url, position_id, level)),
-    error = function(error) {
-      return(list(error = conditionMessage(error)))
+
+  function measureHeight() {
+    scheduledFrame = null;
+
+    const body = document.body;
+    const content = document.querySelector('.bms-preview-shell');
+
+    const height = content
+      ? Math.ceil(content.getBoundingClientRect().bottom + window.scrollY)
+      : Math.ceil(body ? body.scrollHeight : 0);
+
+    if (!Number.isFinite(height) || height < 1) {
+      return;
     }
-  )
-  
-  if (is.list(response_text) && !is.null(response_text$error)) {
-    return(list(
-      schema_version = "worker-analysis-result-v0",
-      analysis_id = NA,
-      request_hash = NA,
-      cache_status = "error",
-      source = "remote-worker",
-      recommended_action = "The configured analysis worker could not be reached.",
-      warnings = c(response_text$error),
-      assumptions = c("worker_request_failed")
-    ))
-  }
-  
-  output_url <- Sys.getenv("BMS_ANALYSIS_OUTPUT_URL", unset = "")
-  result_text <- if (nzchar(output_url)) {
-    tryCatch(
-      read_remote_text(output_url),
-      error = function(error) response_text
-    )
-  } else {
-    response_text
-  }
-  
-  parsed <- tryCatch(
-    jsonlite::fromJSON(result_text, simplifyVector = FALSE),
-    error = function(error) NULL
-  )
-  
-  if (!is.null(parsed)) {
-    return(parsed)
-  }
-  
-  list(
-    schema_version = "worker-analysis-result-v0",
-    analysis_id = NA,
-    request_hash = NA,
-    cache_status = "remote",
-    source = "remote-worker",
-    recommended_action = "Remote worker response received",
-    warnings = character(),
-    assumptions = c("worker_text_output_not_yet_structured_json"),
-    result_text = result_text
-  )
-}
 
-run_analysis <- function(position_id, level) {
-  if (!(level %in% allowed_levels)) {
-    stop("Unsupported analysis level: ", level)
+    if (Math.abs(height - lastHeight) < 2) {
+      return;
+    }
+
+    lastHeight = height;
+
+    window.parent.postMessage(
+      {
+        type: messageType,
+        source: sourceName,
+        height: height
+      },
+      '*'
+    );
   }
-  
-  run_worker_analysis(position_id, level)
-}
+
+  function scheduleHeightReport() {
+    if (scheduledFrame !== null) {
+      window.cancelAnimationFrame(scheduledFrame);
+    }
+
+    scheduledFrame = window.requestAnimationFrame(measureHeight);
+  }
+
+  window.addEventListener('load', scheduleHeightReport);
+  window.addEventListener('resize', scheduleHeightReport);
+
+  window.addEventListener('message', function (event) {
+    if (event.data && event.data.type === requestType) {
+      scheduleHeightReport();
+    }
+  });
+
+  document.addEventListener('shiny:connected', scheduleHeightReport);
+  document.addEventListener('shiny:value', scheduleHeightReport);
+  document.addEventListener('shiny:idle', scheduleHeightReport);
+
+  if ('ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(scheduleHeightReport);
+    resizeObserver.observe(document.documentElement);
+
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
+  }
+
+  if ('MutationObserver' in window && document.body) {
+    const mutationObserver = new MutationObserver(scheduleHeightReport);
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true
+    });
+  }
+
+  scheduleHeightReport();
+})();
+  "
+)
 
 ui <- fluidPage(
-  class = "bms-shiny-app",
+  class = "bms-position-preview-app",
   tags$head(
-    lapply(shared_css_files[file.exists(shared_css_files)], includeCSS)
+    tags$meta(name = "viewport", content = "width=device-width, initial-scale=1"),
+    if (file.exists(css_path)) includeCSS(css_path),
+    tags$script(iframe_resize_script)
   ),
   div(
-    class = "bms-page-shell",
+    class = "bms-preview-shell",
     div(
-      class = "bms-hero bms-shiny-hero",
-      h1("Position Analyzer"),
-      p("Preview an XGID board immediately. Engine analysis is not yet connected.")
-    ),
-    div(
-      class = "bms-analysis-shell",
+      class = "bms-preview-controls",
       div(
-        class = "bms-card bms-control-panel",
-        h2("Preview"),
+        class = "bms-preview-input",
         textInput(
-          "position_id",
-          "XGID position",
+          inputId = "position_id",
+          label = "Enter XGID:",
           value = "",
-          placeholder = "XGID=-b----E-D---dDa--c-da---AA:0:0:1:53:0:0:0:5:8"
-        ),
-        tags$p(
-          class = "bms-muted",
-          "Enter a complete XGID or open a link using ?position=<URL-encoded XGID>."
-        ),
-        actionButton("preview", "Preview Position", class = "bms-button-primary")
+          placeholder = "XGID=..."
+        )
       ),
-      div(
-        class = "bms-analysis-main",
-        uiOutput("board_panel")
+      actionButton(
+        inputId = "show_position",
+        label = "Show Position",
+        class = "bms-preview-button"
       )
     ),
-    tags$footer(
-      class = "bms-site-license",
-      tags$p("© 2026 Marty Gale - Backgammon Made Simple"),
-      tags$p("This lesson is available for non-commercial use under the PolyForm Noncommercial License 1.0.0. Reuse or adaptation must credit Backgammon Made Simple, identify Marty Gale as the original author, and reference the original page or repository. Commercial use requires written permission.")
-    )
+    uiOutput("message_panel"),
+    uiOutput("board_panel")
   )
 )
 
 server <- function(input, output, session) {
-  observeEvent(session$clientData$url_search, {
-    url_search <- session$clientData$url_search
-    
-    if (is.null(url_search) || length(url_search) != 1L || is.na(url_search)) {
-      return()
-    }
-    
-    query <- shiny::parseQueryString(url_search)
-    position <- query[["position"]]
-    
-    if (is.null(position) || length(position) != 1L || is.na(position) || !nzchar(position)) {
-      return()
-    }
-    
-    normalized <- normalize_position_id(position)
-    if (isTRUE(normalized$ok)) {
-      updateTextInput(session, "position_id", value = normalized$value)
-    }
-  }, once = TRUE, ignoreInit = FALSE)
+  submitted_xgid <- reactiveVal("")
   
-  observeEvent(input$preview, {
-    normalized <- normalize_position_id(input$position_id)
-    
-    if (
-      isTRUE(normalized$ok) &&
-      !identical(normalized$value, trimws(as.character(input$position_id)))
-    ) {
-      updateTextInput(session, "position_id", value = normalized$value)
-    }
+  observeEvent(
+    session$clientData$url_search,
+    {
+      query_string <- session$clientData$url_search %||% ""
+      query <- shiny::parseQueryString(query_string)
+      position <- query[["position"]]
+      
+      if (
+        !is.null(position) &&
+        length(position) == 1L &&
+        !is.na(position) &&
+        nzchar(trimws(position))
+      ) {
+        normalized <- normalize_xgid(position)
+        display_value <- if (isTRUE(normalized$ok)) normalized$value else trimws(position)
+        
+        updateTextInput(
+          session = session,
+          inputId = "position_id",
+          value = display_value
+        )
+        
+        submitted_xgid(display_value)
+      }
+    },
+    ignoreInit = FALSE,
+    once = TRUE
+  )
+  
+  observeEvent(input$show_position, {
+    submitted_xgid(input$position_id)
+  }, ignoreInit = TRUE)
+  
+  current_state <- reactive({
+    normalize_xgid(submitted_xgid())
   })
   
-  current_board_state <- reactive({
-    board_state(input$position_id)
+  output$message_panel <- renderUI({
+    if (!nzchar(submitted_xgid())) {
+      return(NULL)
+    }
+    
+    state <- current_state()
+    
+    if (!isTRUE(state$ok)) {
+      return(div(
+        class = "bms-preview-message bms-preview-message--error",
+        state$message
+      ))
+    }
+    
+    NULL
   })
   
   output$board_panel <- renderUI({
-    state <- current_board_state()
-    if (identical(state$kind, "renderable")) {
+    state <- current_state()
+    
+    if (!isTRUE(state$ok)) {
+      return(NULL)
+    }
+    
+    missing_packages <- c("bglab", "ggplot2")[
+      !vapply(c("bglab", "ggplot2"), requireNamespace, logical(1), quietly = TRUE)
+    ]
+    
+    if (length(missing_packages) > 0L) {
       return(div(
-        class = "bms-card",
-        h2("Board Preview"),
-        plotOutput("board_plot", height = "440px"),
-        tags$p(class = "bms-identifier", state$xgid)
+        class = "bms-preview-message bms-preview-message--error",
+        "Board rendering requires: ",
+        paste(missing_packages, collapse = ", ")
       ))
     }
     
     div(
-      class = "bms-card",
-      h2("Board Preview"),
-      div(
-        class = "bms-callout",
-        div(class = "bms-callout-title", "Board unavailable"),
-        state$message
-      )
+      class = "bms-board-card",
+      tags$h2("Board Preview"),
+      plotOutput("board_plot", height = "560px")
     )
   })
   
   output$board_plot <- renderPlot({
-    state <- current_board_state()
-    validate(need(identical(state$kind, "renderable"), state$message))
+    state <- current_state()
+    validate(need(isTRUE(state$ok), state$message))
+    
     tryCatch(
-      {
-        render_bglab_board(state$xgid)
-      },
+      render_bglab_board(state$value),
       error = function(error) {
         validate(need(
           FALSE,
-          "Board preview could not render this XGID. Check that the identifier is complete and valid."
+          "The board could not be rendered. Check that the XGID is complete and valid."
         ))
       }
     )

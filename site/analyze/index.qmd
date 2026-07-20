@@ -1,34 +1,126 @@
 ---
-title: "Analyze a Position"
-subtitle: "Preview a backgammon position from its XGID."
-description: "Enter an XGID, render the position, and create a direct link to the board preview."
+title: "View a Position"
+subtitle: "OPEN ANALYSIS :: POSITION PREVIEW"
 page-layout: full
 toc: false
 format:
   html:
-    css: ../assets/analyze.css
+    title-block-style: plain
+    body-classes: "bms-editorial-page bms-title-eyebrow"
 ---
 
-::: {.bms-analyze-eyebrow}
-ANALYZE :: POSITION PREVIEW
+:::: {.bms-page-shell}
+::: {.bms-reading-column}
+
+::: {.bms-status-panel}
+[CURRENT VERSION :: BOARD PREVIEW]{.bms-status-label}
+
+Coming soon: Full engine analysis, best candidate move rankings. For now it just renders a board and match from an XGID.
 :::
 
-Enter an XGID to render the position on a clear backgammon board. You can also open or share a position using a direct link.
+:::: {.bms-step-row aria-label="How to use the position preview"}
+::: {.bms-step}
+[01]{.bms-step-number}
 
-::: {.bms-analyze-status}
-**PUBLIC PROTOTYPE**
+**Paste an XGID**
 
-The position preview is working. Engine analysis, candidate moves, move rankings, and position editing are not yet connected.
+Use a complete XGID copied from your backgammon software or a shared position link.
 :::
 
-## Position Preview
+::: {.bms-step}
+[02]{.bms-step-number}
 
-A sample XGID is loaded below. Replace it inside the application to preview another position.
+**Check the position**
 
-::: {.bms-analyzer-frame}
+From the board and match situation, view the best candidate move.
+:::
+
+::: {.bms-step}
+[03]{.bms-step-number}
+
+**Share the link**
+
+Open the preview directly or send the encoded position URL to another player.
+:::
+::::
+
+:::
+
+:::: {.bms-tool-area}
+
+```{=html}
+<script>
+(function () {
+  const allowedOrigin = "https://backgammon-made-simple.shinyapps.io";
+  const iframeId = "bms-position-preview-frame";
+  const heightMessageType = "bms-iframe-height";
+  const requestMessageType = "bms-request-height";
+
+  function getIframe() {
+    return document.getElementById(iframeId);
+  }
+
+  window.addEventListener("message", function (event) {
+    if (event.origin !== allowedOrigin) {
+      return;
+    }
+
+    const data = event.data;
+
+    if (
+      !data ||
+      data.type !== heightMessageType ||
+      data.source !== "position-dashboard"
+    ) {
+      return;
+    }
+
+    const height = Number(data.height);
+
+    if (!Number.isFinite(height) || height < 120 || height > 50000) {
+      return;
+    }
+
+    const iframe = getIframe();
+
+    if (iframe) {
+      iframe.style.height = `${Math.ceil(height) + 2}px`;
+    }
+  });
+
+  window.addEventListener("DOMContentLoaded", function () {
+    const iframe = getIframe();
+
+    if (!iframe) {
+      return;
+    }
+
+    iframe.addEventListener("load", function () {
+      iframe.contentWindow.postMessage(
+        { type: requestMessageType },
+        allowedOrigin
+      );
+    });
+  });
+})();
+</script>
+```
+
+::: {.bms-tool-frame}
 ```{=html}
 <iframe
+  id="bms-position-preview-frame"
   src="https://backgammon-made-simple.shinyapps.io/position-dashboard/?position=XGID%3D-B-BBBF-------a----dccb-b-%3A1%3A-1%3A1%3A65%3A0%3A3%3A0%3A5%3A8"
   title="Backgammon Made Simple position preview"
   loading="eager"
+  scrolling="no"
 ></iframe>
+```
+:::
+
+::: {.bms-external-link}
+[Open this position in a new tab →](https://backgammon-made-simple.shinyapps.io/position-dashboard/?position=XGID%3D-B-BBBF-------a----dccb-b-%3A1%3A-1%3A1%3A65%3A0%3A3%3A0%3A5%3A8){target="_blank" rel="noopener noreferrer"}
+:::
+::::
+
+::::
