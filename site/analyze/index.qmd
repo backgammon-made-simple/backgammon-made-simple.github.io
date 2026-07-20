@@ -1,257 +1,126 @@
 ---
-title: "Analyze a Position"
-description: "Analyze an XGID or GNUID."
+title: "View a Position"
+subtitle: "OPEN ANALYSIS :: POSITION PREVIEW"
 page-layout: full
-bibliography: ../references.bib
+toc: false
+format:
+  html:
+    title-block-style: plain
+    body-classes: "bms-editorial-page bms-title-eyebrow"
 ---
 
-::::: bms-page-shell
-# Analyze a Position
+:::: {.bms-page-shell}
+::: {.bms-reading-column}
 
-Paste an XGID or GNUID to open the dedicated analyzer. XGID board preview is available in the Shiny app; worker-backed analysis appears when the server-side analysis service is configured.
+::: {.bms-status-panel}
+[CURRENT VERSION :: BOARD PREVIEW]{.bms-status-label}
 
-## Supported Identifiers
-
-- `XGID` for board state.
-- `GNUID` for GNU-friendly board references.
-- Optional fixture context strings when Marty is testing the page structure.
-
-## Eventual Flow
-
-1. Enter the identifier.
-2. Show the local board preview.
-3. Send the request to the analyzer route.
-4. Stream quick results first.
-5. Expand into the full report when the worker contract is live.
-
-## Direct Links
-
-The static site can link to the analyzer route directly, or embed an iframe example during private testing.
-
-::: {.grid}
-::: {.g-col-12 .g-col-lg-7}
-::: {.bms-card}
-## Open the Analyzer
-
-{{< include ../includes/analyzer-form.html >}}
-:::
-:::
-::: {.g-col-12 .g-col-lg-5}
-::: {.bms-right-rail-card}
-## Current Status
-
-- Worker-backed polling is still unwired.
-- Quick and full result areas exist as placeholders.
-- The local board preview remains available for valid XGID values.
-
-[Open the Shiny analyzer](../../shiny/position-dashboard/index.html){.bms-button-outline}
-:::
-:::
+Coming soon: Full engine analysis, best candidate move rankings. For now it just renders a board and match from an XGID.
 :::
 
-## Board Preview
+:::: {.bms-step-row aria-label="How to use the position preview"}
+::: {.bms-step}
+[01]{.bms-step-number}
 
-::: bms-placeholder-board
-Local XGID board preview uses the soft bglab scheme in the Shiny app.
+**Paste an XGID**
+
+Use a complete XGID copied from your backgammon software or a shared position link.
 :::
 
-## Component Playground
+::: {.bms-step}
+[02]{.bms-step-number}
 
-::: {.callout-warning}
-This private section demonstrates components available for the Analyze page.
-Remove, rewrite, or rearrange these examples before public release.
+**Check the position**
+
+From the board and match situation, view the best candidate move.
 :::
 
-### Identifier States
+::: {.bms-step}
+[03]{.bms-step-number}
 
-::: {.grid}
-::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Valid input
+**Share the link**
 
-`XGID=fixture-valid-0001`
-
-Status: ready for preview.
+Open the preview directly or send the encoded position URL to another player.
 :::
-:::
-::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Invalid input
+::::
 
-`not-an-identifier`
-
-Status: rejected before lookup.
-:::
-:::
-::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Worker unavailable
-
-`XGID=fixture-worker-down`
-
-Status: the app can still render the shell.
-:::
-:::
 :::
 
-### Result States
+:::: {.bms-tool-area}
 
-::: {.grid}
-::: {.g-col-12 .g-col-md-6}
-::: {.bms-card}
-#### Quick Result
+```{=html}
+<script>
+(function () {
+  const allowedOrigin = "https://backgammon-made-simple.shinyapps.io";
+  const iframeId = "bms-position-preview-frame";
+  const heightMessageType = "bms-iframe-height";
+  const requestMessageType = "bms-request-height";
 
-<span class="bms-status bms-status--info">Best</span>
-<span class="bms-status bms-status--neutral">Pending</span>
+  function getIframe() {
+    return document.getElementById(iframeId);
+  }
 
-| Move | Equity | Note |
-|---|---|---|
-| Best move | +0.120 | Fixture value |
-| Alternative | +0.085 | Fixture value |
-| Close | +0.010 | Fixture value |
-:::
-:::
-::: {.g-col-12 .g-col-md-6}
-::: {.bms-card}
-#### Full Report
+  window.addEventListener("message", function (event) {
+    if (event.origin !== allowedOrigin) {
+      return;
+    }
 
-<span class="bms-status bms-status--warning">Warning</span>
-<span class="bms-status bms-status--mistake">Mistake</span>
+    const data = event.data;
 
-| Label | Value |
-|---|---|
-| Money-game context | Fixture |
-| Match context | Fixture |
-| Win probability | 61% |
-| Gammon probability | 8% |
-| Backgammon probability | 1% |
-:::
-:::
-:::
+    if (
+      !data ||
+      data.type !== heightMessageType ||
+      data.source !== "position-dashboard"
+    ) {
+      return;
+    }
 
-### Queue States
+    const height = Number(data.height);
 
-::: {.grid}
-::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Queued
-Status bar at 10%.
-:::
-:::
-::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Running
-Status bar at 42%.
-:::
-:::
-::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Complete
-Status bar at 100%.
-:::
-:::
-:::
+    if (!Number.isFinite(height) || height < 120 || height > 50000) {
+      return;
+    }
 
-### Status Matrix
+    const iframe = getIframe();
 
-| Fixture state | What the page shows |
-|---|---|
-| queued | Waiting indicator |
-| running | Progress bar |
-| partial | Quick result visible |
-| cached | Cached badge |
-| complete | Full report shell |
-| failed | Error block |
-| cancelled | Cancel button state |
-| rate-limited | Retry later message |
+    if (iframe) {
+      iframe.style.height = `${Math.ceil(height) + 2}px`;
+    }
+  });
 
-### Embedded Iframe
+  window.addEventListener("DOMContentLoaded", function () {
+    const iframe = getIframe();
 
-<iframe title="Analyze fixture iframe" srcdoc="<html><body style='font-family:sans-serif;padding:1rem;'><h1>Fixture analyzer iframe</h1><p>This is a private placeholder for a future embedded experience.</p></body></html>" style="width:100%;min-height:180px;border:1px solid #d9ccc0;border-radius:8px;"></iframe>
+    if (!iframe) {
+      return;
+    }
 
-### Direct-Link Fallback
-
-[Open the analyzer route directly](../../shiny/position-dashboard/index.html){.bms-button-secondary}
-
-### Progress And Controls
-
-::: {.grid}
-::: {.g-col-12 .g-col-md-6}
-::: {.bms-card}
-#### Engine Settings
-
-- Search depth: `fixture`
-- Mode: `quick` or `full`
-- Context: `money` or `match`
-:::
-:::
-::: {.g-col-12 .g-col-md-6}
-::: {.bms-card}
-#### Controls
-
-[Cancel](#){.bms-button-outline} [Retry](#){.bms-button-primary}
-:::
-:::
-:::
-
-### Download Blocks
-
-::: {.bms-card}
-`analyze-result.json`<br>
-`analyze-report.txt`
-
-[JSON download](../analyze-result.json){.bms-button-outline} [Text report](../analyze-report.txt){.bms-button-outline}
-:::
-
-### Raw Output
-
-::: details Expand raw output
-
-```json
-{
-  "status": "fixture",
-  "mode": "quick",
-  "equity": 0.12
-}
+    iframe.addEventListener("load", function () {
+      iframe.contentWindow.postMessage(
+        { type: requestMessageType },
+        allowedOrigin
+      );
+    });
+  });
+})();
+</script>
 ```
 
-:::
-
-### Detailed Table
-
-| Label | Value |
-|---|---|
-| Best | Fixture move |
-| Alternative | Fixture move |
-| Close | Fixture move |
-| Warning | Fixture move |
-| Mistake | Fixture move |
-| Blunder | Fixture move |
-
-### Mobile Stacking
-
-::: {.grid}
-::: {.g-col-12 .g-col-md-6}
-::: {.bms-card}
-#### Compact result
-The stacked version keeps the key move at the top.
-:::
-:::
-::: {.g-col-12 .g-col-md-6}
-::: {.bms-card}
-#### Detailed result
-The wider version shows the full move table.
-:::
-:::
-:::
-
-### Source
-
-::: details Quarto source
-
-```markdown
-<iframe title="Analyze fixture iframe" srcdoc="..."></iframe>
+::: {.bms-tool-frame}
+```{=html}
+<iframe
+  id="bms-position-preview-frame"
+  src="https://backgammon-made-simple.shinyapps.io/position-dashboard/?position=XGID%3D-B-BBBF-------a----dccb-b-%3A1%3A-1%3A1%3A65%3A0%3A3%3A0%3A5%3A8"
+  title="Backgammon Made Simple position preview"
+  loading="eager"
+  scrolling="no"
+></iframe>
 ```
-
 :::
-:::::
+
+::: {.bms-external-link}
+[Open this position in a new tab →](https://backgammon-made-simple.shinyapps.io/position-dashboard/?position=XGID%3D-B-BBBF-------a----dccb-b-%3A1%3A-1%3A1%3A65%3A0%3A3%3A0%3A5%3A8){target="_blank" rel="noopener noreferrer"}
+:::
+::::
+
+::::

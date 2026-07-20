@@ -23,10 +23,12 @@ website:
         href: learn/index.qmd
       - href: analyze/index.qmd
         text: Analyze
+      - href: match-predictor/index.qmd
+        text: Match Predictor
       - href: sage-vs-gnu/index.qmd
         text: Sage vs GNU
-      - href: blog/index.qmd
-        text: Blog
+      - href: research/index.qmd
+        text: Research
       - href: about.qmd
         text: About
   sidebar:
@@ -55,7 +57,7 @@ website:
       This lesson is available for non-commercial use under the PolyForm Noncommercial License 1.0.0. Reuse or adaptation must credit Backgammon Made Simple, identify Marty Gale as the original author, and reference the original page or repository. Commercial use requires written permission.
     right:
       - text: RSS
-        href: blog/index.xml
+        href: research/index.xml
 
 format:
   html:
@@ -74,4 +76,4 @@ format:
 execute:
   freeze: auto
 
-editor: visual
+editor: source

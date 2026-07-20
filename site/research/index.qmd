@@ -1,5 +1,5 @@
 ---
-title: "Blog"
+title: "Research"
 description: "Chronological research notes, lessons, releases, and site updates."
 page-layout: full
 aliases:
@@ -12,7 +12,7 @@ bibliography: ../references.bib
 ---
 
 ::::: bms-page-shell
-# Blog
+# Research
 
 This is the chronological part of the site. It collects research notes, strategy studies, engine discussions, Sage vs GNU updates, and site changes.
 
