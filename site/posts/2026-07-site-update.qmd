@@ -1,9 +1,9 @@
 ---
-title: "Site Update: Analyzer and Navigation Notes"
-description: "A private release note for the site playground."
+title: "Welcome to Backgammon Made Simple"
+description: "Learn about our plans for this site."
 author: "Marty Gale"
 date: "2026-07-15"
-updated: "2026-07-15"
+updated: "2026-07-20"
 categories: [Updates]
 tags: [site, analyzer, navigation]
 image: ../assets/logo.svg
