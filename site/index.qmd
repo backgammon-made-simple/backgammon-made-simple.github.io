@@ -82,7 +82,7 @@ See what happened when Sage and GNU played 20 controlled seven-point matches, wh
 :::::
 
 ::::: {.bms-card .bms-card-stack}
-### What we are learning
+### What we are discovering
 
 Follow the questions, experiments, results, and unexpected findings that emerge as the projects develop.
 

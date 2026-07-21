@@ -10,7 +10,9 @@ format:
 
 :::::: bms-page-shell
 ::::: bms-reading-column
-Backgammon Made Simple is an open-source project for understanding the game and making better decisions.  The idea is simple:
+Backgammon Made Simple is an open-source project for understanding the game and making better decisions.
+
+The idea is simple:
 
 > **Come with a question. Leave with a clear mental model you can use at the board.**
 
