@@ -4,13 +4,7 @@ project:
   resources:
     - assets/logo.svg
     - "data/engine-benchmark/**"
-    - "engine-benchmark/**/figures/**"
-    - "engine-benchmark/**/tables/**"
-    - "engine-benchmark/**/data/**"
-    - "engine-benchmark/**/captions.yml"
-    - "engine-benchmark/**/PUBLICATION_MANIFEST.yml"
-    - "engine-benchmark/**/checksums.sha256"
-    
+
 website:
   title: "Backgammon Made Simple"
   description: "Learn the ideas behind strong backgammon decisions, one concept and one position at a time."

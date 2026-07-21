@@ -44,25 +44,60 @@
   --bms-navy-dark: #11182F;
   --bms-navy: #1B2040;
   --bms-slate: #39415F;
+
   --bms-copper: #AC7652;
   --bms-copper-dark: #915634;
+
   --bms-ivory: #F3E8DC;
   --bms-page-background: #FAF7F2;
   --bms-surface: #FFFDFC;
   --bms-sidebar-background: #F3E8DC;
+  --bms-callout-surface: #F8F0E8;
+
   --bms-border: #D9CCC0;
   --bms-border-subtle: #D9CCC0;
-  --bms-border-strong: #9A8B80;
+  --bms-border-strong: #88786E;
+
   --bms-text: #1B2040;
   --bms-text-secondary: #39415F;
-  --bms-text-muted: #686B78;
+  --bms-text-muted: #5F626E;
+  --bms-placeholder: #686B78;
+  --bms-text-inverse: #FFFFFF;
+  --bms-text-on-accent: #FFFFFF;
+
+  --bms-link: #915634;
+  --bms-link-on-warm: #6F3F28;
+  --bms-link-hover: #6F3F28;
+
   --bms-success: #2F6B4F;
   --bms-info: #3D5F87;
   --bms-close: #8A6A25;
   --bms-warning: #A7611B;
+  --bms-warning-text: #915315;
   --bms-mistake: #A54C35;
   --bms-danger: #923B45;
+
+  --bms-badge-text: #1B2040;
+
+  --bms-status-info-surface: #EAF4FA;
+  --bms-status-info-text: #005680;
+  --bms-status-info-border: #0072B2;
+
+  --bms-status-neutral-surface: #ECEEF0;
+  --bms-status-neutral-text: #4F5560;
+  --bms-status-neutral-border: #88786E;
+
+  --bms-status-warning-surface: #FFF1CC;
+  --bms-status-warning-text: #915315;
+  --bms-status-warning-border: #915315;
+
+  --bms-status-mistake-surface: #FBE5DD;
+  --bms-status-mistake-text: #8A3900;
+  --bms-status-mistake-border: #A54C35;
+
   --bms-focus: #0072B2;
+  --bms-focus-halo: rgba(0, 114, 178, 0.18);
+
   --bms-shadow-soft: 0 12px 32px rgba(17, 24, 47, 0.08);
 }
 
@@ -71,13 +106,33 @@
   --bms-page-background: #0D1327;
   --bms-surface: #151D37;
   --bms-sidebar-background: #11182F;
+  --bms-callout-surface: #11182F;
+
   --bms-border: #35405D;
+  --bms-border-subtle: #35405D;
+  --bms-border-strong: #697694;
+
   --bms-text: #F5EDE6;
   --bms-text-secondary: #D9D1CA;
   --bms-text-muted: #C1B8B1;
+  --bms-placeholder: #C1B8B1;
+  --bms-text-inverse: #FFFFFF;
+  --bms-text-on-accent: #11182F;
+
   --bms-copper: #E0AE88;
   --bms-copper-dark: #C28A63;
+
+  --bms-link: #C28A63;
+  --bms-link-on-warm: #E0AE88;
+  --bms-link-hover: #E0AE88;
+
+  --bms-badge-text: #F5EDE6;
+
+  --bms-focus: #A8C2DD;
+  --bms-focus-halo: rgba(168, 194, 221, 0.22);
+
   --bms-info: #A8C2DD;
+
   --bms-shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
 
@@ -118,16 +173,19 @@ pre,
 }
 
 a {
-  color: var(--bms-copper-dark);
+  color: var(--bms-link);
 }
 
 a:hover {
-  color: var(--bms-copper);
+  color: var(--bms-link-hover);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.12em;
 }
 
 :focus-visible {
   outline: 3px solid var(--bms-focus);
   outline-offset: 3px;
+  box-shadow: 0 0 0 4px var(--bms-focus-halo);
 }
 
 .bms-page-shell {
@@ -161,16 +219,16 @@ a:hover {
 .navbar .nav-link.active,
 .navbar-nav .show > .nav-link {
   background: var(--bms-navy-dark);
-  color: #fff !important;
+  color: var(--bms-text-inverse) !important;
 }
 
 .navbar .nav-link:hover {
-  color: var(--bms-copper-dark) !important;
+  color: var(--bms-link-hover) !important;
 }
 
 .navbar .nav-link.active:hover {
   background: var(--bms-navy);
-  color: #fff !important;
+  color: var(--bms-text-inverse) !important;
 }
 
 /*
@@ -302,9 +360,10 @@ body.bms-title-eyebrow #title-block-header .subtitle {
 
 /* Optional on other editorial pages. About removes its description in YAML. */
 :is(body.bms-about-page, body.bms-editorial-page) #title-block-header .description {
-  width: 100%;
-  max-width: 58ch;
-  margin: 0.75rem 0 0;
+  box-sizing: border-box;
+  width: min(100%, var(--bms-editorial-reading-width));
+  max-width: none;
+  margin: 0.75rem auto 0;
   padding: 0;
   color: var(--bms-editorial-subtitle);
   font-family: "Source Sans 3", system-ui, sans-serif;
