@@ -302,9 +302,10 @@ body.bms-title-eyebrow #title-block-header .subtitle {
 
 /* Optional on other editorial pages. About removes its description in YAML. */
 :is(body.bms-about-page, body.bms-editorial-page) #title-block-header .description {
-  width: 100%;
-  max-width: 58ch;
-  margin: 0.75rem 0 0;
+  box-sizing: border-box;
+  width: min(100%, var(--bms-editorial-reading-width));
+  max-width: none;
+  margin: 0.75rem auto 0;
   padding: 0;
   color: var(--bms-editorial-subtitle);
   font-family: "Source Sans 3", system-ui, sans-serif;

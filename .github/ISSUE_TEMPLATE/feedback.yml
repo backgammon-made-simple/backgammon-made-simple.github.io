@@ -1,0 +1,36 @@
+name: Website feedback
+description: Report a mistake, ask a question, or suggest a clearer explanation.
+title: "[Feedback] "
+body:
+  - type: input
+    id: page_or_tool
+    attributes:
+      label: Page or tool
+      description: Which page, lesson, report, or tool is this about?
+      placeholder: "Example: Analyze, Sage vs GNU Stage 1, or a page URL"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Describe the mistake, problem, question, or confusing part.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_could_be_clearer
+    attributes:
+      label: What could be clearer or better?
+      description: Share the change that would make this more useful to you.
+    validations:
+      required: false
+
+  - type: input
+    id: supporting_link
+    attributes:
+      label: Supporting link or screenshot
+      description: Add an optional URL to a page, image, position, or other evidence.
+    validations:
+      required: false

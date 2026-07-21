@@ -1,6 +1,7 @@
 ---
-title: "View a Position"
-subtitle: "OPEN ANALYSIS :: POSITION PREVIEW"
+title: "Backgammon Position Analyzer"
+description: "Analyze a backgammon position, compare checker plays and cube decisions, and understand why the strongest choice is best."
+subtitle: "OPEN ANALYSIS :: UNDERSTAND A POSITION"
 page-layout: full
 toc: false
 format:

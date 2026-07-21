@@ -1,0 +1,33 @@
+experiment:
+  id: sage-vs-gnu-stage1-v1
+  title: "Sage vs GNU Stage 1"
+  status: descriptive-pilot
+
+releases:
+  sage-vs-gnu-stage1-match-review-artifacts-v1:
+    title: "Sage vs GNU Stage 1: Match and Review Artifacts"
+    version: "v1"
+    file_type: "tar.gz"
+    archive_filename: "sage-vs-gnu-stage1-match-review-artifacts-v1.tar.gz"
+    archive_size_bytes: null
+    sha256: "40125d667c2faaf0cf24af54078249b74cfc070e355b2a4ee49b78ab93b90f1d"
+    download_url: null
+    availability: accepted-candidate-not-public
+    description: >-
+      Played matches, GNU 4-ply reviewed matches, per-game review text,
+      public match records, sanitized metadata, physical-seat dice evidence,
+      pair validation, inventories, and checksums.
+
+  sage-vs-gnu-stage1-analysis-tables-v1:
+    title: "Sage vs GNU Stage 1: Analysis Tables"
+    version: "v1"
+    file_type: "tar.gz"
+    archive_filename: "sage-vs-gnu-stage1-analysis-tables-v1.tar.gz"
+    archive_size_bytes: null
+    sha256: "d44fa12116f589218ac46d11c4e74d79ad31ed49db6081d4bcd9601ad41b19f2"
+    download_url: null
+    availability: accepted-candidate-not-public
+    description: >-
+      Analysis-ready match, pair, performance, pooled True ER, runtime,
+      and leave-one-pair-out tables with a data dictionary, provenance,
+      validation summary, inventory, and checksums.

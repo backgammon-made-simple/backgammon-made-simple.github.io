@@ -10,7 +10,7 @@ format:
 
 :::::: bms-page-shell
 ::::: bms-reading-column
-Backgammon Made Simple is an open-source project for understanding the game and making better decisions.
+Backgammon Made Simple is an open-source project for understanding the game and making better decisions.  The idea is simple:
 
 > **Come with a question. Leave with a clear mental model you can use at the board.**
 
@@ -18,15 +18,9 @@ We try to make difficult ideas clearer, build useful tools, and help more people
 
 ## Why We Built This
 
-I started this project while trying to improve my own game. After scratching my head at the engine output for a blunder, I found three contrasting opinions:
+I started this project while trying to understand my own blunders. The engine gave me the best moves. A friend who is a great player said, “Eventually, you’ll start to see it.”
 
-1. what Discord said
-2. what Reddit said
-3. what Facebook said
-
-Rather than keep doubling down on whichever answer sounded most confident, I started this site to understand the idea underneath it.
-
-I wanted better answers to questions like:
+I wanted to know what I was supposed to see, as I asked questions like:
 
 ::: bms-question-examples
 [\>]{.bms-code-prefix aria-hidden="true"} *Why is 25% often called the take point... and yet it rarely ever is?*
@@ -40,10 +34,10 @@ I wanted better answers to questions like:
 [// goal: clarity over perfection]{.bms-code-note}
 :::
 
-Backgammon Made Simple is my attempt to answer those questions with real positions, clear explanations, and evidence instead of folklore.
+Backgammon Made Simple is my attempt to answer questions with real positions, clear explanations, and evidence instead of folklore.
 
 ::: bms-section-heading
-## Marty Gale, PhD
+## Introducing Marty Gale
 
 [ROLE: AUTHOR :: RESEARCHER :: PLAYER]{.bms-heading-meta}
 :::
@@ -56,7 +50,7 @@ Behind the joke, Marty Gale is the public author identity for this project.
 
 I am not presenting myself as one of the world's great backgammon players. I am a curious player learning in public: asking questions, testing ideas, making mistakes, and trying to leave behind explanations that are more useful than a table of rollout results.
 
-## Open Tools for the Game
+## Open Source Tools for the Game
 
 Backgammon Made Simple is also a home for useful technology around the game.
 
@@ -76,5 +70,5 @@ That is the standard I am trying to meet.
 :::::
 ::::::
 
-[^1]: **PhD:** Probably has Doubled too early.
+[^1]: **PhD:** Probably has Doubled
 

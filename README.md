@@ -1,10 +1,23 @@
 # Backgammon Made Simple
 
+[] favicons
+[] updating the license
+[] rss feed, learn, research, data?
+
+
+
+
 **Questions players ask. Ideas you can use.**
 
 Backgammon Made Simple is a free, open-source, question-driven learning project built around real positions, engine evidence, and practical mental models players can use at the board.
 
 This repository contains the public website and its website-specific analysis services.
+
+## Website development
+
+See [docs/authoring-guide.md](docs/authoring-guide.md) for the site structure,
+authoring conventions, local preview commands, and route map.
+
 
 ## What lives here
 

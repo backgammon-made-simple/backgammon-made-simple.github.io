@@ -1,11 +1,5 @@
 ---
-title: "Authoring Guide"
-description: "How to edit the public pages, templates, and playground sections."
-page-layout: full
-bibliography: references.bib
----
 
-::::: bms-page-shell
 # Authoring Guide
 
 This private guide explains where the site lives, how the navigation is wired, and how to copy the page components Marty wants to keep. The examples here are fixture-driven and intentionally editable.
@@ -17,7 +11,7 @@ This private guide explains where the site lives, how the navigation is wired, a
 | Homepage | `site/index.qmd` | Public landing page and homepage playground |
 | Learn | `site/learn/index.qmd` | Curriculum landing page and lesson patterns |
 | Analyze | `site/analyze/index.qmd` | Static analyzer entry page and Shiny companion |
-| Sage vs GNU | `site/sage-vs-gnu/index.qmd` | Study overview and status page |
+| Sage vs GNU | `site/engine-benchmark/sage-vs-gnu-stage1/index.qmd` | Study overview and status page |
 | Blog | `site/blog/index.qmd` | Chronological listing that discovers `site/posts/**` |
 | About | `site/about.qmd` | Project purpose and site-level identity |
 | Posts | `site/posts/**/index.qmd` | Individual blog entries |
