@@ -1,149 +1,225 @@
-.bms-shiny-app {
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("fonts/SourceSans3-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("fonts/SourceSans3-Italic-VariableFont_wght.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("fonts/SourceCodePro-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("fonts/SourceCodePro-Italic-VariableFont_wght.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+:root {
+  --bms-navy-dark: #11182f;
+  --bms-navy: #1b2040;
+  --bms-slate: #39415f;
+  --bms-copper: #ac7652;
+  --bms-copper-dark: #915634;
+  --bms-page-background: #faf7f2;
+  --bms-surface: #fffdfc;
+  --bms-border: #d9ccc0;
+  --bms-danger: #923b45;
+  --bms-focus: #0072b2;
+}
+
+html,
+body {
+  margin: 0;
   background: var(--bms-page-background);
-  color: var(--bms-text);
-  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.bms-shiny-app .container-fluid {
-  padding: 0 1rem;
+/* Hide only the iframe's internal scrollbar. The directly opened app still scrolls. */
+html.bms-embedded,
+html.bms-embedded body {
+  overflow: hidden;
 }
 
-.bms-shiny-hero {
-  min-height: auto;
-  padding-bottom: 0.25rem;
+body {
+  color: var(--bms-navy);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
 }
 
-.bms-shiny-hero h1 {
-  font-size: clamp(2rem, 4vw, 3.4rem);
+.bms-position-preview-app.container-fluid {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: var(--bms-page-background);
 }
 
-.bms-analysis-main {
+.bms-preview-shell {
+  box-sizing: border-box;
+  width: min(calc(100% - 2rem), 820px);
+  margin: 0 auto;
+  padding: 1rem 0 0;
+}
+
+html.bms-embedded .bms-preview-shell {
+  width: 100%;
+  padding-top: 0;
+}
+
+.bms-preview-controls {
   display: grid;
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+  margin: 0 0 1rem;
+  padding: 0 0 1rem;
+  border: 0;
+  border-bottom: 1px solid var(--bms-border);
+  border-radius: 0;
+  background: transparent;
 }
 
-.bms-control-panel {
-  align-self: start;
-  position: sticky;
-  top: 1rem;
+.bms-preview-input .form-group {
+  margin: 0;
 }
 
-.bms-compact-callout {
-  font-size: 0.95rem;
-  margin-bottom: 0;
+.bms-preview-input .shiny-input-container {
+  width: 100%;
+  max-width: none;
 }
 
-.bms-shiny-app .well,
-.bms-shiny-app .panel,
-.bms-shiny-app .tab-content {
-  background: var(--bms-surface);
-  border-color: var(--bms-border);
-}
-
-.bms-shiny-app .btn-primary {
-  background: var(--bms-navy-dark);
-  border-color: var(--bms-navy-dark);
-  color: var(--bms-text-inverse);
+.bms-preview-input label {
+  margin-bottom: 0.35rem;
+  color: var(--bms-navy-dark);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   font-weight: 700;
 }
 
-.bms-shiny-app .btn-default {
-  border-color: var(--bms-border-strong);
-  color: var(--bms-text);
+.bms-preview-input .form-control {
+  min-height: 46px;
+  border: 1px solid #9a8b80;
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--bms-navy);
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  font-size: 0.88rem;
+  box-shadow: none;
 }
 
-.bms-shiny-app .btn.bms-button-primary {
-  background: var(--bms-navy-dark);
-  border-color: var(--bms-navy-dark);
-  color: var(--bms-text-inverse) !important;
-}
-
-.bms-shiny-app .btn.bms-button-primary:hover,
-.bms-shiny-app .btn.bms-button-primary:focus {
-  background: var(--bms-navy);
-  border-color: var(--bms-navy);
-  color: var(--bms-text-inverse) !important;
-}
-
-.bms-shiny-app input,
-.bms-shiny-app select,
-.bms-shiny-app textarea {
-  border-color: var(--bms-border-strong);
-}
-
-.bms-shiny-app input::placeholder,
-.bms-shiny-app textarea::placeholder {
-  color: var(--bms-placeholder);
+.bms-preview-input .form-control::placeholder {
+  color: #7b7f8b;
   opacity: 1;
 }
 
-.bms-shiny-app input:focus,
-.bms-shiny-app select:focus,
-.bms-shiny-app textarea:focus {
+.bms-preview-input .form-control:focus {
   border-color: var(--bms-focus);
-  box-shadow: 0 0 0 0.2rem var(--bms-focus-halo);
+  box-shadow: 0 0 0 0.2rem rgba(0, 114, 178, 0.16);
 }
 
-.bms-shiny-app dl {
-  display: grid;
-  gap: 0.35rem 1rem;
-  grid-template-columns: max-content minmax(0, 1fr);
-  margin-top: 1rem;
-}
-
-.bms-shiny-app dt {
-  color: var(--bms-text-secondary);
+.bms-preview-button.btn {
+  min-height: 46px;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid var(--bms-navy-dark);
+  border-radius: 6px;
+  background: var(--bms-navy-dark);
+  color: #ffffff;
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   font-weight: 750;
 }
 
-.bms-shiny-app dd {
-  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  margin: 0;
-  overflow-wrap: anywhere;
+.bms-preview-button.btn:hover,
+.bms-preview-button.btn:focus {
+  border-color: var(--bms-navy);
+  background: var(--bms-navy);
+  color: #ffffff;
 }
 
-.bms-shiny-app details {
-  border-top: 1px solid var(--bms-border);
-  margin-top: 1rem;
-  padding-top: 0.8rem;
+.bms-preview-message {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
 }
 
-.bms-shiny-app summary {
-  color: var(--bms-copper-dark);
-  cursor: pointer;
-  font-weight: 750;
+.bms-preview-message--error {
+  border: 1px solid rgba(146, 59, 69, 0.45);
+  background: #f9e8e8;
+  color: #742d38;
 }
 
-.bms-site-license {
-  border-top: 1px solid var(--bms-border);
-  color: var(--bms-text-secondary);
-  font-size: 0.82rem;
-  line-height: 1.45;
-  margin-top: 2rem;
-  padding: 1rem 0 1.5rem;
+.bms-board-card {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.bms-site-license p {
-  margin: 0 0 0.35rem;
+.bms-board-card h2 {
+  margin: 0 0 0.65rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--bms-border);
+  color: var(--bms-navy-dark);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 1.45rem;
+  font-weight: 720;
+  letter-spacing: -0.015em;
 }
 
-.bms-site-license p:first-child {
-  color: var(--bms-navy);
-  font-weight: 700;
+.bms-board-card .shiny-plot-output {
+  width: 100% !important;
+  margin: 0 auto;
 }
 
-@media (max-width: 980px) {
-  .bms-control-panel {
-    position: static;
+.shiny-output-error-validation {
+  color: var(--bms-danger);
+  font-weight: 650;
+}
+
+:focus-visible {
+  outline: 3px solid var(--bms-focus);
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 16px;
   }
-}
 
-@media (max-width: 640px) {
-  .bms-shiny-app dl {
+  .bms-preview-shell {
+    width: min(calc(100% - 1rem), 820px);
+  }
+
+  html.bms-embedded .bms-preview-shell {
+    width: 100%;
+  }
+
+  .bms-preview-controls {
     grid-template-columns: 1fr;
   }
 
-  .bms-shiny-app dd {
-    margin-bottom: 0.35rem;
+  .bms-preview-button.btn {
+    width: 100%;
   }
 }
