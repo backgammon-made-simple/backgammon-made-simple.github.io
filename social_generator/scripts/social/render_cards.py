@@ -19,18 +19,18 @@ from fontTools.ttLib import TTFont
 from playwright.sync_api import Browser, Page, sync_playwright
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 
 MANIFEST_PATH = ROOT / "site" / "assets" / "social" / "social-cards.yml"
 GENERATED_DIR = ROOT / "site" / "assets" / "social" / "generated"
-FONTS_DIR = ROOT / "site" / "assets" / "social" / "fonts"
-LOGO_PATH = ROOT / "site" / "assets" / "logo" / "logo-clean.svg"
+FONTS_DIR = ROOT / "social_generator" / "site" / "assets" / "social" / "fonts"
+LOGO_PATH = ROOT / "site" / "assets" / "logo.svg"
 
 VARIABLE_FONT_PATH = FONTS_DIR / "SourceSans3-VariableFont_wght.ttf"
 REGULAR_FONT_PATH = FONTS_DIR / "SourceSans3-Regular.ttf"
 SEMIBOLD_FONT_PATH = FONTS_DIR / "SourceSans3-SemiBold.ttf"
 
-TEMPLATES_DIR = ROOT / "templates" / "social"
+TEMPLATES_DIR = ROOT / "social_generator" / "templates" / "social"
 HTML_TEMPLATE_PATH = TEMPLATES_DIR / "card.html"
 CSS_TEMPLATE_PATH = TEMPLATES_DIR / "social-card.css"
 

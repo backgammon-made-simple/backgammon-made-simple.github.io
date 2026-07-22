@@ -2,27 +2,23 @@
 
 This package implements the frozen contract v1.1 text-only renderer. It uses deterministic local assets and six typography/composition profiles.
 
-## Copy these files into the website repository
+## Live repository integration
 
-Copy the package contents into the root of:
+This directory is the canonical live implementation. Do not copy it into a second `scripts/social` or `templates/social` tree.
+
+From the repository root, run:
 
 ```text
-backgammon-made-simple.github.io
+python social_generator/scripts/social/run_social_pipeline.py
 ```
 
-The important destinations are:
+The Quarto project in `site/_quarto.yml` runs that same pipeline as a pre-render hook. The implementation paths are:
 
 ```text
-scripts/social/render_cards.py
-scripts/social/run_social_pipeline.py
-scripts/social/validate_social_integration.R
-scripts/social/clear_visuals.py
-
-templates/social/card.html
-templates/social/social-card.css
-
-requirements-social.txt
-requirements-social.R
+social_generator/scripts/social/
+social_generator/templates/social/
+social_generator/requirements-social.txt
+social_generator/requirements-social.R
 ```
 
 Do not overwrite the real manifest with the example unless that is intentional:
@@ -36,14 +32,14 @@ examples/social-cards.yml
 The renderer supports either the original Google Fonts variable TrueType file:
 
 ```text
-site/assets/social/fonts/SourceSans3-VariableFont_wght.ttf
+social_generator/site/assets/social/fonts/SourceSans3-VariableFont_wght.ttf
 ```
 
 or the two static TrueType files:
 
 ```text
-site/assets/social/fonts/SourceSans3-Regular.ttf
-site/assets/social/fonts/SourceSans3-SemiBold.ttf
+social_generator/site/assets/social/fonts/SourceSans3-Regular.ttf
+social_generator/site/assets/social/fonts/SourceSans3-SemiBold.ttf
 ```
 
 The variable file is the simplest option. The capitalization in `SemiBold`
@@ -52,7 +48,7 @@ matters on case-sensitive systems.
 The transparent S-only logo belongs at:
 
 ```text
-site/assets/logo/logo-clean.svg
+site/assets/logo.svg
 ```
 
 
@@ -78,7 +74,7 @@ visual: ""
 For a one-time migration of the generated manifest:
 
 ```bash
-python scripts/social/clear_visuals.py
+python social_generator/scripts/social/clear_visuals.py
 ```
 
 Then update the R content generator so future manifests continue to emit an
@@ -89,7 +85,7 @@ empty string.
 From the website repository root:
 
 ```bash
-python -m pip install -r requirements-social.txt
+python -m pip install -r social_generator/requirements-social.txt
 python -m playwright install chromium
 ```
 
@@ -98,12 +94,12 @@ python -m playwright install chromium
 The repository integration validator needs the R package `yaml`:
 
 ```bash
-Rscript requirements-social.R
+Rscript social_generator/requirements-social.R
 ```
 
 ## QMD metadata convention
 
-Every published/card-eligible QMD page is checked by default.
+The homepage always maps to `social-default`. Other pages opt into a page-specific card with `social-card: true`; opted-in pages are generated and validated against their image metadata.
 
 Use one of these front-matter slug fields:
 
@@ -120,28 +116,20 @@ The generated image metadata must match the card output:
 image: /assets/social/generated/social-when-should-you-offer-the-cube.png
 ```
 
-Exempt a page explicitly with:
+An opted-in page also declares `social-card-kind` and, when needed, `social-card-category`. Pages with `draft: true` or status `planned`, `draft`, `private`, `archived`, or `unpublished` are excluded.
 
-```yaml
-social-card: false
-```
-
-Pages with `draft: true` or status `planned`, `draft`, `private`, `archived`,
-or `unpublished` are also excluded.
-
-The homepage maps to `social-default`. Section `index.qmd` pages infer their
-slug from the parent directory when no explicit slug is present.
+Pages that do not opt in use the global `social-default` metadata. Section `index.qmd` pages infer their slug from the parent directory when no explicit slug is present.
 
 ## Quarto
 
-Merge `quarto-social-snippet.yml` into the existing `_quarto.yml`.
+The accepted entries from `quarto-social-snippet.yml` are integrated into `site/_quarto.yml`.
 
-Keep existing R generation commands first. The final pre-render order should be:
+The pre-render order is:
 
 ```text
-generate QMD and page metadata
 generate social-cards.yml
-python scripts/social/run_social_pipeline.py
+validate the manifest and page relationships
+render changed social PNGs and validate their dimensions
 Quarto renders the site
 ```
 
@@ -158,23 +146,23 @@ Python changed-card rendering and PNG post-render checks
 Renderer only:
 
 ```bash
-python -u scripts/social/render_cards.py --validate-only
-python -u scripts/social/render_cards.py --all
-python -u scripts/social/render_cards.py --changed
-python -u scripts/social/render_cards.py --slug social-default
-python -u scripts/social/render_cards.py --clean-orphans
+python -u social_generator/scripts/social/render_cards.py --validate-only
+python -u social_generator/scripts/social/render_cards.py --all
+python -u social_generator/scripts/social/render_cards.py --changed
+python -u social_generator/scripts/social/render_cards.py --slug social-default
+python -u social_generator/scripts/social/render_cards.py --clean-orphans
 ```
 
 Complete repository pipeline:
 
 ```bash
-python -u scripts/social/run_social_pipeline.py
+python -u social_generator/scripts/social/run_social_pipeline.py
 ```
 
 Force all cards through the complete pipeline:
 
 ```bash
-python -u scripts/social/run_social_pipeline.py --all
+python -u social_generator/scripts/social/run_social_pipeline.py --all
 ```
 
 ## Card-profile differences

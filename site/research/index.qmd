@@ -52,7 +52,7 @@ Fixture strategy study with a clear note that the examples are placeholders.
 ::: {.bms-right-rail-card}
 ## Post Image Example
 
-![Fixture featured image using the site logo](../assets/logo.svg){fig-cap="Fixture featured image caption."}
+![Fixture featured image using the site logo](../assets/logo.svg){fig-cap="Fixture featured image caption." fig-alt="Fixture featured image using the Backgammon Made Simple logo"}
 :::
 :::
 :::
