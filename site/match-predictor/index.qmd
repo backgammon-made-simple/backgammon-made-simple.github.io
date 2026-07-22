@@ -1,304 +1,101 @@
 ---
 title: "Match Predictor"
-description: "Match Predictor using OpenGammon.com Data"
+description: "Explore OpenGammon player performance and skill data in the existing OpenGammon Skill Analytics dashboard."
 page-layout: full
 bibliography: ../references.bib
 ---
 
+<style>
+.bms-match-predictor {
+  width: 100%;
+  min-width: 0;
+}
+
+.bms-match-predictor__intro {
+  max-width: 72rem;
+}
+
+.bms-dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin: 1rem 0;
+}
+
+.bms-dashboard-link:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.bms-dashboard-note {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.bms-dashboard-frame {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 1rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid #d9ccc0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.bms-dashboard-frame iframe {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 950px;
+  border: 0;
+}
+
+.bms-coming-soon {
+  max-width: 72rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 767.98px) {
+  .bms-dashboard-frame iframe {
+    height: 900px;
+  }
+}
+</style>
+
 ::::::::::::::::::::::::: bms-page-shell
-# Overall Stats
 
-- ER vs ER;
-- Compare OpenGammon Profiles;
-- Small Tournament Predictor;
-- Supporting Match Stats.
+::::: {.bms-match-predictor}
 
-## Study Overview
 
-The study keeps mirrored-pair positions, seven-point match context, and rollout settings visible so the reader can see the method before any result summary.
+::: {.bms-coming-soon}
+## Coming soon
 
-## Why This Study Exists
+A future Backgammon Made Simple Match Predictor is planned to add:
 
-The goal is to compare engine behavior under a narrow, repeatable protocol. The study does not claim that one engine is stronger, and it does not turn a private fixture run into a final public conclusion [@bms-fixture-methodology].
+- ER versus ER match predictions;
+- OpenGammon profile comparisons;
+- small tournament predictions;
+- supporting match statistics.
 
-## Methodology Summary
+These capabilities are planned and are not part of the current embedded dashboard below.  The current dashboard explores OpenGammon player performance and skill data.
 
-- Use mirrored pairs.
-- Keep the position set fixed.
-- Record the same settings for every batch.
-- Separate raw output from luck-adjusted summaries.
 
-## Mirrored Pairs
+The application may take a moment to start, particularly after a period of inactivity.
 
-Each pair compares the same position from opposite seating or mirrored perspective so the analysis can check whether the engine response is stable across equivalent views.
-
-## Seven-Point Match Context
-
-The seven-point match setting matters because cube and checker choices can change once score pressure enters the picture.
-
-## Current Progress
-
-::: bms-card
-Fixture status: `running`
-
-Pair count: `12` Individual matches: `84`
 :::
 
-:::: bms-callout
-::: bms-callout-title
-Preliminary-results warning
-:::
 
-TODO: replace these preliminary fixture notes with a public summary. No conclusion is claimed from this page yet.
 ::::
 
-## Engine Settings
-
-| Setting       | Value                       |
-|---------------|-----------------------------|
-| Engine A      | Sage fixture                |
-| Engine B      | GNU fixture                 |
-| Match length  | 7 points                    |
-| Analysis mode | 4-ply post-analysis fixture |
-
-## Limitations
-
-This page does not prove engine strength, player skill, or final project outcomes. It only documents the private comparison frame.
-
-## Artifact Download Area
-
-TODO: add the release manifest and checksum downloads once the release artifacts are ready.
-
-## Update History
-
-- 2026-07-15: fixture study page created.
-- 2026-07-15: methodology notes expanded for the playground.
-
-## Component Playground
-
-::: callout-warning
-TODO: remove, rewrite, or rearrange these examples before public release.
-:::
-
-### Study Status
-
-::::::::: grid
-:::: {.g-col-12 .g-col-md-4}
-::: bms-card
-#### Attempted
-
-`12`
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-4}
-::: bms-card
-#### Match-complete
-
-`8`
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-4}
-::: bms-card
-#### Pair-complete
-
-`6`
-:::
-::::
-:::::::::
-
-### Validation Ladder
-
-::::::::::: grid
-:::: {.g-col-12 .g-col-md-3}
-::: bms-card
-#### Validated
-
-Fixture label.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-3}
-::: bms-card
-#### Release-ready
-
-Fixture label.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-3}
-::: bms-card
-#### Preliminary
-
-Fixture label.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-3}
-::: bms-card
-#### Final
-
-Fixture label.
-:::
-::::
-:::::::::::
-
-### Progress Bars
-
-<progress value="12" max="20" style="width:100%">
-
-</progress>
-
-<progress value="8" max="12" style="width:100%">
-
-</progress>
-
-<progress value="6" max="12" style="width:100%">
-
-</progress>
-
-### Methodology Table
-
-| Item          | Fixture detail                  |
-|---------------|---------------------------------|
-| Pairing rule  | Mirrored positions              |
-| Match length  | Seven points                    |
-| Seat handling | Fixed dice and seat explanation |
-| Post-analysis | GNU 4-ply fixture               |
-
-### Seat And Dice Explanation
-
-The physical-seat dice explanation stays visible so the reader can see how seat order is treated in the setup.
-
-### Sample Sizes
-
-The sample size is deliberately small here because the page is a fixture example, not a released result.
-
-### Pair-Level Outcomes
-
-| Pair    | Raw     | Luck-adjusted |
-|---------|---------|---------------|
-| Pair 01 | Fixture | Fixture       |
-| Pair 02 | Fixture | Fixture       |
-| Pair 03 | Fixture | Fixture       |
-
-### Individual-Match Outcomes
-
-| Match | Result  | Notes                   |
-|-------|---------|-------------------------|
-| M01   | Fixture | Timeout state           |
-| M02   | Fixture | GNU 4-ply post-analysis |
-| M03   | Fixture | Disagreement example    |
-
-### Uncertainty Labels
-
-[uncertain]{.bms-status .bms-status--neutral} [preliminary]{.bms-status .bms-status--warning} [documented]{.bms-status .bms-status--info}
-
-### Timeout States
-
-::: bms-card
-Status: timeout<br> Fallback: retain the raw fixture row
-:::
-
-### GNU 4-Ply Post-Analysis States
-
-::: bms-card
-Post-analysis state: GNU 4-ply fixture review complete.
-:::
-
-### Release Manifest
-
-::: details Manifest
-
-``` text
-TODO: add the release manifest, checksums, and notable positions artifacts once the release package is ready.
-```
-:::::::::::::::::::::::::
-
-### Checksums
-
-``` text
-fixture-sha256-001
-fixture-sha256-002
-```
-
-### Downloadable Files
-
-TODO: add the manifest and checksum download links once the artifacts are ready.
-
-### Notable Positions
-
-::::::::: grid
-:::: {.g-col-12 .g-col-md-4}
-::: bms-card
-#### Position A
-
-Fixture disagreement example.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-4}
-::: bms-card
-#### Position B
-
-Fixture disagreement example.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-4}
-::: bms-card
-#### Position C
-
-Fixture disagreement example.
-:::
-::::
-:::::::::
-
-### Engine Disagreement Examples
-
-| Position | Sage         | GNU          |
-|----------|--------------|--------------|
-| P01      | Fixture move | Fixture move |
-| P02      | Fixture move | Fixture move |
-| P03      | Fixture move | Fixture move |
-
-### Methodology Changes
-
-- Clarify mirrored-pair handling.
-- Record match length visibly.
-- Keep raw and adjusted displays separate.
-
-### Version History
-
-- v0.1: fixture summary.
-- v0.2: progress and artifact notes.
-
-### Reproducibility Checklist
-
-- [x] Use fixed settings.
-- [x] Keep the pair order visible.
-- [x] Label fixture values.
-- [x] Keep preliminaries explicit.
-
-### Accessible Chart
-
-<figure>
-
-<svg viewBox="0 0 360 180" role="img" aria-labelledby="sagegnu-chart-title sagegnu-chart-desc" style="width:100%;height:auto;border:1px solid #d9ccc0;border-radius:8px;background:#fff;">
-
-<title id="sagegnu-chart-title">
-
-Fixture progress chart
-
-</title>
-
-<desc id="sagegnu-chart-desc">Three labeled bars showing attempted, match-complete, and pair-complete fixture counts.</desc> <rect x="20" y="30" width="90" height="20" fill="#915634"></rect> <rect x="20" y="70" width="150" height="20" fill="#1B2040"></rect> <rect x="20" y="110" width="120" height="20" fill="#AC7652"></rect> <text x="120" y="45" font-size="12" fill="#1B2040">Attempted</text> <text x="180" y="85" font-size="12" fill="#1B2040">Match-complete</text> <text x="150" y="125" font-size="12" fill="#1B2040">Pair-complete</text>
-
-</svg>
-
-<figcaption>Fixture progress chart with labeled bars and accessible text.</figcaption>
-
-</figure>
+<div class="bms-dashboard-frame">
+  <iframe
+    src="https://martygale.shinyapps.io/open-gammon-skill-analytics/"
+    title="OpenGammon Skill Analytics dashboard"
+    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</div>
 
 :::::
+
+:::::::::::::::::::::::::
