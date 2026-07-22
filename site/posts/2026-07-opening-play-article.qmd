@@ -12,7 +12,7 @@ bibliography: ../references.bib
 
 ## Opening Play Fixture
 
-This is an early opening-play article example. It keeps the position claim generic and fixture-based.
+TODO: replace this early opening-play article example with the real lesson.
 
 ### Main Question
 

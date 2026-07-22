@@ -80,7 +80,7 @@ The listing above stays chronological. The cards below show the shapes Marty can
 ## Component Playground
 
 ::: {.callout-warning}
-This private section demonstrates components available for the Blog page.
+TODO: remove, rewrite, or rearrange these examples before public release.
 Remove, rewrite, or rearrange these examples before public release.
 :::
 
@@ -151,7 +151,7 @@ Read time: 6 minutes
 ::: {.bms-callout-title}
 Correction notice
 :::
-This post is an example only and may be superseded without warning.
+TODO: replace this example-only note before public release.
 :::
 
 ::: {.bms-callout}

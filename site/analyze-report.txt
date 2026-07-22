@@ -1,6 +1,0 @@
-Fixture analyzer report
------------------------
-Status: placeholder
-Mode: quick
-Equity: 0.12
-

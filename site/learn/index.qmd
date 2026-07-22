@@ -104,7 +104,7 @@ See @fig-learn-placeholder for the style of figure Marty can replace with a real
 ## Component Playground
 
 ::: callout-warning
-This private section demonstrates components available for the Learn page. Remove, rewrite, or rearrange these examples before public release.
+TODO: remove, rewrite, or rearrange these examples before public release.
 :::
 
 ### Curriculum Cards
@@ -202,7 +202,7 @@ Would you double, take, or pass?
 The example answer is intentionally generic: choose the move that best matches the position, the score, and the cube state.
 ::::::::::::::::::::::::::
 
-[^1]: This footnote is a fixture example and can be removed without changing the page structure.
+[^1]: TODO: remove this fixture footnote before public release.
 
 ### Tabset
 
@@ -223,7 +223,7 @@ Leave a short explanation here.
 ### Board Placeholder
 
 ::: bms-placeholder-board
-Verified board position placeholder
+TODO: replace with a verified board position.
 :::
 
 ### Checklist

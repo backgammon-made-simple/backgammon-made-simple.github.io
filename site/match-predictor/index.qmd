@@ -49,7 +49,7 @@ Pair count: `12` Individual matches: `84`
 Preliminary-results warning
 :::
 
-These are preliminary fixture notes only. No public conclusion is claimed from this page.
+TODO: replace these preliminary fixture notes with a public summary. No conclusion is claimed from this page yet.
 ::::
 
 ## Engine Settings
@@ -67,7 +67,7 @@ This page does not prove engine strength, player skill, or final project outcome
 
 ## Artifact Download Area
 
-[Release manifest](../release-manifest.txt){.bms-button-outline} [Checksums](../checksums.txt){.bms-button-outline}
+TODO: add the release manifest and checksum downloads once the release artifacts are ready.
 
 ## Update History
 
@@ -77,7 +77,7 @@ This page does not prove engine strength, player skill, or final project outcome
 ## Component Playground
 
 ::: callout-warning
-This private section demonstrates components available for the Sage vs GNU page. Remove, rewrite, or rearrange these examples before public release.
+TODO: remove, rewrite, or rearrange these examples before public release.
 :::
 
 ### Study Status
@@ -212,9 +212,7 @@ Post-analysis state: GNU 4-ply fixture review complete.
 ::: details Manifest
 
 ``` text
-release-manifest.txt
-checksums.txt
-notable-positions.csv
+TODO: add the release manifest, checksums, and notable positions artifacts once the release package is ready.
 ```
 :::::::::::::::::::::::::
 
@@ -227,7 +225,7 @@ fixture-sha256-002
 
 ### Downloadable Files
 
-[Manifest download](../release-manifest.txt){.bms-button-outline} [Checksum list](../checksums.txt){.bms-button-outline}
+TODO: add the manifest and checksum download links once the artifacts are ready.
 
 ### Notable Positions
 
