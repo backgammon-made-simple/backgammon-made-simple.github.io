@@ -20,7 +20,7 @@ We try to make difficult ideas clearer, build useful tools, and help more people
 
 ## Why We Built This
 
-I started this project while trying to understand my own blunders. The engine gave me the best moves. A friend who is a great player said, “Eventually, you’ll start to see it.”
+I started this project while trying to understand my own blunders. The engine gave me the best moves. A friend who is a great player said, "Eventually, you'll start to see it."
 
 I wanted to know what I was supposed to see, as I asked questions like:
 
@@ -68,9 +68,8 @@ It can begin with one good question, one position, and one explanation that chan
 
 That is the standard I am trying to meet.
 
-[Read what I am building →](/research/)
+[Read what I am building ->](/research/)
 :::::
 ::::::
 
 [^1]: **PhD:** Probably has Doubled
-

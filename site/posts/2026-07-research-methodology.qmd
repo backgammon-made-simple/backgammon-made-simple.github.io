@@ -12,7 +12,7 @@ bibliography: ../references.bib
 
 ## Methodology Note
 
-This private research note explains the fixture workflow and keeps the example data clearly labelled.
+TODO: replace this private research note with the public methodology note.
 
 ### Checklist
 

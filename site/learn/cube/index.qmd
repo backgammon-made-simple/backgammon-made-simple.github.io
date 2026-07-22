@@ -1,28 +1,69 @@
 ---
-title: "Demystifying the Doubling Cube"
-description: "A middle-out curriculum for understanding cube decisions."
+title: "The Doubling Cube"
+description: "A question-led learning path for understanding cube decisions."
 sidebar: learn
 ---
 
-The cube asks whether the stakes should change now. This path starts with the core money-game ideas, then adds cube ownership, gammons, volatility, market losers, and match score.
+The cube changes the stakes, but a good cube decision is not just a judgment about who is ahead. This path begins with the basic take comparison, then adds cube ownership, timing, gammons, match score, and future cube value.
 
-## Part I
+::: {.bms-curriculum-start}
+[Start with: Why Is 25% the Basic Take Point When a Double Is Offered?](why-is-25-percent-the-basic-take-point.qmd){.bms-button-outline}
+:::
 
-1. [What the Cube Is Really Asking](what-the-cube-is-asking/index.qmd)
-2. Double, Take, or Pass: Three Different Decisions
-3. The 25% Starting Point
-4. Why Owning the Cube Has Value
-5. Recube Vigorish and the Real Take Point
-6. How Gammons Change the Decision
-7. The Doubling Window
-8. Market Losers: Why Waiting Can Cost You
-9. A Practical Cube-Decision Checklist
-10. Practice Positions
+## Learning path
 
-## Part II
+1. [Why Is 25% the Basic Take Point When a Double Is Offered?](why-is-25-percent-the-basic-take-point.qmd)  
+   **Current reference article · Foundation**
 
-The cube by game plan: racing, holding games, blitzes, primes, backgames, closeouts, and bear-offs.
+2. Why Is the Take Point Not Always 25%?  
+   **Planned · Foundation**
 
-## Part III
+3. What Does Taking the Cube Give Me?  
+   **Planned · Foundation**
 
-Match-play cube strategy: match score, gammon go, gammon save, Crawford, post-Crawford, and practical scores.
+4. What Do No Double, Double/Take, and Double/Pass Mean?  
+   **Planned · Foundation**
+
+5. Why Is Doubling Early Sometimes a Mistake?  
+   **Planned · Developing**
+
+6. What Is a Market Loser?  
+   **Planned · Developing**
+
+7. When Should I Double Before I Roll?  
+   **Planned · Developing**
+
+8. Why Can a Difficult Take Be a Good Practical Double?  
+   **Planned · Developing**
+
+9. How Do Gammons Change a Take?  
+   **Planned · Developing**
+
+10. Why Can More Than 25% Still Be a Pass?  
+    **Planned · Developing**
+
+11. How Does Match Score Change the Cube?  
+    **Planned · Developing**
+
+12. When Am I Too Good to Double?  
+    **Planned · Developing**
+
+13. What Is a Dead Cube?  
+    **Planned · Deep Dive**
+
+14. What Is a Live Cube?  
+    **Planned · Deep Dive**
+
+15. What Is Recube Vigorish?  
+    **Planned · Deep Dive**
+
+16. What Is Cube Efficiency?  
+    **Planned · Deep Dive**
+
+17. How Does the Janowski Model Approximate Future Cube Value?  
+    **Planned · Deep Dive**
+
+18. How Do Different Game Types Change Cube Timing?  
+    **Planned · Deep Dive**
+
+Only the first article is linked during this reference-page phase. The remaining titles preserve the planned curriculum without exposing empty pages.
