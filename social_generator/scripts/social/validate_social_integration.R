@@ -14,7 +14,7 @@ script_path <- normalizePath(
 )
 
 repo_root <- normalizePath(
-  file.path(dirname(script_path), "..", ".."),
+  file.path(dirname(script_path), "..", "..", ".."),
   winslash = "/",
   mustWork = TRUE
 )
@@ -35,7 +35,7 @@ manifest_path <- file.path(
 )
 
 site_root <- file.path(repo_root, "site")
-quarto_path <- file.path(repo_root, "_quarto.yml")
+quarto_path <- file.path(repo_root, "site", "_quarto.yml")
 
 failures <- character()
 add_failure <- function(message) {
@@ -139,7 +139,7 @@ page_is_eligible <- function(metadata) {
     return(FALSE)
   }
 
-  TRUE
+  is_true(metadata_value(metadata, c("social-card", "social_card")))
 }
 
 infer_page_slug <- function(path, metadata) {
@@ -236,7 +236,8 @@ seen_page_slugs <- character()
 for (path in qmd_files) {
   metadata <- read_front_matter(path)
 
-  if (!page_is_eligible(metadata)) next
+  relative_to_site <- substring(path, nchar(site_root) + 2)
+  if (relative_to_site != "index.qmd" && !page_is_eligible(metadata)) next
 
   slug <- infer_page_slug(path, metadata)
   relative_path <- substring(path, nchar(repo_root) + 2)

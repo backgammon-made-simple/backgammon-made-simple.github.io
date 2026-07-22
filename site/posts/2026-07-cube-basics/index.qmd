@@ -7,6 +7,7 @@ updated: "2026-07-15"
 categories: [Strategy, Doubling Cube]
 tags: [fixture, cube, example]
 image: ../../assets/logo.svg
+image-alt: "Backgammon Made Simple logo"
 bibliography: ../../references.bib
 ---
 
@@ -30,12 +31,12 @@ See @fig-cube-study for the image slot Marty can replace later.
 
 ### Downloadable Artifact
 
-[Worksheet download](../../downloads/learn-worksheet.csv){.bms-button-outline}
+TODO: add the worksheet download once the artifact is ready.
 
 ### Component Playground
 
 ::: {.callout-warning}
-This post is a copyable strategy-study fixture example.
+TODO: replace this copyable strategy-study fixture example with the real public post.
 :::
 
 ::: {.bms-card}
@@ -43,6 +44,6 @@ This post is a copyable strategy-study fixture example.
 
 ```markdown
 ## Strategy Study
-This post is a private fixture example.
+TODO: replace this private fixture example before public release.
 ```
 :::

@@ -2,6 +2,7 @@ _site/
 .quarto/
 .freeze/
 .Rproj.user/
+.agents/
 .Rhistory
 .RData
 renv/library/

@@ -3,6 +3,8 @@ title: "When Should You Offer the Cube?"
 slug: when-should-you-offer-the-cube
 image: /assets/social/generated/social-when-should-you-offer-the-cube.png
 social-card: true
+social-card-kind: article
+social-card-category: Learn
 ---
 
 Page content begins here.

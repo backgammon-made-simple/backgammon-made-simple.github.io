@@ -7,6 +7,7 @@ updated: "2026-07-20"
 categories: [Updates]
 tags: [site, analyzer, navigation]
 image: ../assets/logo.svg
+image-alt: "Backgammon Made Simple logo"
 bibliography: ../references.bib
 ---
 
@@ -17,7 +18,7 @@ This is a private update note for the navigation and analyzer shell.
 ### Changes
 
 - Blog replaces Articles.
-- Analyze keeps the current placeholder flow.
+- TODO: finalize the Analyze page flow.
 - Learn stays structured and curriculum-based.
 
 ### Component Playground

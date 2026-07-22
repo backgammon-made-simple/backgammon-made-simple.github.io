@@ -50,14 +50,14 @@
   background: var(--bms-ivory);
   border: 1px solid var(--bms-border);
   border-radius: 8px;
-  color: var(--bms-copper-dark);
+  color: var(--bms-link-on-warm);
   font-size: 0.95rem;
   margin: 1rem 0 0;
   padding: 0.65rem 0.9rem;
 }
 
 .bms-bot-banner a {
-  color: var(--bms-copper-dark);
+  color: var(--bms-link-on-warm);
   font-weight: 800;
 }
 
@@ -89,7 +89,7 @@
 
 .bms-analyzer-form input:focus {
   border-color: var(--bms-focus);
-  box-shadow: 0 0 0 0.2rem rgba(0, 114, 178, 0.18);
+  box-shadow: 0 0 0 0.2rem var(--bms-focus-halo);
   outline: 0;
 }
 
@@ -97,7 +97,7 @@
   background: var(--bms-navy-dark);
   border: 0;
   border-radius: 6px;
-  color: #fff;
+  color: var(--bms-text-inverse);
   font-weight: 800;
   min-height: 42px;
   padding: 0.55rem 0.8rem;
@@ -126,7 +126,7 @@
 }
 
 .bms-decision-prompt {
-  background: #F8F0E8;
+  background: var(--bms-callout-surface);
   border: 1px solid var(--bms-border);
   border-radius: 8px;
   margin: 1rem 0;
@@ -165,13 +165,13 @@
 .bms-button-primary {
   background: var(--bms-navy-dark);
   border: 1px solid var(--bms-navy-dark);
-  color: #fff;
+  color: var(--bms-text-inverse);
 }
 
 .bms-button-secondary {
   background: var(--bms-copper-dark);
   border: 1px solid var(--bms-copper-dark);
-  color: #fff;
+  color: var(--bms-text-on-accent);
 }
 
 .bms-button-outline {
@@ -180,14 +180,18 @@
   color: var(--bms-copper-dark);
 }
 
-.bms-button-primary:hover,
+.bms-button-primary:hover {
+  color: var(--bms-text-inverse);
+  filter: brightness(0.94);
+}
+
 .bms-button-secondary:hover {
-  color: #fff;
+  color: var(--bms-text-on-accent);
   filter: brightness(0.94);
 }
 
 .bms-callout {
-  background: #F8F0E8;
+  background: var(--bms-callout-surface);
   border: 1px solid var(--bms-border);
   border-left: 4px solid var(--bms-copper);
   border-radius: 8px;
@@ -202,34 +206,42 @@
 }
 
 .bms-badge {
+  align-items: center;
+  border: 1px solid transparent;
   border-radius: 999px;
+  color: var(--bms-badge-text);
   display: inline-flex;
   font-size: 0.78rem;
   font-weight: 700;
+  gap: 0.3rem;
   line-height: 1;
   padding: 0.42rem 0.62rem;
 }
 
 .bms-badge-beginner {
   background: rgba(47, 107, 79, 0.14);
-  color: var(--bms-success);
+  border-color: var(--bms-success);
 }
 
 .bms-badge-intermediate {
   background: rgba(167, 97, 27, 0.14);
-  color: var(--bms-warning);
+  border-color: var(--bms-warning-text);
 }
 
 .bms-badge-advanced {
   background: rgba(146, 59, 69, 0.14);
-  color: var(--bms-danger);
+  border-color: var(--bms-danger);
 }
 
 .bms-badge-cube {
   background: rgba(172, 118, 82, 0.18);
-  color: var(--bms-copper-dark);
+  border-color: var(--bms-copper-dark);
 }
 
+/*
+  Status markup must retain a visible written label. Colour and an
+  optional icon reinforce the status; they do not replace the label.
+*/
 .bms-status {
   align-items: center;
   border: 1px solid;
@@ -242,21 +254,21 @@
 }
 
 .bms-status--info {
-  background: #EAF4FA;
-  border-color: #0072B2;
-  color: #005680;
+  background: var(--bms-status-info-surface);
+  border-color: var(--bms-status-info-border);
+  color: var(--bms-status-info-text);
 }
 
 .bms-status--neutral {
-  background: #ECEEF0;
-  border-color: #8A8F98;
-  color: #4F5560;
+  background: var(--bms-status-neutral-surface);
+  border-color: var(--bms-status-neutral-border);
+  color: var(--bms-status-neutral-text);
 }
 
 .bms-status--warning {
-  background: #FFF1CC;
-  border-color: #E69F00;
-  color: #805900;
+  background: var(--bms-status-warning-surface);
+  border-color: var(--bms-status-warning-border);
+  color: var(--bms-status-warning-text);
 }
 
 .bms-analysis-shell {
@@ -292,16 +304,16 @@
 }
 
 .bms-status--mistake {
-  background: #FBE5DD;
-  border-color: #D55E00;
-  color: #8A3900;
+  background: var(--bms-status-mistake-surface);
+  border-color: var(--bms-status-mistake-border);
+  color: var(--bms-status-mistake-text);
 }
 
 .bms-subscribe {
   align-items: center;
   background: var(--bms-navy);
   border-radius: 8px;
-  color: #fff;
+  color: var(--bms-text-inverse);
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr minmax(260px, 420px);
@@ -311,7 +323,7 @@
 
 .bms-subscribe h2,
 .bms-subscribe p {
-  color: #fff;
+  color: var(--bms-text-inverse);
   margin: 0;
 }
 
@@ -993,7 +1005,6 @@ body.bms-landing-page .page-columns {
   }
 }
 
-
 /* Repository cards */
 
 .bms-repository-grid {
@@ -1030,7 +1041,7 @@ body.bms-landing-page .page-columns {
 
 .bms-repository-card:hover {
   transform: translateY(-1px);
-  border-color: var(--bms-copper);
+  border-color: var(--bms-link-hover);
   box-shadow: var(--bms-shadow-soft);
 }
 

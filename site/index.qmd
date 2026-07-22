@@ -82,7 +82,7 @@ See what happened when Sage and GNU played 20 controlled seven-point matches, wh
 :::::
 
 ::::: {.bms-card .bms-card-stack}
-### What we are learning
+### What we are discovering
 
 Follow the questions, experiments, results, and unexpected findings that emerge as the projects develop.
 
@@ -143,7 +143,7 @@ Analyzer backend and other Python tools for running backgammon engines and turni
 
 ::::: {.bms-card .bms-repository-card}
 ::: {.bms-repository-mark aria-hidden="true"}
-⚔
+TODO
 :::
 
 ::: {.bms-repository-copy}
@@ -151,7 +151,7 @@ Analyzer backend and other Python tools for running backgammon engines and turni
 
 ### Backgammon Engine Benchmark
 
-Tools for running reproducible engine-versus-engine matches, checking the results, and publishing the evidence.
+TODO: verify the repository name and links before public release.
 :::
 
 ::: {.bms-repository-action}

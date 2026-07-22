@@ -1,12 +1,5 @@
 # Backgammon Made Simple
 
-[] favicons
-[] updating the license
-[] rss feed, learn, research, data?
-
-
-
-
 **Questions players ask. Ideas you can use.**
 
 Backgammon Made Simple is a free, open-source, question-driven learning project built around real positions, engine evidence, and practical mental models players can use at the board.
@@ -74,7 +67,27 @@ This project is under active development. Interfaces, routes, analysis formats, 
 
 ## Local development
 
-Project-specific setup instructions should be added as the implementation stabilizes. A typical development workflow will require:
+The canonical website build is:
+
+```powershell
+quarto render site
+```
+
+Quarto's pre-render hook refreshes and validates the social-card manifest, validates the existing text-only renderer, generates changed PNGs, and checks their dimensions before the site render begins. To run that pipeline directly:
+
+```powershell
+python social_generator/scripts/social/run_social_pipeline.py
+```
+
+With the rendered `_site` directory served locally, run the metadata and keyboard smoke test with:
+
+```powershell
+python social_generator/scripts/social/check_rendered_site.py <local-preview-url>
+```
+
+Install its pinned Python dependencies from `social_generator/requirements-social.txt`, install Chromium with `python -m playwright install chromium`, and install the R `yaml` package listed in `social_generator/requirements-social.R`.
+
+A typical development workflow also requires:
 
 - Quarto
 - R and the required R packages

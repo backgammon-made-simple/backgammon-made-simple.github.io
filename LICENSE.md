@@ -4,7 +4,7 @@ Copyright © 2026 Marty Gale and contributors.
 
 This repository contains software, educational material, project branding, and possibly third-party material. Different parts of the repository are licensed differently.
 
-This file explains the license scope. Before public release, the repository should also include the complete legal texts in:
+This file explains the licence scope. The complete legal texts are included in:
 
 ```text
 LICENSES/AGPL-3.0-only.txt

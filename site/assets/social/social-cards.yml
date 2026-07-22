@@ -1,0 +1,20 @@
+cards:
+- slug: social-default
+  kind: default
+  width: 1200
+  height: 630
+  output: site/assets/social/generated/social-default.png
+  title: Backgammon Made Simple
+  subtitle: Learn backgammon through clear explanations, useful tools, and honest
+    research that show why a decision is right, not just what the right decision is.
+  category: ''
+  visual: ''
+- slug: github-backgammon-made-simple
+  kind: github
+  width: 1280
+  height: 640
+  output: site/assets/social/generated/github-backgammon-made-simple.png
+  title: Backgammon Made Simple
+  subtitle: Question-driven lessons, position analysis and backgammon research.
+  category: ''
+  visual: ''

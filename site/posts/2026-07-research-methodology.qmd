@@ -7,12 +7,13 @@ updated: "2026-07-15"
 categories: [Research]
 tags: [fixture, methodology, engines]
 image: ../assets/logo.svg
+image-alt: "Backgammon Made Simple logo"
 bibliography: ../references.bib
 ---
 
 ## Methodology Note
 
-This private research note explains the fixture workflow and keeps the example data clearly labelled.
+TODO: replace this private research note with the public methodology note.
 
 ### Checklist
 

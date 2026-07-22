@@ -1,7 +1,20 @@
-<form class="bms-analyzer-form" action="/analyze/" method="get">
-<label for="bms-analyzer-id">Analyze a Position</label>
-<div class="bms-analyzer-form-row">
-<input id="bms-analyzer-id" name="id" type="text" placeholder="XGID or GNUID" autocomplete="off" required />
-<button type="submit">Analyze</button>
-</div>
+<form
+  class="bms-analyzer-form"
+  action="https://backgammon-made-simple.shinyapps.io/position-dashboard/"
+  method="get"
+  target="_blank"
+>
+  <label for="bms-analyzer-position">Analyze an XGID</label>
+  <div class="bms-analyzer-form-row">
+    <input
+      id="bms-analyzer-position"
+      name="position"
+      type="text"
+      placeholder="XGID=..."
+      autocomplete="off"
+      required
+    />
+    <button type="submit">Open analyzer</button>
+  </div>
+  <p class="bms-analyzer-form-help">The position opens in a new tab.</p>
 </form>

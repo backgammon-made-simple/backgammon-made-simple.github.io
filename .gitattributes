@@ -1,0 +1,5 @@
+# Preserve authoritative licence text line endings and upstream whitespace.
+LICENSES/*.txt text eol=lf whitespace=-blank-at-eof,-trailing-space
+
+# Preserve the approved project-owned SVG byte content.
+site/assets/icons/favicon.svg text eol=lf whitespace=-trailing-space
