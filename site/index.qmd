@@ -125,7 +125,7 @@ The website, lessons, analyzer frontend, research articles, and public site data
 
 ::::: {.bms-card .bms-repository-card}
 ::: {.bms-repository-mark aria-hidden="true"}
-{ }
+[Py]
 :::
 
 ::: {.bms-repository-copy}
@@ -143,15 +143,15 @@ Analyzer backend and other Python tools for running backgammon engines and turni
 
 ::::: {.bms-card .bms-repository-card}
 ::: {.bms-repository-mark aria-hidden="true"}
-TODO
+[⚔]
 :::
 
 ::: {.bms-repository-copy}
-<span class="bms-repository-label">PYTHON :: BENCHMARKING</span>
+<span class="bms-repository-label"> PYTHON  :: BENCHMARKING</span>
 
 ### Backgammon Engine Benchmark
 
-TODO: verify the repository name and links before public release.
+Tools for running reproducible engine-versus-engine matches, checking the results, and publishing the evidence.
 :::
 
 ::: {.bms-repository-action}
@@ -161,7 +161,7 @@ TODO: verify the repository name and links before public release.
 
 ::::: {.bms-card .bms-repository-card}
 ::: {.bms-repository-mark aria-hidden="true"}
-R
+[R]
 :::
 
 ::: {.bms-repository-copy}
@@ -179,7 +179,7 @@ R
 
 ::::: {.bms-card .bms-repository-card}
 ::: {.bms-repository-mark aria-hidden="true"}
-R
+[R]
 :::
 
 ::: {.bms-repository-copy}
@@ -205,7 +205,7 @@ FEEDBACK
 ## Help make it better
 
 ::: {.bms-section-lead}
-Found a mistake, have a question, or see something that could be clearer? Share feedback or open an issue on GitHub.
+Found a mistake, have a question, or see something that could be clearer? Share feedback by opening an issue on GitHub.
 :::
 
 ::: {.bms-button-row}

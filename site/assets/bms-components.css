@@ -1189,3 +1189,352 @@ body.bms-landing-page .page-columns {
 }
 
 /* BMS HOMEPAGE COMPONENTS END */
+
+/* BMS RESEARCH INDEX START
+   Shared Research listing styles. All selectors are scoped to the Research
+   index body class so other listings and article pages are unchanged.
+*/
+
+body.bms-research-index .bms-page-shell {
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+body.bms-research-index .bms-reading-column {
+  margin-bottom: 0;
+}
+
+body.bms-research-index .bms-research-filter-panel,
+body.bms-research-index #research-posts,
+body.bms-research-index .bms-research-empty {
+  box-sizing: border-box;
+  width: min(100%, var(--bms-editorial-frame-width, 960px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+body.bms-research-index .bms-research-filter-panel {
+  margin-top: 1.35rem;
+  margin-bottom: 1.75rem;
+  padding: 1.1rem 0 1rem;
+  border-top: 1px solid var(--bms-border);
+  border-bottom: 1px solid var(--bms-border);
+}
+
+body.bms-research-index .bms-research-filter-group + .bms-research-filter-group {
+  margin-top: 1rem;
+}
+
+body.bms-research-index .bms-research-filter-label {
+  margin: 0 0 0.55rem;
+  color: var(--bms-text-muted);
+  font-family:
+    "Source Code Pro",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.72rem;
+  font-weight: 680;
+  letter-spacing: 0.065em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+body.bms-research-index .bms-research-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+}
+
+body.bms-research-index .bms-research-filter,
+body.bms-research-index .bms-research-card-taxonomy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.25rem;
+  border: 1px solid var(--bms-border-strong);
+  background: var(--bms-surface);
+  color: var(--bms-text-secondary);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 680;
+  line-height: 1.15;
+  cursor: pointer;
+}
+
+body.bms-research-index .bms-research-filter {
+  padding: 0.46rem 0.7rem;
+}
+
+body.bms-research-index .bms-research-filter--category,
+body.bms-research-index .bms-research-card-taxonomy--category {
+  border-radius: 4px;
+}
+
+body.bms-research-index .bms-research-filter--tag,
+body.bms-research-index .bms-research-card-taxonomy--tag {
+  border-radius: 999px;
+}
+
+body.bms-research-index .bms-research-filter--tag,
+body.bms-research-index .bms-research-card-taxonomy--tag {
+  border-color: var(--bms-border);
+  background: color-mix(
+    in srgb,
+    var(--bms-ivory) 58%,
+    var(--bms-surface)
+  );
+  color: var(--bms-copper-dark);
+}
+
+body.bms-research-index .bms-research-filter:hover:not(:disabled),
+body.bms-research-index .bms-research-card-taxonomy:hover {
+  border-color: var(--bms-link-hover);
+  color: var(--bms-link-hover);
+}
+
+body.bms-research-index .bms-research-filter.is-active,
+body.bms-research-index .bms-research-filter[aria-pressed="true"] {
+  border-color: var(--bms-navy-dark);
+  background: var(--bms-navy-dark);
+  color: var(--bms-text-inverse);
+}
+
+body.bms-research-index .bms-research-filter--tag.is-active,
+body.bms-research-index .bms-research-filter--tag[aria-pressed="true"] {
+  border-color: var(--bms-copper-dark);
+  background: var(--bms-copper-dark);
+  color: var(--bms-text-on-accent);
+}
+
+body.bms-research-index .bms-research-filter:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+body.bms-research-index .bms-research-filter-count {
+  color: inherit;
+  font-family:
+    "Source Code Pro",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+
+body.bms-research-index .bms-research-filter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 1.8rem;
+  margin-top: 0.85rem;
+}
+
+body.bms-research-index .bms-research-result-count {
+  margin: 0;
+  color: var(--bms-text-muted);
+  font-size: 0.9rem;
+}
+
+body.bms-research-index .bms-research-clear {
+  border: 0;
+  background: transparent;
+  color: var(--bms-link);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+body.bms-research-index #research-posts {
+  margin-top: 0;
+}
+
+body.bms-research-index .bms-research-list {
+  display: grid;
+  gap: 1rem;
+}
+
+body.bms-research-index .bms-research-post {
+  position: relative;
+  padding: clamp(1.35rem, 2.6vw, 1.75rem);
+  border: 1px solid var(--bms-border);
+  border-radius: 8px;
+  background: var(--bms-surface);
+  box-shadow: var(--bms-shadow-soft);
+  transition:
+    border-color 140ms ease,
+    transform 140ms ease,
+    box-shadow 140ms ease;
+}
+
+body.bms-research-index .bms-research-post:hover {
+  transform: translateY(-1px);
+  border-color: var(--bms-copper-dark);
+}
+
+body.bms-research-index .bms-research-post[hidden] {
+  display: none;
+}
+
+body.bms-research-index .bms-research-post-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+body.bms-research-index .bms-research-post-title {
+  margin: 0;
+  color: var(--bms-navy-dark);
+  font-size: clamp(1.55rem, 2.7vw, 1.95rem);
+  font-weight: 730;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+body.bms-research-index .bms-research-post-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body.bms-research-index .bms-research-post-title a:hover,
+body.bms-research-index .bms-research-post-title a:focus-visible {
+  color: var(--bms-link-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+body.bms-research-index .bms-research-post-subtitle {
+  margin: 0.45rem 0 0;
+  color: var(--bms-copper-dark);
+  font-family:
+    "Source Code Pro",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+body.bms-research-index .bms-research-post-time {
+  flex: 0 0 auto;
+  margin: 0.15rem 0 0;
+  color: var(--bms-text-muted);
+  font-family:
+    "Source Code Pro",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+body.bms-research-index .bms-research-post-description {
+  max-width: 76ch;
+  margin: 0.95rem 0 0;
+  color: var(--bms-text-secondary);
+  font-size: 1.03rem;
+  line-height: 1.6;
+}
+
+body.bms-research-index .bms-research-post-taxonomy {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+body.bms-research-index .bms-research-post-taxonomy-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+body.bms-research-index .bms-research-card-taxonomy {
+  min-height: 1.95rem;
+  padding: 0.32rem 0.56rem;
+  font-size: 0.74rem;
+}
+
+body.bms-research-index .bms-research-post-action {
+  margin: 1rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--bms-border);
+}
+
+body.bms-research-index .bms-research-post-action a {
+  font-weight: 720;
+  text-decoration: none;
+}
+
+body.bms-research-index .bms-research-post-action a::after {
+  content: " →";
+}
+
+body.bms-research-index .bms-research-post-action a:hover,
+body.bms-research-index .bms-research-post-action a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+body.bms-research-index .bms-research-empty {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--bms-border);
+  border-radius: 6px;
+  color: var(--bms-text-secondary);
+  text-align: center;
+}
+
+[data-bs-theme="dark"] body.bms-research-index .bms-research-post-title {
+  color: var(--bms-text);
+}
+
+@media (max-width: 700px) {
+  body.bms-research-index .bms-research-filter-footer,
+  body.bms-research-index .bms-research-post-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  body.bms-research-index .bms-research-post-time {
+    margin-top: 0;
+  }
+
+  body.bms-research-index .bms-research-filter {
+    min-height: 2.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.bms-research-index .bms-research-post {
+    transition: none;
+  }
+
+  body.bms-research-index .bms-research-post:hover {
+    transform: none;
+  }
+}
+
+/* BMS RESEARCH INDEX END */

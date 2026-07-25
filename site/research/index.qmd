@@ -1,189 +1,85 @@
 ---
 title: "Research"
-description: "Chronological research notes, lessons, releases, and site updates."
-page-layout: full
-aliases:
-  - /articles/
+subtitle: "Articles, methods, and project notes"
+description: >
+  Research articles, supporting analysis, methods, and project updates from
+  the work behind Backgammon Made Simple.
+format:
+  html:
+    page-layout: article
+    toc: false
+    title-block-style: plain
+    body-classes: "bms-editorial-page bms-title-eyebrow bms-research-index"
 listing:
-  contents: ../posts/**/*.qmd
-  type: default
-  sort: "date desc"
-bibliography: ../references.bib
+  id: research-posts
+  contents: "*.qmd"
+  template: _research-listing.ejs.md
+  sort: "title"
+  sort-ui: false
+  filter-ui: false
+  feed: false
+execute:
+  enabled: false
 ---
 
-::::: bms-page-shell
-# Research
-
-This is the chronological part of the site. It collects research notes, strategy studies, engine discussions, Sage vs GNU updates, and site changes.
-
-::: {.bms-button-row}
-[Featured post](../posts/2026-07-cube-basics/index.qmd){.bms-button-primary} [Read Learn](../learn/index.qmd){.bms-button-outline}
-:::
-
-## Categories
-
-| Category | What it holds |
-|---|---|
-| `All` | Every post in chronological order |
-| `Strategy` | Position studies, cube work, and decision writeups |
-| `Openings` | Opening rolls, replies, and early-game plans |
-| `Doubling Cube` | Money-game cube theory and practical thresholds |
-| `Research` | Methodology, engine notes, and data summaries |
-| `Updates` | Site changes, releases, and short project notes |
-
-## Featured Post
-
-::: {.grid}
-::: {.g-col-12 .g-col-lg-7}
-::: {.bms-card}
-#### When to Send, Take, or Pass the Cube
-
-Fixture strategy study with a clear note that the examples are placeholders.
-
-- Category: `Strategy`
-- Tags: `fixture`, `cube`, `example`
-- Reading time: `5 min`
-- Status: `Published playground example`
-
-[Open the post](../posts/2026-07-cube-basics/index.qmd){.bms-button-outline}
-:::
-:::
-::: {.g-col-12 .g-col-lg-5}
-::: {.bms-right-rail-card}
-## Post Image Example
-
-![Fixture featured image using the site logo](../assets/logo.svg){fig-cap="Fixture featured image caption."}
-:::
+::: {.bms-page-shell}
+::: {.bms-reading-column}
+::: {.bms-editorial-lead}
+Research is where we publish the methods, supporting analysis, project notes, and reproducibility details behind Backgammon Made Simple.
 :::
 :::
 
-## Recent Posts
+```{=html}
+<section class="bms-research-filter-panel" data-bms-research-filters aria-label="Filter research articles">
+  <p class="visually-hidden">
+    Select a category or tag to filter the articles. Select an active filter again to clear it.
+  </p>
 
-- [Strategy study: When to Send, Take, or Pass the Cube](../posts/2026-07-cube-basics/index.qmd)
-- [Research note: Engine methodology for a fixture review](../posts/2026-07-research-methodology.qmd)
-- [Sage vs GNU update: pair completion snapshot](../posts/2026-07-sage-vs-gnu-update.qmd)
-- [Site update: analyzer and navigation notes](../posts/2026-07-site-update.qmd)
-- [Opening play article: split, slot, or run?](../posts/2026-07-opening-play-article.qmd)
+  <div class="bms-research-filter-group">
+    <p class="bms-research-filter-label">Categories</p>
+    <div class="bms-research-filter-options" role="group" aria-label="Filter by category">
+      <button type="button" class="bms-research-filter bms-research-filter--category" data-bms-filter-category="Learn" aria-pressed="false">
+        <span>Learn</span><span class="bms-research-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-research-filter bms-research-filter--category" data-bms-filter-category="Position Analyzer" aria-pressed="false">
+        <span>Position Analyzer</span><span class="bms-research-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-research-filter bms-research-filter--category" data-bms-filter-category="Match Predictor" aria-pressed="false">
+        <span>Match Predictor</span><span class="bms-research-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-research-filter bms-research-filter--category" data-bms-filter-category="Engine Benchmark" aria-pressed="false">
+        <span>Engine Benchmark</span><span class="bms-research-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-research-filter bms-research-filter--category" data-bms-filter-category="Research" aria-pressed="false">
+        <span>Research</span><span class="bms-research-filter-count" aria-hidden="true">×0</span>
+      </button>
+    </div>
+  </div>
 
-## Series Navigation
+  <div class="bms-research-filter-group" data-bms-tag-group>
+    <p class="bms-research-filter-label">Tags</p>
+    <div class="bms-research-filter-options" role="group" aria-label="Filter by tag" data-bms-tag-filters></div>
+  </div>
 
-1. Strategy study.
-2. Research note.
-3. Sage vs GNU update.
-4. Site update.
-5. Opening play article.
-
-## Listing Notes
-
-The listing above stays chronological. The cards below show the shapes Marty can copy into future posts.
-
-## Component Playground
-
-::: {.callout-warning}
-TODO: remove, rewrite, or rearrange these examples before public release.
-Remove, rewrite, or rearrange these examples before public release.
-:::
-
-### Featured Card Layout
-
-::: {.bms-card}
-#### Example post card
-
-<span class="bms-status bms-status--info">Research</span> <span class="bms-status bms-status--neutral">Draft preview</span>
-
-Fixture headline and summary for a future blog card. Use this shape for a post preview with title, date, and category chips.
-
-::: details Source
-
-```markdown
-::: {.bms-card}
-#### Example post card
-<span class="bms-status bms-status--info">Research</span>
-Fixture headline and summary.
-:::
+  <div class="bms-research-filter-footer">
+    <p class="bms-research-result-count" aria-live="polite" data-bms-result-count></p>
+    <button type="button" class="bms-research-clear" data-bms-clear-filters hidden>
+      Clear filters
+    </button>
+  </div>
+</section>
 ```
 
-:::
-:::
-
-### Category Tabs
-
-::: {.panel-tabset}
-#### All
-All posts appear here in chronological order.
-
-#### Strategy
-Position studies and cube decisions live here.
-
-#### Research
-Methodology notes and fixture analysis live here.
-
-#### Updates
-Site changes and release notes live here.
+::: {#research-posts}
 :::
 
-### Post Metadata Block
-
-::: {.bms-lesson-meta}
-Author: Marty Gale  
-Date: July 15, 2026  
-Updated: July 15, 2026  
-Read time: 6 minutes  
-Series: Fixture Playground
-:::
-
-::: details Source
-
-```markdown
-::: {.bms-lesson-meta}
-Author: Marty Gale
-Date: July 15, 2026
-Updated: July 15, 2026
-Read time: 6 minutes
-:::
+```{=html}
+<p class="bms-research-empty" data-bms-empty-state hidden>
+  No articles match the selected category and tag.
+</p>
 ```
-
 :::
 
-### Notes And Notices
-
-::: {.bms-callout}
-::: {.bms-callout-title}
-Correction notice
-:::
-TODO: replace this example-only note before public release.
-:::
-
-::: {.bms-callout}
-::: {.bms-callout-title}
-Archived note
-:::
-This older copy is kept for compatibility while Marty edits the page structure.
-:::
-
-### Code And Artifacts
-
-```r
-summary(c(1, 2, 2, 3, 5))
+```{=html}
+<script src="../assets/bms-research-index.js" defer></script>
 ```
-
-```python
-# Example only, not evaluated in the browser.
-values = ["strategy", "research", "updates"]
-print(", ".join(values))
-```
-
-::: details Source
-
-```markdown
-```r
-summary(c(1, 2, 2, 3, 5))
-```
-```python
-values = ["strategy", "research", "updates"]
-print(", ".join(values))
-```
-```
-
-:::
-:::::
