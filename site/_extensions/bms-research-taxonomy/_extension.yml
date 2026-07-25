@@ -1,0 +1,7 @@
+title: BMS Research Taxonomy
+author: Backgammon Made Simple
+version: 1.2.0
+quarto-required: ">=1.4.0"
+contributes:
+  filters:
+    - bms-research-taxonomy.lua

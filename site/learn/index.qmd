@@ -6,7 +6,8 @@ page-layout: full
 bibliography: ../references.bib
 ---
 
-:::::::::::::::::::::::::: bms-page-shell
+:::::::::::::::::::::::::: {.bms-page-shell}
+
 # Learn
 
 Backgammon Made Simple uses a structured curriculum. Start with the decisions that confuse real players, then add foundations exactly when they help. The doubling cube is the first featured learning path, but it is not the whole identity of the site [@bms-fixture-curriculum].
@@ -27,19 +28,19 @@ Backgammon Made Simple uses a structured curriculum. Start with the decisions th
 
 ## Learning Path
 
-1.  Start Here.
-2.  Checker Play.
-3.  Opening Play.
-4.  The Doubling Cube.
-5.  Match Play.
-6.  Endgames.
-7.  Engines and Analysis.
+1. Start Here.
+2. Checker Play.
+3. Opening Play.
+4. The Doubling Cube.
+5. Match Play.
+6. Endgames.
+7. Engines and Analysis.
 
 ## Track Status
 
-::::::::: grid
+::::::::: {.grid}
 :::: {.g-col-12 .g-col-md-4}
-::: bms-card
+::: {.bms-card}
 #### Available
 
 - Start Here
@@ -49,7 +50,7 @@ Backgammon Made Simple uses a structured curriculum. Start with the decisions th
 ::::
 
 :::: {.g-col-12 .g-col-md-4}
-::: bms-card
+::: {.bms-card}
 #### Current
 
 - Checker Play
@@ -58,7 +59,7 @@ Backgammon Made Simple uses a structured curriculum. Start with the decisions th
 ::::
 
 :::: {.g-col-12 .g-col-md-4}
-::: bms-card
+::: {.bms-card}
 #### Coming Later
 
 - Match Play
@@ -103,15 +104,15 @@ See @fig-learn-placeholder for the style of figure Marty can replace with a real
 
 ## Component Playground
 
-::: callout-warning
+::: {.callout-warning}
 TODO: remove, rewrite, or rearrange these examples before public release.
 :::
 
 ### Curriculum Cards
 
-::::::::: grid
+::::::::: {.grid}
 :::: {.g-col-12 .g-col-md-4}
-::: bms-card
+::: {.bms-card}
 #### Start Here
 
 Available
@@ -121,7 +122,7 @@ Who this site is for, how to read the lessons, and how to interpret a position.
 ::::
 
 :::: {.g-col-12 .g-col-md-4}
-::: bms-card
+::: {.bms-card}
 #### The Doubling Cube
 
 Current
@@ -131,7 +132,7 @@ The first featured learning path.
 ::::
 
 :::: {.g-col-12 .g-col-md-4}
-::: bms-card
+::: {.bms-card}
 #### Match Play
 
 Coming later
@@ -143,7 +144,7 @@ Score-dependent decisions after the base model is stable.
 
 ### Lesson Metadata
 
-::: bms-lesson-meta
+::: {.bms-lesson-meta}
 Concept: cube decisions<br> Prerequisite: knows the rules<br> Reading time: 8 minutes<br> Difficulty: intermediate
 :::
 
@@ -165,30 +166,30 @@ $$TP = \frac{L}{W + L}$$
 
 ### Callouts
 
-::: callout-note
+::: {.callout-note}
 This is a note callout for neutral reminders.
 :::
 
-::: callout-tip
+::: {.callout-tip}
 This is a tip callout for a practical cue.
 :::
 
-::: callout-important
+::: {.callout-important}
 This is an important callout for a key concept.
 :::
 
-::: callout-caution
+::: {.callout-caution}
 This is a caution callout for a mistake to avoid.
 :::
 
-::: callout-warning
+::: {.callout-warning}
 This is a warning callout for a tricky edge case.
 :::
 
 ### Decision Prompt
 
-:::: bms-callout
-::: bms-callout-title
+:::: {.bms-callout}
+::: {.bms-callout-title}
 Fixture decision
 :::
 
@@ -197,16 +198,18 @@ Would you double, take, or pass?
 
 ### Collapsible Answer
 
-::: details Show an example answer
+<details>
+<summary>Show an example answer</summary>
 
 The example answer is intentionally generic: choose the move that best matches the position, the score, and the cube state.
-::::::::::::::::::::::::::
+
+</details>
 
 [^1]: TODO: remove this fixture footnote before public release.
 
 ### Tabset
 
-::: panel-tabset
+::: {.panel-tabset}
 #### Current
 
 Tracks Marty can open first.
@@ -222,7 +225,7 @@ Leave a short explanation here.
 
 ### Board Placeholder
 
-::: bms-placeholder-board
+::: {.bms-placeholder-board}
 TODO: replace with a verified board position.
 :::
 
@@ -235,56 +238,5 @@ TODO: replace with a verified board position.
 
 ### R Output
 
-``` r
+```r
 c(available = 3, current = 2, later = 2)
-```
-
-### R Plot
-
-```{r}
-#| echo: false
-plot(cars$speed, cars$dist,
-  pch = 19,
-  col = "#915634",
-  xlab = "Speed",
-  ylab = "Distance",
-  main = "Fixture R plot"
-)
-```
-
-### Python Example
-
-``` python
-# Example only, not evaluated.
-tracks = ["Start Here", "Checker Play", "Opening Play"]
-```
-
-### Source For A Card
-
-::: details Quarto source
-
-``` markdown
-::: {.bms-card}
-#### The Doubling Cube
-Current
-The first featured learning path.
-:::
-```
-
-:::
-
-### Bibliography
-
-- Backgammon Made Simple curriculum brief.
-- Current design and colour guidance.
-- Fixture learning path examples.
-
-:::: bms-callout
-::: bms-callout-title
-Next step
-:::
-
-Open a lesson page or the lesson template to copy the component shapes you want to keep.
-::::
-
-:::::
