@@ -7,6 +7,7 @@ updated: "2026-07-15"
 categories: [Openings]
 tags: [fixture, opening, example]
 image: ../assets/logo.svg
+image-alt: "Backgammon Made Simple logo"
 bibliography: ../references.bib
 ---
 

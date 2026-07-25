@@ -1,8 +1,12 @@
 project:
   type: website
   output-dir: _site
+  pre-render:
+    - python ../social_generator/scripts/social/run_social_pipeline.py
   resources:
     - assets/logo.svg
+    - "assets/icons/**"
+    - "assets/social/generated/*.png"
     - "data/engine-benchmark/**"
     - "engine-benchmark/**/figures/**"
     - "engine-benchmark/**/tables/**"
@@ -18,10 +22,11 @@ website:
   search:
     location: navbar
     type: overlay
-  favicon: assets/logo.svg
-  image: assets/logo.svg
+  favicon: assets/icons/favicon.ico
+  image: /assets/social/generated/social-default.png
   open-graph: true
-  twitter-card: true
+  twitter-card:
+    card-style: summary_large_image
   navbar:
     logo: assets/logo.svg
     logo-alt: "Backgammon Made Simple"
@@ -61,8 +66,9 @@ website:
   page-footer:
     left: |
       Copyright 2026 Marty Gale - Backgammon Made Simple
-    center: |
-      This lesson is available for non-commercial use under the PolyForm Noncommercial License 1.0.0. Reuse or adaptation must credit Backgammon Made Simple, identify Marty Gale as the original author, and reference the original page or repository. Commercial use requires written permission.
+    center:
+      - text: "Code: AGPL-3.0-only · Educational content: CC BY-SA 4.0 · Licensing"
+        href: /licensing.html
     right:
       - text: RSS
         href: research/index.xml
@@ -76,6 +82,8 @@ format:
       - assets/bms-learn.css
     include-after-body:
       - includes/bms-scripts.html
+    include-in-header:
+      - includes/site-head.html
     toc: true
     toc-location: right
     toc-depth: 3

@@ -3,7 +3,7 @@
 
 project:
   pre-render:
-    - python scripts/social/run_social_pipeline.py
+    - python ../social_generator/scripts/social/run_social_pipeline.py
 
 website:
   image: /assets/social/generated/social-default.png

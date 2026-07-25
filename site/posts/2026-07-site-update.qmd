@@ -7,6 +7,7 @@ updated: "2026-07-20"
 categories: [Updates]
 tags: [site, analyzer, navigation]
 image: ../assets/logo.svg
+image-alt: "Backgammon Made Simple logo"
 bibliography: ../references.bib
 ---
 
