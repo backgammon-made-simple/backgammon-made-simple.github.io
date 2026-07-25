@@ -1,0 +1,110 @@
+---
+title: "What We Are Building"
+subtitle: "Backgammon Made Simple project update"
+description: >
+  How Backgammon Made Simple connects lessons, position analysis, match
+  prediction, engine comparisons, research, and open-source tools.
+categories:
+  - Learn
+  - Position Analyzer
+  - Match Predictor
+  - Engine Benchmark
+  - Research
+tags:
+  - Project Updates
+  - Open-source Tools
+  - Site Development
+format:
+  html:
+    page-layout: article
+    toc: true
+    toc-title: "On this Page"
+    toc-location: right
+    toc-depth: 2
+    toc-expand: false
+    title-block-style: plain
+    body-classes: "bms-editorial-page bms-title-eyebrow"
+execute:
+  enabled: false
+---
+::: {.bms-editorial-lead}
+Backgammon Made Simple is growing into more than a collection of lessons. We are building a set of connected tools and projects that help players learn, analyze positions, follow interesting matches, and understand how backgammon engines reach their conclusions.
+:::
+
+Each part of the site has a different job, but they all support the same goal: make strong backgammon ideas easier to understand and use.
+
+## The learning and analysis tools
+
+### Learn
+
+Learn is the main teaching section of the site.
+
+Each lesson starts with a real question, uses a position as an example, and explains the main idea in plain language. The goal is not only to show the best move. It is to help you recognize the same idea when a different position comes up in one of your own games.
+
+### Explain
+
+Explain lets you enter a position and see analysis from GNU and Sage.
+
+Engines are very good at ranking moves, but their output does not always explain *why* one choice is better. We want to improve that by building a simple, interpretable model that connects engine results to features players can recognize, such as the race, board strength, anchors, primes, contact, and threats.
+
+The explainer will not replace the engines. It will help turn their results into something easier to learn from.
+
+### Match Predictor
+
+Match Predictor uses match data to explore how differences in Performance Rating, or PR, affect match results.
+
+It is also meant to be fun. Before a big match, you can compare the players, see what the data suggests, and build some excitement around the matchup. It will never know who is going to win, because dice and match situations still matter, but it can give useful context.
+
+## Engine comparison and research
+
+### GNU vs Sage
+
+GNU vs Sage compares two backgammon bots by having them play and then studying where their decisions differ.
+
+The match results are interesting on their own, but the project also helps the rest of the site. Engine disagreements can become Learn lessons, detailed Research posts, or examples for improving the explainer model.
+
+The code and data are being organized so the results can be checked and reproduced, not just posted as a scoreboard.
+
+### Research
+
+Research is where we can go into more detail.
+
+It will include articles and blog-like posts about what we are planning, what we are testing, what we have learned, and what still needs work. It is also where we can share extra charts, methods, and explanations that would make the main pages too crowded.
+
+The front page should stay clear and easy to follow. Research is for readers who want to look deeper.
+
+## Open-source tools
+
+Several open-source projects support the website.
+
+### `engine-kit`
+
+`engine-kit` provides helper functions for working with board positions and bot services. It gives the different engines and applications a common way to describe the same position, move, cube state, and match situation.
+
+### `engine-benchmark`
+
+`engine-benchmark` contains the code used to run and reproduce the bot-versus-bot matches. This is where the GNU vs Sage results can be generated, checked, and repeated.
+
+### The Explain app
+
+The position explainer on the website is also open source. That means its analysis and explanation system can be inspected and improved over time.
+
+### `backgammonboard`
+
+`backgammonboard` is an R library for drawing backgammon positions. We use it for Learn lessons, match analysis, bot comparisons, and Research posts.
+
+### `backgammoncalculator`
+
+`backgammoncalculator` is an R library for reusable backgammon calculations. It supports lessons, match analysis, bot results, and research without requiring the same calculations to be rebuilt for every project.
+
+## How it fits together
+
+A GNU vs Sage match may uncover an interesting position. That position may become a Research post, a new Learn lesson, or an example used to improve Explain. The same open-source tools help us draw the board, run the analysis, check the results, and publish what we learned.
+
+That is what we are building: a place to learn the game, explore difficult positions, follow interesting experiments, and understand more of what the engines are seeing.
+
+## Related pages
+
+- [Browse all Research posts](index.qmd)
+- [Read about the Backgammon Engine Benchmark](../engine-benchmark/index.qmd)
+- [Read Sage vs GNU: Stage 1](../engine-benchmark/sage-vs-gnu-stage1/index.qmd)

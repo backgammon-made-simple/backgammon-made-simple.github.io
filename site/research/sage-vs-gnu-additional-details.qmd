@@ -1,0 +1,746 @@
+---
+title: "Sage vs GNU: Additional Details"
+subtitle: "Stage 1 research and methods"
+description: >
+  Supporting methods and analysis for the Sage versus GNU Backgammon Stage 1
+  benchmark, including match statistics, reviewed error rates, roll estimates,
+  provenance, rollout scope, and limitations.
+categories:
+  - Engine Benchmark
+  - Research
+tags:
+  - Sage vs GNU
+  - Statistics
+  - Error Rate
+  - Dice and Luck
+  - Rollouts
+  - Reproducibility
+  - Methodology
+format:
+  html:
+    page-layout: article
+    toc: true
+    toc-title: "On this Page"
+    toc-location: right
+    toc-depth: 2
+    toc-expand: false
+    title-block-style: plain
+    body-classes: "bms-editorial-page bms-title-eyebrow"
+execute:
+  enabled: false
+---
+::: {.bms-editorial-lead}
+This page provides the statistical methods, supporting tables, figure details, and reproducibility record behind the Sage versus GNU Stage 1 results.
+:::
+
+::: {.bms-button-row}
+[Back to the main results](../engine-benchmark/sage-vs-gnu-stage1/index.qmd){.bms-button-primary}
+
+[View the benchmark method](../engine-benchmark/index.qmd){.bms-button-outline}
+
+[View the public repository](https://github.com/backgammon-made-simple/backgammon-engine-benchmark){.bms-button-outline}
+:::
+
+::: {.bms-inline-note}
+[IMPORTANT REVIEWER LIMITATION]{.bms-technical-label}
+
+GNU reviewed decisions made by both engines using the same accepted post-match configuration. This makes the scoring procedure consistent, but it does not make GNU a neutral reviewer. The ER, equity-loss, roll-value, and adjusted-result findings on this page describe GNU's assessment of the matches.
+:::
+
+## Research summary
+
+Sage and GNU played 20 seven-point matches. GNU won 13 and Sage won 7. A two-sided binomial test gave a p-value of 0.263, so the match record did not cross the study's pre-specified 5% significance threshold.
+
+Under GNU's post-match review, GNU had the lower pooled overall error rate. Sage's pooled overall ER was 1.416, compared with 0.154 for GNU. The checker-play difference was relatively small, while the reviewed cube-decision difference accounted for most of the gap.
+
+GNU estimated that it received the more valuable rolls in all 20 matches, but Sage still won 7. After GNU's estimated roll advantage was removed, all 7 Sage wins still showed Sage ahead. Of GNU's 13 wins, 8 still showed GNU ahead, 3 were nearly even, and 2 showed Sage ahead.
+
+The Sage rollout analysis is kept separate from these findings. It asks whether deeper Sage analysis supports Sage's original cube action or GNU's recommendation in selected disputed positions. Final rollout counts and conclusions will be added only from the audited rollout release.
+
+## Study design
+
+### Research questions
+
+The study separates four questions:
+
+1. **What happened?**  
+   Which engine won each of the 20 matches?
+
+2. **How did GNU review the decisions?**  
+   How much equity did GNU estimate each engine lost through checker play and cube decisions?
+
+3. **How much did the rolls matter?**  
+   Which engine did GNU estimate received the more valuable rolls, and how did the observed result change after subtracting that estimated advantage?
+
+4. **What happens when the engines disagree?**  
+   In selected cube positions, does a deeper Sage rollout support Sage's original action or GNU's recommendation?
+
+These are different forms of evidence. They are not combined into one definitive engine-strength score.
+
+### Match structure
+
+The study contains 20 individual seven-point matches.
+
+```text
+Matches: 20
+Match length: 7 points
+Public identifiers: match_001 through match_020
+Primary match-result unit: one completed match
+```
+
+The matches were generated historically in ten two-match seat-swap blocks. However, the two matches in each block used separate deterministic dice streams. The public analysis therefore treats the study as 20 separate matches.
+
+The analysis does not:
+
+- average the two matches within a historical block;
+- use A/B labels in public figures;
+- claim that luck cancels within a block;
+- use paired statistical tests;
+- treat the two matches as common-dice observations.
+
+::: {.bms-figure-slot role="group" aria-label="Study design and configuration table placeholder"}
+[PENDING TABLE :: STUDY DESIGN AND VERIFIED CONFIGURATION]{.bms-figure-slot-label}
+
+Insert from the audited analytical release:
+
+- engine versions, builds, and model identifiers;
+- checker-play and cube settings;
+- match length and match rules;
+- cube, Crawford, Jacoby, and beaver settings where applicable;
+- dice-generation method and evidence status;
+- GNU review setting evidence;
+- Sage rollout scope and status;
+- producing commits and release identifiers.
+:::
+
+<!--
+table-id: tbl-research-study-design
+source: audited configuration, provenance, and validation tables
+-->
+
+### Dice preparation and evidence
+
+The dice streams were prepared before play using a deterministic pseudorandom process. Deterministic means that the same retained inputs can reproduce the same streams. It does not mean that the rolls were selected after seeing the engines' decisions or results.
+
+The final publication must use the audit-approved statement that matches the surviving dice evidence.
+
+::: {.bms-status-panel}
+[DICE EVIDENCE WORDING :: INSERT FROM AUDITED RELEASE]{.bms-status-label}
+
+Use exactly one evidence-supported statement:
+
+- **Verified distinct:** the retained evidence verifies that all 20 matches used distinct deterministic streams.
+- **Partially verified:** the retained evidence verifies part of the stream assignment, while the remaining assignments are documented but not independently recoverable.
+- **Not verifiable:** the surviving evidence is insufficient to verify the stream assignments independently.
+- **Conflict:** do not publish the affected result until the conflict is resolved.
+
+Do not describe the matches as common-dice pairs unless the accepted evidence explicitly supports that design.
+:::
+
+### Live engine settings
+
+The live comparison used the closest practical fixed-ply settings available from both engines.
+
+```text
+Checker play
+GNU: 3-ply
+Sage: 4-ply
+
+Cube decisions
+GNU: 2-ply
+Sage: 3-ply
+```
+
+GNU begins counting at 0-ply, while Sage begins at 1-ply. The displayed setting numbers therefore differ by one for roughly comparable fixed-ply lookahead.
+
+For cube decisions, GNU 2-ply and Sage 3-ply give each player one searched checker-play turn before the resulting position is evaluated. This avoids ending the search immediately after only the player on roll has moved.
+
+Matching the amount of lookahead does not make the engines identical. GNU and Sage still use different neural networks, cube models, move filters, bearoff methods, and internal search procedures.
+
+::: {.bms-figure-slot role="group" aria-label="Engine search depth comparison placeholder"}
+[PENDING TABLE OR DIAGRAM :: GNU AND SAGE SEARCH-DEPTH COMPARISON]{.bms-figure-slot-label}
+
+Show how the displayed GNU and Sage ply labels correspond, and identify the live checker and cube settings used in Stage 1.
+:::
+
+<!--
+figure-id: fig-research-search-depth
+-->
+
+## Match results
+
+### Observed score
+
+GNU won 13 of the 20 matches. Sage won 7.
+
+::: {.bms-figure-slot role="group" aria-label="Match score and tile strip placeholder"}
+[PENDING FIGURE :: MATCH SCORE AND 20-MATCH TILE STRIP]{.bms-figure-slot-label}
+
+Show:
+
+- **GNU: 13 wins**
+- **Sage: 7 wins**
+- one chronological tile for each public match identifier;
+- no A/B labels or paired presentation.
+:::
+
+<!--
+figure-id: fig-research-match-score
+source: audited public match summary and match-level results
+-->
+
+### Two-sided binomial test
+
+The formal match-result test asks whether a 13-7 score is unusually far from a 50-50 match-win probability, regardless of which engine is ahead.
+
+```text
+Number of matches: 20
+GNU wins: 13
+Sage wins: 7
+Null GNU win probability: 0.5
+Test: two-sided binomial
+p-value: 0.26317596435546875
+Study threshold: 0.05
+```
+
+A 13-7 split in either engine's favour, or a wider gap, would occur about 26% of the time if the engines were equally likely to win each match. The result therefore did not meet the study's pre-specified 5% significance threshold.
+
+This p-value does not mean there is a 26% chance that luck caused the result. It also does not mean there is a 74% chance that GNU is stronger.
+
+::: {.bms-figure-slot role="group" aria-label="Two-sided binomial distribution placeholder"}
+[PENDING FIGURE :: TWO-SIDED BINOMIAL DISTRIBUTION]{.bms-figure-slot-label}
+
+Show:
+
+- possible GNU win totals from 0 through 20 under a null probability of 0.5;
+- the observed result at 13 GNU wins;
+- the two-sided p-value regions, 0 through 7 and 13 through 20;
+- the first outcomes below the 5% threshold, 0 through 5 and 15 through 20;
+- annotation: **Observed: 13 wins, p = 0.263**;
+- annotation: **15 wins is the first GNU total below the 5% threshold, p = 0.041**.
+
+The 5% threshold is a research convention, not a point at which the result becomes certain.
+:::
+
+<!--
+figure-id: fig-research-binomial
+-->
+
+## GNU-reviewed decision quality
+
+### What GNU reviewed
+
+GNU reviewed the completed match files after play. For each eligible checker or cube decision, it compared the action taken with GNU's preferred action under the accepted review configuration and estimated the equity lost.
+
+The same reviewer and settings were applied to both engines. This makes the arithmetic comparable across the two sides of the match, but GNU remains both a competitor and the reviewer.
+
+::: {.bms-status-panel}
+[REVIEW CONFIGURATION :: INSERT VERIFIED WORDING]{.bms-status-label}
+
+Name the review as **GNU 4-ply** only when the audited release verifies the requested and actual checker and cube review settings. Otherwise, state the verified configuration more narrowly and disclose any missing evidence.
+:::
+
+### Error rate
+
+The study uses True ER on the 500 scale:
+
+$$
+\text{ER}
+=
+500
+\times
+\frac{\text{total authoritative equity loss}}
+{\text{total eligible decisions}}
+$$
+
+Lower is better.
+
+The official pooled ER is calculated after adding all authoritative equity loss and all eligible decisions. It is not the arithmetic mean of the 20 match ER values.
+
+### Eligible decisions
+
+#### Checker decisions
+
+An eligible checker decision is a played checker move that the accepted GNU review scores under the published review rules.
+
+#### Cube decisions
+
+The cube denominator does not include every routine pre-roll no-double position. It includes actual doubles, takes, and passes, together with no-double decisions that GNU considered close enough to matter under the accepted review settings.
+
+Because there are far fewer eligible cube decisions, a single large cube error can have more influence on cube ER than one checker error has on checker ER.
+
+### Pooled decision quality
+
+#### Overall pooled ER
+
+The official pooled results are:
+
+| Engine | Authoritative equity loss | Eligible decisions | Pooled ER |
+|---|---:|---:|---:|
+| Sage | 4.735 | 1,672 | 1.416 |
+| GNU | 0.523 | 1,699 | 0.154 |
+
+The calculations are:
+
+$$
+\text{Sage ER}
+=
+500 \times \frac{4.735}{1{,}672}
+=
+1.416
+$$
+
+$$
+\text{GNU ER}
+=
+500 \times \frac{0.523}{1{,}699}
+=
+0.154
+$$
+
+::: {.bms-figure-slot role="group" aria-label="Pooled ER and input values placeholder"}
+[PENDING FIGURE OR TABLE :: POOLED ER AND ITS INPUTS]{.bms-figure-slot-label}
+
+Show ER first, followed by:
+
+- authoritative equity loss;
+- eligible decisions;
+- source-reported total;
+- reconstructed total;
+- displayed rounded total;
+- reconciliation difference and status.
+
+Do not present the three quantities as three equally important headline results. Equity loss and eligible decisions explain how pooled ER was calculated.
+:::
+
+<!--
+figure-id: fig-research-pooled-er-inputs
+source: audited public pooled performance table
+-->
+
+#### Checker play and cube decisions
+
+The component results are:
+
+| Engine | Component | Equity loss | Eligible decisions | ER |
+|---|---|---:|---:|---:|
+| Sage | Checker | 0.856 | 1,471 | 0.291 |
+| GNU | Checker | 0.515 | 1,457 | 0.177 |
+| Sage | Cube | 3.880 | 201 | 9.652 |
+| GNU | Cube | 0.010 | 242 | 0.021 |
+
+The checker-play difference was modest compared with the cube-decision difference. Under GNU's review, Sage's cube decisions accounted for most of its total reviewed equity loss.
+
+This does not establish that every disputed Sage cube action was objectively wrong. The separate Sage rollout analysis examines selected disagreements more deeply.
+
+::: {.bms-figure-slot role="group" aria-label="Checker and cube pooled ER placeholder"}
+[PENDING FIGURE :: CHECKER-PLAY AND CUBE-DECISION ER]{.bms-figure-slot-label}
+
+Use two clearly separated panels:
+
+- **Checker play:** Sage 0.291, GNU 0.177
+- **Cube decisions:** Sage 9.652, GNU 0.021
+
+Requirements:
+
+- lower is better;
+- use separate scales;
+- label the separate scales directly;
+- include eligible-decision counts;
+- use bars or dots, but no lollipop chart.
+:::
+
+<!--
+figure-id: fig-research-component-er
+-->
+
+### Match-level variation
+
+Match-level ER describes a particular match. It is useful for showing variation and unusual matches, but it is not the official aggregate estimate of engine performance.
+
+The research page does not:
+
+- average match ER;
+- report a match ER standard deviation as a measure of consistency;
+- treat the 20 match ER values as independent samples for a significance test;
+- replace pooled ER with the number of matches in which one engine had lower ER.
+
+#### Checker-play ER by match
+
+::: {.bms-figure-slot role="group" aria-label="Match-level checker ER dot plot placeholder"}
+[PENDING FIGURE :: CHECKER-PLAY ER BY MATCH]{.bms-figure-slot-label}
+
+Use one point per engine per match.
+
+Requirements:
+
+- retain all 20 matches for each engine;
+- retain exact-zero values;
+- use slight horizontal jitter only when needed to reveal overlapping points;
+- provide exact values and public match identifiers by hover or supporting table;
+- lower is better;
+- do not add confidence intervals or significance tests.
+:::
+
+<!--
+figure-id: fig-research-checker-match-er
+-->
+
+#### Cube-decision ER by match
+
+Many match-level cube ER values may equal zero. Plotting every zero at the same coordinate can look like one thick line and conceal how many matches are represented.
+
+::: {.bms-figure-slot role="group" aria-label="Match-level cube ER dot plot placeholder"}
+[PENDING FIGURE :: CUBE-DECISION ER BY MATCH]{.bms-figure-slot-label}
+
+Requirements:
+
+- retain all exact-zero values;
+- display the exact number of zero-ER matches for each engine;
+- do not silently remove zeros;
+- show non-zero outliers clearly;
+- provide exact values and public match identifiers by hover or table;
+- lower is better.
+
+Suggested annotation:
+
+**Zero cube-decision ER in [X] of 20 matches**
+:::
+
+<!--
+figure-id: fig-research-cube-match-er
+-->
+
+### Checker-choice closeness
+
+The study uses a 0.010 EMG threshold to describe how often a played checker decision was close to GNU's preferred move.
+
+- Sage was within 0.010 EMG on 1,448 of 1,471 eligible checker decisions, or 98.4%.
+- GNU was within 0.010 EMG on 1,444 of 1,457 eligible checker decisions, or 99.1%.
+
+This is not objective accuracy. It is a study-defined measure of closeness to GNU's reviewed choice.
+
+::: {.bms-figure-slot role="group" aria-label="Checker closeness stacked bars placeholder"}
+[PENDING FIGURE :: CHECKER DECISIONS CLOSE TO GNU'S PREFERRED MOVE]{.bms-figure-slot-label}
+
+Title:
+
+**Checker decisions close to GNU's preferred move**
+
+Subtitle:
+
+**Share of eligible checker decisions within 0.010 EMG of GNU's preferred move**
+
+Categories:
+
+- within 0.010 EMG;
+- more than 0.010 EMG away.
+
+Show percentages and raw counts. Do not use the words **correct**, **incorrect**, or **accuracy**.
+:::
+
+::: {.bms-figure-slot role="group" aria-label="Checker errors above threshold placeholder"}
+[PENDING FIGURE :: CHECKER DECISIONS MORE THAN 0.010 EMG AWAY]{.bms-figure-slot-label}
+
+Use one point per eligible checker decision more than 0.010 EMG from GNU's preferred move.
+
+Show:
+
+- equity loss;
+- engine;
+- public match identifier;
+- decision identifier;
+- played action and GNU's preferred action where space permits.
+
+This figure shows the size of the disagreements hidden by the high overall closeness percentages.
+:::
+
+<!--
+figure-ids: fig-research-checker-closeness, fig-research-checker-errors
+-->
+
+## Rolls and reviewer-adjusted results
+
+### What the roll estimate means
+
+GNU estimates how the rolls changed each engine's match-winning chances along the path that was actually played. The public article reports these estimates in match-winning-chance percentage points.
+
+A positive or negative roll estimate does not mean the dice were mechanically biased. It means GNU estimated that the rolls reaching one engine were more valuable in the positions that occurred.
+
+More valuable rolls increase an engine's chance of winning. They do not guarantee victory.
+
+### What happened in these matches
+
+GNU received the more valuable rolls in all 20 matches, yet Sage still won 7. After removing GNU's estimated roll advantage, all 7 Sage wins still showed Sage ahead. Of GNU's 13 wins, 8 still showed GNU ahead, 3 were nearly even, and 2 showed Sage ahead.
+
+This suggests the official 13-7 score may have made the contest look more one-sided than it was. A result closer to 12-8 is plausible, but the adjustment does not produce a definitive replacement score.
+
+### How the adjusted result is defined
+
+GNU starts with a centered observed result and subtracts its estimate of the net dice advantage:
+
+- observed win: +50;
+- observed loss: -50;
+- zero: neutral adjusted result.
+
+These are centered analytical values. They are not literal final MWC values of 100 and 0.
+
+The study uses an editorial band of plus or minus 1 MWC percentage point to label a result as nearly even. That band is not a confidence interval, equivalence test, or significance threshold.
+
+::: {.bms-figure-slot role="group" aria-label="Observed to reviewer-adjusted result placeholder"}
+[PENDING FIGURE :: OBSERVED RESULT TO GNU-ADJUSTED RESULT]{.bms-figure-slot-label}
+
+Show all 20 matches and distinguish:
+
+- 7 Sage wins that still show Sage ahead;
+- 8 GNU wins that still show GNU ahead;
+- 3 GNU wins that become nearly even;
+- 2 GNU wins that show Sage ahead after adjustment.
+
+Use the directly reported GNU centered adjusted result only. Do not reconstruct a public substitute when a direct value is missing.
+:::
+
+::: {.bms-figure-slot role="group" aria-label="Match-level roll and adjusted result table placeholder"}
+[PENDING TABLE :: MATCH-LEVEL ROLLS AND ADJUSTED RESULTS]{.bms-figure-slot-label}
+
+Include one row per match with:
+
+- public match identifier;
+- observed winner;
+- Sage and GNU match ER;
+- Sage and GNU roll estimates;
+- net Sage-oriented roll advantage;
+- direct GNU centered adjusted result;
+- adjusted-result category;
+- source and reconciliation status.
+:::
+
+The adjustment does not replay the matches, identify who deserved to win, or create a second official match record.
+
+<!--
+figure-id: fig-research-luck-adjusted-results
+publication gate: all 20 direct GNU adjusted values must be valid
+-->
+
+## Sage rollout analysis
+
+GNU's review identified selected cube decisions where Sage's original action differed from GNU's recommendation. The rollout study compares exactly two actions:
+
+- Sage's original cube action;
+- GNU's recommended cube action.
+
+A valid paired interval entirely above zero supports GNU's action. A valid paired interval entirely below zero supports Sage's original action. An interval that includes zero is unresolved. A result without a valid paired interval is reported as point-estimate-only and is not treated as resolved.
+
+No conclusion is made about a third action.
+
+::: {.bms-status-panel}
+[PENDING AUDITED SAGE ROLLOUT RELEASE]{.bms-status-label}
+
+Do not insert rollout verdicts, counts, or representative positions until the audited rollout-results release is available.
+:::
+
+::: {.bms-figure-slot role="group" aria-label="Sage rollout research section placeholder"}
+[PENDING RESEARCH COPY AND FIGURES :: SAGE CUBE ROLLOUTS]{.bms-figure-slot-label}
+
+Replace this block with the audited rollout section containing:
+
+1. **Selection and funnel**
+   - eligible Sage cube decisions;
+   - normalized disagreements;
+   - substantive GNU-scored disagreements;
+   - rollout eligible;
+   - attempted;
+   - completed;
+   - valid;
+   - resolved, unresolved, point-estimate-only, and excluded.
+
+2. **Results**
+   - number supporting GNU;
+   - number supporting Sage's original action;
+   - number unresolved;
+   - number point-estimate-only;
+   - exclusions and reasons.
+
+3. **Per-position evidence**
+   - public position identifier;
+   - exact match context;
+   - actions compared;
+   - paired Sage rollout difference in EMG;
+   - valid paired interval when available;
+   - classification;
+   - rollout settings and trial count;
+   - link to retained evidence.
+
+4. **Interpretation**
+   - explain whether deeper Sage analysis moved toward GNU or continued to disagree;
+   - do not claim that Sage's neural evaluator is weaker unless a separate experiment isolates that cause;
+   - do not generalize the selected rollout subset to every Sage cube decision.
+:::
+
+<!--
+figure-ids: fig-research-rollout-flow, fig-research-rollout-differences
+publication gate: audited rollout-results release required
+-->
+
+## Runtime and computation
+
+Live match generation, GNU post-match review, and Sage rollouts are separate computational stages. They may run on different machines and may run in parallel.
+
+The sum of individual job durations is not the wall-clock time required to complete the entire experiment.
+
+::: {.bms-figure-slot role="group" aria-label="Runtime distributions placeholder"}
+[PENDING FIGURE :: RUNTIME BY COMPUTATIONAL STAGE]{.bms-figure-slot-label}
+
+Show separate distributions or sorted dot plots for:
+
+- live seven-point match jobs;
+- GNU post-match review jobs;
+- Sage rollout jobs, when complete.
+
+For each stage, report:
+
+- number of jobs;
+- median runtime;
+- mean runtime when useful;
+- minimum and maximum;
+- machine or server identity;
+- whether jobs ran sequentially or in parallel.
+
+Do not combine the stages into one misleading total.
+:::
+
+<!--
+figure-id: fig-research-runtime
+-->
+
+## Data, provenance, and validation
+
+### Authoritative analytical release
+
+The public figures and prose must be generated from one audited analytical release. The research page should not parse raw GNU text, repair identifiers, or recreate scientific definitions independently.
+
+::: {.bms-figure-slot role="group" aria-label="Release manifest placeholder"}
+[PENDING TABLE :: AUDITED RELEASE MANIFEST]{.bms-figure-slot-label}
+
+Include:
+
+- release identifier and version;
+- schema version;
+- producing repository and commit;
+- source-artifact release identifiers;
+- table names and row counts;
+- file checksums;
+- audit status and attestation;
+- unresolved issues, if any.
+:::
+
+### Source reconciliation
+
+For pooled equity loss, adjusted results, and other public totals, retain:
+
+- source-reported value;
+- reconstructed value;
+- displayed rounded value;
+- authoritative value;
+- reconciliation difference;
+- tolerance;
+- reconciliation status.
+
+The analytical rows must not be altered merely to force agreement with a rounded displayed total.
+
+### Validation
+
+The publication checks should cover:
+
+- engine identity, builds, models, and settings;
+- match rules and cube configuration;
+- dice preparation and stream evidence;
+- source-file inventories and checksums;
+- match completion;
+- GNU review settings;
+- eligible-decision definitions;
+- table keys, row counts, and totals;
+- luck orientation and adjusted-result reconciliation;
+- rollout action orientation, intervals, settings, and exclusions;
+- figure values, labels, units, captions, and alt text.
+
+Implementation and independent validation should remain separate when practical.
+
+### Reproducing the study
+
+The public record should provide:
+
+1. the exact source-code commits used to generate the matches and analysis;
+2. engine versions, builds, models, and settings;
+3. match rules and cube configuration;
+4. dice-generation inputs and retained stream evidence;
+5. run commands, environment details, and thread settings;
+6. original match files and GNU review files;
+7. the audited analytical release and schemas;
+8. Sage rollout manifests, calls, outputs, and evidence when complete;
+9. figure and table source mappings;
+10. validation reports, retries, exclusions, manifests, and checksums.
+
+::: {.bms-button-row}
+[Public benchmark repository](https://github.com/backgammon-made-simple/backgammon-engine-benchmark){.bms-button-outline}
+
+<span class="bms-button-outline" role="link" aria-disabled="true">Audited data release link pending</span>
+
+<span class="bms-button-outline" role="link" aria-disabled="true">Evidence archive link pending</span>
+:::
+
+## Limitations
+
+### Small sample
+
+The study contains only 20 seven-point matches. The 13-7 score favoured GNU, but the sample did not provide strong enough win-record evidence to distinguish the engines at the study's 5% threshold.
+
+### One tested configuration
+
+The results apply to the tested engine versions, models, search settings, match length, and hardware environment. They do not establish a permanent ranking across every configuration.
+
+### GNU is both competitor and reviewer
+
+Using one reviewer makes the scoring procedure consistent, but GNU may evaluate decisions in a way that favours its own methods. ER, equity loss, roll estimates, and adjusted results must therefore be described as GNU-reviewed findings.
+
+### Match ER is descriptive
+
+Match-level ER helps explain individual matches and variation. It is not used as the official aggregate estimate and is not treated as an independent sample for inference.
+
+### Roll estimates are model-based
+
+GNU's roll estimates depend on the positions that occurred and GNU's evaluation of them. The adjusted result is not a replay, an official corrected score, or proof of who should have won.
+
+### Editorial thresholds are not statistical tests
+
+The 0.010 EMG checker-closeness threshold and the plus or minus 1 MWC percentage-point nearly-even band are presentation rules. They are not confidence intervals or significance thresholds.
+
+### Rollout scope is selective
+
+The Sage rollout analysis covers a frozen set of selected cube disagreements. Its conclusions apply to those positions and should not be generalized to every decision unless the selection rule supports that claim.
+
+### No isolated evaluator claim
+
+The study does not establish that Sage's neural evaluator is generally weaker. Isolating the evaluator from search depth, move filters, cube modelling, and other engine components would require a separate experiment.
+
+## What the evidence supports
+
+The observed score, GNU review, roll estimates, and Sage rollouts answer different questions.
+
+The evidence currently supports the following limited conclusions:
+
+- GNU won more of the 20 matches, but the 13-7 score was not statistically significant at the study's 5% threshold.
+- GNU had the lower pooled ER under GNU's own post-match review.
+- Most of the reviewed ER gap came from cube decisions rather than checker play.
+- GNU estimated that it received the more valuable rolls in all 20 matches, while Sage still won 7.
+- The adjusted results suggest that the official score may have looked more one-sided than the underlying contest, but they do not create a definitive replacement score.
+- The Sage rollout section will add a separate check on selected disputed cube decisions once the audited rollout release is available.
+
+The study is a reproducible descriptive pilot. It provides evidence about these 20 matches and this tested configuration, not a universal or permanent engine ranking.
+
+## Related pages
+
+- [Browse all Research posts](index.qmd)
+- [Read the Sage vs GNU Stage 1 results](../engine-benchmark/sage-vs-gnu-stage1/index.qmd)
+- [Read about the Backgammon Engine Benchmark](../engine-benchmark/index.qmd)
+- [Read what Backgammon Made Simple is building](what-we-are-building.qmd)
