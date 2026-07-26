@@ -1,467 +1,360 @@
 ---
 title: "Sage vs GNU: Stage 1"
-subtitle: "20 seven-point matches"
-description: "The first controlled and reproducible Sage versus GNU comparison."
+subtitle: "What happened across 20 seven-point matches?"
+description: "Results from 20 seven-point matches between Sage and GNU, including match wins, 4ply review, luck estimates, and selected Sage rollouts."
 format:
   html:
     page-layout: article
     toc: true
     toc-title: "On this Page"
     toc-location: right
-    toc-depth: 2
+    toc-depth: 3
     toc-expand: 2
     title-block-style: plain
     body-classes: "bms-editorial-page bms-title-eyebrow"
 ---
 
-
 ::: {.bms-editorial-lead}
-Sage and GNU played 20 seven-point matches using fixed engine settings and dice files prepared before play.
+Sage and GNU played 20 seven-point matches using fixed ply depths and dice files prepared before play.  Guess who won?
 :::
 
-The run code was committed publicly before the matches. We then prepared the dice files, played the matches, reviewed both engines with GNU 4-ply, and used Sage rollouts to examine selected disagreements.
-
-The benchmark is open source. The code, settings, dice files, match files, review files, and validation checks are published so anyone can inspect the experiment or run the same test again.
-
-::: {.bms-button-row}
-[View the benchmark method](../index.qmd){.bms-button-outline}
-
-[View the benchmark repository](https://github.com/backgammon-made-simple/backgammon-engine-benchmark){.bms-button-outline}
-:::
 
 ::: {.bms-status-panel}
-[CURRENT STATE :: RESULTS INTEGRATION]{.bms-status-label}
 
-The experiment and its two accepted public release candidates are complete. Final figures and short interpretation will be added from the validated analysis outputs rather than reconstructed on this page.
+#### Skeptical of our approach or results?
 
-Rollout analysis of selected Sage and GNU disagreements is a separate next step. It is not presented here as a completed result.
+As you read, you may think it  was unfair or unscientific, we have a dedicated page for our research method with details.  This article summarizes the findings and briefly talks about the methods.
+
+::: {.bms-button-row}
+[Read research method details](../research/sage-vs-gnu-additional-details.qmd){.bms-button-primary}
+:::
 :::
 
-## How to read the results
+## At a glance
 
-The report keeps three questions separate.
+1. **GNU 13 wins** to **Sage 7 wins**. The binomial test says it is **not statistically significant** result.
+2. 4 ply review shows **GNU with lower ER**.  Sage's biggest differences were in Cube decisions.
+3. 4 ply review estimated that GNU was luckier, and received the more valuable rolls in every match
+4. TODO Sage's rollout confirmed is discofirmed the 4 ply review
+5. It took just under 15 mins on avg to run the matches and just under 70 mins to run 4 ply review
 
-:::: {.bms-step-row}
-::: {.bms-step}
-[01 :: MATCH RESULTS]{.bms-step-number}
+## Who won the matches?
 
-### Who won?
+GNU won 13 of the 20 matches. Sage won 7.
 
-The match results show which engine won the matches that were played.
-:::
 
-::: {.bms-step}
-[02 :: DECISION REVIEW]{.bms-step-number}
+## Is GNU Better than Sage?
 
-### How well did they play?
+Unsure, the test was statisticaly insignificant.  We need to run more matches.
 
-GNU 4-ply reviewed both engines and estimated how much equity each lost through its decisions.
-:::
 
-::: {.bms-step}
-[03 :: DISAGREEMENT ANALYSIS]{.bms-step-number}
+<details>
+<summary>What do you mean statistically insignificant? What test did you run?</summary>
 
-### What happens when they disagree?
+If the engines were equal we would expect a 50% or 10 to 10 result.  To judge the statistical significance, we asked a simple question:
 
-GNU 4-ply can identify positions where Sage chose a different play. We then use a Sage rollout on selected positions to see whether deeper Sage analysis supports Sage's move or GNU's recommendation.
-:::
-::::
+If the engines had an equal chance of winning each match, given random chance, how often would we see a 13 to 7 result or better?
 
-Match wins, GNU 4-ply review scores, and Sage rollout results answer different questions.
+Using a two sided binomial test, the answer is about 26% of the time. Statisticians would say the study results show a **p-value of 0.263**. For the result to be significant, we would expect 5% or a p-value of 0.05.  Therefore the 13-7 result is statistically insignificant.  This does not mean there is a 26% chance that luck caused the result. It means the score, by itself, is not unusual enough to rule out an even matchup.
 
-Together, they describe these 20 matches and selected disagreements. They do not prove which engine is stronger overall, and neither GNU 4-ply nor a Sage rollout is the final truth.
+The TODO [research page](../../research/sage-vs-gnu-additional-details.qmd#two-sided-binomial-test) explains the test and shows the full distribution. You can also use this [binomial-test calculator](https://www.socscistatistics.com/tests/binomial/calculator/) or watch this [introduction to the binomial test](https://youtu.be/J8jNoF-K8E8) if you are interested.
 
-## What happened?
+</details>
 
-::: {.bms-figure-slot role="group" aria-label="Pending pair outcome figure"}
-[PENDING VALIDATED FIGURE :: MATCH AND PAIR RESULTS]{.bms-figure-slot-label}
 
-**What happened across the 10 mirrored pairs and 20 matches?**
 
-This space will receive the checked pair-outcome figure, match-win summary, and short interpretation.
+::: {.bms-figure-slot role="group" aria-label="Match score and twenty-match tile strip placeholder"}
+[PENDING VALIDATED FIGURE :: MATCH SCORE AND 20-MATCH TILE STRIP]{.bms-figure-slot-label}
+
+Show GNU with 13 wins and Sage with 7 wins. Add one chronological tile for each public match identifier. Do not use pair labels or A/B labels.
 :::
 
 <!--
-stage1-integration: pair_outcomes
-expected inputs: core/pair_results.csv, core/match_results.csv
-expected outputs: pair outcome figure, match-win summary, short interpretation
-boundary: use accepted R/package outputs; do not implement a reusable plot in the website
+figure-id: fig-main-match-wins
+expected inputs: public_match_summary.csv, public_match_results.csv
 -->
 
-## How were the matches set up?
+## Did GNU have better rolls? How much did luck matter?
 
-The public run code was committed before the matches began.
+Yes. GNU was luckier according to GNU's 4-ply review. After adjusting for the rolls, 5 of GNU's 13 wins no longer clearly showed GNU ahead. This makes the contest look closer than the official 13-7 score.
 
-The 20 matches were organized into 10 mirrored pairs. Each pair used two dice files prepared in advance with a pseudorandom number generator.
+<details>
+<summary>How was luck measured? And what would the result be after a luck adjustment?</summary>
 
-In the first match:
+The matches were reviewed at 4-ply, but GNU's luck calculation uses a faster 0-ply evaluation. After each roll, it estimates how much better or worse the player's position became, assuming the player then makes the best move according to that evaluation.
 
-```text
-Sage uses dice file A
-GNU uses dice file B
-```
+For a fuller explanation, read the classic article [A Measure of Luck in Backgammon](https://www.bkgm.com/articles/Zare/AMeasureOfLuck.html).
 
-In the paired match, the assignments are swapped:
+GNU's review estimated that GNU received the more valuable rolls in all 20 matches. This does not mean the dice were biased or rigged. It means that, according to GNU's calculation, the rolls improved GNU's chances more than Sage's.
 
-```text
-Sage uses dice file B
-GNU uses dice file A
-```
+The adjustment also estimates whether that roll advantage was large enough to affect which engine appeared ahead. All 7 of Sage's wins still showed Sage ahead. Of GNU's 13 wins, 8 still showed GNU ahead, 3 became nearly even, and 2 showed Sage ahead.
 
-Each engine therefore gets one match with each dice file.
+This adjustment is an estimate, not a replacement match score.
 
-For example, suppose dice file A gives an opening 3-1 and dice file B gives the other player 6-6 on the next roll.
+</details>
 
-In the first match:
+::: {.bms-figure-slot role="group" aria-label="Observed and GNU-adjusted result summary placeholder"}
+[PENDING VALIDATED FIGURE :: WHAT CHANGED AFTER GNU'S ROLL ADJUSTMENT]{.bms-figure-slot-label}
 
-```text
-Sage receives the opening 3-1.
-GNU receives the 6-6 reply.
-```
+Keep the two observed groups separate: the 7 Sage wins all still show Sage ahead; among the 13 GNU wins, 8 still show GNU ahead, 3 become nearly even, and 2 show Sage ahead. Do not combine them under a label such as **winner remained ahead**.
+:::
 
-In the paired match:
+<!--
+figure-id: fig-main-luck-summary
+expected inputs: public_match_results.csv or authoritative public luck summary
+-->
 
-```text
-GNU receives the opening 3-1.
-Sage receives the 6-6 reply.
-```
-
-Both engines get one chance with the 3-1 and one chance with the 6-6.
-
-The two matches can still develop differently because Sage and GNU may choose different moves. By the time later rolls arrive, the boards may no longer be the same.
-
-Mirroring does not make the matches identical. It gives both engines a turn with each prepared dice assignment, so one engine is not the only one to receive a helpful or harmful sequence.
-
-## Were the dice random?
-
-No. The dice were deterministic.
-
-The dice files were prepared before play using a pseudorandom number generator. Given the same generator, seeds, and preparation procedure, the same sequences can be recreated.
-
-## Were the dice rigged?
-
-No.
-
-The dice files were fixed before the matches, were not changed after seeing the engines' decisions or results, and were not selected to favour either engine. Sage and GNU swapped sequences in the second match.
-
-Because the public code, generator details, seeds, dice files, settings, and match files are published, anyone can inspect the setup or reproduce the study.
-
-## Why these engine settings?
-
-GNU and Sage do not count plies in the same way.
-
-GNU starts at 0-ply. Sage starts at 1-ply. Because Sage begins one number higher, the same amount of look-ahead has a different name in each engine.
-
-The rough comparison is:
-
-```text
-GNU 0-ply = Sage 1-ply
-GNU 1-ply = Sage 2-ply
-GNU 2-ply = Sage 3-ply
-GNU 3-ply = Sage 4-ply
-```
-
-This is why giving both engines the same displayed number would not be a fair comparison.
-
-### Checker-play settings
-
-For checker play, we used:
-
-```text
-GNU checker play: 3-ply
-Sage checker play: 4-ply
-```
-
-These are the closest matching fixed-ply settings available in the two engines.
-
-Sage 4-ply is its strongest regular fixed-ply checker setting. Sage also offers a 3-ply truncated rollout and a full rollout. We did not use the truncated rollout because GNU does not offer a matching mode in this automated setup. Sage's regular search also reaches 4-ply, while its truncated rollout begins from 3-ply.
-
-Both Sage rollout modes were much slower and were not practical for a controlled batch of live matches. We therefore used Sage 4-ply and paired it with GNU 3-ply.
-
-GNU 4-ply was also too slow for live play at this scale. GNU 3-ply is commonly used when people play against a bot or receive automated analysis of an online match. GNU 4-ply is better suited to checking a completed match afterward. In our test environment, one GNU 4-ply match review took about 20 minutes.
-
-These settings do not make GNU and Sage identical. The goal is to give them the closest practical amount of fixed-ply search.
-
-### Cube settings
-
-For cube decisions, we used:
-
-### Cube decisions
-
-**GNU cube decisions: 2-ply**  
-**Sage cube decisions: 3-ply**
-
-GNU and Sage use different numbers for the same amount of lookahead.
-
-GNU calls an evaluation with no lookahead **0-ply**. Sage calls the comparable starting evaluation **1-ply**. Sage’s number is therefore one higher than GNU’s number. GNU 2-ply and Sage 3-ply are the closest matching settings.
-
-The table below shows how far each setting looks ahead from a cube decision made before the roll.
-
-| What the search includes | GNU | Sage |
-|---|---:|---:|
-| **Static evaluation.** No future dice or checker plays are searched. | 0-ply | 1-ply |
-| **One-sided lookahead.** The player on roll gets one turn, but the opponent’s reply is not searched. | 1-ply | 2-ply |
-| **One turn for each player.** The player on roll gets one turn, followed by one turn for the opponent. | **2-ply** | **3-ply** |
-| **Uneven deeper lookahead.** The player on roll gets a second turn, but the opponent does not get a second reply. | 3-ply | 4-ply |
-| **Two turns for each player.** Both players get two searched turns. | 4-ply | Not available |
-
-We used **GNU 2-ply and Sage 3-ply**.
-
-At these settings, the engine searches one possible turn for the player on roll and then one possible turn for the opponent. Both players therefore receive the same number of searched turns before the resulting position is evaluated.
-
-The lower pairing, GNU 1-ply and Sage 2-ply, stops after only the player on roll has moved. This can make an immediate improvement look stronger than it really is because the search does not continue far enough to calculate the opponent’s checker-play response.
-
-For example, the engine may see the player hit a blot, escape a checker, strengthen an attack, or make a useful point. It stops before searching whether the opponent can hit back, enter from the bar, escape, or otherwise undo the gain.
-
-This does not mean that the slower search always recommends aggressive play. The effect depends on the position. The problem is that one player receives a searched turn while the other does not.
-
-GNU 3-ply and Sage 4-ply have a similar imbalance at a greater depth. The player on roll receives two searched turns, while the opponent receives only one. The last searched turn again belongs to the original player.
-
-GNU 4-ply would give each player two searched turns, but the matching Sage 5-ply setting is not available.
-
-GNU 2-ply and Sage 3-ply were therefore the closest practical pairing that:
-
-- used comparable search depth;
-- gave each player one searched turn;
-- avoided stopping immediately after only one side had moved;
-- remained fast enough for live match play.
-
-The settings still do not make the engines identical. GNU and Sage use different neural networks, cube models, move filters, and internal methods. Matching the amount of lookahead makes the comparison fairer, but the engines can still reach different answers.
-
-
-
-
-## What does GNU 4-ply review mean?
-
-Every match has a match file.  GNU 4-ply reviewed the match files after the matches had been played.  It outputs a text file with a replay of the match, and alerts when players make players which are different than what it thinks is best.
-
-For each eligible checker or cube decision, it compared the engine's play with GNU's preferred 4-ply play and estimated the equity lost.
-
-The same GNU reviewer and settings were used for both engines (it's done at the same time in the same output file), which keeps the scoring procedure consistent.
-
-It does not mean that GNU 4ply is always correct, it's just the best we had.
 
 ::: {.bms-inline-note}
 [IMPORTANT LIMITATION]{.bms-technical-label}
 
-GNU 4-ply is the reviewer used for this study. Its recommendations are estimates produced by GNU using a specific model and search setting. They are not treated as neutral proof of strategic truth.
+We used GNU 4 ply to review the matches and then a Sage rollout to resolve the arguments.  GNU 4ply will of course favour GNU's lower ply decisions.
+
 :::
 
-## How will disagreements be examined?
 
-GNU 4-ply can identify decisions where Sage's move differs from GNU's preferred move.
+# Why did we choose GNU to review itself?
 
-Sage's Python API does not provide a complete automated match review. Rather than build our own reviewer and risk changing or misrepresenting Sage's analysis, we use Sage's built-in `rollout` method on selected disagreement positions.
+GNU has an open source interface with a review tool for match files.  We want to open-source the results, so anyone, including yourself to reproduce the result.  We can review with other engines in the future, if we can get the developer approval.
 
-For each selected position, we will:
 
-1. reproduce the exact position, score, cube state, and candidate decisions;
-2. publish the rule used to select it;
-3. run Sage's built-in `rollout` method;
-4. publish the method call and returned result.
 
-The Sage rollout asks a simple question: when Sage examines its own decision more deeply, does it still prefer that move, or does it move toward GNU 4-ply's recommendation?
+<details>
+<summary>How is that fair?  Isn't it biased? What about rollouts?</summary>
 
-Rollouts take much longer than the full GNU review, so this analysis may use a documented subset of disagreements rather than every position.
+We use GNU 4ply to review the decisions made by both engines. The same review method was used for both sides, which keeps the scoring consistent.
 
-A Sage rollout is still Sage's estimate. It can show whether Sage's recommendation remains stable under deeper analysis, but it is not the final truth.
+Sage Python Package  doesn't offer a match review function, only evaluate positions.  We decided not to implement a match review as it could be error prone.  Instead we just replied on GNU 4 ply to evaluate matches, and compare the differences using a Sage rollout.
 
-## GNU-reviewed ER
+We ideally would be able to BGBlitz or XG, and will be future work if we can get permission from the developers.  This is always a challenge with open-source projects unfortunately.  This doesn't stop you from reviewing the match files we publish in bulk and letting us know what you find!  We can publish your results too!
 
-The main GNU-reviewed measure of decision quality is:
+</details>
+
+
+::: {.bms-status-panel}
+
+#### Want to run your own analysis?
+
+Here are the match files, reviewed analysis and data we parsed used for the figures.
+
+TODO
+::: {.bms-button-row}
+
+[Read research method details](../research/sage-vs-gnu-additional-details.qmd){.bms-button-primary}
+
+[Read about Engine Benchmark](sage-vs-gnu-stage1/index.qmd){.bms-button-outline}
+
+[Read Github Repo](https://github.com/backgammon-made-simple/backgammon-engine-kit){.bms-button-outline}
+:::
+:::
+
+## How did the review rate the decisions?
+
+GNU had a lower ER.  The difference in checker play was smaller, but Sage's ER is much higher for Cube decisions.
+
+| Engine | Overall ER |
+|---|---:|
+| Sage | 1.416 |
+| GNU | 0.154 |
+
+
+<details>
+<summary>How do you calculate ER?</summary>
+
+After the matches, GNU compared each eligible checker and cube decision with the "best move". It then estimated how much **equity** was lost by making the incorrect decision. Equity is the engine's estimate of how valuable a position or decision is, based on the possible outcomes.
+
+The way to calculate ER (Error Rate) is to take the sum of all equity loss (from the "mistakes"), divides it by the number of all non-forced decisions, and multiplies by 500. This produces the pooled **error rate**, or **ER**. Lower is better.  We do not average the ER of the 20 matches.  This is the same way [BMAB](https://bgmastersab.com/) calculates equity. 
+
+The Overall ER is calculated from the combined equity losses and all non-forced decisions. It is not the average of the 20 separate match ER values. 
+A forced decision is for example when you roll while on the bar and not being able to come in, or when you are bearing in, there is only 1 available move.  GNU review automatically calculates this, we do not.
+
+In our case:
 
 $$
-\text{ER}
+\text{Sage ER}
 =
-500
-\times
-\frac{\text{total equity lost across reviewed decisions}}
-{\text{total eligible decisions}}
+500 \times \frac{4.735}{1{,}672}
+=
+1.416
 $$
 
-Lower is better.
+$$
+\text{GNU ER}
+=
+500 \times \frac{0.523}{1{,}699}
+=
+0.154
+$$
 
-For the combined result, we add the total equity lost across all matches and divide it by the total number of eligible decisions.
+</details>
 
-We do not average the individual match rates.
-
-::: {.bms-figure-slot role="group" aria-label="Pending pooled overall ER figure"}
+::: {.bms-figure-slot role="group" aria-label="Pooled overall ER comparison placeholder"}
 [PENDING VALIDATED FIGURE :: POOLED OVERALL ER]{.bms-figure-slot-label}
 
-The final figure will compare pooled overall GNU-reviewed ER using the accepted pooled numerators and denominators.
-:::
-
-::: {.bms-figure-slot role="group" aria-label="Pending checker and cube ER figure"}
-[PENDING VALIDATED FIGURE :: CHECKER AND CUBE ER]{.bms-figure-slot-label}
-
-The final figure will separate checker-play and cube-decision ER while keeping eligible-decision denominators visible.
-:::
-
-::: {.bms-figure-slot role="group" aria-label="Pending pair-level ER difference figure"}
-[PENDING VALIDATED FIGURE :: PAIR-LEVEL ER DIFFERENCE]{.bms-figure-slot-label}
-
-The final figure will show how the reviewed ER difference varied across mirrored pairs.
+Show one directly labelled value for each engine, include a visible zero baseline, and state that lower is better. Equity loss and eligible-decision totals may appear as supporting text.
 :::
 
 <!--
-stage1-integration: true_er_figures
-expected inputs: core/pooled_true_er.csv, core/performance_long.csv, core/pair_results.csv
-expected outputs: pooled overall, checker/cube, pair-level difference
-boundary: true_er(), pooled_true_er(), and reusable plots belong to backgammoncalculator
+figure-id: fig-main-overall-er
+expected inputs: public_pooled_performance.csv
 -->
 
-## Match-level variation
+## Where did the reviewed difference come from?
 
-A pooled rate summarizes the complete study, but it does not show how much the reviewed performance varied from match to match.
+Most of the gap came from cube decisions.
 
-::: {.bms-figure-slot role="group" aria-label="Pending match-level variation figure"}
-[PENDING VALIDATED FIGURE :: MATCH-LEVEL VARIATION]{.bms-figure-slot-label}
+| Decision type | Sage ER | GNU ER |
+|---|---:|---:|
+| Checker play | 0.291 | 0.177 |
+| Cube decisions | 9.652 | 0.021 |
 
-This space will receive the checked match-distribution figure and explanatory caption.
+GNU's review found a relatively small difference in checker play and a much larger difference in cube decisions. Sage's reviewed cube losses therefore account for most of its overall ER.
+
+This does not prove that every disputed Sage cube decision was wrong. GNU made the judgment, and the separate Sage rollout study examines selected disagreements more deeply.
+
+::: {.bms-figure-slot role="group" aria-label="Checker and cube pooled ER placeholder"}
+[PENDING VALIDATED FIGURE :: CHECKER-PLAY AND CUBE-DECISION ER]{.bms-figure-slot-label}
+
+Use separate panels and separate, clearly labelled scales. Show checker play as Sage 0.291 and GNU 0.177, and cube decisions as Sage 9.652 and GNU 0.021. State that lower is better.
 :::
 
 <!--
-stage1-integration: match_level_variation
-expected inputs: core/match_level.csv or core/performance_long.csv
-expected output: match-distribution figure and explanatory caption
+figure-id: fig-main-component-er
+expected inputs: public_pooled_performance.csv
 -->
 
-## Runtime
+## How close were the checker plays?
 
-The final runtime display will separate the live match jobs from GNU 4-ply post-analysis.
+The ER values tell us the total reviewed loss. It also helps to ask how often each played move was very close to GNU's preferred move.
 
-::: {.bms-figure-slot role="group" aria-label="Pending runtime figure"}
-[PENDING VALIDATED FIGURE :: RUNTIME]{.bms-figure-slot-label}
+GNU reports the gap on a normalized equity scale called **EMG**. EMG means equivilent money game, which is how we can compare the equity lost in different match formats.  This is called "normalization".  To learn more, you can check out a class article on [Normalizing Error](https://bkgm.com/articles/Zare/NormalizingErrors/). 
 
-This space will receive the checked runtime figure and summary.
-:::
+Even 4 ply analysis doesn't garuntee the correct move, so we considered if a checker decision was within 0.010 EMG equity of GNU's preferred play, it to be the "correct" play.
 
-::: {.bms-inline-note}
-[RUNTIME INTERPRETATION]{.bms-technical-label}
 
-Combined compute-job duration is the sum of recorded live-match and GNU-review job durations. It is not wall-clock elapsed time for the complete experiment.
+| Engine | Decisions within 0.010 EMG | Share |
+|---|---:|---:|
+| Sage | 1,448 of 1,471 | 98.4% |
+| GNU | 1,444 of 1,457 | 99.1% |
+
+Both engines were close to 4 ply's preferred move on the great majority of eligible checker decisions. This is not objective accuracy. It measures closeness to 4ply's judgment.
+
+A checker decision with zero reviewed loss stays in the total and counts as close. Zero-loss decisions may be left out of a separate plot of non-zero mistakes so the visible errors are easier to compare, but they are not removed from these percentages.
+
+::: {.bms-figure-slot role="group" aria-label="Checker decision closeness placeholder"}
+[PENDING VALIDATED FIGURE :: CHECKER DECISIONS CLOSE TO GNU'S PREFERRED MOVE]{.bms-figure-slot-label}
+
+Title the figure **Checker decisions close to GNU's preferred move**. Show the percentages and raw counts, define the 0.010 EMG threshold, and avoid the words **correct**, **incorrect**, and **accuracy**.
 :::
 
 <!--
-stage1-integration: runtime
-expected inputs: core/runtime_match_level.csv, core/runtime_summary.csv
-expected output: runtime figure and summary table
+figure-id: fig-main-checker-closeness
+expected inputs: public_checker_decision_summary.csv
 -->
 
-## What can this study tell us?
+## What about cube decisions?
 
-The completed match and review analysis can describe:
+Cube decisions need a separate calculation. There are far fewer eligible cube decisions, and routine no-double positions are not all included in the same way.
 
-- who won the 20 matches;
-- what happened across the 10 mirrored pairs;
-- how GNU 4-ply reviewed both engines;
-- how much the reviewed performance varied between matches.
+The final figure uses the same 0.010 equity EMG closeness threshold.
 
-The disagreement analysis can add another piece of evidence. For selected positions, it can show whether Sage's deeper rollout still supports Sage's original move or moves toward GNU 4-ply's recommendation.
+::: {.bms-figure-slot role="group" aria-label="Cube decision closeness placeholder"}
+[PENDING AUDITED FIGURE :: CUBE DECISIONS CLOSE TO GNU'S REVIEW]{.bms-figure-slot-label}
 
-The study cannot prove that either engine is always stronger. GNU 4-ply is one engine's review, and a Sage rollout is one engine's deeper estimate. Neither is perfect play or objective truth.
-
-Results from selected disagreement positions should also not be generalized to every decision unless the selection rule supports that conclusion.
-
-## What comes next?
-
-The first task is to integrate the validated Stage 1 figures and interpretation.
-
-The next analysis can then:
-
-1. publish the rule for selecting disagreements;
-2. extract the qualifying checker and cube decisions;
-3. run Sage's built-in `rollout` method on the selected positions;
-4. publish the method calls, returned results, and any unresolved differences.
-
-If there is enough interest, we also plan to run a longer comparison. Feedback on the method, explanations, and published evidence will help us improve the next study before it begins.
-
-## Reproduce the study
-
-The public project records:
-
-- the exact public source-code commit used to run the matches;
-- the Sage version, build, model, and settings;
-- the GNU version, build, and settings;
-- the match length and match rules;
-- the pseudorandom number generator, seeds, and dice-file preparation procedure;
-- the exact dice files and checksums;
-- which engine and physical seat received each dice sequence;
-- run commands, environment details, thread settings, and recorded runtimes;
-- the original match files and GNU-reviewed match files;
-- the GNU 4-ply review settings and eligible-decision definitions;
-- validation results, interrupted runs, retries, and exclusions;
-- the disagreement-selection rule;
-- the selected disagreement positions, Sage `rollout` method calls, and returned results;
-- release manifests and checksums.
-
-The goal is to make the experiment understandable, inspectable, and repeatable while keeping match outcomes, GNU review estimates, Sage rollout evidence, and interpretation clearly separated.
-
-## Data releases
-
-:::: {.bms-release-list}
-::: {.bms-release-item}
-### Stage 1 Match and Review Artifacts
-
-[ACCEPTED CANDIDATE :: PUBLIC URL PENDING]{.bms-release-state}
-
-The played matches, GNU-reviewed matches, review text, dice evidence, validation records, inventories, and checksums.
-
-::: {.bms-release-meta}
-**Release ID**<br>
-`sage-vs-gnu-stage1-match-review-artifacts-v1`
-
-**Version and type**<br>
-`v1` · `tar.gz`
-
-**Archive size**<br>
-Pending public hosting
-
-**SHA-256**<br>
-`40125d667c2faaf0cf24af54078249b74cfc070e355b2a4ee49b78ab93b90f1d`
+Show the share within 0.010 EMG and the share more than 0.010 EMG away, with percentages, raw counts, and the accepted eligible-decision total. State the zero rule in the subtitle or caption.
 :::
+
+<!--
+figure-id: fig-main-cube-closeness
+expected inputs: authoritative audited cube-closeness summary derived from public_cube_opportunities.csv
+publication gate: audited W2 output required
+-->
+
+## What happens when Sage and GNU disagree on the cube?
+
+GNU's review found selected cube decisions where Sage's original action differed from GNU's recommendation.
+
+Those positions are being examined with a deeper Sage **rollout**. In a rollout, Sage repeatedly plays forward from the same position to compare how the two actions perform over many continuations.  Stage 1 compares only Sage's original action with GNU's recommendation. A rollout may support GNU, support Sage's original action, or remain too close to call.
+
+
+::: {.bms-status-panel}
+[PENDING AUDITED SAGE ROLLOUT RESULTS]{.bms-status-label}
+
+The public summary will be added after the audited rollout release is available. It will report completed and valid rollouts, results supporting each action, unresolved results, point-estimate-only results, and exclusions.
+:::
+
+::: {.bms-figure-slot role="group" aria-label="Sage rollout summary placeholder"}
+[PENDING FIGURE :: SELECTED SAGE CUBE ROLLOUT RESULTS]{.bms-figure-slot-label}
+
+Use only the audited two-action rollout release. Each published result must link to the position, match context, two actions, rollout settings, paired difference, valid uncertainty range when available, and any exclusion reason.
+:::
+
+<!--
+figure-id: fig-main-rollout-summary
+publication gate: audited Sage rollout release required
+-->
+
+## Why did the engines use different ply depths?
+
+A **ply** is one layer of lookahead. The engine examines a play, then a reply, then another reply as the ply depth increases.
+
+GNU and Sage label those layers differently. GNU starts at 0-ply, while Sage starts at 1-ply. Giving both engines the same displayed number would therefore give them different amounts of lookahead.
+
+Stage 1 used:
+
+```text
+Checker play
+GNU: 3-ply
+Sage: 4-ply
+
+Cube decisions
+GNU: 2-ply
+Sage: 3-ply
+```
+
+For checker play, these were the closest practical fixed-ply depths available in both engines.
+
+
+For cube decisions, GNU 2-ply and Sage 3-ply both look ahead by both the player on roll and the reply by the opponent.  If you use an odd number ply such as 3 ply for GNU, it only considers the player move and not the reply.  To simplify, it makes a cube decisions where "riskier" moves are considered better because it isn't looking for the reply of the opponent.    
+
+If that's confusing, we explain it in detail in our [research article](../../research/sage-vs-gnu-additional-details.qmd#why-these-engine-settings-were-chosen)
+
+Matching the amount of lookahead makes the comparison fairer, but it does not make the engines identical. They still use different neural networks, cube models, move filters, and internal methods.
+
+
+## How long did it take to run?
+
+
+## How long did the matches and analysis take?
+
+The live matches were fairly quick and consistent on our setup.
+
+
+Figure 1
+
+Figure 2
+
+
+
+The match times were grouped fairly closely together. In technical terms, they had relatively low variance, meaning there was less difference between the shorter and longer matches.
+
+The 4-ply review times were much more spread out. Although the average was just under 68 minutes, an individual review could take anywhere from just over 32 minutes to almost 2.5 hours. This made the analysis time much less predictable than the match time.
+
+These results are specific our specific hardware and setup. For this pilot, we ran the live matches one at a time to reduce the risk of errors. We ran the 4-ply reviews in parallel, which allowed several completed matches to be analyzed at the same time.
+
+
+## What does this study tell us?
+
+In these 20 matches, GNU won more often and received the lower ER under GNU's own post-match review. Most of the reviewed ER gap came from cube decisions. The checker plays of both engines were very often close to GNU's preferred move.
+
+GNU's roll estimates suggest that the official 13-7 score may make the contest look more one-sided than it was. The adjusted result is still an estimate, not a corrected score. The cube-closeness percentage and Sage rollout conclusions also remain pending until their audited releases are ready.
+
+This is evidence about these 20 matches, these engine versions, and these ply depths. It does not establish a permanent ranking between Sage and GNU.
 
 ::: {.bms-button-row}
-<span class="bms-button-outline" role="link" aria-disabled="true">Download not yet public</span>
+[Read the research details](../../research/sage-vs-gnu-additional-details.qmd){.bms-button-primary}
+
+[Read about the benchmark tool kit ](../index.qmd){.bms-button-outline}
+
+[View the benchmark repo on Github](https://github.com/backgammon-made-simple/backgammon-engine-benchmark){.bms-button-outline}
 :::
-:::
-
-::: {.bms-release-item}
-### Stage 1 Analysis Tables
-
-[ACCEPTED CANDIDATE :: PUBLIC URL PENDING]{.bms-release-state}
-
-The checked tables used to summarize the matches, mirrored pairs, decision review, and runtime.
-
-::: {.bms-release-meta}
-**Release ID**<br>
-`sage-vs-gnu-stage1-analysis-tables-v1`
-
-**Version and type**<br>
-`v1` · `tar.gz`
-
-**Archive size**<br>
-Pending public hosting
-
-**SHA-256**<br>
-`d44fa12116f589218ac46d11c4e74d79ad31ed49db6081d4bcd9601ad41b19f2`
-:::
-
-::: {.bms-button-row}
-<span class="bms-button-outline" role="link" aria-disabled="true">Download not yet public</span>
-:::
-:::
-::::
-
-<!--
-Render release links only from:
-
-site/data/engine-benchmark/releases.yml
-
-Do not hardcode download URLs.
-
-The following release remains hidden until its separate publication task
-has been accepted:
-
-Stage 1 Sage Errors Identified by GNU 4-Ply
--->

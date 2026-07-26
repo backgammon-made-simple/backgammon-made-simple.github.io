@@ -400,7 +400,8 @@ body.bms-title-eyebrow #title-block-header .subtitle {
 */
 body.bms-about-page .bms-about-lead,
 body.bms-editorial-page .bms-editorial-lead {
-  max-width: 67ch;
+  width: 100%;
+  max-width: none;
   margin: 0 0 1.25rem;
 }
 

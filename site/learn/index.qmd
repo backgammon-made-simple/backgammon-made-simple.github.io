@@ -1,6 +1,6 @@
 ---
 title: "Learn"
-description: "A structured curriculum for understanding backgammon decisions."
+description: "Clear, position-based lessons for understanding backgammon decisions, from beginner foundations to advanced play."
 sidebar: learn
 page-layout: full
 bibliography: ../references.bib
@@ -8,235 +8,67 @@ bibliography: ../references.bib
 
 :::::::::::::::::::::::::: {.bms-page-shell}
 
-# Learn
+> Come with a question.  Leave with a clear mental model you can use at the board.
 
-Backgammon Made Simple uses a structured curriculum. Start with the decisions that confuse real players, then add foundations exactly when they help. The doubling cube is the first featured learning path, but it is not the whole identity of the site [@bms-fixture-curriculum].
+## How Each Lesson Works
 
-## Curriculum
+::::::::: {.grid .bms-lesson-method-grid}
 
-| Track | Status | What it covers |
-|------------------------|------------------------|------------------------|
-| Start Here | Available | Shared language, orientation, and the main game plans |
-| Checker Play | Current | Contact positions, priorities, and tactical tradeoffs |
-| Opening Play | Available | Early-roll choices and position-building |
-| The Doubling Cube | Current | Money-game cube decisions and take points |
-| Match Play | Coming later | Score-dependent cube and checker choices |
-| Endgames | Coming later | Racing and bear-off technique |
-| Engines and Analysis | Available | How to read evaluations, rollouts, and uncertainty |
-
-> Start with the learning track that matches the decisions you want to understand now.
-
-## Learning Path
-
-1. Start Here.
-2. Checker Play.
-3. Opening Play.
-4. The Doubling Cube.
-5. Match Play.
-6. Endgames.
-7. Engines and Analysis.
-
-## Track Status
-
-::::::::: {.grid}
 :::: {.g-col-12 .g-col-md-4}
 ::: {.bms-card}
-#### Available
+#### A Real Question
 
-- Start Here
-- Opening Play
-- Engines and Analysis
+Begin with a decision that could appear in an actual game.
 :::
 ::::
 
 :::: {.g-col-12 .g-col-md-4}
 ::: {.bms-card}
-#### Current
+#### A Board Position
 
-- Checker Play
-- The Doubling Cube
+See the idea in a specific position instead of reading an abstract rule.
 :::
 ::::
 
 :::: {.g-col-12 .g-col-md-4}
 ::: {.bms-card}
-#### Coming Later
+#### A Reusable Idea
 
-- Match Play
-- Endgames
+Learn a principle that can help in other positions.
 :::
 ::::
+
 :::::::::
 
-## Course Notes
+We use engine analysis to support the lessons, but the focus is on the explanation.
+We use engine analysis to support the lessons, but the focus is on the explanation.
 
-The first lessons use short positions, simple language, and a fixed vocabulary. The later lessons add score state, volatility, and engine evidence.[^1]
+## Why We Are Starting With the Doubling Cube
 
-### Learning Model
+We are starting with the doubling cube because it is one of the hardest parts of backgammon to learn by intuition alone.
 
-Term
+Checker play gives you multipe options to choose from.  The cube changes the value of the game with only 2 options. You must decide whether your advantage is large enough to double or just roll on.  Receivers decide if they should take or pass.
 
-:   A word the reader should recognize.
-
-Take point
-
-:   The threshold where taking starts to make sense in a money-game context.
-
-### A Small Equation
-
-$$EV = P_{win} \times W - P_{lose} \times L$$
-
-### A Fixture Figure
-
-![Fixture board placeholder using the site logo](/assets/board_example.png){#fig-learn-placeholder fig-cap="Fixture board-position placeholder."}
-
-See @fig-learn-placeholder for the style of figure Marty can replace with a real position later.
-
-### A Fixture Table
-
-| Level   | What the reader gets      | Typical use             |
-|---------|---------------------------|-------------------------|
-| Intro   | Shared language           | Start Here              |
-| Core    | Decision model            | Cube and checker play   |
-| Context | Score and engine evidence | Match Play and analysis |
-
-: Curriculum overview
-
-## Component Playground
-
-::: {.callout-warning}
-TODO: remove, rewrite, or rearrange these examples before public release.
-:::
-
-### Curriculum Cards
-
-::::::::: {.grid}
-:::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Start Here
-
-Available
-
-Who this site is for, how to read the lessons, and how to interpret a position.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### The Doubling Cube
-
-Current
-
-The first featured learning path.
-:::
-::::
-
-:::: {.g-col-12 .g-col-md-4}
-::: {.bms-card}
-#### Match Play
-
-Coming later
-
-Score-dependent decisions after the base model is stable.
-:::
-::::
-:::::::::
-
-### Lesson Metadata
-
-::: {.bms-lesson-meta}
-Concept: cube decisions<br> Prerequisite: knows the rules<br> Reading time: 8 minutes<br> Difficulty: intermediate
-:::
-
-### Definition List
-
-Term
-
-:   A word the reader should recognize.
-
-Take point
-
-:   The percentage threshold where a take begins to make sense.
-
-### Equations
-
-$$EV = P_{win} \times W - P_{lose} \times L$$
-
-$$TP = \frac{L}{W + L}$$
-
-### Callouts
+These choices become easier when they are broken into smaller questions. That is what the first learning path will do.
 
 ::: {.callout-note}
-This is a note callout for neutral reminders.
+The doubling cube is only the beginning. Lessons on checker play, openings, match play, endgames, and engine analysis are coming soon.
 :::
 
-::: {.callout-tip}
-This is a tip callout for a practical cue.
-:::
+## More Lessons Are Coming
 
-::: {.callout-important}
-This is an important callout for a key concept.
-:::
+The full Learn section will grow to include:
 
-::: {.callout-caution}
-This is a caution callout for a mistake to avoid.
-:::
+| Track | What you will learn |
+|---|---|
+| **Start Here** | How to read the board, follow lesson positions, and understand common terms |
+| **Checker Play** | Racing, safety, flexibility, timing, contact, and tactical choices |
+| **Opening Play** | Early moves, replies, and how game plans begin |
+| **Match Play** | How the score changes checker and cube decisions |
+| **Endgames** | Bearoffs, wastage, racing, timing, and practical counting |
+| **Engines and Analysis** | How to understand evaluations, equity, error rates, and rollouts |
 
-::: {.callout-warning}
-This is a warning callout for a tricky edge case.
-:::
+Beginners will be able to follow each path from the start. More experienced players can move directly to the questions they want to study.
 
-### Decision Prompt
 
-:::: {.bms-callout}
-::: {.bms-callout-title}
-Fixture decision
-:::
-
-Would you double, take, or pass?
-::::
-
-### Collapsible Answer
-
-<details>
-<summary>Show an example answer</summary>
-
-The example answer is intentionally generic: choose the move that best matches the position, the score, and the cube state.
-
-</details>
-
-[^1]: TODO: remove this fixture footnote before public release.
-
-### Tabset
-
-::: {.panel-tabset}
-#### Current
-
-Tracks Marty can open first.
-
-#### Later
-
-Tracks that stay hidden until the curriculum grows.
-
-#### Notes
-
-Leave a short explanation here.
-:::
-
-### Board Placeholder
-
-::: {.bms-placeholder-board}
-TODO: replace with a verified board position.
-:::
-
-### Checklist
-
-- Identify the game plan.
-- Check cube ownership.
-- Look for volatility.
-- Compare the take point to the position.
-
-### R Output
-
-```r
-c(available = 3, current = 2, later = 2)
+::::::::::::::::::::::::::

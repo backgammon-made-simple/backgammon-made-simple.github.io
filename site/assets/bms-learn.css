@@ -150,6 +150,11 @@
   margin: 1.5rem 0 2rem;
 }
 
+/* Space between the Learn landing-page card row and the text below it. */
+.bms-lesson-method-grid {
+  margin-bottom: 1.25rem;
+}
+
 .bms-learn-article .bms-subscribe {
   margin-top: 1.25rem;
   padding: 1rem 0 0;
@@ -193,5 +198,9 @@
     width: 100%;
     min-width: 0;
     min-height: 3rem;
+  }
+
+  .bms-lesson-method-grid {
+    margin-bottom: 1rem;
   }
 }

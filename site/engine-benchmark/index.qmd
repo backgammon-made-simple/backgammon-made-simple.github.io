@@ -1,7 +1,7 @@
 ---
 title: "Backgammon Engine Benchmark"
-subtitle: "A fair, controlled, and reproducible way to compare backgammon engines"
-description: "Compare backgammon engines using fixed settings, deterministic dice files, verified match results, and openly published evidence."
+subtitle: "A fair and open way to compare backgammon engines"
+description: "See how backgammon engines perform in controlled matches, how their decisions are reviewed, and what the results can and cannot tell us."
 format:
   html:
     page-layout: article
@@ -15,153 +15,61 @@ format:
 ---
 
 ::: {.bms-editorial-lead}
-The Backgammon Engine Benchmark lets engines play controlled matches and publishes the evidence needed to inspect or repeat the comparison.
+The Backgammon Engine Benchmark lets engines play under controlled conditions, then publishes the results and the evidence behind them.
 :::
 
-Before a study begins, we choose the engines, match rules, and analysis settings. The complete run code and configuration are committed publicly before the matches start. We then prepare the dice files, play the matches, review the completed match files, examine important disagreements, and publish the checked results.
+We ran a [20 match pilot with Sage vs GNU](sage-vs-gnu-stage1/index.qmd). After that pilot we wanted to release a robust way to fairly compare backgammon engines against each other.  That's why we built the Engine Benchmark tool.
 
-The project is open source. Anyone can inspect the code before a run, examine the files afterward, or repeat a study using the same engines, settings, and dice.
+Before you have backgammon engines fight each other, you must record the plan, settings, and how the dice were generated.  You also want to record the match files, settings used for review and futher analysis .  We do this for the comparison can be fair, inspected and reproduced by others.
+
+The code and instructions to run your own tests is available in the public repository below, while the website has the stories of the battles we conducted and what it means for backgammon players like yourself.
 
 ::: {.bms-button-row}
-[View the benchmark repository](https://github.com/backgammon-made-simple/backgammon-engine-benchmark){.bms-button-primary}
-
-[Read Sage vs GNU: Stage 1](sage-vs-gnu-stage1/index.qmd){.bms-button-outline}
+[Read Sage vs GNU 20 Match Pilot Results](sage-vs-gnu-stage1/index.qmd){.bms-button-primary}
+[Read the more details of the Pilot](../research/sage-vs-gnu-additional-details.qmd){.bms-button-outline}
 :::
 
-## How to read the results
-
-The benchmark keeps three questions separate.
-
-:::: {.bms-step-row}
-::: {.bms-step}
-[01 :: MATCH RESULTS]{.bms-step-number}
-
-### Who won?
-
-The match results show what happened in the matches that were played.
-:::
-
-::: {.bms-step}
-[02 :: DECISION REVIEW]{.bms-step-number}
-
-### How well did they play?
-
-A stronger post-match review estimates how much equity each engine lost through its checker-play and cube decisions.
-:::
-
-::: {.bms-step}
-[03 :: DISAGREEMENT ANALYSIS]{.bms-step-number}
-
-### What happens when they disagree?
-
-The review identifies positions where the engines prefer different plays or cube actions. Selected positions can then be examined more deeply with the strongest reliable methods available from each engine.
-:::
-::::
-
-Winning more matches, receiving a better decision review, and receiving stronger support from a rollout are different results. None of them alone proves that one engine is always stronger.
-
-A review or rollout is still an estimate produced by an engine. It is not the truth. The strongest conclusion comes from looking at several kinds of evidence together and being clear about the limits of each one.
 
 ## How the benchmark works
 
-:::::::: {.bms-process aria-label="Benchmark workflow"}
+::::::: {.bms-process aria-label="Benchmark workflow"}
 ::: {.bms-process-step}
 <span class="bms-process-number">01</span>
-<strong>Choose the comparison and engine settings</strong>
+<strong>Choose the engines, rules, and settings</strong>
 :::
 
 ::: {.bms-process-step}
 <span class="bms-process-number">02</span>
-<strong>Commit and publish the run code and configuration</strong>
-:::
-
-::: {.bms-process-step}
-<span class="bms-process-number">03</span>
-<strong>Prepare the dice files</strong>
+<strong>Publish the plan before play begins</strong>
 :::
 
 ::: {.bms-process-step}
 <span class="bms-process-number">04</span>
-<strong>Run the matches</strong>
+<strong>Set Dice File then Play</strong>
 :::
 
 ::: {.bms-process-step}
 <span class="bms-process-number">05</span>
-<strong>Review the completed match files</strong>
+<strong>Review the matches and find disagreements</strong>
 :::
 
 ::: {.bms-process-step}
 <span class="bms-process-number">06</span>
-<strong>Examine selected engine disagreements</strong>
+<strong>Check and publish the evidence</strong>
 :::
+:::::::
 
-::: {.bms-process-step}
-<span class="bms-process-number">07</span>
-<strong>Validate and publish the evidence</strong>
-:::
-::::::::
+You can configure the methods and settings as they can change from one study to another.  Engines do not all offer the same tools, as some can review a complete match (GNU CLI), while others can only examine one position at a time (Sage's current Python package).
 
-The exact review method may change from one comparison to another. Some engines can review a complete match automatically. Others provide only position analysis or rollouts. The benchmark uses the strongest method that can be run reliably and reproduced from public code. It does not create a replacement reviewer unless that reviewer can be tested and shown to represent the engine correctly.
+## Is the plan fixed before play?
 
-## How are the matches set up?
+Yes.
 
-The public run code and configuration are committed before the matches begin. This fixes the study design before anyone knows the results.
+Before the first match, we record the engine versions, match rules, ply depths, dice procedure, review method, and the questions the study will answer. This keeps the study from being changed after an early result.
 
-Each study records:
+A necessary change can still be made, but it is published as a change to the original plan, and the settings should be republished/comitted BEFORE the matches are run.
 
-- the engines and versions being compared;
-- the checker-play and cube settings;
-- the match length and match rules;
-- the dice-file generator and seeds;
-- the number of mirrored pairs;
-- the commands and environment used to run the matches;
-- the review and disagreement-analysis plan.
-
-The matches are then played using prepared dice files. The code, settings, and dice are not changed because of an engine decision or an early result.
-
-## Why use mirrored pairs?
-
-A mirrored pair contains two matches using the same two prepared dice files.
-
-In the first match:
-
-```text
-Engine A uses dice file A
-Engine B uses dice file B
-```
-
-In the paired match, the assignments are swapped:
-
-```text
-Engine A uses dice file B
-Engine B uses dice file A
-```
-
-Each engine therefore gets one match with each dice file.
-
-For example, suppose dice file A gives an opening 3-1 and dice file B gives the other player 6-6 on the next roll.
-
-In the first match:
-
-```text
-Engine A receives the opening 3-1.
-Engine B receives the 6-6 reply.
-```
-
-In the paired match:
-
-```text
-Engine B receives the opening 3-1.
-Engine A receives the 6-6 reply.
-```
-
-Both engines get one chance with the 3-1 and one chance with the 6-6.
-
-The two matches can still develop differently because the engines may choose different moves. By the time later rolls arrive, the boards may no longer be the same.
-
-Mirroring does not make the matches identical. It makes the dice assignment more balanced by giving each engine a turn with each prepared sequence.
-
-## Were the dice random?
+## Are the dice random?
 
 No. The dice were deterministic.
 
@@ -169,156 +77,58 @@ The dice files were prepared before the matches using a pseudorandom number gene
 
 This is useful because a repeated study can use exactly the same dice rather than merely another random sample.
 
-## Were the dice rigged?
-
-No.
-
-The dice files were fixed before play. They were not changed after seeing the engines' decisions or results, and they were not selected to help either engine.
-
-The engines swap dice files in the second match of each mirrored pair. The generator details, seeds, dice files, checksums, settings, and match files are published so the setup can be inspected or repeated.
-
 ## How are engine settings matched?
 
-Engine settings cannot always be matched by using the same displayed number.
+Engine settings cannot always be matched by using the same ply number.
 
-Different engines may count search levels differently, use different types of search, or expose different analysis tools. Before a study begins, the benchmark documents what each setting does and explains why the selected pair is the closest practical comparison.
+Ply depth tells us how many decision layers an engine looks ahead. Different engines start count plying depth differently, use different types of search, or expose different analysis tools. Before a study begins, you want to documents what each setting does understand why the selected pair is the closest practical comparison.
 
-The goal is not to make the engines internally identical. That is impossible. The goal is to avoid an obvious mismatch in search depth while keeping the live matches practical to run.
+The goal is not to make the engines internally identical. That is impossible. The goal is to avoid an obvious mismatch in ply depth while keeping the live matches practical to run.
 
-### Example: Sage and GNU checker play
+[Read the more details of ply settings for the Pilot](../research/sage-vs-gnu-additional-details.qmd#why-these-engine-settings-were-chosen){.bms-button-outline}
 
-For Sage vs GNU: Stage 1, the live checker-play settings were:
+## How are the results judged?
 
-```text
-GNU checker play: 3-ply
-Sage checker play: 4-ply
-```
+### Match wins and decision quality are different
 
-GNU starts counting at 0-ply. Sage starts at 1-ply. Sage's displayed number is therefore one higher for roughly the same amount of fixed-ply lookahead.
+The score tells us who won, and a binomial test can see if it's statistically significant.
 
-These were the closest practical regular checker-play settings available from both engines. Stronger rollout modes were much slower and did not have a matching automated mode in the other engine.
+A review from a stronger engine (or engine setting) looks at the choices made during the match.
 
-### Example: Sage and GNU cube decisions
+This distinction matters because an engine can make stronger decisions and still lose after receiving worse rolls. The benchmark therefore presents the score, decision review, and estimated "luck" /roll advantage as separate evidence.
 
-For cube decisions, Stage 1 used:
+### The reviewer is named
 
-```text
-GNU cube decisions: 2-ply
-Sage cube decisions: 3-ply
-```
+We use GNU 4ply to review the decisions made by both engines. The same review method was used for both sides, which keeps the scoring consistent.
 
-The table shows how the displayed settings line up.
+Sage doesn't offer a match review function in it's current Python package.  We decided not to implement one as it could be error prone.  Instead we just use the GNU 4 ply to evaluate matches, and compore the differences using a Sage rollout (explained in the next section)
 
-| What the search includes | GNU | Sage |
-|---|---:|---:|
-| **Static evaluation.** No future dice or checker plays are searched. | 0-ply | 1-ply |
-| **Only the player on roll gets a searched turn.** The search stops before the opponent's checker-play reply. | 1-ply | 2-ply |
-| **Each player gets one searched turn.** The player on roll moves, then the opponent replies. | **2-ply** | **3-ply** |
-| **The player on roll gets one extra searched turn.** The search includes the opponent's first reply, but stops before the opponent can reply a second time. | 3-ply | 4-ply |
-| **Each player gets two searched turns.** | 4-ply | Not available |
+Using GNU 4ply as a review means that it can not be considered a neutral source of perfect answers. It's lower ply cousin also competed in the matches, and it's likely to favour those moves at higher ply as well.  The results are therefore described as GNU's estimates, not as proof of the objectively correct decision.
 
-GNU 2-ply and Sage 3-ply were used because each player receives one searched turn before the resulting position is evaluated.
+We ideally would be able to BGBlitz or XG, and will be future work if we can get permission from the developers.  This is always a challenge with open-source projects unfortunately.  This doesn't stop you from reviewing the match files we publish in bulk and letting us know what you find!  We can publish your results too!
 
-The shallower pairing stops after only the player on roll has moved. That can make an immediate gain look stronger than it really is because the search does not continue far enough to calculate the opponent's checker-play response.
+### Some disagreements receive a deeper look
 
-For example, the engine may see a hit, an escape, a stronger attack, or a useful point. It stops before searching whether the opponent can hit back, enter from the bar, escape, or otherwise undo the gain.
+A normal match review can find positions where Sage and GNU preferred different actions. These positions can then be examined more deeply by playing out many possible continuations from the same position. This is called a rollout.
 
-This does not mean the shallower search always prefers aggressive play. The problem is broader: one player receives a searched turn while the other does not.
+Best practice (since GNU is reviewing) is for Sage to do a rollout for the positions which GNU 4 ply said was "wrong".  We can then look at the positions and consider outselves what is the best move.  Or ask another engine.
 
-The deeper uneven pairing has the same issue at another level. The original player receives two searched turns, while the opponent receives only one.
+## What is checked and published?
 
-Matching the amount of lookahead makes the comparison closer, but it does not make the engines identical. They still use different neural networks, cube models, move filters, and internal methods.
+The project keeps the evidence needed to follow the comparison from the original plan to the public result. This includes the engine versions and settings, prepared dice, completed match files, review files, selected positions, deeper analysis, and validation reports.
 
-## How are the matches reviewed?
+The important checks are also recorded. We confirm that the intended engines and rules were used, the matches completed, the published totals match the source files, and the deeper analysis used the stated positions and settings. Failed checks, retries, and exclusions are not silently removed.
 
-Winning more matches and receiving a better decision review are not the same thing.
+The public website explains the findings. The repository keeps the more detailed record for readers who want to inspect or repeat the work.
 
-An engine can win more matches because it played better, because it received more helpful rolls, or because of both. A post-match review examines the decisions made during the matches instead of looking only at the final scores.
+## What can the benchmark tell us?
 
-The difficulty is that engines do not always provide the same review tools.
+A study can show what happened between specific engine versions under specific rules and settings. It can also show how a named reviewer judged their decisions and what deeper analysis found in selected disagreements.
 
-When a complete match reviewer is available, the benchmark uses the same reviewer and settings for decisions made by both engines. This keeps the scoring procedure consistent. It does not make the reviewer neutral or infallible.
-
-A stronger review by the same engine that played a match may favour decisions that resemble its own lower-strength choices. The review should therefore be described as that engine's estimate, not as proof of perfect play.
-
-For Sage vs GNU: Stage 1, GNU reviewed both sides of every completed match at 4-ply because GNU provides a complete automated match-review tool. Sage does not currently provide the same complete review through the Python interface used by the project.
-
-## How are disagreements examined?
-
-A complete review can identify positions where the engines chose different checker plays or cube actions.
-
-Selected disagreements can then be studied more deeply. For each selected position, the benchmark should publish:
-
-1. the exact position, score, cube state, and decision;
-2. the rule used to select the position;
-3. the analysis or rollout method used;
-4. the settings and method call;
-5. the returned result.
-
-When both engines provide a reliable automated rollout, the same position can be examined by both. When only one engine provides that method through the available interface, the limitation is stated clearly.
-
-A rollout answers a narrower question: when an engine examines this position more deeply, does it keep its earlier recommendation or change it?
-
-A rollout is still that engine's estimate. Neither engine's rollout should be presented as the truth.
-
-## Current study
-
-::: {.bms-status-panel}
-[CURRENT STUDY :: STAGE 1]{.bms-status-label}
-
-### Sage vs GNU: Stage 1
-
-Sage and GNU played 20 seven-point matches.
-
-```text
-10 mirrored pairs
-20 seven-point matches
-Fixed engine settings
-GNU 4-ply match review
-Selected Sage disagreement rollouts planned
-First small study
-```
-
-The study shows what happened in these matches and tests the complete benchmark process. It does not settle which engine is stronger overall.
-
-The GNU 4-ply review provides one deeper estimate of decision quality. Selected disagreement positions can then be examined with Sage's built-in rollout method. Neither result is treated as neutral ground truth.
-
-::: {.bms-button-row}
-[Read Sage vs GNU: Stage 1](sage-vs-gnu-stage1/index.qmd){.bms-button-primary}
-:::
-:::
+It cannot prove that one engine is always stronger. Backgammon results are affected by the rolls, reviewers can disagree, and different settings can produce different behaviour. Larger studies can provide stronger evidence, but every conclusion still belongs to the conditions that were tested.
 
 ## What comes next?
 
-Stage 1 is intentionally small.
+We are going onto Stage 1 where we will test the full process with a small set of matches. The same approach can later be used for larger studies, different settings, and other engines.
 
-After the validated Stage 1 figures are integrated, the next analysis will identify decisions where Sage and GNU disagree and examine selected positions with Sage's built-in `rollout` method.
-
-The selection rule, positions, method calls, and returned results will be published. The rollouts can show whether Sage reinforces or changes its earlier recommendation, but they remain Sage's estimate rather than a final answer.
-
-The published positions will also allow others to run supplemental GNU rollouts or compare the decisions with other engines. Any manual results should be labelled separately from the automated benchmark.
-
-If the comparison is useful, the project can run a longer study using the same public process.
-
-## What is published?
-
-Each released study records:
-
-- the comparison question and settings chosen before the run;
-- the public source-code commit used to run the matches;
-- engine versions, builds, models, and checker-play and cube settings;
-- the reason the selected settings are considered comparable;
-- match length and match rules;
-- the pseudorandom number generator, seeds, and dice-file preparation procedure;
-- the prepared dice files and their checksums;
-- which engine and physical seat received each dice sequence;
-- run commands, environment details, thread settings, and recorded runtimes;
-- the original match files and post-match review files;
-- reviewer settings and eligible-decision definitions;
-- the rule used to identify and select disagreements;
-- the selected positions, rollout calls, and returned results;
-- any supplemental manual analysis, clearly separated from the automated pipeline;
-- validation results, interrupted runs, retries, and exclusions;
-- release manifests and checksums.
-
-The goal is to make each comparison understandable, inspectable, and reproducible while keeping match outcomes, review estimates, rollout evidence, and interpretation clearly separated.
+Each new study will publish its plan before play and keep its results separate, so readers can see exactly which evidence supports each conclusion.
