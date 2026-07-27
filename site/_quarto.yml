@@ -2,11 +2,13 @@ project:
   type: website
   output-dir: _site
   pre-render:
+    - python ../scripts/learn_glossary.py generate
     - python ../social_generator/scripts/social/run_social_pipeline.py
   resources:
     - assets/logo.svg
     - "assets/icons/**"
     - "assets/social/generated/*.png"
+    - assets/bms-glossary.js
     - "data/engine-benchmark/**"
     - "engine-benchmark/**/figures/**"
     - "engine-benchmark/**/tables/**"
@@ -14,6 +16,9 @@ project:
     - "engine-benchmark/**/captions.yml"
     - "engine-benchmark/**/PUBLICATION_MANIFEST.yml"
     - "engine-benchmark/**/checksums.sha256"
+
+filters:
+  - bms-link-policy
 
 website:
   title: "Backgammon Made Simple"
@@ -49,7 +54,7 @@ website:
       style: docked
       collapse-level: 2
       contents:
-        - text: "Learn"
+        - text: "Learn Home"
           href: learn/index.qmd
         - section: "Start Here"
           contents:
@@ -63,6 +68,13 @@ website:
         - section: "Opening Play Lab"
           contents:
             - learn/opening-play/index.qmd
+        - text: "Lesson Finder"
+          href: learn/lesson-finder/index.qmd
+        - text: "Backgammon Glossary <span class='visually-hidden'>(opens in a new tab)</span>"
+          href: learn/glossary/index.qmd
+          target: _blank
+          rel: noopener
+          aria-label: "Backgammon Glossary (opens in a new tab)"
   page-footer:
     left: |
       Copyright 2026 Marty Gale - Backgammon Made Simple

@@ -2,6 +2,21 @@
 title: "What the Cube Is Really Asking"
 description: "A first lesson scaffold for understanding the doubling cube."
 sidebar: learn
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Doubling Cube
+terms:
+  - cube-action
+  - doubling-cube
+  - volatility
+  - take-point
+  - market-loser
+  - gammon
+  - own-the-cube
+  - match-play
+body-classes: bms-learn-article
 ---
 
 ::: {.bms-lesson-meta}

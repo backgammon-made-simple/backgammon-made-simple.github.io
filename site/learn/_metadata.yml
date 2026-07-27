@@ -1,0 +1,4 @@
+filters:
+  - bms-learn-taxonomy
+  - bms-term-lookup
+glossary-links-new-tab: true

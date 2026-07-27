@@ -1,2 +1,5 @@
 filters:
   - bms-research-taxonomy
+  - bms-term-lookup
+term-lookup: true
+glossary-links-new-tab: true

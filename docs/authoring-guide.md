@@ -30,6 +30,55 @@ Edit `site/_quarto.yml` to change the navbar. The current public navigation is:
 
 The Learn sidebar also lives in `site/_quarto.yml`. It is the place to reorder lessons, move sections, and expose or hide learning tracks.
 
+## Learn Lesson Taxonomy
+
+Every file under `site/learn/` that represents a lesson must declare `categories`, `tags`, and `terms`.
+
+Allowed difficulty categories:
+
+- `Beginner`
+- `Intermediate`
+- `Advanced`
+
+Allowed learning-track tags:
+
+- `Doubling Cube`
+- `Checker Play`
+- `Opening Play`
+- `Match Play`
+- `Endgames`
+- `Engines and Analysis`
+
+Use YAML lists even when selecting one value. Multiple difficulties or tracks mean the lesson is appropriate to each selected value. `terms` must contain canonical glossary slugs only; never use an alias slug. Related glossary links are generated only from this explicit metadata.
+
+A complete lesson header looks like:
+
+```yaml
+---
+title: "Why Is 25% the Basic Take Point When a Double Is Offered?"
+description: "Learn the simplified comparison between taking and passing."
+sidebar: learn
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Doubling Cube
+terms:
+  - take-point
+  - equity
+body-classes: bms-learn-article
+---
+```
+
+The generated canonical-slug reference is [learn-glossary-terms.md](learn-glossary-terms.md). Regenerate glossary pages and that terms-only list with:
+
+```powershell
+python scripts/learn_glossary.py generate
+python scripts/learn_glossary.py validate
+```
+
+Do not add glossary relationships by scanning lesson prose. A keyword scan may be used as an authoring warning, but the public relationship must remain explicit in `terms`.
+
 ## Blog Discovery
 
 The blog listing is driven by `listing:` metadata on `site/blog/index.qmd`, which points at `site/posts/**/*.qmd`. Add or remove posts by creating or deleting files under `site/posts/`.

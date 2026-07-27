@@ -18,3 +18,13 @@ cards:
   subtitle: Question-driven lessons, position analysis and backgammon research.
   category: ''
   visual: ''
+- slug: glossary
+  kind: section
+  width: 1200
+  height: 630
+  output: site/assets/social/generated/social-glossary.png
+  title: Backgammon Glossary
+  subtitle: A searchable backgammon dictionary of terms and glossary for concepts
+    used throughout Backgammon Made Simple.
+  category: Learn
+  visual: ''

@@ -2,6 +2,21 @@
 title: "Reading Positions and Engine Analysis"
 description: "How to read position context, engine output, and uncertainty before turning an answer into a lesson."
 sidebar: learn
+categories:
+  - Intermediate
+  - Advanced
+tags:
+  - Engines and Analysis
+terms:
+  - equity
+  - rollout
+  - error-rate
+  - game-winning-chances
+  - gammon
+  - backgammon
+  - own-the-cube
+  - match-play
+body-classes: bms-learn-article
 ---
 
 Engine analysis is useful when it helps you understand a decision, not when it becomes a substitute for reading the position.
