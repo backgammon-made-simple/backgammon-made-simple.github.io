@@ -20,6 +20,7 @@ listing:
   feed: false
 execute:
   enabled: false
+term-lookup: false
 ---
 
 ::: {.bms-page-shell}

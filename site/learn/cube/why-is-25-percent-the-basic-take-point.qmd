@@ -7,7 +7,22 @@ description: >
   match score can move the real take point away from 25%.
 sidebar: learn
 categories:
-  - The Doubling Cube
+  - Beginner
+  - Intermediate
+tags:
+  - Doubling Cube
+terms:
+  - take-point
+  - take
+  - pass
+  - doubling-cube
+  - gammon
+  - backgammon
+  - own-the-cube
+  - redouble
+  - match-play
+  - volatility
+  - equity
 level: Foundation
 body-classes: bms-learn-article
 page-layout: article

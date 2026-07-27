@@ -2,6 +2,21 @@
 title: "The Doubling Cube"
 description: "A question-led learning path for understanding cube decisions."
 sidebar: learn
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Doubling Cube
+terms:
+  - doubling-cube
+  - take-point
+  - own-the-cube
+  - market-loser
+  - gammon
+  - match-play
+  - redouble
+  - cube-action
+body-classes: bms-learn-article
 ---
 
 The cube changes the stakes, but a good cube decision is not just a judgment about who is ahead. This path begins with the basic take comparison, then adds cube ownership, timing, gammons, match score, and future cube value.

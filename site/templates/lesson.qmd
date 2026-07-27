@@ -3,6 +3,14 @@ title: "Lesson Template"
 description: "A reusable lesson skeleton."
 sidebar: learn
 bibliography: ../references.bib
+categories:
+  - Beginner
+tags:
+  - Doubling Cube
+terms:
+  - take-point
+  - equity
+body-classes: bms-learn-article
 ---
 
 ::: {.bms-lesson-meta}

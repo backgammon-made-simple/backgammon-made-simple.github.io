@@ -2,6 +2,26 @@
 title: "Opening Play Lab"
 description: "A parallel track for opening principles, opening rolls, and second-roll replies."
 sidebar: learn
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Opening Play
+  - Checker Play
+terms:
+  - opening-roll
+  - builder
+  - stack
+  - flexibility
+  - split
+  - slot
+  - run
+  - advanced-anchor
+  - prime
+  - blitz
+  - double-hit
+  - game-plan
+body-classes: bms-learn-article
 ---
 
 Opening Play Lab is a parallel learning track. It does not need to come before the cube curriculum.

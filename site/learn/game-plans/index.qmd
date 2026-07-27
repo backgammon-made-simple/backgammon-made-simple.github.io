@@ -2,6 +2,24 @@
 title: "The Main Game Plans"
 description: "A compact refresher on race, holding game, prime, blitz, and backgame plans."
 sidebar: learn
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Checker Play
+  - Doubling Cube
+terms:
+  - race
+  - wastage
+  - timing
+  - holding-game
+  - advanced-anchor
+  - prime
+  - blitz
+  - back-game
+  - gammon
+  - market-loser
+body-classes: bms-learn-article
 ---
 
 This refresher is a bridge into the cube curriculum, not a complete beginner unit.

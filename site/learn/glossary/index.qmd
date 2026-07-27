@@ -1,0 +1,63 @@
+---
+title: "Backgammon Glossary"
+description: "A searchable backgammon dictionary of terms and glossary for concepts used throughout Backgammon Made Simple."
+sidebar: learn
+page-layout: article
+body-classes: bms-glossary-index
+toc: false
+image: /assets/social/generated/social-glossary.png
+social-card: true
+social-card-slug: glossary
+social-card-kind: section
+social-card-category: Learn
+execute:
+  enabled: false
+---
+
+```{=html}
+<span id="bms-glossary-top" class="bms-glossary-top-target" tabindex="-1"></span>
+```
+
+Use the search and filters to find a definition, or choose a letter to browse. Alias searches reveal the canonical term, and each term title opens its stable definition page.
+
+```{=html}
+<section class="bms-glossary-filter-panel" data-bms-glossary-filters aria-label="Search and filter the glossary">
+  <div class="bms-glossary-search-group">
+    <label for="bms-glossary-search">Search terms and aliases</label>
+    <input id="bms-glossary-search" type="search" autocomplete="off" spellcheck="false" placeholder="Try “take point” or an alias" data-bms-glossary-search>
+  </div>
+
+  <details class="bms-glossary-filter-disclosure" data-bms-glossary-category-disclosure>
+    <summary>Glossary category</summary>
+    <div class="bms-glossary-filter-options" role="group" aria-label="Filter by glossary category" data-bms-glossary-category-filters></div>
+  </details>
+
+  <details class="bms-glossary-filter-disclosure" data-bms-glossary-track-disclosure>
+    <summary>Related learning track</summary>
+    <div class="bms-glossary-filter-options" role="group" aria-label="Filter by related learning track">
+      <button type="button" class="bms-glossary-filter bms-glossary-filter--track" data-bms-glossary-filter-track="Doubling Cube" aria-pressed="false">Doubling Cube</button>
+      <button type="button" class="bms-glossary-filter bms-glossary-filter--track" data-bms-glossary-filter-track="Checker Play" aria-pressed="false">Checker Play</button>
+      <button type="button" class="bms-glossary-filter bms-glossary-filter--track" data-bms-glossary-filter-track="Opening Play" aria-pressed="false">Opening Play</button>
+      <button type="button" class="bms-glossary-filter bms-glossary-filter--track" data-bms-glossary-filter-track="Match Play" aria-pressed="false">Match Play</button>
+      <button type="button" class="bms-glossary-filter bms-glossary-filter--track" data-bms-glossary-filter-track="Endgames" aria-pressed="false">Endgames</button>
+      <button type="button" class="bms-glossary-filter bms-glossary-filter--track" data-bms-glossary-filter-track="Engines and Analysis" aria-pressed="false">Engines and Analysis</button>
+    </div>
+  </details>
+
+  <div class="bms-glossary-filter-footer">
+    <p class="bms-glossary-result-count" aria-live="polite" data-bms-glossary-result-count></p>
+    <button type="button" class="bms-glossary-clear" data-bms-glossary-clear hidden>Reset search and filters</button>
+  </div>
+</section>
+```
+
+{{< include _entries.html >}}
+
+```{=html}
+<p class="bms-glossary-empty" data-bms-glossary-empty hidden>
+  No glossary terms match this search and filter combination.
+</p>
+<a class="bms-glossary-back-to-top" href="#bms-glossary-top" data-bms-glossary-back-to-top hidden>
+  Back to top
+</a>
+```

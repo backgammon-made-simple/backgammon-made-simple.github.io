@@ -4,11 +4,23 @@ description: "Clear, position-based lessons for understanding backgammon decisio
 sidebar: learn
 page-layout: full
 bibliography: ../references.bib
+body-classes: bms-learn-index
+execute:
+  enabled: false
 ---
 
 :::::::::::::::::::::::::: {.bms-page-shell}
 
 > Come with a question.  Leave with a clear mental model you can use at the board.
+
+::: {.bms-button-row}
+
+[Start with the Cube Lessons](/learn/cube/){.bms-button-outline}
+
+[Find Lessons by Difficulty](/learn/lesson-finder/){.bms-button-outline}
+
+[Look Up a Term](/learn/glossary/){.bms-button-outline target="_blank" rel="noopener" aria-label="Look Up a Term (opens in a new tab)"}
+:::
 
 ## How Each Lesson Works
 
@@ -41,23 +53,10 @@ Learn a principle that can help in other positions.
 :::::::::
 
 We use engine analysis to support the lessons, but the focus is on the explanation.
-We use engine analysis to support the lessons, but the focus is on the explanation.
 
-## Why We Are Starting With the Doubling Cube
+## Start with The Doubling Cube.  More lesson topics are coming.
 
-We are starting with the doubling cube because it is one of the hardest parts of backgammon to learn by intuition alone.
-
-Checker play gives you multipe options to choose from.  The cube changes the value of the game with only 2 options. You must decide whether your advantage is large enough to double or just roll on.  Receivers decide if they should take or pass.
-
-These choices become easier when they are broken into smaller questions. That is what the first learning path will do.
-
-::: {.callout-note}
-The doubling cube is only the beginning. Lessons on checker play, openings, match play, endgames, and engine analysis are coming soon.
-:::
-
-## More Lessons Are Coming
-
-The full Learn section will grow to include:
+The full Learn section will grow beyond the cube to include:
 
 | Track | What you will learn |
 |---|---|

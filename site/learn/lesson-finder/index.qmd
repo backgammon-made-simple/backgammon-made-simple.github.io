@@ -1,0 +1,84 @@
+---
+title: "Lesson Finder"
+description: "Find a Backgammon Made Simple lesson by difficulty and learning track."
+sidebar: learn
+page-layout: full
+body-classes: bms-lesson-finder
+listing:
+  id: learn-lessons
+  contents:
+    - ../start-here/index.qmd
+    - ../game-plans/index.qmd
+    - ../reading-positions-and-engines/index.qmd
+    - ../cube/index.qmd
+    - ../cube/what-the-cube-is-asking/index.qmd
+    - ../cube/why-is-25-percent-the-basic-take-point.qmd
+    - ../opening-play/index.qmd
+  template: ../_lesson-listing.ejs.md
+  sort-ui: false
+  filter-ui: false
+  feed: false
+execute:
+  enabled: false
+---
+
+```{=html}
+<section class="bms-learn-filter-panel" data-bms-learn-filters aria-label="Filter Learn lessons">
+  <p class="visually-hidden">
+    Select one or more difficulties and learning tracks. Lessons match any selection within a group and every group that has a selection.
+  </p>
+
+  <div class="bms-learn-filter-group">
+    <p class="bms-learn-filter-label">Difficulty</p>
+    <div class="bms-learn-filter-options" role="group" aria-label="Filter by difficulty">
+      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Beginner" aria-pressed="false">
+        <span>Beginner</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Intermediate" aria-pressed="false">
+        <span>Intermediate</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Advanced" aria-pressed="false">
+        <span>Advanced</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="bms-learn-filter-group">
+    <p class="bms-learn-filter-label">Learning track</p>
+    <div class="bms-learn-filter-options" role="group" aria-label="Filter by learning track">
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Doubling Cube" aria-pressed="false">
+        <span>Doubling Cube</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Checker Play" aria-pressed="false">
+        <span>Checker Play</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Opening Play" aria-pressed="false">
+        <span>Opening Play</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Match Play" aria-pressed="false">
+        <span>Match Play</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Endgames" aria-pressed="false">
+        <span>Endgames</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Engines and Analysis" aria-pressed="false">
+        <span>Engines and Analysis</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="bms-learn-filter-footer">
+    <p class="bms-learn-result-count" aria-live="polite" data-bms-learn-result-count></p>
+    <button type="button" class="bms-learn-clear" data-bms-learn-clear hidden>Reset filters</button>
+  </div>
+</section>
+```
+
+::: {#learn-lessons}
+:::
+
+```{=html}
+<p class="bms-learn-empty" data-bms-learn-empty hidden>
+  No lessons match the selected difficulty and learning track. Reset the filters to see every lesson.
+</p>
+```

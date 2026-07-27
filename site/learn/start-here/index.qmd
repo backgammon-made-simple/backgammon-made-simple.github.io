@@ -2,6 +2,14 @@
 title: "Who This Site Is For"
 description: "How to use Backgammon Made Simple if you know the rules and want to understand decisions."
 sidebar: learn
+categories:
+  - Beginner
+tags:
+  - Doubling Cube
+terms:
+  - doubling-cube
+  - game-plan
+body-classes: bms-learn-article
 ---
 
 Backgammon Made Simple is for players who know the rules and want to understand why strong moves and cube decisions work.
