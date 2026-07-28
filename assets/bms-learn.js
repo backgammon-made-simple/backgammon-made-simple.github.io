@@ -4,6 +4,7 @@
   const DIFFICULTY_SELECTOR = "[data-bms-filter-difficulty]";
   const TRACK_SELECTOR = "[data-bms-filter-track]";
   const LESSON_SELECTOR = "[data-bms-learn-item]";
+  const GROUP_SELECTOR = "[data-bms-learn-group]";
 
   function parseList(value) {
     if (!value) {
@@ -31,6 +32,28 @@
     );
   }
 
+  function normalizeLearnSearch(value) {
+    return String(value || "")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\p{L}\p{N}]+/gu, " ")
+      .trim()
+      .toLocaleLowerCase();
+  }
+
+  function itemMatchesLesson(item, query, difficulties, tracks) {
+    const normalizedQuery = normalizeLearnSearch(query);
+    const matchesSearch =
+      normalizedQuery.length === 0 ||
+      item.searchValues.some(function (value) {
+        return normalizeLearnSearch(value).includes(normalizedQuery);
+      });
+    return (
+      matchesSearch &&
+      itemMatchesTaxonomy(item, difficulties, tracks)
+    );
+  }
+
   function sortedValues(values) {
     return Array.from(values).sort(function (left, right) {
       return left.localeCompare(right);
@@ -54,20 +77,26 @@
         return {
           element: element,
           difficulties: parseList(element.dataset.bmsDifficulties),
-          tracks: parseList(element.dataset.bmsTracks)
+          tracks: parseList(element.dataset.bmsTracks),
+          searchValues: parseList(element.dataset.bmsSearch)
         };
       }
     );
+    const groups = Array.from(list.querySelectorAll(GROUP_SELECTOR));
     const difficultyButtons = Array.from(
       panel.querySelectorAll(DIFFICULTY_SELECTOR)
     );
     const trackButtons = Array.from(panel.querySelectorAll(TRACK_SELECTOR));
+    const searchInput = panel.querySelector("[data-bms-learn-search]");
     const resultCount = panel.querySelector("[data-bms-learn-result-count]");
     const clearButton = panel.querySelector("[data-bms-learn-clear]");
     const emptyState = document.querySelector("[data-bms-learn-empty]");
     const selectedDifficulties = new Set();
     const selectedTracks = new Set();
     const parameters = new URLSearchParams(window.location.search);
+    if (searchInput) {
+      searchInput.value = parameters.get("search") || "";
+    }
 
     parameters.getAll("difficulty").forEach(function (value) {
       if (
@@ -100,6 +129,11 @@
       const next = new URL(window.location.href);
       next.searchParams.delete("difficulty");
       next.searchParams.delete("track");
+      next.searchParams.delete("search");
+      const query = searchInput ? searchInput.value.trim() : "";
+      if (query) {
+        next.searchParams.set("search", query);
+      }
       sortedValues(selectedDifficulties).forEach(function (value) {
         next.searchParams.append("difficulty", value);
       });
@@ -110,12 +144,18 @@
     }
 
     function updateCounts() {
+      const query = searchInput ? searchInput.value : "";
       difficultyButtons.forEach(function (button) {
         const value = button.dataset.bmsFilterDifficulty || "";
         const count = items.filter(function (item) {
           return (
             item.difficulties.includes(value) &&
-            matchesAny(item.tracks, sortedValues(selectedTracks))
+            itemMatchesLesson(
+              item,
+              query,
+              [],
+              sortedValues(selectedTracks)
+            )
           );
         }).length;
         const countElement = button.querySelector(".bms-learn-filter-count");
@@ -131,7 +171,12 @@
         const count = items.filter(function (item) {
           return (
             item.tracks.includes(value) &&
-            matchesAny(item.difficulties, sortedValues(selectedDifficulties))
+            itemMatchesLesson(
+              item,
+              query,
+              sortedValues(selectedDifficulties),
+              []
+            )
           );
         }).length;
         const countElement = button.querySelector(".bms-learn-filter-count");
@@ -146,13 +191,37 @@
       const shouldUpdateUrl = !options || options.updateUrl !== false;
       const difficulties = sortedValues(selectedDifficulties);
       const tracks = sortedValues(selectedTracks);
+      const query = searchInput ? searchInput.value : "";
       let visibleCount = 0;
 
       items.forEach(function (item) {
-        const visible = itemMatchesTaxonomy(item, difficulties, tracks);
+        const visible = itemMatchesLesson(
+          item,
+          query,
+          difficulties,
+          tracks
+        );
         item.element.hidden = !visible;
         if (visible) {
           visibleCount += 1;
+        }
+      });
+
+      groups.forEach(function (group) {
+        const groupItems = Array.from(
+          group.querySelectorAll(LESSON_SELECTOR)
+        );
+        const groupVisibleCount = groupItems.filter(function (element) {
+          return !element.hidden;
+        }).length;
+        group.hidden = groupVisibleCount === 0;
+        const groupCount = group.querySelector(
+          "[data-bms-learn-group-count]"
+        );
+        if (groupCount) {
+          groupCount.textContent =
+            groupVisibleCount +
+            (groupVisibleCount === 1 ? " lesson" : " lessons");
         }
       });
 
@@ -175,7 +244,9 @@
       }
       if (clearButton) {
         clearButton.hidden =
-          selectedDifficulties.size === 0 && selectedTracks.size === 0;
+          selectedDifficulties.size === 0 &&
+          selectedTracks.size === 0 &&
+          normalizeLearnSearch(query).length === 0;
       }
       if (shouldUpdateUrl) {
         updateUrl();
@@ -214,9 +285,18 @@
       if (clear) {
         selectedDifficulties.clear();
         selectedTracks.clear();
+        if (searchInput) {
+          searchInput.value = "";
+        }
         applyFilters();
       }
     });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", function () {
+        applyFilters();
+      });
+    }
 
     list.addEventListener("click", function (event) {
       const difficultyButton = event.target.closest(
@@ -424,8 +504,10 @@
   }
 
   const publicApi = {
+    itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
+    normalizeLearnSearch: normalizeLearnSearch,
     normalizeLookupQuery: normalizeLookupQuery,
     parseList: parseList
   };

@@ -292,6 +292,32 @@
   background: var(--bms-surface);
 }
 
+.bms-learn-search-group label {
+  display: block;
+  margin: 0 0 0.45rem;
+  color: var(--bms-text-muted);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 680;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.bms-learn-search-group input {
+  width: 100%;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--bms-border-strong);
+  border-radius: 4px;
+  background: var(--bms-surface);
+  color: var(--bms-text);
+}
+
+.bms-learn-search-group + .bms-learn-filter-group {
+  margin-top: 0.8rem;
+}
+
 .bms-learn-filter-group + .bms-learn-filter-group,
 .bms-glossary-filter-group + .bms-glossary-filter-group,
 .bms-glossary-search-group + .bms-glossary-filter-group {
@@ -403,11 +429,174 @@
   gap: 1rem;
 }
 
-body.bms-lesson-finder main#quarto-document-content {
+body.bms-learn-index main#quarto-document-content {
   box-sizing: border-box;
   width: min(100%, 960px);
   margin-right: auto;
   margin-left: auto;
+}
+
+body.bms-learn-index .bms-learn-filter-panel {
+  margin-bottom: 1rem;
+  padding: 0.85rem;
+}
+
+body.bms-learn-index .bms-learn-filter-options {
+  gap: 0.3rem;
+}
+
+body.bms-learn-index .bms-learn-filter {
+  min-height: 1.7rem;
+  padding: 0.25rem 0.48rem;
+  font-size: 0.72rem;
+}
+
+body.bms-learn-index .bms-learn-filter-count {
+  margin-left: 0.28rem;
+  font-size: 0.64rem;
+}
+
+.bms-learn-catalogue {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.bms-learn-catalogue-section {
+  overflow: hidden;
+  border: 1px solid var(--bms-border);
+  border-radius: 6px;
+  background: var(--bms-surface);
+}
+
+.bms-learn-catalogue-section[hidden] {
+  display: none;
+}
+
+.bms-learn-catalogue-section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--bms-border);
+  background: var(--bms-ivory);
+}
+
+.bms-learn-catalogue-section-heading h3 {
+  margin: 0;
+  color: var(--bms-navy-dark);
+  font-size: 0.93rem;
+  line-height: 1.3;
+}
+
+.bms-learn-catalogue-section-heading span {
+  flex: 0 0 auto;
+  color: var(--bms-text-muted);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.68rem;
+}
+
+.bms-learn-catalogue-section-heading > p {
+  margin: 0;
+}
+
+.bms-learn-catalogue-section-items {
+  padding: 0.2rem 0;
+}
+
+.bms-learn-catalogue-item {
+  padding: 0.48rem 0.7rem;
+  border-left: 2px solid transparent;
+}
+
+.bms-learn-catalogue-item + .bms-learn-catalogue-item {
+  border-top: 1px solid var(--bms-border);
+}
+
+.bms-learn-catalogue-item[data-bms-depth="1"] {
+  margin-left: 0.75rem;
+  padding-left: 0.7rem;
+  border-left-color: var(--bms-border-strong);
+}
+
+.bms-learn-catalogue-item[data-bms-depth="2"],
+.bms-learn-catalogue-item[data-bms-depth="3"] {
+  margin-left: 1.5rem;
+  padding-left: 0.7rem;
+  border-left-color: var(--bms-border-strong);
+}
+
+.bms-learn-catalogue-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.bms-learn-catalogue-title-row > p {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.bms-learn-catalogue-link {
+  color: var(--bms-navy-dark);
+  font-size: 0.95rem;
+  font-weight: 720;
+  line-height: 1.3;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.13em;
+}
+
+.bms-learn-catalogue-taxonomy {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.22rem;
+}
+
+.bms-learn-catalogue-tag {
+  padding: 0.08rem 0.3rem;
+  border: 1px solid var(--bms-border);
+  border-radius: 999px;
+  color: var(--bms-text-muted);
+  font-size: 0.63rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.bms-learn-catalogue-description {
+  margin-top: 0.2rem;
+}
+
+.bms-learn-catalogue-description > summary {
+  width: max-content;
+  color: var(--bms-link);
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.bms-learn-catalogue-description p {
+  margin: 0.3rem 0 0;
+  color: var(--bms-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.bms-learn-catalogue-subsection-label {
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  color: var(--bms-text-muted);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 680;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .bms-learn-lesson-card {
@@ -851,6 +1040,22 @@ button.bms-learn-card-taxonomy {
   .bms-learn-filter,
   .bms-glossary-filter {
     min-height: 2.65rem;
+  }
+
+  .bms-learn-catalogue-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .bms-learn-catalogue-title-row > p {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .bms-learn-catalogue-taxonomy {
+    justify-content: flex-start;
   }
 
   .bms-glossary-back-to-top {
