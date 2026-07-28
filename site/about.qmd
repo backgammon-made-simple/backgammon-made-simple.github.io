@@ -54,21 +54,140 @@ I am not presenting myself as one of the world's great backgammon players. I am 
 
 ## Open Source Tools for the Game
 
-Backgammon Made Simple is also a home for useful technology around the game.
+Backgammon Made Simple is also a home for useful technology around the game:
 
-That includes position tools, match-prediction models, reproducible engine comparisons, board-rendering software, public datasets, and research code. Where it is practical and responsible, the methods and tools will be made public so other people can inspect them, reuse them, and build something better.
 
-The website is the main product. The software exists to support clearer learning, stronger evidence, more interesting questions, and greater interest in the game.
+
+::::::: {.bms-section}
+::: {.bms-eyebrow}
+OPEN SOURCE
+:::
+
+## Tools you can inspect and reuse
+
+::: {.bms-section-lead}
+The website and tools behind it are open source. Inspect the code, check the methods, report a problem, or reuse parts of the work.
+:::
+
+:::::: {.bms-repository-grid aria-label="Open-source project repositories"}
+::::: {.bms-card .bms-repository-card}
+::: {.bms-repository-mark aria-hidden="true"}
+&lt;/&gt;
+:::
+
+::: {.bms-repository-copy}
+<span class="bms-repository-label">QUARTO :: R :: SHINY</span>
+
+### Backgammon Made Simple
+
+The website, lessons, analyzer frontend, research articles, and public site data.
+:::
+
+::: {.bms-repository-action}
+[View source](https://github.com/backgammon-made-simple/backgammon-made-simple.github.io)
+:::
+:::::
+
+::::: {.bms-card .bms-repository-card}
+::: {.bms-repository-mark aria-hidden="true"}
+[Py]
+:::
+
+::: {.bms-repository-copy}
+<span class="bms-repository-label">PYTHON :: ENGINE INTEGRATION</span>
+
+### Backgammon Engine Kit
+
+Analyzer backend and other Python tools for running backgammon engines and turning their output into consistent, structured results.
+:::
+
+::: {.bms-repository-action}
+[View repository](https://github.com/backgammon-made-simple/backgammon-engine-kit)
+:::
+:::::
+
+::::: {.bms-card .bms-repository-card}
+::: {.bms-repository-mark aria-hidden="true"}
+[⚔]
+:::
+
+::: {.bms-repository-copy}
+<span class="bms-repository-label"> PYTHON  :: BENCHMARKING</span>
+
+### Backgammon Engine Benchmark
+
+Tools for running reproducible engine-versus-engine matches, checking the results, and publishing the evidence.
+:::
+
+::: {.bms-repository-action}
+[View repository](https://github.com/backgammon-made-simple/backgammon-engine-benchmark)
+:::
+:::::
+
+::::: {.bms-card .bms-repository-card}
+::: {.bms-repository-mark aria-hidden="true"}
+[R]
+:::
+
+::: {.bms-repository-copy}
+<span class="bms-repository-label">R :: BOARD RENDERING</span>
+
+### backgammonboard
+
+[R] library for drawing backgammon boards and creating clear position and analysis figures.
+:::
+
+::: {.bms-repository-action}
+[View repository](https://github.com/backgammon-made-simple/backgammonboard)
+:::
+:::::
+
+::::: {.bms-card .bms-repository-card}
+::: {.bms-repository-mark aria-hidden="true"}
+[R]
+:::
+
+::: {.bms-repository-copy}
+<span class="bms-repository-label">R :: ANALYSIS</span>
+
+### backgammoncalculator
+
+[R] library for calculating backgammon measures and supporting reproducible analysis.
+:::
+
+::: {.bms-repository-action}
+[View repository](https://github.com/backgammon-made-simple/backgammoncalculator)
+:::
+:::::
+::::::
+:::::::
 
 ## Built to Be Useful
 
-The project does not need to explain the whole game before it becomes useful.
-
-It can begin with one good question, one position, and one explanation that changes how someone sees the board.
-
-That is the standard I am trying to meet.
-
+This is just the start!  We want to build tools and articles which are useuful for you! 
 [Read what I am building ->](/research/)
+
+
+::::::: {.bms-section .bms-section--compact .bms-section--ruled-top}
+::: {.bms-eyebrow}
+FEEDBACK
+:::
+
+## Help make it better
+
+::: {.bms-section-lead}
+Found a mistake, have a question, or see something that could be clearer? If you are technical you can share feedback by opening an issue on GitHub.
+:::
+
+::: {.bms-button-row}
+[Give feedback on GitHub](https://github.com/backgammon-made-simple/backgammon-made-simple.github.io/issues/new?template=feedback.yml){.bms-button-primary}
+:::
+:::::::
+
+
+
+
+
 :::::
 ::::::
 
