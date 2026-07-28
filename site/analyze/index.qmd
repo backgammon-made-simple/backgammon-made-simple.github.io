@@ -120,7 +120,7 @@ Open the preview directly or send the encoded position URL to another player.
 :::
 
 ::: {.bms-external-link}
-[Open this position in a new tab →](https://backgammon-made-simple.shinyapps.io/position-dashboard/?position=XGID%3D-B-BBBF-------a----dccb-b-%3A1%3A-1%3A1%3A65%3A0%3A3%3A0%3A5%3A8){target="_blank" rel="noopener noreferrer"}
+[Open this position →](https://backgammon-made-simple.shinyapps.io/position-dashboard/?position=XGID%3D-B-BBBF-------a----dccb-b-%3A1%3A-1%3A1%3A65%3A0%3A3%3A0%3A5%3A8)
 :::
 ::::
 

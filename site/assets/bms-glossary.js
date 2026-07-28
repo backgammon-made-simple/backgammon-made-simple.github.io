@@ -109,6 +109,15 @@
     });
   }
 
+  function bestGlossaryMatch(items, query) {
+    if (!normalizeSearch(query)) {
+      return null;
+    }
+    return rankGlossaryItems(items, query).find(function (item) {
+      return Number.isFinite(glossaryMatchRank(item, query));
+    }) || null;
+  }
+
   function matchesAny(values, selected) {
     return selected.length === 0 || selected.some(function (value) {
       return values.includes(value);
@@ -264,6 +273,12 @@
     });
   }
 
+  function expandBestGlossaryMatch(items, matchingItems, query) {
+    const bestMatch = bestGlossaryMatch(matchingItems, query);
+    setExactlyOneExpandedTerm(items, bestMatch);
+    return bestMatch;
+  }
+
   function normalizedTermFragmentUrl(currentUrl, canonicalSlug) {
     const next = new URL(currentUrl);
     next.hash = canonicalSlug;
@@ -332,6 +347,7 @@
     const selectedCategories = new Set();
     const selectedTracks = new Set();
     let activeLetterBrowse = "";
+    let autoOpenedSearchItem = null;
     const rankedResults = document.createElement("div");
     rankedResults.className = "bms-glossary-ranked-results";
     rankedResults.dataset.bmsGlossaryRankedResults = "";
@@ -486,14 +502,24 @@
     function arrangeSearchResults(query) {
       restoreAlphabeticalOrder();
       if (!normalizeSearch(query)) {
+        if (autoOpenedSearchItem) {
+          autoOpenedSearchItem.element.open = false;
+          autoOpenedSearchItem = null;
+        }
         return false;
       }
       const visibleItems = items.filter(function (item) {
         return !item.element.hidden;
       });
-      rankGlossaryItems(visibleItems, query).forEach(function (item) {
+      const rankedItems = rankGlossaryItems(visibleItems, query);
+      rankedItems.forEach(function (item) {
         rankedResults.appendChild(item.element);
       });
+      autoOpenedSearchItem = expandBestGlossaryMatch(
+        items,
+        rankedItems,
+        query
+      );
       rankedResults.hidden = visibleItems.length === 0;
       return true;
     }
@@ -771,6 +797,7 @@
           }
           activeLetterBrowse =
             link.dataset.bmsLetterLink || "";
+          autoOpenedSearchItem = null;
           closeTermEntries(items);
           applyFilters({ updateUrl: false });
           const target = document.getElementById(
@@ -827,8 +854,10 @@
   const publicApi = {
     allGroupsCollapsed: allGroupsCollapsed,
     allGroupsExpanded: allGroupsExpanded,
+    bestGlossaryMatch: bestGlossaryMatch,
     canonicalSlugForFragment: canonicalSlugForFragment,
     closeTermEntries: closeTermEntries,
+    expandBestGlossaryMatch: expandBestGlossaryMatch,
     fragmentSlug: fragmentSlug,
     glossaryMatchRank: glossaryMatchRank,
     glossaryStateFromSearch: glossaryStateFromSearch,

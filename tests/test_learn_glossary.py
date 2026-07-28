@@ -4,7 +4,10 @@ import importlib.util
 import json
 import os
 import re
+import shutil
 import unittest
+import uuid
+from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
@@ -33,6 +36,17 @@ POST_RENDER_SPEC = importlib.util.spec_from_file_location(
 assert POST_RENDER_SPEC and POST_RENDER_SPEC.loader
 bms_post_render = importlib.util.module_from_spec(POST_RENDER_SPEC)
 POST_RENDER_SPEC.loader.exec_module(bms_post_render)
+
+
+@contextmanager
+def writable_test_directory():
+    runtime_root = ROOT / "task-work" / "W3W-REGRESSION-01" / "runtime"
+    path = runtime_root / f"validator-fixture-{uuid.uuid4().hex}"
+    path.mkdir(parents=True)
+    try:
+        yield path
+    finally:
+        shutil.rmtree(path)
 
 
 class LearnGlossaryTests(unittest.TestCase):
@@ -270,7 +284,9 @@ class LearnGlossaryTests(unittest.TestCase):
             "function closeTermEntries",
             "function openCurrentHash",
             "normalizedTermFragmentUrl(",
-            "rankGlossaryItems(visibleItems, query).forEach",
+            "const rankedItems = rankGlossaryItems(visibleItems, query)",
+            "expandBestGlossaryMatch(",
+            "autoOpenedSearchItem",
             'searchInput.value = ""',
             "activeLetterBrowse =",
             "closeTermEntries(items)",
@@ -282,7 +298,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("setAllGroupsExpanded(items", javascript)
         self.assertIn("group.open = expanded", javascript)
 
-    def test_lookup_get_contract_and_link_policy_are_preserved(self) -> None:
+    def test_lookup_get_contract_and_same_tab_link_policy_are_preserved(self) -> None:
         term_lookup = (
             learn_glossary.SITE_ROOT
             / "_extensions"
@@ -292,9 +308,11 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertRegex(
             term_lookup,
             r'<form action="/learn/glossary/" method="get" '
-            r'target="_blank" rel="noopener"',
+            r"data-bms-term-lookup-form",
         )
         self.assertRegex(term_lookup, r'<input[^>]*name="q"')
+        self.assertNotIn("target=", term_lookup)
+        self.assertNotRegex(term_lookup, r"(?i)opens? in (?:a )?new tab")
 
         link_policy = (
             learn_glossary.SITE_ROOT
@@ -302,11 +320,69 @@ class LearnGlossaryTests(unittest.TestCase):
             / "bms-link-policy"
             / "bms-link-policy.lua"
         ).read_text(encoding="utf-8")
-        self.assertIn("is_same_document_fragment", link_policy)
-        self.assertIn("is_glossary_target", link_policy)
-        self.assertIn('link.attributes.target = "_blank"', link_policy)
-        self.assertIn('"noopener"', link_policy)
-        self.assertIn("opens in a new tab", link_policy)
+        self.assertIn("function Link(link)", link_policy)
+        self.assertIn("link.attributes.target = nil", link_policy)
+        self.assertNotIn("link.attributes.download =", link_policy)
+        self.assertNotIn("_blank", link_policy)
+        self.assertNotRegex(link_policy, r"(?i)opens? in (?:a )?new tab")
+
+    def test_temporary_site_wide_same_tab_source_contract(self) -> None:
+        source_paths = [
+            path
+            for path in learn_glossary.SITE_ROOT.rglob("*")
+            if path.is_file()
+            and path.suffix in {".qmd", ".html", ".yml", ".yaml", ".lua", ".js"}
+            and "_site" not in path.parts
+            and "_freeze" not in path.parts
+        ]
+        for path in source_paths:
+            content = path.read_text(encoding="utf-8", errors="replace")
+            self.assertNotIn("_blank", content, str(path.relative_to(ROOT)))
+            self.assertNotRegex(
+                content,
+                r"(?i)opens? in (?:a )?new tab",
+                str(path.relative_to(ROOT)),
+            )
+
+        config = (learn_glossary.SITE_ROOT / "_quarto.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("link-external-newwindow: false", config)
+        self.assertNotRegex(config, r"(?m)^\s+target:")
+        self.assertIn("href: /updates/index.xml", config)
+
+        about = (learn_glossary.SITE_ROOT / "about.qmd").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("[Read what I am building ->](/research/)", about)
+
+        learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "[Look Up a Term](/learn/glossary/){.bms-button-outline}",
+            learn_home,
+        )
+        self.assertIn('href="#letter-a"', self.entries_html)
+        self.assertIn('href="/learn/', self.entries_html)
+
+        analyze = (learn_glossary.SITE_ROOT / "analyze" / "index.qmd").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "](https://backgammon-made-simple.shinyapps.io/",
+            analyze,
+        )
+
+        link_policy = (
+            learn_glossary.SITE_ROOT
+            / "_extensions"
+            / "bms-link-policy"
+            / "bms-link-policy.lua"
+        ).read_text(encoding="utf-8")
+        self.assertIn("link.attributes.target = nil", link_policy)
+        self.assertNotIn("link.attributes.download =", link_policy)
+        self.assertNotIn("link.target =", link_policy)
 
     def test_learn_and_research_terms_metadata_is_canonical(self) -> None:
         canonical = {entry["slug"] for entry in self.entries}
@@ -673,7 +749,14 @@ class LearnGlossaryTests(unittest.TestCase):
         )
 
         with mock.patch.dict(os.environ, {}, clear=True):
-            with mock.patch.object(bms_pre_render, "run") as run:
+            with (
+                mock.patch.object(
+                    bms_pre_render,
+                    "invalidate_full_build_marker",
+                    return_value=False,
+                ),
+                mock.patch.object(bms_pre_render, "run") as run,
+            ):
                 self.assertEqual(bms_pre_render.main(), 0)
                 run.assert_not_called()
 
@@ -682,13 +765,46 @@ class LearnGlossaryTests(unittest.TestCase):
             {"QUARTO_PROJECT_RENDER_ALL": "1"},
             clear=True,
         ):
-            with mock.patch.object(bms_pre_render, "run") as run:
+            with (
+                mock.patch.object(
+                    bms_pre_render,
+                    "invalidate_full_build_marker",
+                    return_value=False,
+                ),
+                mock.patch.object(bms_pre_render, "run") as run,
+            ):
                 self.assertEqual(bms_pre_render.main(), 0)
                 self.assertEqual(run.call_count, 2)
                 commands = [call.args[0] for call in run.call_args_list]
                 self.assertIn("learn_glossary.py", " ".join(commands[0]))
                 self.assertIn("generate", commands[0])
                 self.assertIn("run_social_pipeline.py", " ".join(commands[1]))
+
+        with writable_test_directory() as runtime:
+            marker = runtime / ".bms-full-build.json"
+            marker.write_text("stale", encoding="utf-8")
+            self.assertTrue(bms_pre_render.invalidate_full_build_marker(marker))
+            self.assertFalse(marker.exists())
+
+    def test_same_tab_policy_preserves_download_mailto_and_tel_destinations(
+        self,
+    ) -> None:
+        link_policy = (
+            learn_glossary.SITE_ROOT
+            / "_extensions"
+            / "bms-link-policy"
+            / "bms-link-policy.lua"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("link.target =", link_policy)
+        self.assertNotIn("link.attributes.download =", link_policy)
+        self.assertNotIn("link.attributes.href =", link_policy)
+        self.assertNotIn("link.attributes.action =", link_policy)
+        for representative in (
+            '<a href="/files/guide.pdf" download>Download</a>',
+            '<a href="mailto:hello@example.com">Email</a>',
+            '<a href="tel:+14165550123">Call</a>',
+        ):
+            self.assertNotIn("target=", representative)
 
     def test_sitemap_clean_url_post_render_contract_is_narrow(self) -> None:
         config = (learn_glossary.SITE_ROOT / "_quarto.yml").read_text(
@@ -720,6 +836,129 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertFalse(changed_again)
         self.assertEqual(current, normalized)
+
+    def test_post_render_404_and_footer_routes_are_clean_and_narrow(self) -> None:
+        dirty_404 = (
+            '<a href="/.">Home</a>'
+            '<a href="/.\\learn/">Learn</a>'
+            '<a href="/./learn/lesson-finder/">Lesson Finder</a>'
+            '<a href="/./learn/glossary/">Glossary</a>'
+            '<a href="/.\\research/">Research</a>'
+            '<a href="/unrelated/">Unrelated</a>'
+        )
+        normalized_404, changed = bms_post_render.normalized_404_text(dirty_404)
+        self.assertTrue(changed)
+        for route in learn_glossary.NOT_FOUND_ROUTES:
+            self.assertIn(f'href="{route}"', normalized_404)
+        self.assertIn('href="/unrelated/"', normalized_404)
+
+        dirty_footer = (
+            '<main><a href="../../updates/index.xml">Body link</a></main>'
+            '<footer><a href="..\\..\\updates/index.xml">RSS</a></footer>'
+        )
+        normalized_footer, footer_changed = (
+            bms_post_render.normalized_footer_rss_text(dirty_footer)
+        )
+        self.assertTrue(footer_changed)
+        self.assertIn(
+            '<main><a href="../../updates/index.xml">Body link</a></main>',
+            normalized_footer,
+        )
+        self.assertIn(
+            '<footer><a href="/updates/index.xml">RSS</a></footer>',
+            normalized_footer,
+        )
+
+    def test_rendered_validator_distinguishes_partial_and_missing_artifacts(
+        self,
+    ) -> None:
+        with writable_test_directory() as output_root:
+            with self.assertRaisesRegex(
+                learn_glossary.ValidationError,
+                "partial or has not completed a full site build",
+            ):
+                learn_glossary.validate_full_build_output(output_root)
+
+            marker = output_root / learn_glossary.FULL_BUILD_MARKER_NAME
+            bms_post_render.write_full_build_marker(marker)
+            with self.assertRaisesRegex(
+                learn_glossary.ValidationError,
+                "site output is incomplete",
+            ):
+                learn_glossary.validate_full_build_output(output_root)
+
+            for relative in learn_glossary.RENDERED_CORE_PATHS:
+                path = output_root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("", encoding="utf-8")
+            learn_glossary.validate_full_build_output(output_root)
+
+            with self.assertRaisesRegex(
+                learn_glossary.ValidationError,
+                "root 404.html is missing",
+            ):
+                learn_glossary.check_rendered(output_root)
+
+            not_found = output_root / "404.html"
+            not_found.write_text(
+                "Page closed out suspiciously bounced off the board "
+                + " ".join(
+                    f'<a href="{route}">{route}</a>'
+                    for route in learn_glossary.NOT_FOUND_ROUTES
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                learn_glossary.ValidationError,
+                "Updates RSS feed is missing",
+            ):
+                learn_glossary.check_rendered(output_root)
+
+            feed = output_root / "updates" / "index.xml"
+            feed.write_text("<rss><channel /></rss>", encoding="utf-8")
+            with self.assertRaisesRegex(
+                learn_glossary.ValidationError,
+                "sitemap.xml is missing",
+            ):
+                learn_glossary.check_rendered(output_root)
+
+    def test_rendered_404_and_footer_diagnostics_are_specific(self) -> None:
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "404 links are malformed",
+        ):
+            learn_glossary.validate_rendered_404(
+                "Page closed out suspiciously bounced off the board"
+            )
+
+        with writable_test_directory() as output_root:
+            for relative in learn_glossary.RSS_FOOTER_REPRESENTATIVE_PATHS:
+                path = output_root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(
+                    '<footer><a href="../updates/index.xml">RSS</a></footer>',
+                    encoding="utf-8",
+                )
+            with self.assertRaisesRegex(
+                learn_glossary.ValidationError,
+                "footer RSS mismatch",
+            ):
+                learn_glossary.validate_representative_rss_footers(output_root)
+
+    def test_social_render_state_includes_os_identity_without_layout_changes(
+        self,
+    ) -> None:
+        renderer = (
+            ROOT
+            / "social_generator"
+            / "scripts"
+            / "social"
+            / "render_cards.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("import platform", renderer)
+        self.assertIn('"render_platform": {', renderer)
+        self.assertIn('"system": platform.system()', renderer)
+        self.assertIn('"machine": platform.machine()', renderer)
 
     def test_validation_reports_single_page_counts(self) -> None:
         result = learn_glossary.validate_generated()

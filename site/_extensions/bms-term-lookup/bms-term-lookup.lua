@@ -30,13 +30,12 @@ end
 local function lookup_html()
   return table.concat({
     '<aside class="bms-term-lookup" data-bms-term-lookup>',
-    '  <form action="/learn/glossary/" method="get" target="_blank" rel="noopener" data-bms-term-lookup-form>',
+    '  <form action="/learn/glossary/" method="get" data-bms-term-lookup-form>',
     '    <label for="bms-term-lookup-input">Look Up a Term</label>',
     '    <div class="bms-term-lookup-controls">',
-    '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="e.g. take point" aria-describedby="bms-term-lookup-new-tab">',
+    '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="e.g. take point">',
     '      <button type="submit">Look Up</button>',
     '    </div>',
-    '    <span id="bms-term-lookup-new-tab" class="visually-hidden">Search results open in a new tab.</span>',
     '  </form>',
     '</aside>'
   }, "\n")

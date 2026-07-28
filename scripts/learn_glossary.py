@@ -30,6 +30,35 @@ SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991
 EXPECTED_SOURCE_ENTRIES = 805
 EXPECTED_CANONICAL_ENTRIES = 624
 EXPECTED_ALIAS_ENTRIES = 181
+FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
+FULL_BUILD_MARKER_SCHEMA = 1
+RENDERED_CORE_PATHS = (
+    "index.html",
+    "about.html",
+    "learn/index.html",
+    "learn/glossary/index.html",
+    "learn/cube/index.html",
+    "learn/cube/why-is-25-percent-the-basic-take-point.html",
+    "research/index.html",
+    "research/sage-vs-gnu-additional-details.html",
+    "updates/index.html",
+)
+RSS_FOOTER_REPRESENTATIVE_PATHS = (
+    "index.html",
+    "about.html",
+    "learn/index.html",
+    "learn/cube/index.html",
+    "learn/glossary/index.html",
+    "research/index.html",
+    "updates/index.html",
+)
+NOT_FOUND_ROUTES = (
+    "/",
+    "/learn/",
+    "/learn/lesson-finder/",
+    "/learn/glossary/",
+    "/research/",
+)
 
 DIFFICULTIES = ("Beginner", "Intermediate", "Advanced")
 TRACKS = (
@@ -1033,7 +1062,105 @@ def validate_generated() -> dict[str, int]:
     }
 
 
+def validate_full_build_output(output_root: Path) -> None:
+    marker = output_root / FULL_BUILD_MARKER_NAME
+    if not marker.exists():
+        raise ValidationError(
+            "Rendered output is partial or has not completed a full site build: "
+            f"missing {FULL_BUILD_MARKER_NAME}. Run a clean full Quarto build "
+            "before complete-site validation."
+        )
+    try:
+        marker_data = json.loads(marker.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as error:
+        raise ValidationError(
+            "Rendered full-build completion marker is unreadable or invalid"
+        ) from error
+    if marker_data != {
+        "complete_full_build": True,
+        "schema": FULL_BUILD_MARKER_SCHEMA,
+    }:
+        raise ValidationError(
+            "Rendered full-build completion marker has an unsupported contract"
+        )
+
+    missing = [
+        relative
+        for relative in RENDERED_CORE_PATHS
+        if not (output_root / relative).is_file()
+    ]
+    if missing:
+        raise ValidationError(
+            "Rendered site output is incomplete; required full-build pages are "
+            "missing: " + ", ".join(missing)
+        )
+
+
+def validate_rendered_404(not_found_html: str) -> None:
+    for text_value in (
+        "Page closed out",
+        "suspiciously bounced off the board",
+    ):
+        if text_value not in not_found_html:
+            raise ValidationError(f"Rendered 404 is malformed: missing {text_value!r}")
+    for route in NOT_FOUND_ROUTES:
+        if f'href="{route}"' not in not_found_html:
+            raise ValidationError(
+                f"Rendered 404 links are malformed: missing clean link {route}"
+            )
+    if re.search(
+        r'(http-equiv=["\']refresh|window\.location|location\.replace)',
+        not_found_html,
+        flags=re.IGNORECASE,
+    ):
+        raise ValidationError("Rendered 404 is malformed: contains redirect behavior")
+
+
+def footer_rss_hrefs(page_html: str) -> list[str]:
+    footer_match = re.search(
+        r"<footer\b.*?</footer>",
+        page_html,
+        flags=re.DOTALL,
+    )
+    if not footer_match:
+        return []
+    return re.findall(
+        r'href="([^"]*updates/index\.xml)"',
+        footer_match.group(0),
+    )
+
+
+def validate_representative_rss_footers(output_root: Path) -> None:
+    for relative in RSS_FOOTER_REPRESENTATIVE_PATHS:
+        path = output_root / relative
+        page_html = path.read_text(encoding="utf-8", errors="replace")
+        hrefs = footer_rss_hrefs(page_html)
+        if hrefs != ["/updates/index.xml"]:
+            raise ValidationError(
+                "Rendered footer RSS mismatch in "
+                f"{relative}: expected ['/updates/index.xml'], found {hrefs}"
+            )
+
+
 def check_rendered(output_root: Path) -> dict[str, int]:
+    validate_full_build_output(output_root)
+
+    not_found_path = output_root / "404.html"
+    if not not_found_path.exists():
+        raise ValidationError("Rendered root 404.html is missing from the full build")
+    not_found_html = not_found_path.read_text(encoding="utf-8", errors="replace")
+    validate_rendered_404(not_found_html)
+
+    updates_feed = output_root / "updates" / "index.xml"
+    if not updates_feed.exists():
+        raise ValidationError(
+            "Rendered Updates RSS feed is missing: updates/index.xml"
+        )
+
+    sitemap = output_root / "sitemap.xml"
+    if not sitemap.exists():
+        raise ValidationError("Rendered sitemap.xml is missing from the full build")
+
     glossary_output = output_root / "learn" / "glossary"
     glossary_index = glossary_output / "index.html"
     if not glossary_index.exists():
@@ -1087,9 +1214,6 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     ):
         raise ValidationError("Rendered glossary is missing the two letter controls")
 
-    sitemap = output_root / "sitemap.xml"
-    if not sitemap.exists():
-        raise ValidationError("Rendered sitemap.xml is missing")
     sitemap_text = sitemap.read_text(encoding="utf-8", errors="replace")
     glossary_locations = [
         html.unescape(location)
@@ -1116,32 +1240,6 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     )
     if shared_image not in glossary_html:
         raise ValidationError("Rendered glossary is missing its shared social image")
-
-    not_found_path = output_root / "404.html"
-    if not not_found_path.exists():
-        raise ValidationError("Rendered root 404.html is missing")
-    not_found_html = not_found_path.read_text(encoding="utf-8", errors="replace")
-    for text_value in (
-        "Page closed out",
-        "suspiciously bounced off the board",
-    ):
-        if text_value not in not_found_html:
-            raise ValidationError(f"Rendered 404 is missing {text_value!r}")
-    for route in (
-        "/",
-        "/learn/",
-        "/learn/lesson-finder/",
-        "/learn/glossary/",
-        "/research/",
-    ):
-        if f'href="{route}"' not in not_found_html:
-            raise ValidationError(f"Rendered 404 is missing link {route}")
-    if re.search(
-        r'(http-equiv=["\']refresh|window\.location|location\.replace)',
-        not_found_html,
-        flags=re.IGNORECASE,
-    ):
-        raise ValidationError("Rendered 404 contains redirect behavior")
 
     lesson_path = (
         output_root
@@ -1203,12 +1301,7 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     ):
         if required not in cube_html:
             raise ValidationError(f"Rendered cube landing is missing {required}")
-    if 'href="/updates/index.xml"' not in cube_html:
-        raise ValidationError("Rendered footer does not link to the Updates RSS feed")
-
-    updates_feed = output_root / "updates" / "index.xml"
-    if not updates_feed.exists():
-        raise ValidationError("Rendered combined Updates RSS feed is missing")
+    validate_representative_rss_footers(output_root)
     try:
         feed_root = ElementTree.parse(updates_feed).getroot()
     except ElementTree.ParseError as error:

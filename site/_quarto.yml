@@ -72,11 +72,8 @@ website:
             - learn/opening-play/index.qmd
         - text: "Lesson Finder"
           href: learn/lesson-finder/index.qmd
-        - text: "Backgammon Glossary <span class='visually-hidden'>(opens in a new tab)</span>"
+        - text: "Backgammon Glossary"
           href: learn/glossary/index.qmd
-          target: _blank
-          rel: noopener
-          aria-label: "Backgammon Glossary (opens in a new tab)"
   page-footer:
     left: |
       Copyright 2026 Marty Gale - Backgammon Made Simple
@@ -103,7 +100,7 @@ format:
     toc-depth: 3
     toc-title: "On this page"
     smooth-scroll: true
-    link-external-newwindow: true
+    link-external-newwindow: false
     code-copy: true
 
 execute:

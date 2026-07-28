@@ -1,6 +1,8 @@
 "use strict";
 
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const learn = require("../site/assets/bms-learn.js");
 const glossary = require("../site/assets/bms-glossary.js");
 
@@ -202,6 +204,102 @@ assert.equal(
     "out field"
   ),
   3
+);
+
+function decodeHtmlAttribute(value) {
+  return value
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#39;", "'")
+    .replaceAll("&amp;", "&");
+}
+
+function attributeValue(tag, name) {
+  const match = tag.match(new RegExp(name + '="([^"]*)"'));
+  return match ? decodeHtmlAttribute(match[1]) : "";
+}
+
+const generatedGlossaryMarkup = fs.readFileSync(
+  path.join(__dirname, "../site/learn/glossary/_entries.html"),
+  "utf8"
+);
+const generatedGlossaryItems = Array.from(
+  generatedGlossaryMarkup.matchAll(
+    /<details class="bms-glossary-entry"[^>]*>/g
+  ),
+  (match) => {
+    const tag = match[0];
+    const searchValues = JSON.parse(attributeValue(tag, "data-bms-search"));
+    return {
+      slug: attributeValue(tag, "data-bms-slug"),
+      aliasSlugs: JSON.parse(attributeValue(tag, "data-bms-aliases")),
+      canonical: searchValues[0],
+      aliases: searchValues.slice(1),
+      searchValues,
+      element: { open: false }
+    };
+  }
+);
+assert.equal(
+  generatedGlossaryItems.length,
+  624,
+  "the JavaScript integration fixture uses all generated canonical entries"
+);
+assert.equal(
+  generatedGlossaryItems.reduce(
+    (count, item) => count + item.aliasSlugs.length,
+    0
+  ),
+  181,
+  "the JavaScript integration fixture uses every generated alias"
+);
+
+[
+  ["take point", "Take Point"],
+  ["take-point", "Take Point"],
+  ["out field", "Outfield"],
+  ["Accept a Double", "Take"]
+].forEach(([query, expectedCanonical]) => {
+  const matchingItems = generatedGlossaryItems.filter((item) =>
+    glossary.itemMatchesGlossary(item, query, [], [])
+  );
+  const expanded = glossary.expandBestGlossaryMatch(
+    generatedGlossaryItems,
+    matchingItems,
+    query
+  );
+  assert.equal(expanded.canonical, expectedCanonical);
+  assert.equal(expanded.element.open, true);
+  assert.equal(
+    matchingItems.filter((item) => item.element.open).length,
+    1,
+    query + " expands exactly its best generated canonical match"
+  );
+});
+const previouslyOpened = generatedGlossaryItems.find(
+  (item) => item.canonical === "Take"
+);
+assert.equal(
+  previouslyOpened.element.open,
+  true,
+  "an alias query expands its canonical target"
+);
+glossary.expandBestGlossaryMatch(
+  generatedGlossaryItems,
+  generatedGlossaryItems.filter((item) =>
+    glossary.itemMatchesGlossary(item, "out field", [], [])
+  ),
+  "out field"
+);
+assert.equal(
+  previouslyOpened.element.open,
+  false,
+  "a different active query closes the previously auto-opened result"
+);
+glossary.closeTermEntries(generatedGlossaryItems);
+assert.equal(
+  generatedGlossaryItems.some((item) => item.element.open),
+  false,
+  "clearing search restores collapsed generated term definitions"
 );
 
 assert.equal(

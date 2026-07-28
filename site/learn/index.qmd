@@ -20,7 +20,7 @@ execute:
 
 [Find Lessons by Difficulty](/learn/lesson-finder/){.bms-button-outline}
 
-[Look Up a Term](/learn/glossary/){.bms-button-outline target="_blank" rel="noopener" aria-label="Look Up a Term (opens in a new tab)"}
+[Look Up a Term](/learn/glossary/){.bms-button-outline}
 :::
 
 ## How Each Lesson Works

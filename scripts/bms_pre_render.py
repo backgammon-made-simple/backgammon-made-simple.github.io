@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+FULL_BUILD_MARKER = REPO_ROOT / "site" / "_site" / ".bms-full-build.json"
 
 
 def run(command: list[str]) -> None:
@@ -14,7 +15,17 @@ def run(command: list[str]) -> None:
     subprocess.run(command, cwd=REPO_ROOT, check=True)
 
 
+def invalidate_full_build_marker(path: Path = FULL_BUILD_MARKER) -> bool:
+    if not path.exists():
+        return False
+    path.unlink()
+    return True
+
+
 def main() -> int:
+    if invalidate_full_build_marker():
+        print("Invalidated the previous full-build completion marker.")
+
     # Quarto sets this to "1" only when rendering the complete project.
     if os.getenv("QUARTO_PROJECT_RENDER_ALL") != "1":
         print(

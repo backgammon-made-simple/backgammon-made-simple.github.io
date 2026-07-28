@@ -1,7 +1,6 @@
 filters:
   - bms-learn-taxonomy
   - bms-term-lookup
-glossary-links-new-tab: true
 format:
   html:
     toc-expand: true

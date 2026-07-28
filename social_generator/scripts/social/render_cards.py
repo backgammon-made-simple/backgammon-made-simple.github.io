@@ -4,6 +4,7 @@ import argparse
 import base64
 import hashlib
 import json
+import platform
 import re
 import sys
 import unicodedata
@@ -915,6 +916,10 @@ def render_state_hash(
             "playwright": package_version_or_unknown("playwright"),
         },
         "chromium_version": chromium_version,
+        "render_platform": {
+            "system": platform.system(),
+            "machine": platform.machine(),
+        },
         "card": asdict(card),
         "html_sha256": sha256_bytes(HTML_TEMPLATE_PATH.read_bytes()),
         "css_sha256": sha256_bytes(CSS_TEMPLATE_PATH.read_bytes()),

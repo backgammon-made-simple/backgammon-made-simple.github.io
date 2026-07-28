@@ -138,7 +138,7 @@ The opponent has doubled. Would you take or pass?
 </div>
 
 <p class="bms-analyzer-fallback">
-<a href="https://backgammon-made-simple.shinyapps.io/position-dashboard/" target="_blank" rel="noopener noreferrer">Open the analyzer and enter an XGID</a>
+<a href="https://backgammon-made-simple.shinyapps.io/position-dashboard/">Open the analyzer and enter an XGID</a>
 </p>
 </details>
 
