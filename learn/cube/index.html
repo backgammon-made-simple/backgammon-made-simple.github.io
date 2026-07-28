@@ -35,8 +35,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../assets/icons/favicon.ico" rel="icon">
-<script src="../../site_libs/quarto-listing/list.min.js"></script>
-<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -73,35 +71,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-cube-lessons .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-project','listing-filters','listing-website','listing-format','listing-execute','listing-editor','listing-engines','listing-language','listing-title','listing-description','listing-sidebar','listing-categories','listing-tags','listing-terms','listing-level','listing-cube-order','listing-body-classes','listing-page-layout','listing-toc','listing-toc-depth','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
-      
-      searchColumns: ["listing-project","listing-filters","listing-website","listing-format","listing-execute","listing-editor","listing-engines","listing-language","listing-title","listing-description","listing-sidebar","listing-categories","listing-tags","listing-terms","listing-level","listing-cube-order","listing-body-classes","listing-page-layout","listing-toc","listing-toc-depth","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-cube-lessons'] = new List('listing-cube-lessons', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 <link rel="icon" type="image/png" href="../../assets/icons/favicon-96x96.png" sizes="96x96">
 
@@ -116,35 +85,6 @@ ul.task-list li input[type="checkbox"] {
 <link rel="manifest" href="../../assets/icons/site.webmanifest">
 
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../assets/bms-shared.css">
 <link rel="stylesheet" href="../../assets/bms-components.css">
@@ -163,7 +103,7 @@ window.Quarto = {
 <meta name="twitter:image-width" content="1200">
 </head>
 
-<body class="nav-sidebar docked nav-fixed bms-learn-article bms-cube-index fullcontent quarto-light">
+<body class="nav-sidebar docked nav-fixed bms-learn-article bms-learn-track-index quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -219,14 +159,14 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/cube/index.html">The Doubling Cube</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/cube/index.html">II The Doubling Cube</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
@@ -239,8 +179,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Start Here</span></a>
+            <a href="../../learn/start-here/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">I Start Here</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -248,20 +188,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../learn/start-here/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Who This Site Is For</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../learn/game-plans/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">The Main Game Plans</span></a>
+ <span class="menu-text">i The Main Game Plans</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../learn/reading-positions-and-engines/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reading Positions and Engine Analysis</span></a>
+ <span class="menu-text">ii Reading Positions and Engine Analysis</span></a>
   </div>
 </li>
       </ul>
@@ -269,7 +203,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../learn/cube/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">The Doubling Cube</span></a>
+ <span class="menu-text">II The Doubling Cube</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -278,33 +212,20 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../learn/cube/why-is-25-percent-the-basic-take-point.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Why Is 25% the Basic Take Point When a Double Is Offered?</span></a>
+ <span class="menu-text">i Why Is 25% the Basic Take Point When a Double Is Offered?</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../learn/cube/what-the-cube-is-asking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">What the Cube Is Really Asking</span></a>
+ <span class="menu-text">ii What the Cube Is Really Asking</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Opening Play Lab</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/opening-play/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Opening Play Lab</span></a>
-  </div>
-</li>
-      </ul>
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">III Opening Play Lab</span></span>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -319,16 +240,12 @@ window.Quarto = {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">The Doubling Cube</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Beginner</div>
-    <div class="quarto-category">Intermediate</div>
-  </div>
-  </div>
+</div>
 
 <div>
   <div class="description">
@@ -337,7 +254,7 @@ window.Quarto = {
 </div>
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-right">
 
     
   
@@ -349,82 +266,120 @@ window.Quarto = {
 </header>
 
 
-<section class="bms-learn-filter-panel" data-bms-learn-filters="" aria-label="Filter cube lessons">
-  <p class="visually-hidden">
-    Select one or more difficulties and learning tracks. Lessons match any selection within a group and every group that has a selection.
-  </p>
-
-  <div class="bms-learn-filter-group">
-    <p class="bms-learn-filter-label">Difficulty</p>
-    <div class="bms-learn-filter-options" role="group" aria-label="Filter by difficulty">
-      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Beginner" aria-pressed="false">
-        <span>Beginner</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
-      </button>
-      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Intermediate" aria-pressed="false">
-        <span>Intermediate</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="bms-learn-filter-group">
-    <p class="bms-learn-filter-label">Learning track</p>
-    <div class="bms-learn-filter-options" role="group" aria-label="Filter by learning track">
-      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Doubling Cube" aria-pressed="false">
-        <span>Doubling Cube</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="bms-learn-filter-footer">
-    <p class="bms-learn-result-count" aria-live="polite" data-bms-learn-result-count=""></p>
-    <button type="button" class="bms-learn-clear" data-bms-learn-clear="" hidden="">Reset filters</button>
-  </div>
-</section>
-<section id="cube-lessons" class="level2">
-<h2 class="anchored" data-anchor-id="cube-lessons">Cube lessons</h2>
-<div id="listing-cube-lessons" class="quarto-listing quarto-listing-container-custom">
-
-<div class="bms-learn-list list" data-bms-learn-list="">
-
-  <article class="bms-learn-lesson-card" data-index="0" data-categories="QmVnaW5uZXIlMkNJbnRlcm1lZGlhdGU=" data-listing-file-modified-sort="1785242283870" data-listing-reading-time-sort="5" data-listing-word-count-sort="828" data-bms-learn-item="" data-bms-difficulties="[&quot;Beginner&quot;,&quot;Intermediate&quot;]" data-bms-tracks="[&quot;Doubling Cube&quot;]">
-
-    <h3 class="listing-title bms-learn-lesson-title anchored">
-      <span class="bms-cube-lesson-number" aria-hidden="true"></span>
-      <a href="../../learn/cube/why-is-25-percent-the-basic-take-point.html">Why Is 25% the Basic Take Point When a Double Is Offered?</a>
-    </h3>
-
-    
-      <p class="listing-description bms-learn-lesson-description">Learn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.
-</p>
-    
-
-    <p class="bms-learn-lesson-action"><a href="../../learn/cube/why-is-25-percent-the-basic-take-point.html">Open lesson</a></p>
-  </article>
-
-  <article class="bms-learn-lesson-card" data-index="1" data-categories="QmVnaW5uZXIlMkNJbnRlcm1lZGlhdGU=" data-listing-file-modified-sort="1785242283869" data-listing-reading-time-sort="2" data-listing-word-count-sort="220" data-bms-learn-item="" data-bms-difficulties="[&quot;Beginner&quot;,&quot;Intermediate&quot;]" data-bms-tracks="[&quot;Doubling Cube&quot;]">
-
-    <h3 class="listing-title bms-learn-lesson-title anchored">
-      <span class="bms-cube-lesson-number" aria-hidden="true"></span>
-      <a href="../../learn/cube/what-the-cube-is-asking.html">What the Cube Is Really Asking</a>
-    </h3>
-
-    
-      <p class="listing-description bms-learn-lesson-description">A first lesson scaffold for understanding the doubling cube.</p>
-    
-
-    <p class="bms-learn-lesson-action"><a href="../../learn/cube/what-the-cube-is-asking.html">Open lesson</a></p>
-  </article>
-
+<!-- Generated by scripts/learn_glossary.py; do not edit. -->
+<section class="bms-learn-filter-panel" data-bms-learn-filters="" data-bms-learn-mode="track" aria-label="Search and filter lessons">
+<div class="bms-learn-search-group">
+<p><label for="bms-learn-search">Search lessons</label> <input id="bms-learn-search" type="search" placeholder="Search titles and descriptions" autocomplete="off" data-bms-learn-search=""></p>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
+<details class="bms-learn-filter-disclosure">
+<summary>
+Difficulty Filter
+</summary>
+<div class="bms-learn-filter-options" role="group" aria-label="Difficulty Filter">
+<button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Beginner" aria-pressed="false">
+<span>Beginner</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Intermediate" aria-pressed="false">
+<span>Intermediate</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+</div>
+</details>
+<details class="bms-learn-filter-disclosure">
+<summary>
+Term Filter
+</summary>
+<div class="bms-learn-filter-options" role="group" aria-label="Term Filter">
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="backgammon" aria-pressed="false">
+<span>Backgammon</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="doubling-cube" aria-pressed="false">
+<span>Doubling Cube</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="equity" aria-pressed="false">
+<span>Equity</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="gammon" aria-pressed="false">
+<span>Gammon</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="match-play" aria-pressed="false">
+<span>Match Play</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="own-the-cube" aria-pressed="false">
+<span>Own the Cube</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="pass" aria-pressed="false">
+<span>Pass</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="redouble" aria-pressed="false">
+<span>Redouble</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="take" aria-pressed="false">
+<span>Take</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="take-point" aria-pressed="false">
+<span>Take Point</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+<button type="button" class="bms-learn-filter bms-learn-filter--term" data-bms-filter-term="volatility" aria-pressed="false">
+<span>Volatility</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+</button>
+</div>
+</details>
+<div class="bms-learn-filter-footer">
+<p class="bms-learn-result-count" aria-live="polite" data-bms-learn-result-count="">
+</p>
+<button type="button" class="bms-learn-clear" data-bms-learn-clear="" hidden="">
+Clear search and filters
+</button>
+</div>
+</section>
+<div class="bms-learn-section-actions" role="group" aria-label="Lesson tracks">
+<button type="button" data-bms-learn-collapse-all="">
+Collapse all
+</button>
+<button type="button" data-bms-learn-expand-all="">
+Expand all
+</button>
+</div>
+<div class="bms-learn-catalogue" data-bms-learn-list="">
+<details class="bms-learn-catalogue-section" data-bms-learn-group="" data-bms-track-id="doubling-cube" data-bms-total-lessons="2" open="">
+<summary class="bms-learn-catalogue-section-heading">
+<span class="bms-learn-track-heading"><span class="bms-learn-track-lessons-label">Lessons</span></span> <span data-bms-learn-group-count="">2 lessons</span>
+</summary>
+<div class="bms-learn-catalogue-section-items">
+<article class="bms-learn-catalogue-item" data-bms-learn-item="" data-bms-difficulties="[&quot;Beginner&quot;, &quot;Intermediate&quot;]" data-bms-track="doubling-cube" data-bms-terms="[&quot;take-point&quot;, &quot;take&quot;, &quot;pass&quot;, &quot;doubling-cube&quot;, &quot;gammon&quot;, &quot;backgammon&quot;, &quot;own-the-cube&quot;, &quot;redouble&quot;, &quot;match-play&quot;, &quot;volatility&quot;, &quot;equity&quot;]" data-bms-search="[&quot;Why Is 25% the Basic Take Point When a Double Is Offered?&quot;, &quot;Learn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.&quot;, &quot;Beginner&quot;, &quot;Intermediate&quot;, &quot;Doubling Cube&quot;, &quot;Take Point&quot;, &quot;Take&quot;, &quot;Pass&quot;, &quot;Doubling Cube&quot;, &quot;Gammon&quot;, &quot;Backgammon&quot;, &quot;Own the Cube&quot;, &quot;Redouble&quot;, &quot;Match Play&quot;, &quot;Volatility&quot;, &quot;Equity&quot;]">
+<div class="bms-learn-catalogue-title-row">
+<span class="bms-learn-lesson-number" aria-hidden="true">i</span>
+<details class="bms-learn-catalogue-description">
+<summary>
+<a class="bms-learn-catalogue-link" href="../../learn/cube/why-is-25-percent-the-basic-take-point.html">Why Is 25% the Basic Take Point When a Double Is Offered?</a><span class="bms-learn-description-arrow" aria-label="Show description for Why Is 25% the Basic Take Point When a Double Is Offered?">▾</span>
+</summary>
+<p>
+Learn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.
+</p>
+</details>
+</div>
+</article>
+<article class="bms-learn-catalogue-item" data-bms-learn-item="" data-bms-difficulties="[&quot;Beginner&quot;, &quot;Intermediate&quot;]" data-bms-track="doubling-cube" data-bms-terms="[&quot;take-point&quot;, &quot;take&quot;, &quot;pass&quot;, &quot;doubling-cube&quot;, &quot;gammon&quot;, &quot;backgammon&quot;, &quot;own-the-cube&quot;, &quot;redouble&quot;, &quot;match-play&quot;, &quot;volatility&quot;, &quot;equity&quot;]" data-bms-search="[&quot;What the Cube Is Really Asking&quot;, &quot;A first lesson scaffold for understanding the doubling cube.&quot;, &quot;Beginner&quot;, &quot;Intermediate&quot;, &quot;Doubling Cube&quot;, &quot;Take Point&quot;, &quot;Take&quot;, &quot;Pass&quot;, &quot;Doubling Cube&quot;, &quot;Gammon&quot;, &quot;Backgammon&quot;, &quot;Own the Cube&quot;, &quot;Redouble&quot;, &quot;Match Play&quot;, &quot;Volatility&quot;, &quot;Equity&quot;]">
+<div class="bms-learn-catalogue-title-row">
+<span class="bms-learn-lesson-number" aria-hidden="true">ii</span>
+<details class="bms-learn-catalogue-description">
+<summary>
+<a class="bms-learn-catalogue-link" href="../../learn/cube/what-the-cube-is-asking.html">What the Cube Is Really Asking</a><span class="bms-learn-description-arrow" aria-label="Show description for What the Cube Is Really Asking">▾</span>
+</summary>
+<p>
+A first lesson scaffold for understanding the doubling cube.
+</p>
+</details>
+</div>
+</article>
+</div>
+</details>
 </div>
 <p class="bms-learn-empty" data-bms-learn-empty="" hidden="">
-  No cube lessons match the selected difficulty and learning track. Reset the filters to see every cube lesson.
+No lessons match this search and filter combination.
 </p>
 
 
-
-</section>
 
 </main> <!-- /main -->
 <script src="../../assets/bms-learn.js" defer=""></script>
