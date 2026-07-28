@@ -2,8 +2,9 @@ project:
   type: website
   output-dir: _site
   pre-render:
-    - python ../scripts/learn_glossary.py generate
-    - python ../social_generator/scripts/social/run_social_pipeline.py
+  - python ../scripts/bms_pre_render.py
+  post-render:
+  - python ../scripts/bms_post_render.py
   resources:
     - assets/logo.svg
     - "assets/icons/**"
@@ -65,6 +66,7 @@ website:
           href: learn/cube/index.qmd
           contents:
             - learn/cube/why-is-25-percent-the-basic-take-point.qmd
+            - learn/cube/what-the-cube-is-asking.qmd
         - section: "Opening Play Lab"
           contents:
             - learn/opening-play/index.qmd
@@ -83,7 +85,7 @@ website:
         href: /licensing.html
     right:
       - text: RSS
-        href: research/index.xml
+        href: /updates/index.xml
 
 format:
   html:

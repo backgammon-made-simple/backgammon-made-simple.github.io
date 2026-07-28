@@ -15,7 +15,6 @@ format:
     toc-title: "On this Page"
     toc-location: right
     toc-depth: 2
-    toc-expand: 2
     title-block-style: plain
     body-classes: "bms-editorial-page bms-title-eyebrow"
 ---

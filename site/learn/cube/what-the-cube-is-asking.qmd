@@ -1,0 +1,118 @@
+---
+title: "What the Cube Is Really Asking"
+description: "A first lesson scaffold for understanding the doubling cube."
+sidebar: learn
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Doubling Cube
+terms:
+  - take-point
+  - take
+  - pass
+  - doubling-cube
+  - gammon
+  - backgammon
+  - own-the-cube
+  - redouble
+  - match-play
+  - volatility
+  - equity
+level: Foundation
+cube-order: 2
+body-classes: bms-learn-article
+page-layout: article
+toc: true
+toc-depth: 2
+execute:
+  enabled: false
+---
+
+::: {.bms-lesson-meta}
+Concept: Cube decision  
+Prerequisite: You know the rules and basic scoring  
+Status: Scaffold lesson
+:::
+
+::: {.column-margin}
+::: {.bms-right-rail-card}
+{{< include ../../includes/analyzer-form.html >}}
+:::
+:::
+
+## The Decision
+
+You are not only asking whether you are ahead. You are asking whether the game is valuable enough, volatile enough, and urgent enough to change the stakes now.
+
+## The Simple Answer
+
+The cube turns a position into a decision about risk, reward, and timing.
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Key idea
+:::
+A strong cube decision is not just about who is winning. It is about what can happen before you get another chance to double.
+:::
+
+## A Clean Model
+
+Start with a simplified money-game model: no gammons and no future recube. In that model, a take begins around 25%.
+
+```text
+Take point ~= risk / (risk + reward)
+```
+
+## Worked Position
+
+::: bms-placeholder-board
+Verified board position placeholder
+:::
+
+::: {.bms-decision-prompt}
+What would you do?
+
+[Double](#){.bms-button-outline} [Wait](#){.bms-button-outline}
+:::
+
+<details>
+<summary>Show answer and explanation</summary>
+
+This scaffold will be replaced with a verified position and engine-backed explanation.
+
+</details>
+
+## What Changes the Answer?
+
+- Race lead.
+- Gammons.
+- Threats.
+- Market losers.
+- Cube ownership.
+- Match score.
+
+## Engine Evidence
+
+<details>
+<summary>Engine settings</summary>
+
+Engine evidence will identify engine, version, analysis level, rollout/search settings, and practical caveats.
+
+</details>
+
+## Practical Checklist
+
+1. Am I ahead enough?
+2. Can I lose my market?
+3. How many gammons are in the position?
+4. What does the receiver own after taking?
+5. Does match score change the value of gammons or cube ownership?
+
+{{< include ../../includes/subscribe.html >}}
+
+{{< include ../../includes/report-problem.html >}}
+
+## Continue
+
+[Back to the cube overview](index.qmd)

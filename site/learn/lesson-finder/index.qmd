@@ -4,6 +4,7 @@ description: "Find a Backgammon Made Simple lesson by difficulty and learning tr
 sidebar: learn
 page-layout: full
 body-classes: bms-lesson-finder
+toc: false
 listing:
   id: learn-lessons
   contents:
@@ -11,7 +12,7 @@ listing:
     - ../game-plans/index.qmd
     - ../reading-positions-and-engines/index.qmd
     - ../cube/index.qmd
-    - ../cube/what-the-cube-is-asking/index.qmd
+    - ../cube/what-the-cube-is-asking.qmd
     - ../cube/why-is-25-percent-the-basic-take-point.qmd
     - ../opening-play/index.qmd
   template: ../_lesson-listing.ejs.md

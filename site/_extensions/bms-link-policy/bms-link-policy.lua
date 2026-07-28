@@ -16,6 +16,12 @@ local function is_external(target)
   return target:match("^https?://") ~= nil
 end
 
+local function is_same_document_fragment(target)
+  return target:match("^#") ~= nil
+    or target:match("^%./#") ~= nil
+    or target:match("^%?[^#]*#") ~= nil
+end
+
 local function is_glossary_target(target)
   local path = target:match("^[^?#]*") or ""
   return path:match("^/learn/glossary/?") ~= nil
@@ -58,7 +64,7 @@ function Pandoc(doc)
     {
       Link = function(link)
         local target = link.target or ""
-        if has_download(link) then
+        if has_download(link) or is_same_document_fragment(target) then
           return link
         end
 

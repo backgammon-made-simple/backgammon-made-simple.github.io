@@ -10,20 +10,21 @@ import json
 import re
 import sys
 from collections import defaultdict
-from html.parser import HTMLParser
+from datetime import date
 from pathlib import Path
-from urllib.parse import quote, unquote, urljoin, urlsplit
+from xml.etree import ElementTree
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SITE_ROOT = REPOSITORY_ROOT / "site"
 LEARN_ROOT = SITE_ROOT / "learn"
+CUBE_ROOT = LEARN_ROOT / "cube"
 RESEARCH_ROOT = SITE_ROOT / "research"
 GLOSSARY_ROOT = LEARN_ROOT / "glossary"
 PUBLIC_DATA_PATH = SITE_ROOT / "data" / "glossary.json"
 AUTHORING_TERMS_PATH = REPOSITORY_ROOT / "docs" / "learn-glossary-terms.md"
 GENERATED_ENTRIES_PATH = GLOSSARY_ROOT / "_entries.html"
-GENERATED_ROUTES_PATH = GLOSSARY_ROOT / "_generated-routes.json"
+LEGACY_GENERATED_ROUTES_PATH = GLOSSARY_ROOT / "_generated-routes.json"
 
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
@@ -414,6 +415,144 @@ def discover_lessons() -> list[dict[str, object]]:
     return lessons
 
 
+def discover_cube_lessons() -> list[dict[str, object]]:
+    lessons: list[dict[str, object]] = []
+    orders: set[int] = set()
+    for path in sorted(CUBE_ROOT.rglob("*.qmd")):
+        if path == CUBE_ROOT / "index.qmd" or path.name.startswith("_"):
+            continue
+        metadata = parse_front_matter(path)
+        if str(metadata.get("draft", "")).casefold() == "true":
+            continue
+
+        title = metadata.get("title")
+        raw_order = metadata.get("cube-order")
+        if not isinstance(title, str) or not title:
+            raise ValidationError(
+                f"Published cube lesson {path.relative_to(CUBE_ROOT)} requires a title"
+            )
+        try:
+            order = int(str(raw_order))
+        except (TypeError, ValueError) as error:
+            raise ValidationError(
+                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
+                "requires an integer cube-order"
+            ) from error
+        if order < 1 or order in orders:
+            raise ValidationError(
+                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
+                f"has invalid or duplicate cube-order {order}"
+            )
+        orders.add(order)
+        categories = metadata.get("categories")
+        tracks = metadata.get("tags")
+        if not isinstance(categories, list) or not categories:
+            raise ValidationError(
+                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
+                "requires non-empty categories"
+            )
+        if not isinstance(tracks, list) or not tracks:
+            raise ValidationError(
+                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
+                "requires non-empty tags"
+            )
+        lessons.append(
+            {
+                "path": path,
+                "relative_path": path.relative_to(CUBE_ROOT).as_posix(),
+                "route": route_for_source(path),
+                "title": title,
+                "cube-order": order,
+                "categories": [str(value) for value in categories],
+                "tags": [str(value) for value in tracks],
+            }
+        )
+
+    lessons.sort(key=lambda lesson: int(lesson["cube-order"]))
+    if not lessons:
+        raise ValidationError("No published cube lessons were discovered")
+    return lessons
+
+
+def discover_update_publications() -> list[dict[str, object]]:
+    publications: list[dict[str, object]] = []
+    excluded_landings = {
+        LEARN_ROOT / "index.qmd",
+        LEARN_ROOT / "cube" / "index.qmd",
+        LEARN_ROOT / "glossary" / "index.qmd",
+        LEARN_ROOT / "lesson-finder" / "index.qmd",
+        RESEARCH_ROOT / "index.qmd",
+        SITE_ROOT / "engine-benchmark" / "index.qmd",
+    }
+    roots = (
+        ("Learn", LEARN_ROOT),
+        ("Research", RESEARCH_ROOT),
+        ("Benchmark", SITE_ROOT / "engine-benchmark"),
+    )
+    for publication_type, root in roots:
+        for path in sorted(root.rglob("*.qmd")):
+            if path.name.startswith("_"):
+                continue
+            metadata = parse_front_matter(path)
+            if str(metadata.get("published", "")).casefold() != "true":
+                continue
+            if path in excluded_landings:
+                raise ValidationError(
+                    f"Landing page {path.relative_to(SITE_ROOT)} cannot be an "
+                    "Updates publication"
+                )
+            if str(metadata.get("draft", "")).casefold() == "true":
+                raise ValidationError(
+                    f"Published update {path.relative_to(SITE_ROOT)} is also a draft"
+                )
+            if str(metadata.get("hidden", "")).casefold() == "true":
+                raise ValidationError(
+                    f"Published update {path.relative_to(SITE_ROOT)} is hidden"
+                )
+            if str(metadata.get("status", "")).casefold() in {"draft", "planned"}:
+                raise ValidationError(
+                    f"Published update {path.relative_to(SITE_ROOT)} has "
+                    f"status {metadata.get('status')!r}"
+                )
+
+            title = metadata.get("title")
+            raw_date = metadata.get("date")
+            if not isinstance(title, str) or not title:
+                raise ValidationError(
+                    f"Published update {path.relative_to(SITE_ROOT)} requires a title"
+                )
+            if not isinstance(raw_date, str) or not raw_date:
+                raise ValidationError(
+                    f"Published update {path.relative_to(SITE_ROOT)} requires a date"
+                )
+            try:
+                publication_date = date.fromisoformat(raw_date)
+            except ValueError as error:
+                raise ValidationError(
+                    f"Published update {path.relative_to(SITE_ROOT)} has invalid "
+                    f"date {raw_date!r}"
+                ) from error
+
+            publications.append(
+                {
+                    "date": publication_date.isoformat(),
+                    "path": path,
+                    "publication_type": publication_type,
+                    "route": route_for_source(path),
+                    "title": title,
+                }
+            )
+
+    publications.sort(
+        key=lambda publication: (
+            -date.fromisoformat(str(publication["date"])).toordinal(),
+            str(publication["title"]).casefold(),
+            str(publication["route"]),
+        )
+    )
+    return publications
+
+
 def discover_research_articles() -> list[dict[str, object]]:
     articles: list[dict[str, object]] = []
     for path in sorted(RESEARCH_ROOT.glob("*.qmd")):
@@ -536,10 +675,6 @@ def html_attr(value: object) -> str:
     return html.escape(str(value), quote=True)
 
 
-def encoded_query(name: str, value: str) -> str:
-    return f"{name}={quote(value, safe='')}"
-
-
 def lesson_links_html(lessons: list[dict[str, object]], *, compact: bool = False) -> str:
     if not lessons:
         return ""
@@ -581,23 +716,23 @@ def related_sections_html(
     if lessons:
         lines.extend(
             [
-                '<details class="bms-glossary-related bms-glossary-related--lessons">',
-                f"<summary>Related lessons ({len(lessons)})</summary>",
+                '<section class="bms-glossary-related bms-glossary-related--lessons">',
+                f"<h4>Learn more ({len(lessons)})</h4>",
                 "<ul>",
-                lesson_links_html(lessons),
+                lesson_links_html(lessons, compact=True),
                 "</ul>",
-                "</details>",
+                "</section>",
             ]
         )
     if research_articles:
         lines.extend(
             [
-                '<details class="bms-glossary-related bms-glossary-related--research">',
-                f"<summary>Related research ({len(research_articles)})</summary>",
+                '<section class="bms-glossary-related bms-glossary-related--research">',
+                f"<h4>Research ({len(research_articles)})</h4>",
                 "<ul>",
                 research_links_html(research_articles),
                 "</ul>",
-                "</details>",
+                "</section>",
             ]
         )
     lines.append("</div>")
@@ -608,7 +743,8 @@ def alias_html(aliases: list[dict[str, str]]) -> str:
     if not aliases:
         return ""
     alias_names = ", ".join(
-        f'<span id="alias-{html_attr(alias["slug"])}">{html.escape(alias["term"])}</span>'
+        f'<span data-bms-alias="{html_attr(alias["slug"])}">'
+        f'{html.escape(alias["term"])}</span>'
         for alias in aliases
     )
     return f'<p class="bms-glossary-aliases"><strong>Also called:</strong> {alias_names}</p>'
@@ -643,7 +779,8 @@ def build_entries_html(
     group_order = ["#"] + [chr(code) for code in range(ord("A"), ord("Z") + 1)]
     existing_groups = [group for group in group_order if group in groups]
     alphabet_links = " ".join(
-        f'<a href="#letter-{html_attr(group)}" data-bms-letter-link="{html_attr(group)}">'
+        f'<a href="#letter-{html_attr("numbers" if group == "#" else group.lower())}" '
+        f'data-bms-letter-link="{html_attr(group)}">'
         f"{html.escape(group)}</a>"
         for group in existing_groups
     )
@@ -653,19 +790,26 @@ def build_entries_html(
         '<div class="bms-glossary-alphabet-links">',
         alphabet_links,
         "</div>",
-        '<button type="button" class="bms-glossary-section-control" '
-        'data-bms-glossary-section-control aria-controls="bms-glossary-groups" '
-        'aria-expanded="true">Collapse all</button>',
         "</nav>",
+        '<div class="bms-glossary-section-actions" role="group" '
+        'aria-label="Glossary letter sections">',
+        '<button type="button" class="bms-glossary-section-control" '
+        'data-bms-glossary-collapse-all aria-controls="bms-glossary-groups">'
+        "Collapse all</button>",
+        '<button type="button" class="bms-glossary-section-control" '
+        'data-bms-glossary-expand-all aria-controls="bms-glossary-groups" '
+        "disabled>Expand all</button>",
+        "</div>",
         '<div class="bms-glossary-groups" id="bms-glossary-groups" data-bms-glossary-groups>',
     ]
 
     for group in existing_groups:
         group_entries = groups[group]
+        group_anchor = "numbers" if group == "#" else group.lower()
         lines.extend(
             [
                 f'<details class="bms-glossary-letter-group" data-bms-letter-group open '
-                f'id="letter-{html_attr(group)}">',
+                f'id="letter-{html_attr(group_anchor)}" data-bms-letter="{html_attr(group)}">',
                 f"<summary><span>{html.escape(group)}</span>"
                 f'<span class="bms-glossary-letter-count">{len(group_entries)} terms</span>'
                 "</summary>",
@@ -687,17 +831,22 @@ def build_entries_html(
             search_values = [str(entry["term"])] + [
                 str(alias["term"]) for alias in entry["aliases"]  # type: ignore[index]
             ]
+            alias_slugs = [
+                str(alias["slug"]) for alias in entry["aliases"]  # type: ignore[index]
+            ]
             lines.extend(
                 [
-                    f'<article class="bms-glossary-entry" id="term-{html_attr(slug)}" '
+                    f'<details class="bms-glossary-entry" id="{html_attr(slug)}" '
                     f'data-bms-glossary-entry data-bms-slug="{html_attr(slug)}" '
+                    f'data-bms-letter="{html_attr(group)}" '
                     f'data-bms-category="{html_attr(entry["category"])}" '
                     f'data-bms-tracks="{html_attr(json.dumps(tracks, ensure_ascii=False))}" '
+                    f'data-bms-aliases="{html_attr(json.dumps(alias_slugs, ensure_ascii=False))}" '
                     f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
-                    f'<h3><a href="/learn/glossary/{html_attr(slug)}/">'
-                    f'{html.escape(str(entry["term"]))}</a>'
-                    f'<a class="bms-glossary-anchor" href="#term-{html_attr(slug)}" '
-                    f'aria-label="Direct link to {html_attr(entry["term"])}">#</a></h3>',
+                    '<summary class="bms-glossary-entry-summary">'
+                    f'<span class="bms-glossary-term-name">'
+                    f'{html.escape(str(entry["term"]))}</span></summary>',
+                    '<div class="bms-glossary-entry-body">',
                     alias_html(entry["aliases"]),  # type: ignore[arg-type]
                     f'<p class="bms-glossary-definition">{html.escape(str(entry["definition"]))}</p>',
                     f'<p class="bms-glossary-category"><strong>Category:</strong> '
@@ -707,101 +856,12 @@ def build_entries_html(
                 ]
             )
             lines.extend(related_sections_html(related_lessons, related_research))
-            lines.append("</article>")
+            lines.extend(["</div>", "</details>"])
         lines.extend(["</div>", "</details>"])
 
     lines.append("</div>")
     content = "\n".join(line for line in lines if line != "") + "\n"
     assert_no_forbidden_text(content, "generated glossary index HTML")
-    return content
-
-
-def build_term_qmd(
-    entry: dict[str, object],
-    related_lessons: list[dict[str, object]],
-    related_research: list[dict[str, object]],
-    previous_entry: dict[str, object] | None,
-    next_entry: dict[str, object] | None,
-) -> str:
-    term = str(entry["term"])
-    slug = str(entry["slug"])
-    canonical_url = (
-        "https://backgammon-made-simple.github.io/learn/glossary/" + slug + "/"
-    )
-    tracks = sorted(
-        {
-            str(track)
-            for lesson in related_lessons
-            for track in lesson["tags"]
-        },
-        key=TRACKS.index,
-    )
-    lines = [
-        "---",
-        f"title: {json.dumps(f'What Does {term} Mean in Backgammon?', ensure_ascii=False)}",
-        f"description: {json.dumps(str(entry['definition']), ensure_ascii=False)}",
-        "sidebar: learn",
-        f"canonical-url: {json.dumps(canonical_url)}",
-        "image: /assets/social/generated/social-glossary.png",
-        'body-classes: "bms-glossary-term"',
-        "toc: false",
-        "execute:",
-        "  enabled: false",
-        "---",
-        "",
-        GENERATED_MARKER,
-        "",
-        '<span id="bms-glossary-top" class="bms-glossary-top-target" tabindex="-1"></span>',
-        "",
-        f'<article class="bms-glossary-term-card" id="term-{html_attr(slug)}">',
-        f'<p class="bms-glossary-term-name">{html.escape(term)}</p>',
-        alias_html(entry["aliases"]),  # type: ignore[arg-type]
-        f'<p class="bms-glossary-definition">{html.escape(str(entry["definition"]))}</p>',
-        f'<p class="bms-glossary-category"><strong>Glossary category:</strong> '
-        f'<a href="/learn/glossary/?{encoded_query("category", str(entry["category"]))}'
-        f'#term-{html_attr(slug)}">{html.escape(display_category(str(entry["category"])))}</a></p>',
-        usage_notes_html(entry),
-    ]
-    if tracks:
-        track_links = ", ".join(
-            f'<a href="/learn/lesson-finder/?{encoded_query("track", track)}">'
-            f"{html.escape(track)}</a>"
-            for track in tracks
-        )
-        lines.append(
-            f'<p class="bms-glossary-related-tracks"><strong>Learning tracks:</strong> '
-            f"{track_links}</p>"
-        )
-    lines.extend(related_sections_html(related_lessons, related_research))
-    lines.extend(
-        [
-            "</article>",
-            "",
-            '<nav class="bms-glossary-term-navigation" aria-label="Glossary term navigation">',
-        ]
-    )
-    if previous_entry:
-        lines.append(
-            f'<a rel="prev" href="/learn/glossary/{html_attr(previous_entry["slug"])}/">'
-            f'← {html.escape(str(previous_entry["term"]))}</a>'
-        )
-    lines.append('<a href="/learn/glossary/">Full glossary</a>')
-    if next_entry:
-        lines.append(
-            f'<a rel="next" href="/learn/glossary/{html_attr(next_entry["slug"])}/">'
-            f'{html.escape(str(next_entry["term"]))} →</a>'
-        )
-    lines.extend(
-        [
-            "</nav>",
-            "",
-            '<a class="bms-glossary-back-to-top" href="#bms-glossary-top" '
-            'data-bms-glossary-back-to-top hidden>Back to top</a>',
-            "",
-        ]
-    )
-    content = "\n".join(line for line in lines if line != "") + "\n"
-    assert_no_forbidden_text(content, f"generated term source {slug}")
     return content
 
 
@@ -811,16 +871,17 @@ def build_authoring_terms(entries: list[dict[str, object]]) -> str:
         "",
         GENERATED_MARKER,
         "",
-        "Use only these canonical slugs in lesson `terms` metadata. "
-        "This list is generated from the public-safe glossary data.",
+        "Use only these canonical slugs in Learn and Research `terms` metadata. "
+        "Every term is defined on the one public glossary page; there are no "
+        "standalone term routes.",
         "",
-        "| Term | Canonical slug |",
-        "|---|---|",
+        "| Term | Canonical slug | Stable glossary anchor |",
+        "|---|---|---|",
     ]
     for entry in entries:
         term = str(entry["term"]).replace("|", "\\|")
         slug = str(entry["slug"])
-        lines.append(f"| {term} | `{slug}` |")
+        lines.append(f"| {term} | `{slug}` | `/learn/glossary/#{slug}` |")
     content = "\n".join(lines) + "\n"
     assert_no_forbidden_text(content, "generated authoring term list")
     return content
@@ -836,60 +897,48 @@ def generated_outputs(
             entries, related_lessons, related_research
         ),
         AUTHORING_TERMS_PATH: build_authoring_terms(entries),
-        GENERATED_ROUTES_PATH: json_text([str(entry["slug"]) for entry in entries]),
     }
-    for index, entry in enumerate(entries):
-        previous_entry = entries[index - 1] if index > 0 else None
-        next_entry = entries[index + 1] if index + 1 < len(entries) else None
-        output_path = GLOSSARY_ROOT / str(entry["slug"]) / "index.qmd"
-        outputs[output_path] = build_term_qmd(
-            entry,
-            related_lessons.get(str(entry["slug"]), []),
-            related_research.get(str(entry["slug"]), []),
-            previous_entry,
-            next_entry,
-        )
     return outputs
 
 
-def remove_stale_routes(current_slugs: set[str]) -> list[Path]:
+def remove_standalone_term_pages() -> list[Path]:
     removed: list[Path] = []
-    if not GENERATED_ROUTES_PATH.exists():
-        return removed
-    previous = read_json(GENERATED_ROUTES_PATH)
-    if not isinstance(previous, list):
-        raise ValidationError("Generated route manifest must be a list")
-    for stale_slug in sorted(set(map(str, previous)) - current_slugs):
-        stale_path = (GLOSSARY_ROOT / stale_slug / "index.qmd").resolve()
-        expected_parent = GLOSSARY_ROOT.resolve()
+    expected_parent = GLOSSARY_ROOT.resolve()
+    for source_path in sorted(GLOSSARY_ROOT.glob("*/index.qmd")):
+        stale_path = source_path.resolve()
         if stale_path.parent.parent != expected_parent:
-            raise ValidationError(f"Unsafe stale generated route: {stale_slug}")
-        if not stale_path.exists():
-            continue
+            raise ValidationError(f"Unsafe standalone glossary page: {stale_path}")
         content = stale_path.read_text(encoding="utf-8")
         if GENERATED_MARKER not in content:
-            raise ValidationError(f"Refusing to remove non-generated route: {stale_path}")
+            raise ValidationError(
+                f"Refusing to remove non-generated glossary page: {stale_path}"
+            )
         stale_path.unlink()
         if not any(stale_path.parent.iterdir()):
             stale_path.parent.rmdir()
         removed.append(stale_path)
+    if LEGACY_GENERATED_ROUTES_PATH.exists():
+        LEGACY_GENERATED_ROUTES_PATH.unlink()
+        removed.append(LEGACY_GENERATED_ROUTES_PATH)
     return removed
 
 
-def generate() -> tuple[int, int]:
+def generate() -> tuple[int, int, int]:
     data = read_json(PUBLIC_DATA_PATH)
     entries = validate_public_data(data)
     serialized = PUBLIC_DATA_PATH.read_text(encoding="utf-8")
     assert_no_forbidden_text(serialized, "tracked public glossary data")
     lessons = discover_lessons()
+    discover_cube_lessons()
+    discover_update_publications()
     related_lessons = validate_lessons(lessons, entries)
     research_articles = discover_research_articles()
     related_research = validate_research_articles(research_articles, entries)
 
     outputs = generated_outputs(entries, related_lessons, related_research)
-    remove_stale_routes({str(entry["slug"]) for entry in entries})
+    removed = remove_standalone_term_pages()
     changed = sum(write_if_changed(path, content) for path, content in outputs.items())
-    return changed, len(outputs)
+    return changed, len(outputs), len(removed)
 
 
 def validate_generated() -> dict[str, int]:
@@ -900,6 +949,8 @@ def validate_generated() -> dict[str, int]:
         "tracked public glossary data",
     )
     lessons = discover_lessons()
+    cube_lessons = discover_cube_lessons()
+    update_publications = discover_update_publications()
     related_lessons = validate_lessons(lessons, entries)
     research_articles = discover_research_articles()
     related_research = validate_research_articles(research_articles, entries)
@@ -922,31 +973,47 @@ def validate_generated() -> dict[str, int]:
             + ", ".join(str(path.relative_to(REPOSITORY_ROOT)) for path in changed[:10])
         )
 
-    canonical_slugs = {str(entry["slug"]) for entry in entries}
-    actual_routes = {
-        path.parent.name
-        for path in GLOSSARY_ROOT.glob("*/index.qmd")
-        if GENERATED_MARKER in path.read_text(encoding="utf-8")
-    }
-    if actual_routes != canonical_slugs:
-        raise ValidationError("Generated glossary routes do not match canonical slugs")
-
-    alias_slugs = {
-        str(alias["slug"])
-        for entry in entries
-        for alias in entry["aliases"]  # type: ignore[index]
-    }
-    duplicate_alias_routes = sorted(alias_slugs.intersection(actual_routes))
-    if duplicate_alias_routes:
+    standalone_pages = sorted(GLOSSARY_ROOT.glob("*/index.qmd"))
+    if standalone_pages:
         raise ValidationError(
-            f"Alias routes must not be generated: {duplicate_alias_routes[:10]}"
+            "Standalone glossary term pages remain: "
+            + ", ".join(
+                str(path.relative_to(REPOSITORY_ROOT))
+                for path in standalone_pages[:10]
+            )
         )
+    if LEGACY_GENERATED_ROUTES_PATH.exists():
+        raise ValidationError("Legacy glossary route manifest remains")
 
-    route_values = ["/learn/glossary/"] + [
-        f"/learn/glossary/{entry['slug']}/" for entry in entries
+    canonical_slugs = {str(entry["slug"]) for entry in entries}
+    entries_html = GENERATED_ENTRIES_PATH.read_text(encoding="utf-8")
+    canonical_anchors = re.findall(
+        r'<details class="bms-glossary-entry" id="([^"]+)"',
+        entries_html,
+    )
+    if len(canonical_anchors) != len(entries) or set(canonical_anchors) != canonical_slugs:
+        raise ValidationError("Single-page canonical anchors do not match glossary data")
+    if len(canonical_anchors) != len(set(canonical_anchors)):
+        raise ValidationError("Duplicate canonical glossary anchors")
+    entry_tags = re.findall(
+        r'<details class="bms-glossary-entry"[^>]*>',
+        entries_html,
+    )
+    if any(" open" in tag for tag in entry_tags):
+        raise ValidationError("Canonical term disclosures must begin collapsed")
+    if entries_html.count('data-bms-alias="') != EXPECTED_ALIAS_ENTRIES:
+        raise ValidationError("Generated alias count does not match public data")
+    if entries_html.count('class="bms-glossary-definition"') != len(entries):
+        raise ValidationError("Every canonical entry must include its full definition")
+    old_term_links = [
+        slug
+        for slug in canonical_slugs
+        if f'/learn/glossary/{slug}/' in entries_html
     ]
-    if len(route_values) != len(set(route_values)):
-        raise ValidationError("Duplicate generated glossary routes")
+    if old_term_links:
+        raise ValidationError(
+            f"Single-page glossary still links to term routes: {old_term_links[:10]}"
+        )
 
     related_lesson_count = sum(len(value) for value in related_lessons.values())
     related_research_count = sum(len(value) for value in related_research.values())
@@ -955,371 +1022,224 @@ def validate_generated() -> dict[str, int]:
         "canonical_entries": len(entries),
         "alias_entries": sum(len(entry["aliases"]) for entry in entries),
         "lessons": len(lessons),
+        "cube_lessons": len(cube_lessons),
+        "updates_publications": len(update_publications),
         "research_articles": len(research_articles),
         "related_lesson_links": related_lesson_count,
         "related_research_links": related_research_count,
         "generated_files": len(expected),
+        "canonical_anchors": len(canonical_anchors),
+        "standalone_term_pages": 0,
     }
 
 
 def check_rendered(output_root: Path) -> dict[str, int]:
     glossary_output = output_root / "learn" / "glossary"
-    if not glossary_output.exists():
-        raise ValidationError(f"Rendered glossary output is missing: {glossary_output}")
-    data = read_json(PUBLIC_DATA_PATH)
-    entries = validate_public_data(data)
-    lessons = discover_lessons()
-    research_articles = discover_research_articles()
-    related_research = validate_research_articles(research_articles, entries)
+    glossary_index = glossary_output / "index.html"
+    if not glossary_index.exists():
+        raise ValidationError(f"Rendered glossary output is missing: {glossary_index}")
 
     html_files = sorted(glossary_output.rglob("*.html"))
-    expected_html = 1 + len(entries)
-    if len(html_files) != expected_html:
+    if html_files != [glossary_index]:
         raise ValidationError(
-            f"Expected {expected_html} glossary HTML files, found {len(html_files)}"
+            "Rendered glossary must contain exactly one HTML page; found "
+            + ", ".join(str(path.relative_to(output_root)) for path in html_files[:10])
         )
-    for path in html_files:
-        assert_no_forbidden_text(
-            path.read_text(encoding="utf-8", errors="replace"),
-            f"rendered glossary HTML {path.relative_to(output_root)}",
-        )
+
+    data = read_json(PUBLIC_DATA_PATH)
+    entries = validate_public_data(data)
+    canonical_slugs = {str(entry["slug"]) for entry in entries}
+    alias_count = sum(len(entry["aliases"]) for entry in entries)
+    glossary_html = glossary_index.read_text(encoding="utf-8", errors="replace")
+    assert_no_forbidden_text(glossary_html, "rendered single-page glossary")
+
+    canonical_anchors = re.findall(
+        r'<details class="bms-glossary-entry" id="([^"]+)"',
+        glossary_html,
+    )
+    if len(canonical_anchors) != len(entries) or set(canonical_anchors) != canonical_slugs:
+        raise ValidationError("Rendered canonical anchors do not match glossary data")
+    if len(canonical_anchors) != len(set(canonical_anchors)):
+        raise ValidationError("Rendered glossary contains duplicate canonical anchors")
+
+    entry_tags = re.findall(
+        r'<details class="bms-glossary-entry"[^>]*>',
+        glossary_html,
+    )
+    if any(" open" in tag for tag in entry_tags):
+        raise ValidationError("Rendered term disclosures do not begin collapsed")
+    if glossary_html.count('class="bms-glossary-definition"') != len(entries):
+        raise ValidationError("Rendered glossary is missing full definitions")
+    if glossary_html.count('data-bms-alias="') != alias_count:
+        raise ValidationError("Rendered glossary alias count is incorrect")
+    if any(f"/learn/glossary/{slug}/" in glossary_html for slug in canonical_slugs):
+        raise ValidationError("Rendered glossary still links to standalone term routes")
+
+    letter_tags = re.findall(
+        r'<details class="bms-glossary-letter-group"[^>]*>',
+        glossary_html,
+    )
+    if not letter_tags or any(" open" not in tag for tag in letter_tags):
+        raise ValidationError("Rendered glossary letter sections must begin expanded")
+    if (
+        glossary_html.count("data-bms-glossary-collapse-all") != 1
+        or glossary_html.count("data-bms-glossary-expand-all") != 1
+    ):
+        raise ValidationError("Rendered glossary is missing the two letter controls")
 
     sitemap = output_root / "sitemap.xml"
     if not sitemap.exists():
         raise ValidationError("Rendered sitemap.xml is missing")
-    sitemap_text = sitemap.read_text(encoding="utf-8")
-    missing_urls = [
-        f"/learn/glossary/{entry['slug']}/"
-        for entry in entries
-        if f"/learn/glossary/{entry['slug']}/" not in sitemap_text
+    sitemap_text = sitemap.read_text(encoding="utf-8", errors="replace")
+    glossary_locations = [
+        html.unescape(location)
+        for location in re.findall(r"<loc>(.*?)</loc>", sitemap_text)
+        if "/learn/glossary/" in location
     ]
-    if missing_urls:
-        raise ValidationError(f"Glossary routes missing from sitemap: {missing_urls[:10]}")
-
-    learn_html = sorted((output_root / "learn").rglob("*.html"))
-    parsed_pages: dict[Path, tuple[set[str], list[str]]] = {}
-
-    class LinkCollector(HTMLParser):
-        def __init__(self) -> None:
-            super().__init__(convert_charrefs=True)
-            self.ids: set[str] = set()
-            self.hrefs: list[str] = []
-            self.main_depth = 0
-
-        def handle_starttag(
-            self, tag: str, attributes: list[tuple[str, str | None]]
-        ) -> None:
-            values = dict(attributes)
-            if values.get("id"):
-                self.ids.add(str(values["id"]))
-            if tag == "main" and values.get("id") == "quarto-document-content":
-                self.main_depth += 1
-            if self.main_depth and values.get("href"):
-                self.hrefs.append(str(values["href"]))
-
-        def handle_endtag(self, tag: str) -> None:
-            if tag == "main" and self.main_depth:
-                self.main_depth -= 1
-
-    def parse_page(path: Path) -> tuple[set[str], list[str]]:
-        if path not in parsed_pages:
-            collector = LinkCollector()
-            collector.feed(path.read_text(encoding="utf-8", errors="replace"))
-            parsed_pages[path] = (collector.ids, collector.hrefs)
-        return parsed_pages[path]
-
-    broken_links: list[str] = []
-    checked_links = 0
-    for source in learn_html:
-        source_relative = source.relative_to(output_root).as_posix()
-        _, hrefs = parse_page(source)
-        for href in hrefs:
-            if href.startswith(("mailto:", "tel:", "javascript:", "data:")):
-                continue
-            resolved = urlsplit(
-                urljoin(f"https://site.invalid/{source_relative}", href)
-            )
-            if resolved.netloc != "site.invalid":
-                continue
-            decoded_path = unquote(resolved.path)
-            if decoded_path.endswith("/"):
-                target = output_root / decoded_path.lstrip("/") / "index.html"
-            else:
-                target = output_root / decoded_path.lstrip("/")
-                if target.is_dir():
-                    target = target / "index.html"
-            if not target.exists():
-                broken_links.append(
-                    f"{source_relative}: {href} -> missing {decoded_path}"
-                )
-                continue
-            checked_links += 1
-            if resolved.fragment and target.suffix.lower() == ".html":
-                target_ids, _ = parse_page(target)
-                fragment = unquote(resolved.fragment)
-                if fragment not in target_ids:
-                    broken_links.append(
-                        f"{source_relative}: {href} -> missing fragment {fragment}"
-                    )
-
-    if broken_links:
+    expected_glossary_location = (
+        "https://backgammon-made-simple.github.io/learn/glossary/"
+    )
+    if glossary_locations != [expected_glossary_location]:
         raise ValidationError(
-            "Broken rendered Learn links: " + " | ".join(broken_links[:20])
+            f"Sitemap glossary locations are incorrect: {glossary_locations[:10]}"
         )
 
-    learn_landing_path = output_root / "learn" / "index.html"
-    lesson_finder_path = output_root / "learn" / "lesson-finder" / "index.html"
-    lesson_path = output_root / "learn" / "cube" / "index.html"
-    research_index_path = output_root / "research" / "index.html"
-    research_article_path = (
-        output_root / "research" / "sage-vs-gnu-additional-details.html"
+    canonical = (
+        '<link rel="canonical" '
+        'href="https://backgammon-made-simple.github.io/learn/glossary/">'
     )
-    glossary_landing_path = glossary_output / "index.html"
-    sampled_term_paths = [
-        glossary_output / "take-point" / "index.html",
-        glossary_output / "equity" / "index.html",
-    ]
-    amendment_paths = [
-        learn_landing_path,
-        lesson_finder_path,
-        lesson_path,
-        research_index_path,
-        research_article_path,
-        glossary_landing_path,
-        *sampled_term_paths,
-    ]
-    missing_amendment_pages = [path for path in amendment_paths if not path.exists()]
-    if missing_amendment_pages:
-        raise ValidationError(
-            "Missing rendered amendment pages: "
-            + ", ".join(
-                str(path.relative_to(output_root)) for path in missing_amendment_pages
-            )
-        )
-
-    learn_landing_html = learn_landing_path.read_text(encoding="utf-8")
-    if "data-bms-learn-filters" in learn_landing_html or "data-bms-learn-item" in learn_landing_html:
-        raise ValidationError("Rendered Learn landing still contains Lesson Finder controls")
-    if "Why We Are Starting With the Doubling Cube" in learn_landing_html:
-        raise ValidationError("Rendered Learn landing still has the removed cube section")
-    if "Start with The Doubling Cube" not in learn_landing_html:
-        raise ValidationError("Rendered Learn landing is missing the replacement cube section")
-    if "Find Lessons by Difficulty" not in learn_landing_html:
-        raise ValidationError("Rendered Learn landing is missing its Lesson Finder action")
-    if (
-        'href="/learn/glossary/"' not in learn_landing_html
-        or 'target="_blank"' not in learn_landing_html
-        or 'rel="noopener"' not in learn_landing_html
-    ):
-        raise ValidationError("Rendered Learn glossary action violates new-tab policy")
-
-    lesson_finder_html = lesson_finder_path.read_text(encoding="utf-8")
-    if "data-bms-learn-filters" not in lesson_finder_html:
-        raise ValidationError("Rendered Lesson Finder is missing filter controls")
-    if lesson_finder_html.count("data-bms-learn-item") != len(lessons := discover_lessons()):
-        raise ValidationError("Rendered Lesson Finder does not contain exactly seven lessons")
-    if "bms-learn-card-taxonomy" in lesson_finder_html:
-        raise ValidationError("Rendered Lesson Finder exposes taxonomy chips")
-    if "combined with <strong>or</strong>" in lesson_finder_html.lower():
-        raise ValidationError("Rendered Lesson Finder still exposes Boolean filter copy")
-
-    sidebar_match = re.search(
-        r'<nav id="quarto-sidebar".*?</nav>',
-        lesson_finder_html,
-        flags=re.DOTALL,
-    )
-    if not sidebar_match:
-        raise ValidationError("Rendered Lesson Finder has no Learn sidebar")
-    sidebar_html = sidebar_match.group(0)
-    home_position = sidebar_html.find("Learn Home")
-    finder_position = sidebar_html.rfind("Lesson Finder")
-    glossary_position = sidebar_html.rfind("Backgammon Glossary")
-    if home_position < 0:
-        raise ValidationError("Rendered Learn sidebar is missing Learn Home")
-    if finder_position < 0 or finder_position < sidebar_html.rfind("Opening Play Lab"):
-        raise ValidationError("Lesson Finder is not second-last in the Learn sidebar")
-    if glossary_position < finder_position:
-        raise ValidationError("Backgammon Glossary is not last in the Learn sidebar")
-    glossary_sidebar_link = re.search(
-        r'<a[^>]*href="[^"]*learn/glossary/index\.html"[^>]*>',
-        sidebar_html,
-    )
-    if not glossary_sidebar_link:
-        raise ValidationError("Rendered Learn sidebar is missing Backgammon Glossary")
-    glossary_sidebar_tag = glossary_sidebar_link.group(0)
-    if (
-        'target="_blank"' not in glossary_sidebar_tag
-        or 'rel="noopener"' not in glossary_sidebar_tag
-    ):
-        raise ValidationError("Rendered glossary sidebar link violates new-tab policy")
-
-    glossary_landing_html = glossary_landing_path.read_text(encoding="utf-8")
-    if "undergoing editorial review" in glossary_landing_html:
-        raise ValidationError("Rendered glossary still contains the removed review notice")
-    if "data-bms-glossary-section-control" not in glossary_landing_html:
-        raise ValidationError("Rendered glossary is missing the Collapse all control")
-    alphabet_match = re.search(
-        r'<nav class="bms-glossary-alphabet".*?</nav>',
-        glossary_landing_html,
-        flags=re.DOTALL,
-    )
-    if (
-        not alphabet_match
-        or "data-bms-glossary-section-control" not in alphabet_match.group(0)
-    ):
-        raise ValidationError("Collapse all is not in the A-Z control area")
-    for disclosure_name in (
-        "data-bms-glossary-category-disclosure",
-        "data-bms-glossary-track-disclosure",
-    ):
-        disclosure = re.search(
-            rf"<details[^>]*{disclosure_name}[^>]*>",
-            glossary_landing_html,
-        )
-        if not disclosure or " open" in disclosure.group(0):
-            raise ValidationError(
-                "Rendered glossary filter disclosures are not initially collapsed"
-            )
-    if "data-bms-glossary-back-to-top" not in glossary_landing_html:
-        raise ValidationError("Rendered glossary is missing its Back to top control")
-    letter_tags = re.findall(
-        r'<details class="bms-glossary-letter-group"[^>]*>',
-        glossary_landing_html,
-    )
-    if not letter_tags or any(" open" not in tag for tag in letter_tags):
-        raise ValidationError("Rendered glossary letter sections are not initially expanded")
-
-    lesson_html = lesson_path.read_text(encoding="utf-8")
-    research_index_html = research_index_path.read_text(encoding="utf-8")
-    research_article_html = research_article_path.read_text(encoding="utf-8")
-    for label, page_html in (
-        ("Learn lesson", lesson_html),
-        ("Research article", research_article_html),
-    ):
-        form = re.search(
-            r'<form[^>]*data-bms-term-lookup-form[^>]*>',
-            page_html,
-        )
-        if (
-            not form
-            or 'action="/learn/glossary/"' not in form.group(0)
-            or 'target="_blank"' not in form.group(0)
-            or 'rel="noopener"' not in form.group(0)
-        ):
-            raise ValidationError(f"Rendered {label} is missing the term lookup form")
-    for label, page_html in (
-        ("Learn Home", learn_landing_html),
-        ("Lesson Finder", lesson_finder_html),
-        ("Glossary landing", glossary_landing_html),
-        ("Research listing", research_index_html),
-    ):
-        if "data-bms-term-lookup-form" in page_html:
-            raise ValidationError(f"Rendered {label} unexpectedly has a term lookup form")
-
-    external_link = re.search(
-        r'<a[^>]*href="https://github\.com/backgammon-made-simple/'
-        r'backgammon-engine-benchmark"[^>]*>',
-        research_article_html,
-    )
-    if (
-        not external_link
-        or 'target="_blank"' not in external_link.group(0)
-        or 'rel="noopener"' not in external_link.group(0)
-    ):
-        raise ValidationError("Rendered external link violates new-tab policy")
-    internal_link = re.search(
-        r'<a[^>]*href="\.\./engine-benchmark/sage-vs-gnu-stage1/index\.html"[^>]*>',
-        research_article_html,
-    )
-    if internal_link and 'target="_blank"' in internal_link.group(0):
-        raise ValidationError("Rendered ordinary internal link opens in a new tab")
-
-    equity_html = sampled_term_paths[1].read_text(encoding="utf-8")
-    expected_research_route = "/research/sage-vs-gnu-additional-details.html"
-    if (
-        "Related research (1)" not in equity_html
-        or expected_research_route not in equity_html
-    ):
-        raise ValidationError("Rendered Equity term is missing related Research")
-    related_research_link = re.search(
-        rf'<a[^>]*href="{re.escape(expected_research_route)}"[^>]*>',
-        equity_html,
-    )
-    if related_research_link and 'target="_blank"' in related_research_link.group(0):
-        raise ValidationError("Related Research must open in the same tab")
-
-    def meta_content(page_html: str, attribute: str, value: str) -> str:
-        pattern = (
-            rf'<meta\s+{attribute}="{re.escape(value)}"\s+content="([^"]*)"'
-        )
-        match = re.search(pattern, page_html)
-        if not match:
-            raise ValidationError(f"Missing rendered metadata {attribute}={value}")
-        return html.unescape(match.group(1))
-
+    if canonical not in glossary_html:
+        raise ValidationError("Rendered glossary is missing its one canonical URL")
     shared_image = (
         "https://backgammon-made-simple.github.io/"
         "assets/social/generated/social-glossary.png"
     )
-    sampled_metadata: list[dict[str, str]] = []
-    for page_path in [glossary_landing_path, *sampled_term_paths]:
-        page_html = page_path.read_text(encoding="utf-8")
-        metadata = {
-            "og_title": meta_content(page_html, "property", "og:title"),
-            "og_description": meta_content(page_html, "property", "og:description"),
-            "og_image": meta_content(page_html, "property", "og:image"),
-            "twitter_title": meta_content(page_html, "name", "twitter:title"),
-            "twitter_description": meta_content(
-                page_html, "name", "twitter:description"
-            ),
-            "twitter_image": meta_content(page_html, "name", "twitter:image"),
-        }
-        if metadata["og_image"] != shared_image or metadata["twitter_image"] != shared_image:
-            raise ValidationError(
-                f"Rendered page {page_path.relative_to(output_root)} "
-                "does not use the shared glossary social image"
-            )
-        sampled_metadata.append(metadata)
+    if shared_image not in glossary_html:
+        raise ValidationError("Rendered glossary is missing its shared social image")
 
-    for term_path, metadata in zip(sampled_term_paths, sampled_metadata[1:]):
-        term_html = term_path.read_text(encoding="utf-8")
-        slug = term_path.parent.name
-        canonical = (
-            "https://backgammon-made-simple.github.io/learn/glossary/"
-            f"{slug}/"
+    not_found_path = output_root / "404.html"
+    if not not_found_path.exists():
+        raise ValidationError("Rendered root 404.html is missing")
+    not_found_html = not_found_path.read_text(encoding="utf-8", errors="replace")
+    for text_value in (
+        "Page closed out",
+        "suspiciously bounced off the board",
+    ):
+        if text_value not in not_found_html:
+            raise ValidationError(f"Rendered 404 is missing {text_value!r}")
+    for route in (
+        "/",
+        "/learn/",
+        "/learn/lesson-finder/",
+        "/learn/glossary/",
+        "/research/",
+    ):
+        if f'href="{route}"' not in not_found_html:
+            raise ValidationError(f"Rendered 404 is missing link {route}")
+    if re.search(
+        r'(http-equiv=["\']refresh|window\.location|location\.replace)',
+        not_found_html,
+        flags=re.IGNORECASE,
+    ):
+        raise ValidationError("Rendered 404 contains redirect behavior")
+
+    lesson_path = (
+        output_root
+        / "learn"
+        / "cube"
+        / "why-is-25-percent-the-basic-take-point.html"
+    )
+    research_path = (
+        output_root / "research" / "sage-vs-gnu-additional-details.html"
+    )
+    for label, path in (
+        ("Learn lesson", lesson_path),
+        ("Research article", research_path),
+    ):
+        if not path.exists():
+            raise ValidationError(f"Rendered {label} is missing: {path}")
+        page_html = path.read_text(encoding="utf-8", errors="replace")
+        if 'id="TOC"' not in page_html or 'data-toc-expanded="99"' not in page_html:
+            raise ValidationError(f"Rendered {label} is missing native expanded TOC")
+        if "bms-research-toc-toggle" in page_html:
+            raise ValidationError(f"Rendered {label} contains a competing TOC initializer")
+
+    cube_path = output_root / "learn" / "cube" / "index.html"
+    if not cube_path.exists():
+        raise ValidationError("Rendered cube landing is missing")
+    cube_html = cube_path.read_text(encoding="utf-8", errors="replace")
+    cube_listing = re.search(
+        r'<div id="listing-cube-lessons".*?</div>\s*</div>',
+        cube_html,
+        flags=re.DOTALL,
+    )
+    if not cube_listing:
+        raise ValidationError("Rendered cube landing is missing its shared listing")
+    cube_listing_html = cube_listing.group(0)
+    if cube_listing_html.count("data-bms-learn-item") != len(discover_cube_lessons()):
+        raise ValidationError("Rendered cube listing has the wrong published-lesson count")
+    if ".qmd" in cube_listing_html or "\\" in cube_listing_html or "&lt;h3" in cube_listing_html:
+        raise ValidationError("Rendered cube listing contains a source or literal-HTML link")
+    cube_lessons = discover_cube_lessons()
+    title_positions = [
+        cube_listing_html.find(html.escape(str(lesson["title"])))
+        for lesson in cube_lessons
+    ]
+    if any(position < 0 for position in title_positions) or title_positions != sorted(
+        title_positions
+    ):
+        raise ValidationError("Rendered cube lessons are missing or out of sequence")
+    if cube_html.count("bms-cube-lesson-number") != len(cube_lessons):
+        raise ValidationError("Rendered cube listing numbering hooks are incorrect")
+    if "data-bms-term-lookup" in cube_html:
+        raise ValidationError("Rendered cube landing contains the term lookup")
+    for required in (
+        "data-bms-learn-filters",
+        'data-bms-filter-difficulty="Beginner"',
+        'data-bms-filter-difficulty="Intermediate"',
+        'data-bms-filter-track="Doubling Cube"',
+        "data-bms-learn-clear",
+        "data-bms-learn-empty",
+    ):
+        if required not in cube_html:
+            raise ValidationError(f"Rendered cube landing is missing {required}")
+    if 'href="/updates/index.xml"' not in cube_html:
+        raise ValidationError("Rendered footer does not link to the Updates RSS feed")
+
+    updates_feed = output_root / "updates" / "index.xml"
+    if not updates_feed.exists():
+        raise ValidationError("Rendered combined Updates RSS feed is missing")
+    try:
+        feed_root = ElementTree.parse(updates_feed).getroot()
+    except ElementTree.ParseError as error:
+        raise ValidationError("Rendered combined Updates RSS feed is invalid XML") from error
+    feed_items = feed_root.findall("./channel/item")
+    feed_links = [
+        (item.findtext("link") or "").strip()
+        for item in feed_items
+    ]
+    expected_feed_links = [
+        "https://backgammon-made-simple.github.io" + str(publication["route"])
+        for publication in discover_update_publications()
+    ]
+    if feed_links != expected_feed_links:
+        raise ValidationError(
+            "Rendered Updates RSS items are missing, ineligible, or out of order"
         )
-        if f'<link rel="canonical" href="{canonical}">' not in term_html:
-            raise ValidationError(f"Rendered term {slug} is missing its canonical head link")
-        if "bms-glossary-canonical" in term_html or "<strong>Canonical URL:" in term_html:
-            raise ValidationError(f"Rendered term {slug} still has a visible canonical row")
-        if '<div class="description">' not in term_html:
-            raise ValidationError(f"Rendered term {slug} lost its metadata description")
-        if not metadata["og_title"] or not metadata["og_description"]:
-            raise ValidationError(f"Rendered term {slug} has incomplete social metadata")
-
-    take_metadata, equity_metadata = sampled_metadata[1:]
-    if take_metadata["og_title"] == equity_metadata["og_title"]:
-        raise ValidationError("Sampled term pages have duplicate Open Graph titles")
-    if take_metadata["og_description"] == equity_metadata["og_description"]:
-        raise ValidationError("Sampled term pages have duplicate Open Graph descriptions")
-    if take_metadata["twitter_title"] == equity_metadata["twitter_title"]:
-        raise ValidationError("Sampled term pages have duplicate Twitter titles")
-    if take_metadata["twitter_description"] == equity_metadata["twitter_description"]:
-        raise ValidationError("Sampled term pages have duplicate Twitter descriptions")
+    if any(
+        re.match(r"^\s*\d+\.\s+", item.findtext("title") or "")
+        for item in feed_items
+    ):
+        raise ValidationError("Cube landing numbers leaked into an RSS title")
 
     return {
-        "html_files": len(html_files),
-        "sitemap_routes": len(entries),
-        "learn_html_files": len(learn_html),
-        "internal_links": checked_links,
-        "lesson_finder_items": len(lessons),
-        "expanded_letter_groups": len(letter_tags),
-        "related_research_links": sum(
-            len(value) for value in related_research.values()
-        ),
-        "sampled_social_pages": len(sampled_metadata),
+        "alias_entries": alias_count,
+        "canonical_anchors": len(canonical_anchors),
+        "glossary_html_files": len(html_files),
+        "sitemap_glossary_routes": len(glossary_locations),
+        "standalone_term_pages": 0,
+        "updates_feed_items": len(feed_items),
     }
-
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -1353,8 +1273,11 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
         if command == "generate":
-            changed, total = generate()
-            print(f"Glossary generation complete: {changed} changed, {total} checked")
+            changed, total, removed = generate()
+            print(
+                "Glossary generation complete: "
+                f"{changed} changed, {total} checked, {removed} obsolete files removed"
+            )
             return 0
         if command == "validate":
             result = validate_generated()

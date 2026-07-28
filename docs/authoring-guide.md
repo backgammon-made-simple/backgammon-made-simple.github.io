@@ -10,6 +10,8 @@ This private guide explains where the site lives, how the navigation is wired, a
 |---|---|---|
 | Homepage | `site/index.qmd` | Public landing page and homepage playground |
 | Learn | `site/learn/index.qmd` | Curriculum landing page and lesson patterns |
+| Glossary | `site/learn/glossary/index.qmd` | One searchable page containing every canonical term |
+| Custom 404 | `site/404.qmd` | Root not-found page and recovery links |
 | Analyze | `site/analyze/index.qmd` | Static analyzer entry page and Shiny companion |
 | Sage vs GNU | `site/engine-benchmark/sage-vs-gnu-stage1/index.qmd` | Study overview and status page |
 | Blog | `site/blog/index.qmd` | Chronological listing that discovers `site/posts/**` |
@@ -70,7 +72,7 @@ body-classes: bms-learn-article
 ---
 ```
 
-The generated canonical-slug reference is [learn-glossary-terms.md](learn-glossary-terms.md). Regenerate glossary pages and that terms-only list with:
+The generated canonical-slug and stable-anchor reference is [learn-glossary-terms.md](learn-glossary-terms.md). Regenerate the one glossary entries fragment and that authoring reference with:
 
 ```powershell
 python scripts/learn_glossary.py generate
@@ -79,9 +81,50 @@ python scripts/learn_glossary.py validate
 
 Do not add glossary relationships by scanning lesson prose. A keyword scan may be used as an authoring warning, but the public relationship must remain explicit in `terms`.
 
+Cube lessons also require one unique positive `cube-order` value. That metadata
+is the authoritative automatic sequence for `/learn/cube/`; keep the Learn
+sidebar as a validated mirror of the same order. Landing-page numbers are
+generated from the resulting sequence and never belong in lesson titles.
+
+## Single-Page Glossary
+
+The glossary has one public route:
+
+```text
+/learn/glossary/
+```
+
+Do not create a directory or page for an individual term. Every canonical term
+is an expandable entry in the initial HTML on the glossary page. Link to a term
+with its stable canonical anchor:
+
+```text
+/learn/glossary/#prime
+/learn/glossary/#take-point
+```
+
+Use canonical slugs in Learn and Research `terms` metadata. Aliases remain
+inside their canonical data entry and search resolves them to the canonical
+anchor; aliases never receive separate pages, redirects, or visible duplicate
+entries. Related Learn and Research content is driven only by explicit
+canonical `terms` metadata.
+
+`site/404.qmd` is the source for the root `404.html` page. Keep its recovery
+links to Home, Learn, Lesson Finder, Backgammon Glossary, and Research. It must
+remain a normal content page without redirect code.
+
 ## Blog Discovery
 
 The blog listing is driven by `listing:` metadata on `site/blog/index.qmd`, which points at `site/posts/**/*.qmd`. Add or remove posts by creating or deleting files under `site/posts/`.
+
+## Updates RSS
+
+`site/updates/index.qmd` produces the combined `/updates/index.xml` feed. An
+eligible Learn article, Research article, study, or benchmark report must live
+under its public section, have a real ISO publication `date`, and explicitly
+set `published: true`. The feed sorts those sources in reverse chronological
+order. Do not mark landings, templates, drafts, hidden or planned pages, or
+private fixture posts as published feed items.
 
 ## Recently Added
 

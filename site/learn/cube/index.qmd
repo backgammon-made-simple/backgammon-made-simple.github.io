@@ -16,69 +16,64 @@ terms:
   - match-play
   - redouble
   - cube-action
-body-classes: bms-learn-article
+body-classes: "bms-learn-article bms-cube-index"
+toc: false
+term-lookup: false
+lesson-taxonomy: false
+listing:
+  id: cube-lessons
+  contents:
+    - "*.qmd"
+    - "*/index.qmd"
+    - "!index.qmd"
+  template: ../_lesson-listing.ejs.md
+  sort: "cube-order"
+  sort-ui: false
+  filter-ui: false
+  feed: false
 ---
 
-The cube changes the stakes, but a good cube decision is not just a judgment about who is ahead. This path begins with the basic take comparison, then adds cube ownership, timing, gammons, match score, and future cube value.
+```{=html}
+<section class="bms-learn-filter-panel" data-bms-learn-filters aria-label="Filter cube lessons">
+  <p class="visually-hidden">
+    Select one or more difficulties and learning tracks. Lessons match any selection within a group and every group that has a selection.
+  </p>
 
-::: {.bms-curriculum-start}
-[Start with: Why Is 25% the Basic Take Point When a Double Is Offered?](why-is-25-percent-the-basic-take-point.qmd){.bms-button-outline}
+  <div class="bms-learn-filter-group">
+    <p class="bms-learn-filter-label">Difficulty</p>
+    <div class="bms-learn-filter-options" role="group" aria-label="Filter by difficulty">
+      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Beginner" aria-pressed="false">
+        <span>Beginner</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Intermediate" aria-pressed="false">
+        <span>Intermediate</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="bms-learn-filter-group">
+    <p class="bms-learn-filter-label">Learning track</p>
+    <div class="bms-learn-filter-options" role="group" aria-label="Filter by learning track">
+      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Doubling Cube" aria-pressed="false">
+        <span>Doubling Cube</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="bms-learn-filter-footer">
+    <p class="bms-learn-result-count" aria-live="polite" data-bms-learn-result-count></p>
+    <button type="button" class="bms-learn-clear" data-bms-learn-clear hidden>Reset filters</button>
+  </div>
+</section>
+```
+
+## Cube lessons
+
+::: {#cube-lessons}
 :::
 
-## Learning path
-
-1. [Why Is 25% the Basic Take Point When a Double Is Offered?](why-is-25-percent-the-basic-take-point.qmd)  
-   **Current reference article · Foundation**
-
-2. Why Is the Take Point Not Always 25%?  
-   **Planned · Foundation**
-
-3. What Does Taking the Cube Give Me?  
-   **Planned · Foundation**
-
-4. What Do No Double, Double/Take, and Double/Pass Mean?  
-   **Planned · Foundation**
-
-5. Why Is Doubling Early Sometimes a Mistake?  
-   **Planned · Developing**
-
-6. What Is a Market Loser?  
-   **Planned · Developing**
-
-7. When Should I Double Before I Roll?  
-   **Planned · Developing**
-
-8. Why Can a Difficult Take Be a Good Practical Double?  
-   **Planned · Developing**
-
-9. How Do Gammons Change a Take?  
-   **Planned · Developing**
-
-10. Why Can More Than 25% Still Be a Pass?  
-    **Planned · Developing**
-
-11. How Does Match Score Change the Cube?  
-    **Planned · Developing**
-
-12. When Am I Too Good to Double?  
-    **Planned · Developing**
-
-13. What Is a Dead Cube?  
-    **Planned · Deep Dive**
-
-14. What Is a Live Cube?  
-    **Planned · Deep Dive**
-
-15. What Is Recube Vigorish?  
-    **Planned · Deep Dive**
-
-16. What Is Cube Efficiency?  
-    **Planned · Deep Dive**
-
-17. How Does the Janowski Model Approximate Future Cube Value?  
-    **Planned · Deep Dive**
-
-18. How Do Different Game Types Change Cube Timing?  
-    **Planned · Deep Dive**
-
-Only the first article is linked during this reference-page phase. The remaining titles preserve the planned curriculum without exposing empty pages.
+```{=html}
+<p class="bms-learn-empty" data-bms-learn-empty hidden>
+  No cube lessons match the selected difficulty and learning track. Reset the filters to see every cube lesson.
+</p>
+```

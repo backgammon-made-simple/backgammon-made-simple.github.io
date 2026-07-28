@@ -5,6 +5,7 @@ sidebar: learn
 page-layout: article
 body-classes: bms-glossary-index
 toc: false
+canonical-url: "https://backgammon-made-simple.github.io/learn/glossary/"
 image: /assets/social/generated/social-glossary.png
 social-card: true
 social-card-slug: glossary
@@ -17,8 +18,6 @@ execute:
 ```{=html}
 <span id="bms-glossary-top" class="bms-glossary-top-target" tabindex="-1"></span>
 ```
-
-Use the search and filters to find a definition, or choose a letter to browse. Alias searches reveal the canonical term, and each term title opens its stable definition page.
 
 ```{=html}
 <section class="bms-glossary-filter-panel" data-bms-glossary-filters aria-label="Search and filter the glossary">
