@@ -990,6 +990,14 @@ def build_lesson_catalogue_html(
         for value in DIFFICULTIES
         if any(value in lesson["categories"] for lesson in lessons)
     ]
+    used_term_slugs = sorted(
+        {
+            str(slug)
+            for lesson in lessons
+            for slug in lesson["terms"]
+        },
+        key=lambda slug: term_names[slug].casefold(),
+    )
     mode = "global" if selected_track_id is None else "track"
     lines = [
         GENERATED_MARKER,
@@ -1020,22 +1028,13 @@ def build_lesson_catalogue_html(
                 ],
             )
         )
-    else:
-        used_term_slugs = sorted(
-            {
-                str(slug)
-                for lesson in lessons
-                for slug in lesson["terms"]
-            },
-            key=lambda slug: term_names[slug].casefold(),
+    lines.extend(
+        filter_disclosure_html(
+            "Term Filter",
+            "term",
+            [(slug, term_names[slug]) for slug in used_term_slugs],
         )
-        lines.extend(
-            filter_disclosure_html(
-                "Term Filter",
-                "term",
-                [(slug, term_names[slug]) for slug in used_term_slugs],
-            )
-        )
+    )
     lines.extend(
         [
             '<div class="bms-learn-filter-footer">',

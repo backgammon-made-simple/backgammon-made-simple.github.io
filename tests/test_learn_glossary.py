@@ -659,6 +659,8 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn(">Description<", catalogue)
         self.assertIn("Difficulty Filter", catalogue)
         self.assertIn("Learning Track Filter", catalogue)
+        self.assertIn("Term Filter", catalogue)
+        self.assertIn("data-bms-filter-term", catalogue)
         self.assertEqual(catalogue.count("data-bms-learn-collapse-all"), 1)
         self.assertEqual(catalogue.count("data-bms-learn-expand-all"), 1)
         for lesson in self.lessons:
@@ -851,15 +853,13 @@ class LearnGlossaryTests(unittest.TestCase):
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
         ).read_text(encoding="utf-8")
-        self.assertRegex(
-            css,
-            r"\.bms-learn-catalogue-section \{[^}]*"
-            r"border-bottom: 1px solid var\(--bms-border\);",
-        )
-        self.assertNotIn(
-            ".bms-learn-catalogue-section {\n  border-top:",
+        catalogue_section_css = re.search(
+            r"\.bms-learn-catalogue-section \{([^}]*)\}",
             css,
         )
+        self.assertIsNotNone(catalogue_section_css)
+        self.assertNotIn("border-top:", catalogue_section_css.group(1))
+        self.assertNotIn("border-bottom:", catalogue_section_css.group(1))
         self.assertIn(
             ".bms-learn-filter[aria-pressed=\"true\"]:hover",
             css,
@@ -875,6 +875,15 @@ class LearnGlossaryTests(unittest.TestCase):
             r"body:is\(\.bms-learn-index, \.bms-learn-track-index\)"
             r"\s+\.bms-learn-filter-disclosure \{\s+border-top: 0;",
         )
+        for required in (
+            "#quarto-margin-sidebar > *",
+            "opacity: 1 !important",
+            "#quarto-margin-sidebar #TOC[data-toc-expanded] ul.collapse",
+            "#quarto-toc-toggle",
+            "display: none !important",
+            "z-index: 1060",
+        ):
+            self.assertIn(required, css)
 
     def test_mobile_brand_wraps_and_has_a_narrow_screen_fallback(self) -> None:
         css = (
