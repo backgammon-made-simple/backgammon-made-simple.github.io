@@ -145,6 +145,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../learn/glossary/index.html"> 
+<span class="menu-text">Glossary</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -281,14 +285,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<aside class="bms-term-lookup" data-bms-term-lookup="">
+<aside class="bms-term-lookup" data-bms-term-lookup="" hidden="">
+  <div class="bms-term-lookup-heading">
+    <strong>Look Up a Term</strong>
+    <button type="button" class="bms-term-lookup-close" data-bms-term-lookup-close="" aria-label="Close term lookup">×</button>
+  </div>
   <form action="/learn/glossary/" method="get" data-bms-term-lookup-form="">
-    <label for="bms-term-lookup-input">Look Up a Term</label>
+    <label class="visually-hidden" for="bms-term-lookup-input">Term or alias</label>
     <div class="bms-term-lookup-controls">
-      <input id="bms-term-lookup-input" name="q" type="search" required="" autocomplete="off" spellcheck="false" placeholder="e.g. take point">
-      <button type="submit">Look Up</button>
+      <input id="bms-term-lookup-input" name="q" type="search" required="" autocomplete="off" spellcheck="false" placeholder="Term or otherwise known as…">
+      <button type="submit">Search</button>
     </div>
   </form>
+  <div class="bms-term-lookup-result" data-bms-term-lookup-result="" aria-live="polite" hidden=""></div>
 </aside>
 <div class="bms-lesson-taxonomy" data-bms-lesson-taxonomy="">
 <div class="bms-lesson-difficulties" role="list" aria-label="Lesson difficulty">

@@ -884,6 +884,9 @@
   if (typeof module !== "undefined" && module.exports) {
     module.exports = publicApi;
   }
+  if (typeof window !== "undefined") {
+    window.BmsGlossary = publicApi;
+  }
 
   if (typeof document !== "undefined") {
     const initialize = function () {
