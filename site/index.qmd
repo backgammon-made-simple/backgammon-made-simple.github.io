@@ -10,30 +10,37 @@ format:
 
 :::::::::: {.bms-landing}
 
-::::::: {.bms-hero .bms-hero--editorial}
+:::::: {.bms-hero .bms-hero--editorial}
 ::: {.bms-eyebrow}
 BACKGAMMON MADE SIMPLE
 :::
 
-<h1>Understand the game,<br>not just the right move.</h1>
+<h1>Understand the game,<br class="bms-home-desktop-break">not just the right move.</h1>
 
-::: {.bms-mantra}
-Start with a question. Leave with a clear mental model you can use at the board.
+::: {.bms-hero-copy}
+Clear lessons and tools for stronger backgammon decisions.
 :::
+::::::
 
+:::::: {.bms-home-explore aria-labelledby="bms-home-explore-title"}
+<h2 id="bms-home-explore-title">Explore</h2>
 
+::::: {.bms-home-explore-list}
+[<span class="bms-home-explore-title">Start learning</span>
+<span class="bms-home-explore-description">Question-led lessons that explain how to recognize and solve recurring backgammon decisions.</span>](learn/index.qmd){.bms-home-explore-link}
 
-[Start learning](learn/index.qmd){.bms-button-primary} Clear, position-based lessons that build from beginner concepts to advanced decisions.
+[<span class="bms-home-explore-title">Analyze a position</span>
+<span class="bms-home-explore-description">Enter a position to compare engine recommendations and understand why one choice is stronger.</span>](analyze/index.qmd){.bms-home-explore-link}
 
-[Analyzer](analyze/index.qmd){.bms-button-outline} Free 4-ply analysis, rollouts, and tools for understanding engine results.
+[<span class="bms-home-explore-title">Sage vs GNU</span>
+<span class="bms-home-explore-description">Follow engine-versus-engine matches and see where their play and evaluations differ.</span>](engine-benchmark/sage-vs-gnu-stage1/index.qmd){.bms-home-explore-link}
 
-[Sage vs GNU](analyze/index.qmd){.bms-button-outline} Engine-versus-engine matches, results, and decision comparisons.
+[<span class="bms-home-explore-title">Research</span>
+<span class="bms-home-explore-description">Read the methods, experiments, and results behind the tools and analysis.</span>](research/index.qmd){.bms-home-explore-link}
 
-[Research](analyze/index.qmd){.bms-button-outline} Details on the experiments, methods, and tools we are developing.
-
-[Glossary](analyze/index.qmd){.bms-button-outline} Simple explanations of backgammon terms and concepts.
-
-
-:::::::
+[<span class="bms-home-explore-title">Glossary</span>
+<span class="bms-home-explore-description">Look up backgammon terms, aliases, and related concepts.</span>](learn/glossary/index.qmd){.bms-home-explore-link}
+:::::
+::::::
 
 ::::::::::
