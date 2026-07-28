@@ -1,0 +1,601 @@
+/*
+  Local font files served from the site assets directory:
+
+  assets/fonts/SourceSans3-VariableFont_wght.ttf
+  assets/fonts/SourceSans3-Italic-VariableFont_wght.ttf
+  assets/fonts/SourceCodePro-VariableFont_wght.ttf
+  assets/fonts/SourceCodePro-Italic-VariableFont_wght.ttf
+
+  If your files have different names, change the matching URLs below.
+*/
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("fonts/SourceSans3-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("fonts/SourceSans3-Italic-VariableFont_wght.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("fonts/SourceCodePro-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("fonts/SourceCodePro-Italic-VariableFont_wght.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+:root {
+  --bms-navy-dark: #11182F;
+  --bms-navy: #1B2040;
+  --bms-slate: #39415F;
+
+  --bms-copper: #AC7652;
+  --bms-copper-dark: #915634;
+
+  --bms-ivory: #F3E8DC;
+  --bms-page-background: #FAF7F2;
+  --bms-surface: #FFFDFC;
+  --bms-sidebar-background: #F3E8DC;
+  --bms-callout-surface: #F8F0E8;
+
+  --bms-border: #D9CCC0;
+  --bms-border-subtle: #D9CCC0;
+  --bms-border-strong: #88786E;
+
+  --bms-text: #1B2040;
+  --bms-text-secondary: #39415F;
+  --bms-text-muted: #5F626E;
+  --bms-placeholder: #686B78;
+  --bms-text-inverse: #FFFFFF;
+  --bms-text-on-accent: #FFFFFF;
+
+  --bms-link: #915634;
+  --bms-link-on-warm: #6F3F28;
+  --bms-link-hover: #6F3F28;
+
+  --bms-success: #2F6B4F;
+  --bms-info: #3D5F87;
+  --bms-close: #8A6A25;
+  --bms-warning: #A7611B;
+  --bms-warning-text: #915315;
+  --bms-mistake: #A54C35;
+  --bms-danger: #923B45;
+
+  --bms-badge-text: #1B2040;
+
+  --bms-status-info-surface: #EAF4FA;
+  --bms-status-info-text: #005680;
+  --bms-status-info-border: #0072B2;
+
+  --bms-status-neutral-surface: #ECEEF0;
+  --bms-status-neutral-text: #4F5560;
+  --bms-status-neutral-border: #88786E;
+
+  --bms-status-warning-surface: #FFF1CC;
+  --bms-status-warning-text: #915315;
+  --bms-status-warning-border: #915315;
+
+  --bms-status-mistake-surface: #FBE5DD;
+  --bms-status-mistake-text: #8A3900;
+  --bms-status-mistake-border: #A54C35;
+
+  --bms-focus: #0072B2;
+  --bms-focus-halo: rgba(0, 114, 178, 0.18);
+
+  --bms-shadow-soft: 0 12px 32px rgba(17, 24, 47, 0.08);
+}
+
+[data-theme="dark"],
+[data-bs-theme="dark"] {
+  --bms-page-background: #0D1327;
+  --bms-surface: #151D37;
+  --bms-sidebar-background: #11182F;
+  --bms-callout-surface: #11182F;
+
+  --bms-border: #35405D;
+  --bms-border-subtle: #35405D;
+  --bms-border-strong: #697694;
+
+  --bms-text: #F5EDE6;
+  --bms-text-secondary: #D9D1CA;
+  --bms-text-muted: #C1B8B1;
+  --bms-placeholder: #C1B8B1;
+  --bms-text-inverse: #FFFFFF;
+  --bms-text-on-accent: #11182F;
+
+  --bms-copper: #E0AE88;
+  --bms-copper-dark: #C28A63;
+
+  --bms-link: #C28A63;
+  --bms-link-on-warm: #E0AE88;
+  --bms-link-hover: #E0AE88;
+
+  --bms-badge-text: #F5EDE6;
+
+  --bms-focus: #A8C2DD;
+  --bms-focus-halo: rgba(168, 194, 221, 0.22);
+
+  --bms-info: #A8C2DD;
+
+  --bms-shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+html {
+  background: var(--bms-page-background);
+}
+
+body {
+  background: var(--bms-page-background);
+  color: var(--bms-text);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.68;
+}
+
+h1,
+h2,
+h3,
+.bms-serif {
+  color: var(--bms-navy-dark);
+  font-family: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+code,
+kbd,
+pre,
+.bms-code,
+.bms-technical-label {
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+[data-bs-theme="dark"] h1,
+[data-bs-theme="dark"] h2,
+[data-bs-theme="dark"] h3,
+[data-bs-theme="dark"] .bms-serif {
+  color: var(--bms-text);
+}
+
+a {
+  color: var(--bms-link);
+}
+
+a:hover {
+  color: var(--bms-link-hover);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.12em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--bms-focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px var(--bms-focus-halo);
+}
+
+.bms-page-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.bms-surface {
+  background: var(--bms-surface);
+  border: 1px solid var(--bms-border);
+  border-radius: 8px;
+  box-shadow: var(--bms-shadow-soft);
+}
+
+.bms-muted {
+  color: var(--bms-text-muted);
+}
+
+.navbar .nav-link {
+  border-radius: 6px;
+  font-weight: 650;
+  padding: 0.55rem 0.8rem !important;
+}
+
+.navbar-brand,
+.navbar-title {
+  color: var(--bms-navy-dark) !important;
+  font-weight: 800;
+}
+
+.navbar .nav-link.active,
+.navbar-nav .show > .nav-link {
+  background: var(--bms-navy-dark);
+  color: var(--bms-text-inverse) !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--bms-link-hover) !important;
+}
+
+.navbar .nav-link.active:hover {
+  background: var(--bms-navy);
+  color: var(--bms-text-inverse) !important;
+}
+
+/*
+  Reusable centred editorial layout.
+
+  Standard editorial page:
+
+      format:
+        html:
+          title-block-style: plain
+          body-classes: bms-editorial-page
+
+  Reusable technical eyebrow above the title:
+
+      subtitle: "SECTION :: PAGE TYPE"
+      format:
+        html:
+          title-block-style: plain
+          body-classes: "bms-editorial-page bms-title-eyebrow"
+
+  The subtitle metadata is visually restyled as an eyebrow. It is not rendered
+  as descriptive subtitle copy below the title.
+*/
+:is(body.bms-about-page, body.bms-editorial-page) {
+  --bms-editorial-frame-width: 960px;
+  --bms-editorial-reading-width: 820px;
+  --bms-editorial-title: var(--bms-navy-dark);
+  --bms-editorial-subtitle: var(--bms-copper-dark);
+  --bms-editorial-rule: var(--bms-copper);
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) main#quarto-document-content {
+  width: 100%;
+  max-width: none;
+}
+
+/*
+  The eyebrow, title, optional subtitle, and rule share one centred reading width.
+  About currently omits the subtitle; other editorial pages may still use one.
+*/
+:is(body.bms-about-page, body.bms-editorial-page) #title-block-header {
+  box-sizing: border-box;
+  width: min(calc(100% - 3rem), var(--bms-editorial-frame-width));
+  margin: 0 auto 2.6rem;
+  padding: clamp(2.75rem, 5vw, 4.25rem) 0 0;
+  border-bottom: 0;
+  text-align: left;
+}
+
+/* About-only eyebrow. Other editorial pages receive the layout without this label. */
+body.bms-about-page #title-block-header::before {
+  content: "ABOUT  ::  BMS";
+  display: block;
+  width: min(100%, var(--bms-editorial-reading-width));
+  margin: 0 auto 0.7rem;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+/*
+  Generic title eyebrow. Quarto's subtitle field supplies the text, while this
+  class moves it above the title and gives it the shared technical treatment.
+*/
+body.bms-title-eyebrow #title-block-header .quarto-title {
+  display: flex;
+  flex-direction: column;
+}
+
+body.bms-title-eyebrow #title-block-header .title {
+  order: 2;
+}
+
+body.bms-title-eyebrow #title-block-header .subtitle {
+  order: 1;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 0.7rem;
+  padding: 0;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+/*
+  Quarto renders .quarto-title directly inside #title-block-header.
+  Constrain that element—not a nonexistent nested .quarto-title-block—so the
+  title aligns exactly with the eyebrow, body copy, and section headings.
+*/
+:is(body.bms-about-page, body.bms-editorial-page) #title-block-header .quarto-title {
+  box-sizing: border-box;
+  width: min(100%, var(--bms-editorial-reading-width));
+  margin-inline: auto;
+  padding: 0 0 1.35rem;
+  border-bottom: 2px solid var(--bms-editorial-rule);
+  text-align: left;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) #title-block-header .quarto-title-meta {
+  width: min(100%, var(--bms-editorial-reading-width));
+  margin-inline: auto;
+  padding: 0;
+  text-align: left;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) #title-block-header .title {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  color: var(--bms-editorial-title);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: clamp(2.2rem, 3vw, 2.85rem);
+  font-weight: 750;
+  line-height: 1.06;
+  letter-spacing: -0.028em;
+  text-align: left;
+}
+
+/* Optional on other editorial pages. About removes its description in YAML. */
+:is(body.bms-about-page, body.bms-editorial-page) #title-block-header .description {
+  box-sizing: border-box;
+  width: min(100%, var(--bms-editorial-reading-width));
+  max-width: none;
+  margin: 0.75rem auto 0;
+  padding: 0;
+  color: var(--bms-editorial-subtitle);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: clamp(1.08rem, 1.35vw, 1.2rem);
+  font-weight: 550;
+  line-height: 1.48;
+  text-align: left;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-page-shell {
+  box-sizing: border-box;
+  width: min(calc(100% - 3rem), var(--bms-editorial-frame-width));
+  max-width: none;
+  margin-inline: auto;
+  padding: 0 0 5rem;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column {
+  width: min(100%, var(--bms-editorial-reading-width));
+  max-width: none;
+  margin-inline: auto;
+  color: var(--bms-text-secondary);
+  font-size: 1.04rem;
+  line-height: 1.72;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column > p:first-child {
+  margin-top: 0;
+}
+
+/*
+  Use .bms-about-lead on About or .bms-editorial-lead on another editorial page
+  to distinguish the opening mission from ordinary body copy without using a card.
+*/
+body.bms-about-page .bms-about-lead,
+body.bms-editorial-page .bms-editorial-lead {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 1.25rem;
+}
+
+body.bms-about-page .bms-about-lead p,
+body.bms-editorial-page .bms-editorial-lead p {
+  margin: 0;
+  color: var(--bms-navy);
+  font-size: 1.18rem;
+  font-weight: 550;
+  line-height: 1.62;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column h2 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1.5px solid var(--bms-border);
+  color: var(--bms-navy-dark);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: clamp(1.65rem, 2.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column blockquote {
+  margin: 1.8rem 0 2.9rem;
+  padding: 0.85rem 0 0.85rem 1rem;
+  border-left: 3px solid var(--bms-copper);
+  color: var(--bms-navy);
+  font-size: 1.08rem;
+  font-weight: 650;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Source Code Pro accents for question or evidence examples. */
+:is(body.bms-about-page, body.bms-editorial-page) .bms-question-examples {
+  margin: 0.9rem 0 1.45rem;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-question-examples p {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0.6rem 0;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-code-prefix {
+  flex: 0 0 auto;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.9em;
+  font-style: normal;
+  font-weight: 650;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-code-note {
+  display: block;
+  margin-top: 1rem;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+}
+
+/* Section heading with technical metadata carried on the rule. */
+:is(body.bms-about-page, body.bms-editorial-page) .bms-section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1.5px solid var(--bms-border);
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-section-heading h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--bms-navy-dark);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: clamp(1.65rem, 2.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .bms-heading-meta {
+  margin-left: auto;
+  color: var(--bms-copper-dark);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+:is(body.bms-about-page, body.bms-editorial-page) .footnotes {
+  width: min(calc(100% - 3rem), var(--bms-editorial-reading-width));
+  margin-inline: auto;
+  padding-bottom: 3rem;
+  color: var(--bms-text-muted);
+  font-size: 0.92rem;
+}
+
+[data-bs-theme="dark"] :is(body.bms-about-page, body.bms-editorial-page) {
+  --bms-editorial-title: var(--bms-text);
+  --bms-editorial-subtitle: var(--bms-copper);
+  --bms-editorial-rule: var(--bms-copper);
+}
+
+[data-bs-theme="dark"] :is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column h2,
+[data-bs-theme="dark"] :is(body.bms-about-page, body.bms-editorial-page) .bms-section-heading h2 {
+  color: var(--bms-text);
+}
+
+[data-bs-theme="dark"] body.bms-about-page .bms-about-lead p,
+[data-bs-theme="dark"] body.bms-editorial-page .bms-editorial-lead p {
+  color: var(--bms-text);
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+
+  .navbar-logo {
+    max-height: 34px;
+  }
+
+  .navbar .nav-link {
+    min-height: 42px;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) #title-block-header,
+  :is(body.bms-about-page, body.bms-editorial-page) .bms-page-shell,
+  :is(body.bms-about-page, body.bms-editorial-page) .footnotes {
+    width: min(calc(100% - 2rem), var(--bms-editorial-frame-width));
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) #title-block-header {
+    margin-bottom: 2rem;
+    padding-top: 2.25rem;
+  }
+
+  body.bms-about-page #title-block-header::before {
+    margin-bottom: 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  body.bms-title-eyebrow #title-block-header .subtitle {
+    margin-bottom: 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) #title-block-header .quarto-title {
+    padding-bottom: 1.15rem;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) #title-block-header .title {
+    font-size: clamp(2rem, 9vw, 2.45rem);
+    line-height: 1.05;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) #title-block-header .description {
+    margin-top: 0.6rem;
+    font-size: 1.04rem;
+  }
+
+  body.bms-about-page .bms-about-lead p,
+  body.bms-editorial-page .bms-editorial-lead p {
+    font-size: 1.1rem;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) .bms-reading-column h2 {
+    margin-top: 2.5rem;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) .bms-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 2.5rem;
+  }
+
+  :is(body.bms-about-page, body.bms-editorial-page) .bms-heading-meta {
+    margin-left: 0;
+    white-space: normal;
+  }
+}
