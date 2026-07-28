@@ -429,6 +429,71 @@ assert.equal(
   "blank lookup submissions remain a no-op"
 );
 
+const lookupCandidates = [
+  {
+    term: "Take Point",
+    aliases: ["Point of Last Take"],
+    slug: "take-point"
+  },
+  {
+    term: "Outfield",
+    aliases: ["Out Field"],
+    slug: "outfield"
+  }
+];
+assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "take point").slug,
+  "take-point",
+  "a direct canonical match wins"
+);
+assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "point of last take").slug,
+  "take-point",
+  "a direct alias match resolves to its canonical term"
+);
+assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "take poi").slug,
+  "take-point",
+  "a partial canonical match resolves to the best term"
+);
+assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "last ta").slug,
+  "take-point",
+  "a partial alias match resolves to the best canonical term"
+);
+assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "no matching concept"),
+  null,
+  "an unrelated query does not invent a glossary result"
+);
+
+const lookupData = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "site", "assets", "bms-glossary-lookup.json"),
+    "utf8"
+  )
+);
+assert.equal(lookupData.entries.length, 624);
+assert.equal(
+  lookupData.entries.reduce(
+    (total, entry) => total + entry.aliases.length,
+    0
+  ),
+  181
+);
+assert.equal(
+  lookupData.entries.reduce(
+    (total, entry) => total + entry.related_lessons.length,
+    0
+  ),
+  40
+);
+assert.equal(
+  learn.bestLookupEntry(lookupData.entries, "take point").term,
+  "Take Point",
+  "generated lookup data supports canonical search"
+);
+
 [
   ["?q=out%20field", "out field"],
   ["?q=take-point", "take-point"],

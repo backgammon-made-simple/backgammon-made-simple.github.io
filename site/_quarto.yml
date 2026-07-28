@@ -10,6 +10,7 @@ project:
     - "assets/icons/**"
     - "assets/social/generated/*.png"
     - assets/bms-glossary.js
+    - assets/bms-glossary-lookup.json
     - "data/engine-benchmark/**"
     - "engine-benchmark/**/figures/**"
     - "engine-benchmark/**/tables/**"
@@ -50,6 +51,8 @@ website:
         text: Sage vs GNU
       - href: research/index.qmd
         text: Research
+      - href: learn/glossary/index.qmd
+        text: Glossary
       - href: about.qmd
         text: About
   page-footer:

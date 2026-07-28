@@ -112,11 +112,12 @@ class LearnGlossaryTests(unittest.TestCase):
                 learn_glossary.GENERATED_LESSON_CATALOGUE_PATH,
                 learn_glossary.GENERATED_NAVIGATION_PATH,
                 learn_glossary.GENERATED_ENTRIES_PATH,
+                learn_glossary.GENERATED_LOOKUP_DATA_PATH,
                 learn_glossary.AUTHORING_TERMS_PATH,
                 *track_outputs,
             }
         )
-        self.assertEqual(len(outputs), 7)
+        self.assertEqual(len(outputs), 8)
         self.assertEqual(
             outputs,
             learn_glossary.generated_outputs(
@@ -795,6 +796,86 @@ class LearnGlossaryTests(unittest.TestCase):
         for lesson in self.cube_lessons:
             self.assertNotRegex(str(lesson["title"]), r"^\d+\.\s")
 
+    def test_compact_site_lookup_data_is_public_safe_and_complete(self) -> None:
+        lookup = json.loads(
+            learn_glossary.GENERATED_LOOKUP_DATA_PATH.read_text(
+                encoding="utf-8"
+            )
+        )
+        entries = lookup["entries"]
+        self.assertEqual(len(entries), 624)
+        self.assertEqual(
+            sum(len(entry["aliases"]) for entry in entries),
+            181,
+        )
+        self.assertEqual(
+            sum(len(entry["related_lessons"]) for entry in entries),
+            40,
+        )
+        self.assertTrue(all(entry["definition"] for entry in entries))
+        learn_glossary.assert_no_forbidden_keys(lookup)
+        learn_glossary.assert_no_forbidden_text(
+            learn_glossary.GENERATED_LOOKUP_DATA_PATH.read_text(
+                encoding="utf-8"
+            ),
+            "compact site lookup data",
+        )
+
+    def test_site_navigation_and_lookup_controls_contract(self) -> None:
+        config = (learn_glossary.SITE_ROOT / "_quarto.yml").read_text(
+            encoding="utf-8"
+        )
+        research = config.index("text: Research")
+        glossary = config.index("text: Glossary")
+        about = config.index("text: About")
+        self.assertLess(research, glossary)
+        self.assertLess(glossary, about)
+        self.assertIn("assets/bms-glossary-lookup.json", config)
+
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        for required in (
+            "initializeMobileLessonBar",
+            r"\u2190 Expand Lesson Index",
+            r"Look Up a Term \u2192",
+            "data-bms-site-back-to-top",
+            "/assets/bms-glossary-lookup.json",
+            "renderLookupResult",
+            "related_lessons",
+            r"Full Glossary Lookup \u2192",
+            "isMainSiteIndex",
+        ):
+            self.assertIn(required, javascript)
+
+        css = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
+        ).read_text(encoding="utf-8")
+        self.assertRegex(
+            css,
+            r"\.bms-learn-catalogue-section \{[^}]*"
+            r"border-bottom: 1px solid var\(--bms-border\);",
+        )
+        self.assertNotIn(
+            ".bms-learn-catalogue-section {\n  border-top:",
+            css,
+        )
+        self.assertIn(
+            ".bms-learn-filter[aria-pressed=\"true\"]:hover",
+            css,
+        )
+        self.assertIn("color: var(--bms-ivory)", css)
+        self.assertIn(
+            "body:is(.bms-learn-index, .bms-learn-track-index)"
+            " .bms-learn-clear",
+            css,
+        )
+        self.assertRegex(
+            css,
+            r"body:is\(\.bms-learn-index, \.bms-learn-track-index\)"
+            r"\s+\.bms-learn-filter-disclosure \{\s+border-top: 0;",
+        )
+
     def test_mobile_brand_wraps_and_has_a_narrow_screen_fallback(self) -> None:
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-shared.css"
@@ -1105,7 +1186,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["alias_entries"], 181)
         self.assertEqual(result["canonical_anchors"], 624)
         self.assertEqual(result["standalone_term_pages"], 0)
-        self.assertEqual(result["generated_files"], 7)
+        self.assertEqual(result["generated_files"], 8)
         self.assertEqual(result["lesson_catalogue_sections"], 3)
         self.assertEqual(result["learn_tracks"], 3)
         self.assertEqual(result["lessons"], 4)

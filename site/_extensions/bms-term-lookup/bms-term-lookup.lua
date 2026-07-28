@@ -29,14 +29,19 @@ end
 
 local function lookup_html()
   return table.concat({
-    '<aside class="bms-term-lookup" data-bms-term-lookup>',
+    '<aside class="bms-term-lookup" data-bms-term-lookup hidden>',
+    '  <div class="bms-term-lookup-heading">',
+    '    <strong>Look Up a Term</strong>',
+    '    <button type="button" class="bms-term-lookup-close" data-bms-term-lookup-close aria-label="Close term lookup">&times;</button>',
+    '  </div>',
     '  <form action="/learn/glossary/" method="get" data-bms-term-lookup-form>',
-    '    <label for="bms-term-lookup-input">Look Up a Term</label>',
+    '    <label class="visually-hidden" for="bms-term-lookup-input">Term or alias</label>',
     '    <div class="bms-term-lookup-controls">',
-    '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="e.g. take point">',
-    '      <button type="submit">Look Up</button>',
+    '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="Term or otherwise known as&hellip;">',
+    '      <button type="submit">Search</button>',
     '    </div>',
     '  </form>',
+    '  <div class="bms-term-lookup-result" data-bms-term-lookup-result aria-live="polite" hidden></div>',
     '</aside>'
   }, "\n")
 end

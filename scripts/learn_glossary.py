@@ -29,6 +29,7 @@ AUTHORING_TERMS_PATH = REPOSITORY_ROOT / "docs" / "learn-glossary-terms.md"
 GENERATED_ENTRIES_PATH = GLOSSARY_ROOT / "_entries.html"
 GENERATED_LESSON_CATALOGUE_PATH = LEARN_ROOT / "_lesson-catalogue.html"
 GENERATED_NAVIGATION_PATH = SITE_ROOT / "_learn-navigation.yml"
+GENERATED_LOOKUP_DATA_PATH = SITE_ROOT / "assets" / "bms-glossary-lookup.json"
 LEGACY_GENERATED_ROUTES_PATH = GLOSSARY_ROOT / "_generated-routes.json"
 QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
@@ -1312,6 +1313,41 @@ def build_authoring_terms(entries: list[dict[str, object]]) -> str:
     return content
 
 
+def build_lookup_data(
+    entries: list[dict[str, object]],
+    related_lessons: dict[str, list[dict[str, object]]],
+) -> str:
+    lookup_entries = []
+    for entry in entries:
+        slug = str(entry["slug"])
+        lookup_entries.append(
+            {
+                "aliases": [
+                    str(alias["term"])
+                    for alias in entry["aliases"]  # type: ignore[index]
+                ],
+                "definition": str(entry["definition"]),
+                "related_lessons": [
+                    {
+                        "route": str(lesson["route"]),
+                        "title": str(lesson["title"]),
+                    }
+                    for lesson in related_lessons.get(slug, [])
+                ],
+                "slug": slug,
+                "term": str(entry["term"]),
+            }
+        )
+    content = json.dumps(
+        {"entries": lookup_entries},
+        ensure_ascii=False,
+        indent=2,
+        sort_keys=True,
+    ) + "\n"
+    assert_no_forbidden_text(content, "generated glossary lookup data")
+    return content
+
+
 def generated_outputs(
     entries: list[dict[str, object]],
     curriculum: list[dict[str, object]],
@@ -1325,6 +1361,9 @@ def generated_outputs(
         GENERATED_NAVIGATION_PATH: build_navigation_yaml(curriculum),
         GENERATED_ENTRIES_PATH: build_entries_html(
             entries, related_lessons, related_research
+        ),
+        GENERATED_LOOKUP_DATA_PATH: build_lookup_data(
+            entries, related_lessons
         ),
         AUTHORING_TERMS_PATH: build_authoring_terms(entries),
     }
@@ -1468,6 +1507,20 @@ def validate_generated() -> dict[str, int]:
     if old_term_links:
         raise ValidationError(
             f"Single-page glossary still links to term routes: {old_term_links[:10]}"
+        )
+
+    lookup_data = read_json(GENERATED_LOOKUP_DATA_PATH)
+    lookup_entries = lookup_data.get("entries")
+    if not isinstance(lookup_entries, list) or len(lookup_entries) != len(entries):
+        raise ValidationError("Generated glossary lookup data has the wrong term count")
+    if sum(len(item.get("aliases", [])) for item in lookup_entries) != EXPECTED_ALIAS_ENTRIES:
+        raise ValidationError("Generated glossary lookup data has the wrong alias count")
+    if sum(
+        len(item.get("related_lessons", []))
+        for item in lookup_entries
+    ) != sum(len(value) for value in related_lessons.values()):
+        raise ValidationError(
+            "Generated glossary lookup data has the wrong related-lesson count"
         )
 
     catalogue_html = GENERATED_LESSON_CATALOGUE_PATH.read_text(encoding="utf-8")
