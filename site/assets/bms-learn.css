@@ -522,6 +522,7 @@ body.bms-learn-track-index .bms-learn-filter-count {
 }
 
 .bms-learn-catalogue-section {
+  margin: 0;
   overflow: hidden;
   border-top: 1px solid var(--bms-border-strong);
   border-bottom: 1px solid var(--bms-border);
@@ -580,19 +581,15 @@ body.bms-learn-track-index .bms-learn-filter-count {
 }
 
 .bms-learn-catalogue-item {
-  padding: 0.22rem 0.15rem;
-}
-
-.bms-learn-catalogue-item + .bms-learn-catalogue-item {
-  border-top: 1px solid var(--bms-border);
+  padding: 0.1rem 0.15rem;
 }
 
 .bms-learn-catalogue-title-row {
   display: grid;
   grid-template-columns: 1.4rem minmax(0, 1fr);
   align-items: baseline;
-  gap: 0.45rem;
-  padding-left: 0.4rem;
+  gap: 0.35rem;
+  padding-left: 0.25rem;
 }
 
 .bms-learn-lesson-number {
@@ -612,6 +609,7 @@ body.bms-learn-track-index .bms-learn-filter-count {
 }
 
 .bms-learn-catalogue-description {
+  margin: 0;
   min-width: 0;
 }
 
@@ -640,7 +638,7 @@ body.bms-learn-track-index .bms-learn-filter-count {
 }
 
 .bms-learn-catalogue-description p {
-  margin: 0.22rem 0 0;
+  margin: 0.12rem 0 0;
   color: var(--bms-text-secondary);
   font-size: 0.78rem;
   line-height: 1.35;

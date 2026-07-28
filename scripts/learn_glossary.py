@@ -905,7 +905,7 @@ def lesson_catalogue_item_html(
         f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
         '<div class="bms-learn-catalogue-title-row">',
         f'<span class="bms-learn-lesson-number" aria-hidden="true">'
-        f'{roman_number(int(lesson["order"]), uppercase=False)}</span>',
+        f'{int(lesson["order"])}</span>',
         '<details class="bms-learn-catalogue-description">',
         f'<summary><a class="bms-learn-catalogue-link" '
         f'href="{html_attr(lesson["route"])}">{html.escape(title)}</a>'
@@ -946,7 +946,7 @@ def build_navigation_yaml(curriculum: list[dict[str, object]]) -> str:
         if track_lessons:
             lines.append("          contents:")
             for lesson in track_lessons:
-                lesson_prefix = roman_number(int(lesson["order"]), uppercase=False)
+                lesson_prefix = int(lesson["order"])
                 lesson_title = str(lesson["title"]).replace('"', "'")
                 lines.extend(
                     [

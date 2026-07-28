@@ -652,7 +652,7 @@ class LearnGlossaryTests(unittest.TestCase):
                 r'<span class="bms-learn-lesson-number"[^>]*>([^<]+)</span>',
                 catalogue,
             ),
-            ["i", "ii", "i", "ii"],
+            ["1", "2", "1", "2"],
         )
         self.assertNotIn("bms-learn-catalogue-tag", catalogue)
         self.assertNotIn(">Description<", catalogue)
@@ -777,7 +777,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("term-lookup: false", lesson_source)
         self.assertNotIn("term-lookup: false", research_source)
 
-    def test_roman_numbering_is_generated_for_catalogues_and_sidebar(self) -> None:
+    def test_track_roman_and_lesson_arabic_numbering_is_generated(self) -> None:
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
         ).read_text(encoding="utf-8")
@@ -786,14 +786,27 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertEqual(learn_glossary.roman_number(1), "I")
         self.assertEqual(learn_glossary.roman_number(3), "III")
-        self.assertEqual(
-            learn_glossary.roman_number(2, uppercase=False),
-            "ii",
-        )
         self.assertIn(".bms-learn-track-number", css)
         self.assertIn(".bms-learn-lesson-number", css)
+        self.assertNotIn(
+            ".bms-learn-catalogue-item + .bms-learn-catalogue-item",
+            css,
+        )
         for lesson in self.cube_lessons:
             self.assertNotRegex(str(lesson["title"]), r"^\d+\.\s")
+
+    def test_mobile_brand_wraps_and_has_a_narrow_screen_fallback(self) -> None:
+        css = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-shared.css"
+        ).read_text(encoding="utf-8")
+        for required in (
+            ".navbar-brand-container > .navbar-brand-logo",
+            "white-space: normal",
+            ".quarto-secondary-nav .quarto-page-breadcrumbs",
+            "@media (max-width: 350px)",
+            'content: "BMS"',
+        ):
+            self.assertIn(required, css)
 
     def test_learn_home_contains_only_generated_catalogue(self) -> None:
         source = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(

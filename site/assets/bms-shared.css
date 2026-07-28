@@ -535,8 +535,46 @@ body.bms-editorial-page .bms-editorial-lead p {
     font-size: 16px;
   }
 
+  .navbar-brand-container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .navbar-brand-container > .navbar-brand {
+    padding-block: 0;
+  }
+
+  .navbar-brand-container > .navbar-brand-logo {
+    flex: 0 0 auto;
+    width: auto;
+    margin-right: 0.25rem;
+    overflow: visible;
+  }
+
+  .navbar-brand-container > .navbar-brand:not(.navbar-brand-logo) {
+    flex: 0 0 6.8rem;
+    width: 6.8rem;
+    margin-right: 0;
+    overflow: visible;
+    white-space: normal;
+  }
+
   .navbar-logo {
-    max-height: 34px;
+    max-height: 30px;
+    padding-right: 0;
+  }
+
+  .navbar-title {
+    display: block;
+    max-width: 6.8rem;
+    font-size: 0.92rem;
+    line-height: 0.95;
+    white-space: normal;
+  }
+
+  .quarto-secondary-nav .quarto-page-breadcrumbs {
+    font-size: 0.82rem;
   }
 
   .navbar .nav-link {
@@ -597,5 +635,24 @@ body.bms-editorial-page .bms-editorial-lead p {
   :is(body.bms-about-page, body.bms-editorial-page) .bms-heading-meta {
     margin-left: 0;
     white-space: normal;
+  }
+}
+
+@media (max-width: 350px) {
+  .navbar-brand-container > .navbar-brand:not(.navbar-brand-logo) {
+    flex-basis: auto;
+    width: auto;
+  }
+
+  .navbar-title {
+    max-width: none;
+    font-size: 0;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .navbar-title::after {
+    content: "BMS";
+    font-size: 0.9rem;
   }
 }
