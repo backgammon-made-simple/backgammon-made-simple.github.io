@@ -1,139 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://backgammon-made-simple.github.io/updates/index.html</loc>
-    <lastmod>2026-07-28T14:19:37.731Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/templates/sage-vs-gnu-update.html</loc>
-    <lastmod>2026-07-28T12:38:03.901Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/templates/position-study.html</loc>
-    <lastmod>2026-07-28T12:38:03.899Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/templates/lesson-template.html</loc>
-    <lastmod>2026-07-28T12:38:03.898Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/templates/blog-post.html</loc>
-    <lastmod>2026-07-28T12:38:03.896Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/research/what-we-are-building.html</loc>
-    <lastmod>2026-07-28T12:38:03.893Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/research/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.892Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/posts/2026-07-sage-vs-gnu-update.html</loc>
-    <lastmod>2026-07-28T12:38:03.888Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/posts/2026-07-opening-play-article.html</loc>
-    <lastmod>2026-07-28T12:38:03.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/match-predictor/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.883Z</lastmod>
-  </url>
-  <url>
     <loc>https://backgammon-made-simple.github.io/learn/start-here/index.html</loc>
-    <lastmod>2026-07-28T15:05:14.669Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/opening-play/index.html</loc>
-    <lastmod>2026-07-28T15:05:14.667Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/glossary/</loc>
-    <lastmod>2026-07-28T12:38:03.876Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/cube/why-is-25-percent-the-basic-take-point.html</loc>
-    <lastmod>2026-07-28T15:05:14.661Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/cube/index.html</loc>
-    <lastmod>2026-07-28T15:05:14.660Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/engine-benchmark/sage-vs-gnu-stage1/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.860Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/analyze/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.810Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/about.html</loc>
-    <lastmod>2026-07-28T12:38:03.809Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/engine-benchmark/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.859Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.865Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/cube/what-the-cube-is-asking.html</loc>
-    <lastmod>2026-07-28T15:05:14.661Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/game-plans/index.html</loc>
-    <lastmod>2026-07-28T15:05:14.662Z</lastmod>
-  </url>
-  <url>
-    <loc>https://backgammon-made-simple.github.io/learn/index.html</loc>
-    <lastmod>2026-07-28T15:05:14.666Z</lastmod>
+    <lastmod>2026-07-28T20:01:20.460Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/learn/reading-positions-and-engines/index.html</loc>
-    <lastmod>2026-07-28T15:05:14.668Z</lastmod>
+    <lastmod>2026-07-28T20:01:20.456Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/licensing.html</loc>
-    <lastmod>2026-07-28T12:38:03.882Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/learn/glossary/</loc>
+    <lastmod>2026-07-28T01:26:13.310Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/posts/2026-07-cube-basics/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.885Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/learn/cube/index.html</loc>
+    <lastmod>2026-07-28T20:01:20.432Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/posts/2026-07-research-methodology.html</loc>
-    <lastmod>2026-07-28T12:38:03.887Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/learn/index.html</loc>
+    <lastmod>2026-07-28T20:01:20.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/analyze/index.html</loc>
+    <lastmod>2026-07-28T20:01:20.408Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/engine-benchmark/sage-vs-gnu-stage1/index.html</loc>
+    <lastmod>2026-07-28T01:26:13.286Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/posts/2026-07-site-update.html</loc>
-    <lastmod>2026-07-28T12:38:03.888Z</lastmod>
+    <lastmod>2026-07-28T01:26:13.326Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/research/sage-vs-gnu-additional-details.html</loc>
-    <lastmod>2026-07-28T12:38:03.893Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/posts/2026-07-sage-vs-gnu-update.html</loc>
+    <lastmod>2026-07-28T01:26:13.326Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/templates/about-section.html</loc>
-    <lastmod>2026-07-28T12:38:03.895Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/match-predictor/index.html</loc>
+    <lastmod>2026-07-28T01:26:13.318Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/templates/homepage-section.html</loc>
-    <lastmod>2026-07-28T12:38:03.897Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/templates/sage-vs-gnu-update.html</loc>
+    <lastmod>2026-07-28T01:26:13.342Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/templates/lesson.html</loc>
-    <lastmod>2026-07-28T12:38:03.898Z</lastmod>
+    <lastmod>2026-07-28T01:26:13.338Z</lastmod>
   </url>
   <url>
-    <loc>https://backgammon-made-simple.github.io/templates/research-methodology-post.html</loc>
-    <lastmod>2026-07-28T12:38:03.900Z</lastmod>
+    <loc>https://backgammon-made-simple.github.io/templates/position-study.html</loc>
+    <lastmod>2026-07-28T01:26:13.338Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/templates/about-section.html</loc>
+    <lastmod>2026-07-28T01:26:13.334Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/licensing.html</loc>
+    <lastmod>2026-07-28T01:26:13.318Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/updates/index.html</loc>
+    <lastmod>2026-07-28T20:01:20.464Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/research/what-we-are-building.html</loc>
+    <lastmod>2026-07-28T01:26:13.334Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/index.html</loc>
+    <lastmod>2026-07-28T01:26:13.294Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/research/sage-vs-gnu-additional-details.html</loc>
+    <lastmod>2026-07-28T01:26:13.330Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/research/index.html</loc>
+    <lastmod>2026-07-28T01:26:13.330Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/templates/blog-post.html</loc>
+    <lastmod>2026-07-28T01:26:13.334Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/templates/lesson-template.html</loc>
+    <lastmod>2026-07-28T01:26:13.338Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/templates/site-update.html</loc>
-    <lastmod>2026-07-28T12:38:03.902Z</lastmod>
+    <lastmod>2026-07-28T01:26:13.342Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/templates/research-methodology-post.html</loc>
+    <lastmod>2026-07-28T01:26:13.338Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/templates/homepage-section.html</loc>
+    <lastmod>2026-07-28T01:26:13.334Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/posts/2026-07-opening-play-article.html</loc>
+    <lastmod>2026-07-28T01:26:13.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/posts/2026-07-research-methodology.html</loc>
+    <lastmod>2026-07-28T01:26:13.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/posts/2026-07-cube-basics/index.html</loc>
+    <lastmod>2026-07-28T01:26:13.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/engine-benchmark/index.html</loc>
+    <lastmod>2026-07-28T01:26:13.282Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/about.html</loc>
+    <lastmod>2026-07-28T01:26:13.222Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/cube/what-the-cube-is-asking.html</loc>
+    <lastmod>2026-07-28T20:01:20.436Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/cube/why-is-25-percent-the-basic-take-point.html</loc>
+    <lastmod>2026-07-28T20:01:20.436Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/opening-play/index.html</loc>
+    <lastmod>2026-07-28T20:01:20.452Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/game-plans/index.html</loc>
+    <lastmod>2026-07-28T20:01:20.440Z</lastmod>
   </url>
 </urlset>
