@@ -5,6 +5,7 @@ sidebar: learn
 page-layout: full
 bibliography: ../references.bib
 body-classes: bms-learn-index
+toc: false
 execute:
   enabled: false
 ---
@@ -54,9 +55,11 @@ Learn a principle that can help in other positions.
 
 We use engine analysis to support the lessons, but the focus is on the explanation.
 
-## Start with The Doubling Cube.  More lesson topics are coming.
 
-The full Learn section will grow beyond the cube to include:
+[Check out the Cube Lessons](/learn/cube/){.bms-button-outline}
+
+
+## More lesson topics are coming.
 
 | Track | What you will learn |
 |---|---|
@@ -66,8 +69,5 @@ The full Learn section will grow beyond the cube to include:
 | **Match Play** | How the score changes checker and cube decisions |
 | **Endgames** | Bearoffs, wastage, racing, timing, and practical counting |
 | **Engines and Analysis** | How to understand evaluations, equity, error rates, and rollouts |
-
-Beginners will be able to follow each path from the start. More experienced players can move directly to the questions they want to study.
-
 
 ::::::::::::::::::::::::::

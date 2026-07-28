@@ -22,6 +22,25 @@ local function metadata_values(value)
   return values
 end
 
+local function metadata_boolean(value)
+  if value == nil then
+    return nil
+  end
+
+  if pandoc.utils.type(value) == "MetaBool" then
+    return value
+  end
+
+  local text = pandoc.utils.stringify(value):lower()
+  if text == "true" then
+    return true
+  end
+  if text == "false" then
+    return false
+  end
+  return nil
+end
+
 local function escape_html(value)
   return value
     :gsub("&", "&amp;")
@@ -88,6 +107,10 @@ end
 
 function Pandoc(doc)
   if not tostring(FORMAT):match("html") then
+    return doc
+  end
+
+  if metadata_boolean(doc.meta["lesson-taxonomy"]) == false then
     return doc
   end
 

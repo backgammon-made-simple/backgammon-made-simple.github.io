@@ -20,6 +20,7 @@ const asList = (value) => {
     data-bms-tracks='<%- JSON.stringify(tracks) %>'>
 
     <h3 class="listing-title bms-learn-lesson-title">
+      <span class="bms-cube-lesson-number" aria-hidden="true"></span>
       <a href="<%- item.path %>"><%- item.title %></a>
     </h3>
 

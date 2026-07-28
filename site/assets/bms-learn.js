@@ -37,6 +37,10 @@
     });
   }
 
+  function normalizeLookupQuery(value) {
+    return String(value || "").trim();
+  }
+
   function initializeLearnFilters() {
     const panel = document.querySelector("[data-bms-learn-filters]");
     const list = document.querySelector("[data-bms-learn-list]");
@@ -294,10 +298,13 @@
 
       if (form && input) {
         form.addEventListener("submit", function (event) {
-          if (!input.value.trim()) {
+          const query = normalizeLookupQuery(input.value);
+          if (!query) {
             event.preventDefault();
             input.focus();
+            return;
           }
+          input.value = query;
         });
       }
 
@@ -419,6 +426,7 @@
   const publicApi = {
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
+    normalizeLookupQuery: normalizeLookupQuery,
     parseList: parseList
   };
 

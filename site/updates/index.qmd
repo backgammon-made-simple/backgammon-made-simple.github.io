@@ -1,0 +1,32 @@
+---
+title: "Updates"
+description: "Dated Backgammon Made Simple lessons, Research articles, studies, and benchmark reports."
+page-layout: article
+toc: false
+sidebar: false
+term-lookup: false
+listing:
+  id: updates
+  contents:
+    - "../learn/**/*.qmd"
+    - "../research/**/*.qmd"
+    - "../engine-benchmark/**/*.qmd"
+  include:
+    published: true
+  sort: "date desc"
+  sort-ui: false
+  filter-ui: false
+  feed:
+    type: full
+    title: "Backgammon Made Simple Updates"
+    description: "Dated public lessons, Research articles, studies, and benchmark reports."
+execute:
+  enabled: false
+---
+
+This feed collects dated public lessons, Research articles, studies, and benchmark reports in reverse chronological order.
+
+Only publications explicitly marked `published: true` and supplied with a real publication date are eligible. Landing pages, the Lesson Finder, glossary entries, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.
+
+::: {#updates}
+:::

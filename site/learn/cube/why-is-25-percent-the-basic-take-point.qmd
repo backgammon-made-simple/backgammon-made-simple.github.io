@@ -24,6 +24,7 @@ terms:
   - volatility
   - equity
 level: Foundation
+cube-order: 1
 body-classes: bms-learn-article
 page-layout: article
 toc: true

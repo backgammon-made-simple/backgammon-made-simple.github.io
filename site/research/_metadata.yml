@@ -3,3 +3,6 @@ filters:
   - bms-term-lookup
 term-lookup: true
 glossary-links-new-tab: true
+format:
+  html:
+    toc-expand: true

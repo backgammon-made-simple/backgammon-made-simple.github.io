@@ -1,0 +1,25 @@
+---
+title: "Page closed out"
+description: "You rolled... but there was nowhere to land."
+page-layout: article
+toc: false
+sidebar: false
+search: false
+body-classes: bms-not-found
+execute:
+  enabled: false
+---
+
+The page you're looking for doesn't exist, has moved, or suspiciously bounced off the board.
+
+::: {.bms-404-links aria-label="Helpful destinations"}
+
+- [Home](/)
+- [Learn](/learn/)
+- [Lesson Finder](/learn/lesson-finder/)
+- [Backgammon Glossary](/learn/glossary/)
+- [Research](/research/)
+
+:::
+
+[Look Up a Term](/learn/glossary/){.bms-button-outline}
