@@ -70,8 +70,6 @@ website:
         - section: "Opening Play Lab"
           contents:
             - learn/opening-play/index.qmd
-        - text: "Lesson Finder"
-          href: learn/lesson-finder/index.qmd
         - text: "Backgammon Glossary"
           href: learn/glossary/index.qmd
   page-footer:

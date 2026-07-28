@@ -32,6 +32,15 @@ Edit `site/_quarto.yml` to change the navbar. The current public navigation is:
 
 The Learn sidebar also lives in `site/_quarto.yml`. It is the place to reorder lessons, move sections, and expose or hide learning tracks.
 
+## Learn Catalogue
+
+The Learn index catalogue is a searchable view of the Learn sidebar, not a
+second curriculum definition. Its groups, order, and parent/child hierarchy
+come from the `learn` sidebar in `site/_quarto.yml`; titles, descriptions,
+difficulties, and learning tracks come from each lesson's front matter. Add a
+lesson to that sidebar and run the generator to update
+`site/learn/_lesson-catalogue.html`.
+
 ## Learn Lesson Taxonomy
 
 Every file under `site/learn/` that represents a lesson must declare `categories`, `tags`, and `terms`.
@@ -72,7 +81,7 @@ body-classes: bms-learn-article
 ---
 ```
 
-The generated canonical-slug and stable-anchor reference is [learn-glossary-terms.md](learn-glossary-terms.md). Regenerate the one glossary entries fragment and that authoring reference with:
+The generated canonical-slug and stable-anchor reference is [learn-glossary-terms.md](learn-glossary-terms.md). Regenerate the Learn catalogue, glossary entries fragment, and that authoring reference with:
 
 ```powershell
 python scripts/learn_glossary.py generate
@@ -110,7 +119,7 @@ entries. Related Learn and Research content is driven only by explicit
 canonical `terms` metadata.
 
 `site/404.qmd` is the source for the root `404.html` page. Keep its recovery
-links to Home, Learn, Lesson Finder, Backgammon Glossary, and Research. It must
+links to Home, Learn, Backgammon Glossary, and Research. It must
 remain a normal content page without redirect code.
 
 ## Blog Discovery

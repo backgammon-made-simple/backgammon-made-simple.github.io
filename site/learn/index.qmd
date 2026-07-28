@@ -18,10 +18,14 @@ execute:
 
 [Start with the Cube Lessons](/learn/cube/){.bms-button-outline}
 
-[Find Lessons by Difficulty](/learn/lesson-finder/){.bms-button-outline}
-
 [Look Up a Term](/learn/glossary/){.bms-button-outline}
 :::
+
+## All Lessons
+
+Search the same lesson hierarchy shown in the Learn sidebar, or narrow it by difficulty and learning track.
+
+{{< include _lesson-catalogue.html >}}
 
 ## How Each Lesson Works
 
@@ -54,20 +58,5 @@ Learn a principle that can help in other positions.
 :::::::::
 
 We use engine analysis to support the lessons, but the focus is on the explanation.
-
-
-[Check out the Cube Lessons](/learn/cube/){.bms-button-outline}
-
-
-## More lesson topics are coming.
-
-| Track | What you will learn |
-|---|---|
-| **Start Here** | How to read the board, follow lesson positions, and understand common terms |
-| **Checker Play** | Racing, safety, flexibility, timing, contact, and tactical choices |
-| **Opening Play** | Early moves, replies, and how game plans begin |
-| **Match Play** | How the score changes checker and cube decisions |
-| **Endgames** | Bearoffs, wastage, racing, timing, and practical counting |
-| **Engines and Analysis** | How to understand evaluations, equity, error rates, and rollouts |
 
 ::::::::::::::::::::::::::

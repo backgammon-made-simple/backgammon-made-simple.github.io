@@ -20,7 +20,6 @@ NOT_FOUND_ROUTE_MAP = {
     "/.": "/",
     "/./": "/",
     "/./learn/": "/learn/",
-    "/./learn/lesson-finder/": "/learn/lesson-finder/",
     "/./learn/glossary/": "/learn/glossary/",
     "/./research/": "/research/",
 }

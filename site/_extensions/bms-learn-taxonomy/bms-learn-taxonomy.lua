@@ -92,7 +92,7 @@ local function track_links(values)
   for _, value in ipairs(values) do
     table.insert(
       lines,
-      '    <a href="/learn/lesson-finder/?track='
+      '    <a href="/learn/?track='
         .. url_encode(value)
         .. '">'
         .. escape_html(value)

@@ -57,6 +57,9 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         cls.entries = learn_glossary.validate_public_data(cls.data)
         cls.lessons = learn_glossary.discover_lessons()
+        cls.lesson_sections = learn_glossary.discover_learn_catalogue_sections(
+            cls.lessons
+        )
         cls.related_lessons = learn_glossary.validate_lessons(
             cls.lessons,
             cls.entries,
@@ -90,24 +93,29 @@ class LearnGlossaryTests(unittest.TestCase):
             "single-page glossary entries",
         )
 
-    def test_generator_manages_only_single_page_outputs(self) -> None:
+    def test_generator_manages_glossary_and_sidebar_driven_learn_outputs(self) -> None:
         outputs = learn_glossary.generated_outputs(
             self.entries,
+            self.lessons,
+            self.lesson_sections,
             self.related_lessons,
             self.related_research,
         )
         self.assertEqual(
             set(outputs),
             {
+                learn_glossary.GENERATED_LESSON_CATALOGUE_PATH,
                 learn_glossary.GENERATED_ENTRIES_PATH,
                 learn_glossary.AUTHORING_TERMS_PATH,
             },
         )
-        self.assertEqual(len(outputs), 2)
+        self.assertEqual(len(outputs), 3)
         self.assertEqual(
             outputs,
             learn_glossary.generated_outputs(
                 self.entries,
+                self.lessons,
+                self.lesson_sections,
                 self.related_lessons,
                 self.related_research,
             ),
@@ -445,7 +453,6 @@ class LearnGlossaryTests(unittest.TestCase):
         for label, route in (
             ("Home", "/"),
             ("Learn", "/learn/"),
-            ("Lesson Finder", "/learn/lesson-finder/"),
             ("Backgammon Glossary", "/learn/glossary/"),
             ("Research", "/research/"),
         ):
@@ -476,7 +483,6 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         excluded = [
             learn_glossary.LEARN_ROOT / "index.qmd",
-            learn_glossary.LEARN_ROOT / "lesson-finder" / "index.qmd",
             learn_glossary.CUBE_ROOT / "index.qmd",
             learn_glossary.GLOSSARY_ROOT / "index.qmd",
             learn_glossary.RESEARCH_ROOT / "index.qmd",
@@ -593,11 +599,62 @@ class LearnGlossaryTests(unittest.TestCase):
             lesson_source = lesson["path"].read_text(encoding="utf-8")
             self.assertEqual(lesson_source.count("cube-order:"), 1)
 
-        finder = (
-            learn_glossary.LEARN_ROOT / "lesson-finder" / "index.qmd"
+    def test_learn_catalogue_uses_sidebar_hierarchy_and_lesson_metadata(self) -> None:
+        self.assertEqual(
+            [section["title"] for section in self.lesson_sections],
+            ["Start Here", "The Doubling Cube", "Opening Play Lab"],
+        )
+        catalogue = (
+            learn_glossary.GENERATED_LESSON_CATALOGUE_PATH.read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(catalogue.count("data-bms-learn-item"), len(self.lessons))
+        self.assertEqual(
+            catalogue.count('class="bms-learn-catalogue-description"'),
+            len(self.lessons),
+        )
+        self.assertNotRegex(
+            catalogue,
+            r'<details class="bms-learn-catalogue-description"[^>]*\sopen',
+        )
+        for lesson in self.lessons:
+            self.assertIn(
+                f'href="{lesson["route"]}">{lesson["title"]}</a>',
+                catalogue,
+            )
+            self.assertIn(str(lesson["description"]), catalogue)
+
+        learn_index = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("{{< include _lesson-catalogue.html >}}", learn_index)
+        for lesson in self.lessons:
+            self.assertNotIn(str(lesson["relative_path"]), learn_index)
+
+    def test_lesson_finder_is_removed_and_track_links_target_learn(self) -> None:
+        self.assertFalse(
+            (learn_glossary.LEARN_ROOT / "lesson-finder" / "index.qmd").exists()
+        )
+        public_sources = [
+            learn_glossary.SITE_ROOT / "_quarto.yml",
+            learn_glossary.SITE_ROOT / "404.qmd",
+            learn_glossary.LEARN_ROOT / "index.qmd",
+            ROOT / "scripts" / "bms_post_render.py",
+        ]
+        for path in public_sources:
+            self.assertNotIn(
+                "lesson-finder",
+                path.read_text(encoding="utf-8"),
+                str(path.relative_to(ROOT)),
+            )
+        taxonomy_filter = (
+            learn_glossary.SITE_ROOT
+            / "_extensions"
+            / "bms-learn-taxonomy"
+            / "bms-learn-taxonomy.lua"
         ).read_text(encoding="utf-8")
-        self.assertIn("../cube/what-the-cube-is-asking.qmd", finder)
-        self.assertNotIn("../cube/what-the-cube-is-asking/index.qmd", finder)
+        self.assertIn('href="/learn/?track=', taxonomy_filter)
 
     def test_cube_landing_uses_local_filters_and_excludes_lookup(self) -> None:
         cube_index = (learn_glossary.CUBE_ROOT / "index.qmd").read_text(
@@ -841,7 +898,6 @@ class LearnGlossaryTests(unittest.TestCase):
         dirty_404 = (
             '<a href="/.">Home</a>'
             '<a href="/.\\learn/">Learn</a>'
-            '<a href="/./learn/lesson-finder/">Lesson Finder</a>'
             '<a href="/./learn/glossary/">Glossary</a>'
             '<a href="/.\\research/">Research</a>'
             '<a href="/unrelated/">Unrelated</a>'
@@ -967,7 +1023,8 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["alias_entries"], 181)
         self.assertEqual(result["canonical_anchors"], 624)
         self.assertEqual(result["standalone_term_pages"], 0)
-        self.assertEqual(result["generated_files"], 2)
+        self.assertEqual(result["generated_files"], 3)
+        self.assertEqual(result["lesson_catalogue_sections"], 3)
         self.assertEqual(result["cube_lessons"], 2)
         self.assertEqual(result["updates_publications"], 0)
         self.assertEqual(result["related_lesson_links"], 62)

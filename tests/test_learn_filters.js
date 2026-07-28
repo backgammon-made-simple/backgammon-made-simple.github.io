@@ -9,15 +9,18 @@ const glossary = require("../site/assets/bms-glossary.js");
 const lessons = [
   {
     difficulties: ["Beginner", "Intermediate"],
-    tracks: ["Doubling Cube"]
+    tracks: ["Doubling Cube"],
+    searchValues: ["The Doubling Cube", "A question-led learning path"]
   },
   {
     difficulties: ["Intermediate", "Advanced"],
-    tracks: ["Engines and Analysis"]
+    tracks: ["Engines and Analysis"],
+    searchValues: ["Reading Positions", "Understand engine output"]
   },
   {
     difficulties: ["Beginner"],
-    tracks: ["Opening Play", "Checker Play"]
+    tracks: ["Opening Play", "Checker Play"],
+    searchValues: ["Opening Play Lab", "Opening rolls and replies"]
   }
 ];
 
@@ -43,6 +46,31 @@ assert.equal(
   learn.itemMatchesTaxonomy(lessons[2], [], []),
   true,
   "no selections show all lessons"
+);
+assert.equal(
+  learn.itemMatchesLesson(
+    lessons[1],
+    "engine output",
+    ["Advanced"],
+    ["Engines and Analysis"]
+  ),
+  true,
+  "lesson search combines with difficulty and track filters"
+);
+assert.equal(
+  learn.itemMatchesLesson(
+    lessons[1],
+    "opening",
+    ["Advanced"],
+    ["Engines and Analysis"]
+  ),
+  false,
+  "lesson search excludes nonmatching titles and descriptions"
+);
+assert.equal(
+  learn.normalizeLearnSearch("  Doubling-Cubé  "),
+  "doubling cube",
+  "lesson search normalizes punctuation, whitespace, and accents"
 );
 
 const canonicalTerm = {

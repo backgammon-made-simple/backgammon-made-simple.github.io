@@ -26,7 +26,7 @@ execute:
 
 This feed collects dated public lessons, Research articles, studies, and benchmark reports in reverse chronological order.
 
-Only publications explicitly marked `published: true` and supplied with a real publication date are eligible. Landing pages, the Lesson Finder, glossary entries, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.
+Only publications explicitly marked `published: true` and supplied with a real publication date are eligible. Landing pages, glossary entries, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.
 
 ::: {#updates}
 :::
