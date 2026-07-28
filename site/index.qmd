@@ -1,6 +1,6 @@
 ---
 title: "Backgammon Made Simple"
-description: "Learn backgammon through clear explanations, useful tools, and honest research that show why a decision is right, not just what the right decision is."
+description: "Learn backgammon through clear explanations and useful tools that show why a decision is correct, not just what the right decision is."
 page-layout: full
 toc: false
 format:
@@ -17,200 +17,23 @@ BACKGAMMON MADE SIMPLE
 
 <h1>Understand the game,<br>not just the right move.</h1>
 
-::: {.bms-hero-copy}
-We bring clear explanations, useful tools, and honest answers for players who want to understand why a decision is correct, not just what the right move is.
-:::
-
 ::: {.bms-mantra}
-Come with a question. Leave with a clear mental model you can use at the board.
+Start with a question. Leave with a clear mental model you can use at the board.
 :::
 
-::: {.bms-button-row}
-[Start learning](learn/index.qmd){.bms-button-primary}
-[Explore the different pages on this site](#explore-the-project){.bms-button-outline}
-:::
-:::::::
 
-::::::: {.bms-section #explore-the-project}
-::: {.bms-eyebrow}
-EXPLORE
-:::
 
-## Explore the pages on this site
+[Start learning](learn/index.qmd){.bms-button-primary} Clear, position-based lessons that build from beginner concepts to advanced decisions.
 
-:::::: {.bms-card-grid .bms-card-grid--2}
-::::: {.bms-card .bms-card-stack}
-### Learn through real questions
+[Analyzer](analyze/index.qmd){.bms-button-outline} Free 4-ply analysis, rollouts, and tools for understanding engine results.
 
-Start with a question, explore a real position, and learn an explanation you can use in future games.
+[Sage vs GNU](analyze/index.qmd){.bms-button-outline} Engine-versus-engine matches, results, and decision comparisons.
 
-::: {.bms-card-action}
-[Explore Learn](learn/index.qmd)
-:::
-:::::
+[Research](analyze/index.qmd){.bms-button-outline} Details on the experiments, methods, and tools we are developing.
 
-::::: {.bms-card .bms-card-stack}
-### Understand a position
+[Glossary](analyze/index.qmd){.bms-button-outline} Simple explanations of backgammon terms and concepts.
 
-Analyze a position, compare the strongest choices, and see what separates one decision from another.
 
-::: {.bms-card-action}
-[Analyze a position](analyze/index.qmd)
-:::
-:::::
-::::::
-
-:::::: {.bms-card-grid .bms-card-grid--3 .bms-card-grid--next-row}
-::::: {.bms-card .bms-card-stack}
-### Match Predictor
-
-Use public OpenGammon data to compare player profiles and predict how likely one player is to beat another.
-
-::: {.bms-card-action}
-[Open the Match Predictor](match-predictor/index.qmd)
-:::
-:::::
-
-::::: {.bms-card .bms-card-stack}
-### Sage vs GNU
-
-See what happened when Sage and GNU played 20 controlled seven-point matches, where the engines differed, and how the results were checked.
-
-::: {.bms-card-action}
-[See the results](engine-benchmark/sage-vs-gnu-stage1/index.qmd)
-:::
-:::::
-
-::::: {.bms-card .bms-card-stack}
-### What we are discovering
-
-Follow the questions, experiments, results, and unexpected findings that emerge as the projects develop.
-
-::: {.bms-card-action}
-[Explore Research](research/index.qmd)
-:::
-:::::
-::::::
-:::::::
-
-::::::: {.bms-section}
-::: {.bms-eyebrow}
-OPEN SOURCE
-:::
-
-## Tools you can inspect and reuse
-
-::: {.bms-section-lead}
-The website and tools behind it are open source. Inspect the code, check the methods, report a problem, or reuse parts of the work.
-:::
-
-:::::: {.bms-repository-grid aria-label="Open-source project repositories"}
-::::: {.bms-card .bms-repository-card}
-::: {.bms-repository-mark aria-hidden="true"}
-&lt;/&gt;
-:::
-
-::: {.bms-repository-copy}
-<span class="bms-repository-label">QUARTO :: R :: SHINY</span>
-
-### Backgammon Made Simple
-
-The website, lessons, analyzer frontend, research articles, and public site data.
-:::
-
-::: {.bms-repository-action}
-[View source](https://github.com/backgammon-made-simple/backgammon-made-simple.github.io)
-:::
-:::::
-
-::::: {.bms-card .bms-repository-card}
-::: {.bms-repository-mark aria-hidden="true"}
-[Py]
-:::
-
-::: {.bms-repository-copy}
-<span class="bms-repository-label">PYTHON :: ENGINE INTEGRATION</span>
-
-### Backgammon Engine Kit
-
-Analyzer backend and other Python tools for running backgammon engines and turning their output into consistent, structured results.
-:::
-
-::: {.bms-repository-action}
-[View repository](https://github.com/backgammon-made-simple/backgammon-engine-kit)
-:::
-:::::
-
-::::: {.bms-card .bms-repository-card}
-::: {.bms-repository-mark aria-hidden="true"}
-[⚔]
-:::
-
-::: {.bms-repository-copy}
-<span class="bms-repository-label"> PYTHON  :: BENCHMARKING</span>
-
-### Backgammon Engine Benchmark
-
-Tools for running reproducible engine-versus-engine matches, checking the results, and publishing the evidence.
-:::
-
-::: {.bms-repository-action}
-[View repository](https://github.com/backgammon-made-simple/backgammon-engine-benchmark)
-:::
-:::::
-
-::::: {.bms-card .bms-repository-card}
-::: {.bms-repository-mark aria-hidden="true"}
-[R]
-:::
-
-::: {.bms-repository-copy}
-<span class="bms-repository-label">R :: BOARD RENDERING</span>
-
-### backgammonboard
-
-[R] library for drawing backgammon boards and creating clear position and analysis figures.
-:::
-
-::: {.bms-repository-action}
-[View repository](https://github.com/backgammon-made-simple/backgammonboard)
-:::
-:::::
-
-::::: {.bms-card .bms-repository-card}
-::: {.bms-repository-mark aria-hidden="true"}
-[R]
-:::
-
-::: {.bms-repository-copy}
-<span class="bms-repository-label">R :: ANALYSIS</span>
-
-### backgammoncalculator
-
-[R] library for calculating backgammon measures and supporting reproducible analysis.
-:::
-
-::: {.bms-repository-action}
-[View repository](https://github.com/backgammon-made-simple/backgammoncalculator)
-:::
-:::::
-::::::
-:::::::
-
-::::::: {.bms-section .bms-section--compact .bms-section--ruled-top}
-::: {.bms-eyebrow}
-FEEDBACK
-:::
-
-## Help make it better
-
-::: {.bms-section-lead}
-Found a mistake, have a question, or see something that could be clearer? Share feedback by opening an issue on GitHub.
-:::
-
-::: {.bms-button-row}
-[Give feedback on GitHub](https://github.com/backgammon-made-simple/backgammon-made-simple.github.io/issues/new?template=feedback.yml){.bms-button-primary}
-:::
 :::::::
 
 ::::::::::
