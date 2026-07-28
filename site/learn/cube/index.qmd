@@ -2,78 +2,13 @@
 title: "The Doubling Cube"
 description: "A question-led learning path for understanding cube decisions."
 sidebar: learn
-categories:
-  - Beginner
-  - Intermediate
-tags:
-  - Doubling Cube
-terms:
-  - doubling-cube
-  - take-point
-  - own-the-cube
-  - market-loser
-  - gammon
-  - match-play
-  - redouble
-  - cube-action
-body-classes: "bms-learn-article bms-cube-index"
+learn-track-index: doubling-cube
+learn-track-order: 2
+page-layout: full
+body-classes: "bms-learn-article bms-learn-track-index"
 toc: false
 term-lookup: false
 lesson-taxonomy: false
-listing:
-  id: cube-lessons
-  contents:
-    - "*.qmd"
-    - "*/index.qmd"
-    - "!index.qmd"
-  template: ../_lesson-listing.ejs.md
-  sort: "cube-order"
-  sort-ui: false
-  filter-ui: false
-  feed: false
 ---
 
-```{=html}
-<section class="bms-learn-filter-panel" data-bms-learn-filters aria-label="Filter cube lessons">
-  <p class="visually-hidden">
-    Select one or more difficulties and learning tracks. Lessons match any selection within a group and every group that has a selection.
-  </p>
-
-  <div class="bms-learn-filter-group">
-    <p class="bms-learn-filter-label">Difficulty</p>
-    <div class="bms-learn-filter-options" role="group" aria-label="Filter by difficulty">
-      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Beginner" aria-pressed="false">
-        <span>Beginner</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
-      </button>
-      <button type="button" class="bms-learn-filter bms-learn-filter--difficulty" data-bms-filter-difficulty="Intermediate" aria-pressed="false">
-        <span>Intermediate</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="bms-learn-filter-group">
-    <p class="bms-learn-filter-label">Learning track</p>
-    <div class="bms-learn-filter-options" role="group" aria-label="Filter by learning track">
-      <button type="button" class="bms-learn-filter bms-learn-filter--track" data-bms-filter-track="Doubling Cube" aria-pressed="false">
-        <span>Doubling Cube</span><span class="bms-learn-filter-count" aria-hidden="true">×0</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="bms-learn-filter-footer">
-    <p class="bms-learn-result-count" aria-live="polite" data-bms-learn-result-count></p>
-    <button type="button" class="bms-learn-clear" data-bms-learn-clear hidden>Reset filters</button>
-  </div>
-</section>
-```
-
-## Cube lessons
-
-::: {#cube-lessons}
-:::
-
-```{=html}
-<p class="bms-learn-empty" data-bms-learn-empty hidden>
-  No cube lessons match the selected difficulty and learning track. Reset the filters to see every cube lesson.
-</p>
-```
+{{< include _lesson-index.html >}}

@@ -78,31 +78,31 @@ local function difficulty_badges(values)
   return table.concat(lines, "\n")
 end
 
-local function track_links(values)
-  if #values == 0 then
+local function track_label(value)
+  local words = {}
+  for word in value:gsub("_", "-"):gmatch("[^%-]+") do
+    table.insert(words, word:sub(1, 1):upper() .. word:sub(2))
+  end
+  return table.concat(words, " ")
+end
+
+local function track_link(value)
+  if value == "" then
     return ""
   end
 
-  local lines = {
+  return table.concat({
     '<nav class="bms-lesson-track-nav" data-bms-lesson-track-nav aria-label="Learning tracks">',
-    '  <p class="bms-lesson-track-label">Learning tracks</p>',
-    '  <div class="bms-lesson-track-links">'
-  }
-
-  for _, value in ipairs(values) do
-    table.insert(
-      lines,
-      '    <a href="/learn/?track='
-        .. url_encode(value)
-        .. '">'
-        .. escape_html(value)
-        .. '</a>'
-    )
-  end
-
-  table.insert(lines, "  </div>")
-  table.insert(lines, "</nav>")
-  return table.concat(lines, "\n")
+    '  <p class="bms-lesson-track-label">Learning track</p>',
+    '  <div class="bms-lesson-track-links">',
+    '    <a href="/learn/?track='
+      .. url_encode(value)
+      .. '">'
+      .. escape_html(track_label(value))
+      .. '</a>',
+    '  </div>',
+    '</nav>'
+  }, "\n")
 end
 
 function Pandoc(doc)
@@ -115,16 +115,16 @@ function Pandoc(doc)
   end
 
   local difficulties = metadata_values(doc.meta.categories)
-  local tracks = metadata_values(doc.meta.tags)
+  local track = pandoc.utils.stringify(doc.meta["learn-track"] or "")
 
-  if #difficulties == 0 and #tracks == 0 then
+  if #difficulties == 0 and track == "" then
     return doc
   end
 
   local html = table.concat({
     '<div class="bms-lesson-taxonomy" data-bms-lesson-taxonomy>',
     difficulty_badges(difficulties),
-    track_links(tracks),
+    track_link(track),
     '</div>'
   }, "\n")
 

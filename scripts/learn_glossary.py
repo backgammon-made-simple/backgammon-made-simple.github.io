@@ -28,6 +28,7 @@ PUBLIC_DATA_PATH = SITE_ROOT / "data" / "glossary.json"
 AUTHORING_TERMS_PATH = REPOSITORY_ROOT / "docs" / "learn-glossary-terms.md"
 GENERATED_ENTRIES_PATH = GLOSSARY_ROOT / "_entries.html"
 GENERATED_LESSON_CATALOGUE_PATH = LEARN_ROOT / "_lesson-catalogue.html"
+GENERATED_NAVIGATION_PATH = SITE_ROOT / "_learn-navigation.yml"
 LEGACY_GENERATED_ROUTES_PATH = GLOSSARY_ROOT / "_generated-routes.json"
 QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
@@ -41,8 +42,10 @@ RENDERED_CORE_PATHS = (
     "index.html",
     "about.html",
     "learn/index.html",
+    "learn/start-here/index.html",
     "learn/glossary/index.html",
     "learn/cube/index.html",
+    "learn/opening-play/index.html",
     "learn/cube/why-is-25-percent-the-basic-take-point.html",
     "research/index.html",
     "research/sage-vs-gnu-additional-details.html",
@@ -435,6 +438,64 @@ def route_for_source(path: Path) -> str:
     return "/" + relative.with_suffix(".html").as_posix()
 
 
+def positive_integer(value: object, label: str) -> int:
+    try:
+        parsed = int(str(value))
+    except (TypeError, ValueError) as error:
+        raise ValidationError(f"{label} requires a positive integer") from error
+    if parsed < 1:
+        raise ValidationError(f"{label} requires a positive integer")
+    return parsed
+
+
+def discover_tracks() -> list[dict[str, object]]:
+    tracks: list[dict[str, object]] = []
+    ids: set[str] = set()
+    orders: set[int] = set()
+    for path in sorted(LEARN_ROOT.rglob("*.qmd")):
+        metadata = parse_complete_front_matter(path)
+        track_id = metadata.get("learn-track-index")
+        if not isinstance(track_id, str) or not track_id.strip():
+            continue
+        track_id = track_id.strip()
+        order = positive_integer(
+            metadata.get("learn-track-order"),
+            f"Track index {path.relative_to(LEARN_ROOT).as_posix()} learn-track-order",
+        )
+        if track_id in ids:
+            raise ValidationError(f"Duplicate Learn track id {track_id!r}")
+        if order in orders:
+            raise ValidationError(f"Duplicate Learn track order {order}")
+        title = metadata.get("title")
+        description = metadata.get("description")
+        if not isinstance(title, str) or not title.strip():
+            raise ValidationError(f"Track index {track_id} requires a title")
+        if not isinstance(description, str) or not description.strip():
+            raise ValidationError(f"Track index {track_id} requires a description")
+        ids.add(track_id)
+        orders.add(order)
+        tracks.append(
+            {
+                "id": track_id,
+                "order": order,
+                "path": path,
+                "relative_path": path.relative_to(LEARN_ROOT).as_posix(),
+                "source_path": path.relative_to(SITE_ROOT).as_posix(),
+                "route": route_for_source(path),
+                "title": title.strip(),
+                "description": " ".join(description.split()),
+            }
+        )
+    tracks.sort(key=lambda track: int(track["order"]))
+    if not tracks:
+        raise ValidationError("No Learn track index pages were discovered")
+    if [int(track["order"]) for track in tracks] != list(
+        range(1, len(tracks) + 1)
+    ):
+        raise ValidationError("Learn track orders must be contiguous from 1")
+    return tracks
+
+
 def discover_lessons() -> list[dict[str, object]]:
     lessons: list[dict[str, object]] = []
     for path in sorted(LEARN_ROOT.rglob("*.qmd")):
@@ -444,17 +505,31 @@ def discover_lessons() -> list[dict[str, object]]:
             or relative.parts[0] == "glossary"
         ):
             continue
-        metadata = parse_front_matter(path)
         complete_metadata = parse_complete_front_matter(path)
-        title = metadata.get("title")
+        if complete_metadata.get("learn-track-index"):
+            continue
+        metadata = parse_front_matter(path)
+        title = complete_metadata.get("title")
         if not isinstance(title, str) or not title:
             raise ValidationError(f"Lesson {relative.as_posix()} requires a title")
+        track_id = complete_metadata.get("learn-track")
+        if not isinstance(track_id, str) or not track_id.strip():
+            raise ValidationError(
+                f"Lesson {relative.as_posix()} requires learn-track"
+            )
+        order = positive_integer(
+            complete_metadata.get("learn-order"),
+            f"Lesson {relative.as_posix()} learn-order",
+        )
 
         lesson: dict[str, object] = {
             "path": path,
             "relative_path": relative.as_posix(),
+            "source_path": path.relative_to(SITE_ROOT).as_posix(),
             "route": route_for_source(path),
             "title": title,
+            "track_id": track_id.strip(),
+            "order": order,
         }
         description = complete_metadata.get("description")
         if not isinstance(description, str) or not description.strip():
@@ -480,189 +555,76 @@ def discover_lessons() -> list[dict[str, object]]:
     return lessons
 
 
-def discover_learn_catalogue_sections(
+def build_curriculum(
+    tracks: list[dict[str, object]],
     lessons: list[dict[str, object]],
 ) -> list[dict[str, object]]:
-    try:
-        config = yaml.safe_load(QUARTO_CONFIG_PATH.read_text(encoding="utf-8"))
-    except yaml.YAMLError as error:
-        raise ValidationError("site/_quarto.yml is not valid YAML") from error
-    if not isinstance(config, dict):
-        raise ValidationError("site/_quarto.yml must be a YAML mapping")
-
-    website = config.get("website")
-    sidebars = website.get("sidebar") if isinstance(website, dict) else None
-    if not isinstance(sidebars, list):
-        raise ValidationError("site/_quarto.yml requires website.sidebar")
-    learn_sidebar = next(
-        (
-            sidebar
-            for sidebar in sidebars
-            if isinstance(sidebar, dict) and sidebar.get("id") == "learn"
-        ),
-        None,
-    )
-    if not isinstance(learn_sidebar, dict):
-        raise ValidationError("site/_quarto.yml requires the Learn sidebar")
-    contents = learn_sidebar.get("contents")
-    if not isinstance(contents, list):
-        raise ValidationError("The Learn sidebar requires a contents list")
-
-    lesson_by_source = {
-        f"learn/{lesson['relative_path']}": lesson for lesson in lessons
-    }
-    assigned: set[str] = set()
-
-    def lesson_for_href(value: object) -> dict[str, object] | None:
-        if not isinstance(value, str):
-            return None
-        source = value.replace("\\", "/").removeprefix("./")
-        lesson = lesson_by_source.get(source)
-        if lesson is None:
-            return None
-        relative = str(lesson["relative_path"])
-        if relative in assigned:
+    track_by_id = {str(track["id"]): track for track in tracks}
+    lessons_by_track: dict[str, list[dict[str, object]]] = defaultdict(list)
+    lesson_orders: dict[str, set[int]] = defaultdict(set)
+    for lesson in lessons:
+        track_id = str(lesson["track_id"])
+        if track_id not in track_by_id:
             raise ValidationError(
-                f"Learn sidebar includes lesson {relative} more than once"
+                f"Lesson {lesson['relative_path']} uses unknown learn-track {track_id!r}"
             )
-        assigned.add(relative)
-        return lesson
+        order = int(lesson["order"])
+        if order in lesson_orders[track_id]:
+            raise ValidationError(
+                f"Learn track {track_id!r} has duplicate lesson order {order}"
+            )
+        lesson_orders[track_id].add(order)
+        lessons_by_track[track_id].append(lesson)
 
-    def collect_lesson_nodes(
-        items: list[object], depth: int
-    ) -> list[dict[str, object]]:
-        nodes: list[dict[str, object]] = []
-        for item in items:
-            if isinstance(item, str):
-                lesson = lesson_for_href(item)
-                if lesson:
-                    nodes.append({"depth": depth, "lesson": lesson})
-                continue
-            if not isinstance(item, dict):
-                continue
-            section_title = item.get("section")
-            section_lesson = lesson_for_href(item.get("href"))
-            if section_lesson:
-                nodes.append({"depth": depth, "lesson": section_lesson})
-            children = item.get("contents")
-            if isinstance(children, list):
-                child_nodes = collect_lesson_nodes(children, depth + 1)
-                if section_title and child_nodes:
-                    nodes.append(
-                        {
-                            "depth": depth,
-                            "label": str(section_title),
-                            "nodes": child_nodes,
-                        }
-                    )
-                else:
-                    nodes.extend(child_nodes)
-        return nodes
-
-    sections: list[dict[str, object]] = []
-    loose_nodes: list[dict[str, object]] = []
-    for item in contents:
-        if isinstance(item, dict) and item.get("section"):
-            section_nodes: list[dict[str, object]] = []
-            section_lesson = lesson_for_href(item.get("href"))
-            if section_lesson:
-                section_nodes.append({"depth": 0, "lesson": section_lesson})
-            children = item.get("contents")
-            if isinstance(children, list):
-                section_nodes.extend(collect_lesson_nodes(children, 1))
-            if section_nodes:
-                sections.append(
-                    {"title": str(item["section"]), "nodes": section_nodes}
-                )
-            continue
-
-        href = item.get("href") if isinstance(item, dict) else item
-        lesson = lesson_for_href(href)
-        if lesson:
-            loose_nodes.append({"depth": 0, "lesson": lesson})
-
-    if loose_nodes:
-        sections.insert(0, {"title": "Lessons", "nodes": loose_nodes})
-
-    missing = sorted(set(lesson_by_source) - {f"learn/{item}" for item in assigned})
-    if missing:
-        raise ValidationError(
-            "Every discovered lesson must appear in the Learn sidebar; missing: "
-            + ", ".join(missing)
-        )
-    if not sections:
-        raise ValidationError("No lesson sections were discovered in the Learn sidebar")
-    return sections
+    curriculum: list[dict[str, object]] = []
+    for track in tracks:
+        track_lessons = lessons_by_track[str(track["id"])]
+        track_lessons.sort(key=lambda lesson: int(lesson["order"]))
+        expected_orders = list(range(1, len(track_lessons) + 1))
+        if [int(lesson["order"]) for lesson in track_lessons] != expected_orders:
+            raise ValidationError(
+                f"Learn track {track['id']!r} lesson orders must be contiguous from 1"
+            )
+        curriculum.append({**track, "lessons": track_lessons})
+    return curriculum
 
 
 def discover_cube_lessons() -> list[dict[str, object]]:
-    lessons: list[dict[str, object]] = []
-    orders: set[int] = set()
-    for path in sorted(CUBE_ROOT.rglob("*.qmd")):
-        if path == CUBE_ROOT / "index.qmd" or path.name.startswith("_"):
+    tracks = discover_tracks()
+    lessons = discover_lessons()
+    curriculum = build_curriculum(tracks, lessons)
+    for track in curriculum:
+        if track["id"] != "doubling-cube":
             continue
-        metadata = parse_front_matter(path)
-        if str(metadata.get("draft", "")).casefold() == "true":
-            continue
-
-        title = metadata.get("title")
-        raw_order = metadata.get("cube-order")
-        if not isinstance(title, str) or not title:
-            raise ValidationError(
-                f"Published cube lesson {path.relative_to(CUBE_ROOT)} requires a title"
-            )
-        try:
-            order = int(str(raw_order))
-        except (TypeError, ValueError) as error:
-            raise ValidationError(
-                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
-                "requires an integer cube-order"
-            ) from error
-        if order < 1 or order in orders:
-            raise ValidationError(
-                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
-                f"has invalid or duplicate cube-order {order}"
-            )
-        orders.add(order)
-        categories = metadata.get("categories")
-        tracks = metadata.get("tags")
-        if not isinstance(categories, list) or not categories:
-            raise ValidationError(
-                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
-                "requires non-empty categories"
-            )
-        if not isinstance(tracks, list) or not tracks:
-            raise ValidationError(
-                f"Published cube lesson {path.relative_to(CUBE_ROOT)} "
-                "requires non-empty tags"
-            )
-        lessons.append(
+        track_lessons = track["lessons"]
+        if not isinstance(track_lessons, list) or not track_lessons:
+            raise ValidationError("No published cube lessons were discovered")
+        return [
             {
-                "path": path,
-                "relative_path": path.relative_to(CUBE_ROOT).as_posix(),
-                "route": route_for_source(path),
-                "title": title,
-                "cube-order": order,
-                "categories": [str(value) for value in categories],
-                "tags": [str(value) for value in tracks],
+                **lesson,
+                "relative_path": Path(str(lesson["relative_path"]))
+                .relative_to("cube")
+                .as_posix(),
+                "cube-order": lesson["order"],
             }
-        )
-
-    lessons.sort(key=lambda lesson: int(lesson["cube-order"]))
-    if not lessons:
-        raise ValidationError("No published cube lessons were discovered")
-    return lessons
+            for lesson in track_lessons
+        ]
+    raise ValidationError("The doubling-cube Learn track was not discovered")
 
 
 def discover_update_publications() -> list[dict[str, object]]:
     publications: list[dict[str, object]] = []
     excluded_landings = {
         LEARN_ROOT / "index.qmd",
-        LEARN_ROOT / "cube" / "index.qmd",
         LEARN_ROOT / "glossary" / "index.qmd",
         RESEARCH_ROOT / "index.qmd",
         SITE_ROOT / "engine-benchmark" / "index.qmd",
     }
+    excluded_landings.update(
+        track["path"]
+        for track in discover_tracks()
+        if isinstance(track["path"], Path)
+    )
     roots = (
         ("Learn", LEARN_ROOT),
         ("Research", RESEARCH_ROOT),
@@ -854,137 +816,227 @@ def html_attr(value: object) -> str:
     return html.escape(str(value), quote=True)
 
 
-def iter_catalogue_lessons(
-    nodes: list[dict[str, object]],
-) -> list[dict[str, object]]:
-    lessons: list[dict[str, object]] = []
-    for node in nodes:
-        lesson = node.get("lesson")
-        if isinstance(lesson, dict):
-            lessons.append(lesson)
-        children = node.get("nodes")
-        if isinstance(children, list):
-            lessons.extend(iter_catalogue_lessons(children))
-    return lessons
-
-
-def lesson_filter_button(
-    kind: str, value: str, modifier: str = ""
-) -> str:
-    data_attribute = (
-        "data-bms-filter-difficulty"
-        if kind == "difficulty"
-        else "data-bms-filter-track"
+def roman_number(value: int, *, uppercase: bool = True) -> str:
+    numerals = (
+        (1000, "M"),
+        (900, "CM"),
+        (500, "D"),
+        (400, "CD"),
+        (100, "C"),
+        (90, "XC"),
+        (50, "L"),
+        (40, "XL"),
+        (10, "X"),
+        (9, "IX"),
+        (5, "V"),
+        (4, "IV"),
+        (1, "I"),
     )
-    modifier_class = f" bms-learn-filter--{modifier}" if modifier else ""
+    remainder = value
+    result: list[str] = []
+    for number, numeral in numerals:
+        while remainder >= number:
+            result.append(numeral)
+            remainder -= number
+    joined = "".join(result)
+    return joined if uppercase else joined.lower()
+
+
+def lesson_filter_button(kind: str, value: str, label: str | None = None) -> str:
+    data_attributes = {
+        "difficulty": "data-bms-filter-difficulty",
+        "track": "data-bms-filter-track",
+        "term": "data-bms-filter-term",
+    }
+    if kind not in data_attributes:
+        raise ValidationError(f"Unsupported Learn filter kind {kind!r}")
+    modifier_class = f" bms-learn-filter--{kind}"
     return (
         f'<button type="button" class="bms-learn-filter{modifier_class}" '
-        f'{data_attribute}="{html_attr(value)}" aria-pressed="false">'
-        f"<span>{html.escape(value)}</span>"
+        f'{data_attributes[kind]}="{html_attr(value)}" aria-pressed="false">'
+        f"<span>{html.escape(label or value)}</span>"
         '<span class="bms-learn-filter-count" aria-hidden="true">&times;0</span>'
         "</button>"
     )
 
 
-def lesson_catalogue_node_html(node: dict[str, object]) -> list[str]:
-    lesson = node.get("lesson")
-    if isinstance(lesson, dict):
-        depth = int(node.get("depth", 0))
-        difficulties = [str(value) for value in lesson["categories"]]
-        tracks = [str(value) for value in lesson["tags"]]
-        search_values = [
-            str(lesson["title"]),
-            str(lesson["description"]),
-            *difficulties,
-            *tracks,
-        ]
-        taxonomy = "".join(
-            f'<span class="bms-learn-catalogue-tag">{html.escape(value)}</span>'
-            for value in [*difficulties, *tracks]
-        )
-        return [
-            f'<article class="bms-learn-catalogue-item" data-bms-learn-item '
-            f'data-bms-depth="{depth}" '
-            f'data-bms-difficulties="{html_attr(json.dumps(difficulties, ensure_ascii=False))}" '
-            f'data-bms-tracks="{html_attr(json.dumps(tracks, ensure_ascii=False))}" '
-            f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
-            '<div class="bms-learn-catalogue-title-row">',
-            f'<a class="bms-learn-catalogue-link" href="{html_attr(lesson["route"])}">'
-            f'{html.escape(str(lesson["title"]))}</a>',
-            f'<span class="bms-learn-catalogue-taxonomy">{taxonomy}</span>',
-            "</div>",
-            '<details class="bms-learn-catalogue-description">',
-            "<summary>Description</summary>",
-            f"<p>{html.escape(str(lesson['description']))}</p>",
-            "</details>",
-            "</article>",
-        ]
-
-    children = node.get("nodes")
-    if not isinstance(children, list):
-        return []
+def filter_disclosure_html(
+    label: str,
+    kind: str,
+    values: list[tuple[str, str]],
+) -> list[str]:
     lines = [
-        '<div class="bms-learn-catalogue-subsection">',
-        f'<p class="bms-learn-catalogue-subsection-label">'
-        f'{html.escape(str(node.get("label", "Lessons")))}</p>',
+        '<details class="bms-learn-filter-disclosure">',
+        f"<summary>{html.escape(label)}</summary>",
+        f'<div class="bms-learn-filter-options" role="group" '
+        f'aria-label="{html_attr(label)}">',
     ]
-    for child in children:
-        if isinstance(child, dict):
-            lines.extend(lesson_catalogue_node_html(child))
-    lines.append("</div>")
+    if values:
+        lines.extend(
+            lesson_filter_button(kind, value, display)
+            for value, display in values
+        )
+    else:
+        lines.append('<span class="bms-learn-filter-none">No options yet</span>')
+    lines.extend(["</div>", "</details>"])
     return lines
 
 
+def lesson_catalogue_item_html(
+    lesson: dict[str, object],
+    term_names: dict[str, str],
+) -> list[str]:
+    difficulties = [str(value) for value in lesson["categories"]]
+    tags = [str(value) for value in lesson["tags"]]
+    terms = [str(value) for value in lesson["terms"]]
+    search_values = [
+        str(lesson["title"]),
+        str(lesson["description"]),
+        *difficulties,
+        *tags,
+        *(term_names[slug] for slug in terms),
+    ]
+    title = str(lesson["title"])
+    return [
+        f'<article class="bms-learn-catalogue-item" data-bms-learn-item '
+        f'data-bms-difficulties="{html_attr(json.dumps(difficulties, ensure_ascii=False))}" '
+        f'data-bms-track="{html_attr(lesson["track_id"])}" '
+        f'data-bms-terms="{html_attr(json.dumps(terms, ensure_ascii=False))}" '
+        f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
+        '<div class="bms-learn-catalogue-title-row">',
+        f'<span class="bms-learn-lesson-number" aria-hidden="true">'
+        f'{roman_number(int(lesson["order"]), uppercase=False)}</span>',
+        '<details class="bms-learn-catalogue-description">',
+        f'<summary><a class="bms-learn-catalogue-link" '
+        f'href="{html_attr(lesson["route"])}">{html.escape(title)}</a>'
+        f'<span class="bms-learn-description-arrow" '
+        f'aria-label="Show description for {html_attr(title)}">&#9662;</span>'
+        "</summary>",
+        f"<p>{html.escape(str(lesson['description']))}</p>",
+        "</details>",
+        "</div>",
+        "</article>",
+    ]
+
+
+def build_navigation_yaml(curriculum: list[dict[str, object]]) -> str:
+    lines = [
+        "# Generated by scripts/learn_glossary.py; do not edit.",
+        "website:",
+        "  sidebar:",
+        "    - id: learn",
+        '      title: "Learn"',
+        "      style: docked",
+        "      collapse-level: 2",
+        "      contents:",
+        '        - text: "Learn Home"',
+        "          href: learn/index.qmd",
+    ]
+    for track in curriculum:
+        prefix = roman_number(int(track["order"]))
+        lines.extend(
+            [
+                f'        - section: "{prefix} {str(track["title"]).replace(chr(34), chr(39))}"',
+                f"          href: {track['source_path']}",
+            ]
+        )
+        track_lessons = track["lessons"]
+        if not isinstance(track_lessons, list):
+            raise ValidationError(f"Track {track['id']} has invalid lessons")
+        if track_lessons:
+            lines.append("          contents:")
+            for lesson in track_lessons:
+                lesson_prefix = roman_number(int(lesson["order"]), uppercase=False)
+                lesson_title = str(lesson["title"]).replace('"', "'")
+                lines.extend(
+                    [
+                        f'            - text: "{lesson_prefix} {lesson_title}"',
+                        f"              href: {lesson['source_path']}",
+                    ]
+                )
+        else:
+            lines.append("          contents: []")
+    lines.extend(
+        [
+            '        - text: "Backgammon Glossary"',
+            "          href: learn/glossary/index.qmd",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
 def build_lesson_catalogue_html(
-    lessons: list[dict[str, object]],
-    sections: list[dict[str, object]],
+    entries: list[dict[str, object]],
+    curriculum: list[dict[str, object]],
+    *,
+    selected_track_id: str | None = None,
 ) -> str:
+    selected_tracks = [
+        track
+        for track in curriculum
+        if selected_track_id is None or track["id"] == selected_track_id
+    ]
+    if selected_track_id is not None and not selected_tracks:
+        raise ValidationError(f"Unknown generated track {selected_track_id!r}")
+    lessons = [
+        lesson
+        for track in selected_tracks
+        for lesson in track["lessons"]  # type: ignore[union-attr]
+    ]
+    term_names = {str(entry["slug"]): str(entry["term"]) for entry in entries}
     used_difficulties = [
         value
         for value in DIFFICULTIES
         if any(value in lesson["categories"] for lesson in lessons)
     ]
-    used_tracks = [
-        value
-        for value in TRACKS
-        if any(value in lesson["tags"] for lesson in lessons)
-    ]
+    mode = "global" if selected_track_id is None else "track"
     lines = [
         GENERATED_MARKER,
         '<section class="bms-learn-filter-panel" data-bms-learn-filters '
-        'aria-label="Search and filter lessons">',
+        f'data-bms-learn-mode="{mode}" aria-label="Search and filter lessons">',
         '<div class="bms-learn-search-group">',
         '<label for="bms-learn-search">Search lessons</label>',
         '<input id="bms-learn-search" type="search" '
         'placeholder="Search titles and descriptions" '
         'autocomplete="off" data-bms-learn-search>',
         "</div>",
-        '<div class="bms-learn-filter-group">',
-        '<p class="bms-learn-filter-label">Difficulty</p>',
-        '<div class="bms-learn-filter-options" role="group" '
-        'aria-label="Filter by difficulty">',
     ]
     lines.extend(
-        lesson_filter_button("difficulty", value)
-        for value in used_difficulties
+        filter_disclosure_html(
+            "Difficulty Filter",
+            "difficulty",
+            [(value, value) for value in used_difficulties],
+        )
     )
+    if selected_track_id is None:
+        lines.extend(
+            filter_disclosure_html(
+                "Learning Track Filter",
+                "track",
+                [
+                    (str(track["id"]), str(track["title"]))
+                    for track in curriculum
+                ],
+            )
+        )
+    else:
+        used_term_slugs = sorted(
+            {
+                str(slug)
+                for lesson in lessons
+                for slug in lesson["terms"]
+            },
+            key=lambda slug: term_names[slug].casefold(),
+        )
+        lines.extend(
+            filter_disclosure_html(
+                "Term Filter",
+                "term",
+                [(slug, term_names[slug]) for slug in used_term_slugs],
+            )
+        )
     lines.extend(
         [
-            "</div>",
-            "</div>",
-            '<div class="bms-learn-filter-group">',
-            '<p class="bms-learn-filter-label">Learning track</p>',
-            '<div class="bms-learn-filter-options" role="group" '
-            'aria-label="Filter by learning track">',
-        ]
-    )
-    lines.extend(
-        lesson_filter_button("track", value, "track") for value in used_tracks
-    )
-    lines.extend(
-        [
-            "</div>",
-            "</div>",
             '<div class="bms-learn-filter-footer">',
             '<p class="bms-learn-result-count" aria-live="polite" '
             "data-bms-learn-result-count></p>",
@@ -992,30 +1044,48 @@ def build_lesson_catalogue_html(
             "data-bms-learn-clear hidden>Clear search and filters</button>",
             "</div>",
             "</section>",
+            '<div class="bms-learn-section-actions" role="group" '
+            'aria-label="Lesson tracks">',
+            '<button type="button" data-bms-learn-collapse-all>Collapse all</button>',
+            '<button type="button" data-bms-learn-expand-all>Expand all</button>',
+            "</div>",
             '<div class="bms-learn-catalogue" data-bms-learn-list>',
         ]
     )
 
-    for section in sections:
-        nodes = section.get("nodes")
-        if not isinstance(nodes, list):
-            continue
-        section_lessons = iter_catalogue_lessons(nodes)
+    for track in selected_tracks:
+        track_lessons = track["lessons"]
+        if not isinstance(track_lessons, list):
+            raise ValidationError(f"Track {track['id']} has invalid lessons")
+        track_title = str(track["title"])
+        heading = (
+            f'<span class="bms-learn-track-number" aria-hidden="true">'
+            f'{roman_number(int(track["order"]))}</span>'
+            f'<a href="{html_attr(track["route"])}">{html.escape(track_title)}</a>'
+            if selected_track_id is None
+            else '<span class="bms-learn-track-lessons-label">Lessons</span>'
+        )
         lines.extend(
             [
-                '<section class="bms-learn-catalogue-section" data-bms-learn-group>',
-                '<div class="bms-learn-catalogue-section-heading">',
-                f'<h3>{html.escape(str(section["title"]))}</h3>',
-                f'<span data-bms-learn-group-count>{len(section_lessons)} '
-                f'{"lesson" if len(section_lessons) == 1 else "lessons"}</span>',
-                "</div>",
+                f'<details class="bms-learn-catalogue-section" '
+                f'data-bms-learn-group data-bms-track-id="{html_attr(track["id"])}" '
+                f'data-bms-total-lessons="{len(track_lessons)}" open>',
+                '<summary class="bms-learn-catalogue-section-heading">',
+                f'<span class="bms-learn-track-heading">{heading}</span>',
+                f'<span data-bms-learn-group-count>{len(track_lessons)} '
+                f'{"lesson" if len(track_lessons) == 1 else "lessons"}</span>',
+                "</summary>",
                 '<div class="bms-learn-catalogue-section-items">',
             ]
         )
-        for node in nodes:
-            if isinstance(node, dict):
-                lines.extend(lesson_catalogue_node_html(node))
-        lines.extend(["</div>", "</section>"])
+        if track_lessons:
+            for lesson in track_lessons:
+                lines.extend(lesson_catalogue_item_html(lesson, term_names))
+        else:
+            lines.append(
+                '<p class="bms-learn-track-empty">No lessons published yet.</p>'
+            )
+        lines.extend(["</div>", "</details>"])
 
     lines.extend(
         [
@@ -1244,20 +1314,31 @@ def build_authoring_terms(entries: list[dict[str, object]]) -> str:
 
 def generated_outputs(
     entries: list[dict[str, object]],
-    lessons: list[dict[str, object]],
-    lesson_sections: list[dict[str, object]],
+    curriculum: list[dict[str, object]],
     related_lessons: dict[str, list[dict[str, object]]],
     related_research: dict[str, list[dict[str, object]]],
 ) -> dict[Path, str]:
     outputs = {
         GENERATED_LESSON_CATALOGUE_PATH: build_lesson_catalogue_html(
-            lessons, lesson_sections
+            entries, curriculum
         ),
+        GENERATED_NAVIGATION_PATH: build_navigation_yaml(curriculum),
         GENERATED_ENTRIES_PATH: build_entries_html(
             entries, related_lessons, related_research
         ),
         AUTHORING_TERMS_PATH: build_authoring_terms(entries),
     }
+    for track in curriculum:
+        track_path = track["path"]
+        if not isinstance(track_path, Path):
+            raise ValidationError(f"Track {track['id']} has invalid path")
+        outputs[track_path.parent / "_lesson-index.html"] = (
+            build_lesson_catalogue_html(
+                entries,
+                curriculum,
+                selected_track_id=str(track["id"]),
+            )
+        )
     return outputs
 
 
@@ -1288,8 +1369,9 @@ def generate() -> tuple[int, int, int]:
     entries = validate_public_data(data)
     serialized = PUBLIC_DATA_PATH.read_text(encoding="utf-8")
     assert_no_forbidden_text(serialized, "tracked public glossary data")
+    tracks = discover_tracks()
     lessons = discover_lessons()
-    lesson_sections = discover_learn_catalogue_sections(lessons)
+    curriculum = build_curriculum(tracks, lessons)
     discover_cube_lessons()
     discover_update_publications()
     related_lessons = validate_lessons(lessons, entries)
@@ -1298,8 +1380,7 @@ def generate() -> tuple[int, int, int]:
 
     outputs = generated_outputs(
         entries,
-        lessons,
-        lesson_sections,
+        curriculum,
         related_lessons,
         related_research,
     )
@@ -1315,8 +1396,9 @@ def validate_generated() -> dict[str, int]:
         PUBLIC_DATA_PATH.read_text(encoding="utf-8"),
         "tracked public glossary data",
     )
+    tracks = discover_tracks()
     lessons = discover_lessons()
-    lesson_sections = discover_learn_catalogue_sections(lessons)
+    curriculum = build_curriculum(tracks, lessons)
     cube_lessons = discover_cube_lessons()
     update_publications = discover_update_publications()
     related_lessons = validate_lessons(lessons, entries)
@@ -1324,8 +1406,7 @@ def validate_generated() -> dict[str, int]:
     related_research = validate_research_articles(research_articles, entries)
     expected = generated_outputs(
         entries,
-        lessons,
-        lesson_sections,
+        curriculum,
         related_lessons,
         related_research,
     )
@@ -1408,6 +1489,78 @@ def validate_generated() -> dict[str, int]:
     ))
     if catalogue_routes != expected_routes:
         raise ValidationError("Generated Learn catalogue routes do not match lessons")
+    catalogue_group_tags = re.findall(
+        r'<details class="bms-learn-catalogue-section"[^>]*>',
+        catalogue_html,
+    )
+    if len(catalogue_group_tags) != len(curriculum) or any(
+        " open" not in tag for tag in catalogue_group_tags
+    ):
+        raise ValidationError(
+            "Generated Learn track sections must all begin expanded"
+        )
+    for required in (
+        "Difficulty Filter",
+        "Learning Track Filter",
+        "data-bms-learn-collapse-all",
+        "data-bms-learn-expand-all",
+    ):
+        if required not in catalogue_html:
+            raise ValidationError(
+                f"Generated Learn catalogue is missing {required}"
+            )
+
+    for track in curriculum:
+        track_path = track["path"]
+        track_lessons = track["lessons"]
+        if not isinstance(track_path, Path) or not isinstance(track_lessons, list):
+            raise ValidationError(f"Track {track['id']} has invalid generated data")
+        track_html = (track_path.parent / "_lesson-index.html").read_text(
+            encoding="utf-8"
+        )
+        if track_html.count("data-bms-learn-item") != len(track_lessons):
+            raise ValidationError(
+                f"Generated track index {track['id']} has the wrong lesson count"
+            )
+        for required in (
+            'data-bms-learn-mode="track"',
+            "Difficulty Filter",
+            "Term Filter",
+            "data-bms-learn-collapse-all",
+            "data-bms-learn-expand-all",
+        ):
+            if required not in track_html:
+                raise ValidationError(
+                    f"Generated track index {track['id']} is missing {required}"
+                )
+        if "data-bms-filter-track" in track_html:
+            raise ValidationError(
+                f"Generated track index {track['id']} contains a track filter"
+            )
+        track_group_tags = re.findall(
+            r'<details class="bms-learn-catalogue-section"[^>]*>',
+            track_html,
+        )
+        if len(track_group_tags) != 1 or " open" not in track_group_tags[0]:
+            raise ValidationError(
+                f"Generated track index {track['id']} must begin expanded"
+            )
+        track_description_tags = re.findall(
+            r'<details class="bms-learn-catalogue-description"[^>]*>',
+            track_html,
+        )
+        if len(track_description_tags) != len(track_lessons) or any(
+            " open" in tag for tag in track_description_tags
+        ):
+            raise ValidationError(
+                f"Generated track index {track['id']} descriptions must begin collapsed"
+            )
+
+    quarto_config = QUARTO_CONFIG_PATH.read_text(encoding="utf-8")
+    if "metadata-files:" not in quarto_config or "_learn-navigation.yml" not in quarto_config:
+        raise ValidationError(
+            "Quarto configuration is missing the generated Learn navigation metadata"
+        )
 
     related_lesson_count = sum(len(value) for value in related_lessons.values())
     related_research_count = sum(len(value) for value in related_research.values())
@@ -1422,7 +1575,8 @@ def validate_generated() -> dict[str, int]:
         "related_lesson_links": related_lesson_count,
         "related_research_links": related_research_count,
         "generated_files": len(expected),
-        "lesson_catalogue_sections": len(lesson_sections),
+        "lesson_catalogue_sections": len(curriculum),
+        "learn_tracks": len(tracks),
         "canonical_anchors": len(canonical_anchors),
         "standalone_term_pages": 0,
     }
@@ -1568,7 +1722,9 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     if any(f"/learn/glossary/{slug}/" in glossary_html for slug in canonical_slugs):
         raise ValidationError("Rendered glossary still links to standalone term routes")
 
+    tracks = discover_tracks()
     lessons = discover_lessons()
+    curriculum = build_curriculum(tracks, lessons)
     learn_index = output_root / "learn" / "index.html"
     learn_html = learn_index.read_text(encoding="utf-8", errors="replace")
     if learn_html.count("data-bms-learn-item") != len(lessons):
@@ -1580,6 +1736,8 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         "data-bms-learn-group",
         "data-bms-learn-clear",
         "data-bms-learn-empty",
+        "data-bms-learn-collapse-all",
+        "data-bms-learn-expand-all",
     ):
         if required not in learn_html:
             raise ValidationError(f"Rendered Learn catalogue is missing {required}")
@@ -1608,6 +1766,24 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         raise ValidationError(
             "Rendered Learn lesson descriptions must all begin collapsed"
         )
+    catalogue_group_tags = re.findall(
+        r'<details class="bms-learn-catalogue-section"[^>]*>',
+        learn_html,
+    )
+    if len(catalogue_group_tags) != len(curriculum) or any(
+        " open" not in tag for tag in catalogue_group_tags
+    ):
+        raise ValidationError(
+            "Rendered Learn track sections must all begin expanded"
+        )
+    for track in curriculum:
+        numbered_title = (
+            f"{roman_number(int(track['order']))} {str(track['title'])}"
+        )
+        if html.escape(numbered_title) not in learn_html:
+            raise ValidationError(
+                f"Rendered Learn catalogue is missing track heading {numbered_title!r}"
+            )
     obsolete_finder = output_root / "learn" / "lesson-finder" / "index.html"
     if obsolete_finder.exists():
         raise ValidationError(
@@ -1676,45 +1852,70 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         if "bms-research-toc-toggle" in page_html:
             raise ValidationError(f"Rendered {label} contains a competing TOC initializer")
 
-    cube_path = output_root / "learn" / "cube" / "index.html"
-    if not cube_path.exists():
-        raise ValidationError("Rendered cube landing is missing")
-    cube_html = cube_path.read_text(encoding="utf-8", errors="replace")
-    cube_listing = re.search(
-        r'<div id="listing-cube-lessons".*?</div>\s*</div>',
-        cube_html,
-        flags=re.DOTALL,
-    )
-    if not cube_listing:
-        raise ValidationError("Rendered cube landing is missing its shared listing")
-    cube_listing_html = cube_listing.group(0)
-    if cube_listing_html.count("data-bms-learn-item") != len(discover_cube_lessons()):
-        raise ValidationError("Rendered cube listing has the wrong published-lesson count")
-    if ".qmd" in cube_listing_html or "\\" in cube_listing_html or "&lt;h3" in cube_listing_html:
-        raise ValidationError("Rendered cube listing contains a source or literal-HTML link")
-    cube_lessons = discover_cube_lessons()
-    title_positions = [
-        cube_listing_html.find(html.escape(str(lesson["title"])))
-        for lesson in cube_lessons
-    ]
-    if any(position < 0 for position in title_positions) or title_positions != sorted(
-        title_positions
-    ):
-        raise ValidationError("Rendered cube lessons are missing or out of sequence")
-    if cube_html.count("bms-cube-lesson-number") != len(cube_lessons):
-        raise ValidationError("Rendered cube listing numbering hooks are incorrect")
-    if "data-bms-term-lookup" in cube_html:
-        raise ValidationError("Rendered cube landing contains the term lookup")
-    for required in (
-        "data-bms-learn-filters",
-        'data-bms-filter-difficulty="Beginner"',
-        'data-bms-filter-difficulty="Intermediate"',
-        'data-bms-filter-track="Doubling Cube"',
-        "data-bms-learn-clear",
-        "data-bms-learn-empty",
-    ):
-        if required not in cube_html:
-            raise ValidationError(f"Rendered cube landing is missing {required}")
+    for track in curriculum:
+        route = str(track["route"])
+        track_index = output_root / route.strip("/") / "index.html"
+        if not track_index.exists():
+            raise ValidationError(
+                f"Rendered track index {track['id']} is missing: {track_index}"
+            )
+        track_html = track_index.read_text(encoding="utf-8", errors="replace")
+        track_lessons = track["lessons"]
+        if not isinstance(track_lessons, list):
+            raise ValidationError(f"Track {track['id']} has invalid lessons")
+        if track_html.count("data-bms-learn-item") != len(track_lessons):
+            raise ValidationError(
+                f"Rendered track index {track['id']} has the wrong lesson count"
+            )
+        for required in (
+            'data-bms-learn-mode="track"',
+            "Difficulty Filter",
+            "Term Filter",
+            "data-bms-learn-collapse-all",
+            "data-bms-learn-expand-all",
+            "data-bms-learn-clear",
+            "data-bms-learn-empty",
+        ):
+            if required not in track_html:
+                raise ValidationError(
+                    f"Rendered track index {track['id']} is missing {required}"
+                )
+        if "data-bms-filter-track" in track_html:
+            raise ValidationError(
+                f"Rendered track index {track['id']} contains a track filter"
+            )
+        if "data-bms-term-lookup" in track_html:
+            raise ValidationError(
+                f"Rendered track index {track['id']} contains the term lookup"
+            )
+        track_group_tags = re.findall(
+            r'<details class="bms-learn-catalogue-section"[^>]*>',
+            track_html,
+        )
+        if len(track_group_tags) != 1 or " open" not in track_group_tags[0]:
+            raise ValidationError(
+                f"Rendered track index {track['id']} must begin expanded"
+            )
+        track_description_tags = re.findall(
+            r'<details class="bms-learn-catalogue-description"[^>]*>',
+            track_html,
+        )
+        if len(track_description_tags) != len(track_lessons) or any(
+            " open" in tag for tag in track_description_tags
+        ):
+            raise ValidationError(
+                f"Rendered track index {track['id']} descriptions must begin collapsed"
+            )
+        title_positions = [
+            track_html.find(html.escape(str(lesson["title"])))
+            for lesson in track_lessons
+        ]
+        if any(position < 0 for position in title_positions) or title_positions != sorted(
+            title_positions
+        ):
+            raise ValidationError(
+                f"Rendered track index {track['id']} lessons are missing or out of order"
+            )
     validate_representative_rss_footers(output_root)
     try:
         feed_root = ElementTree.parse(updates_feed).getroot()

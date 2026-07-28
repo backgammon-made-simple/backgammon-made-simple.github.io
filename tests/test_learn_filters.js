@@ -10,16 +10,19 @@ const lessons = [
   {
     difficulties: ["Beginner", "Intermediate"],
     tracks: ["Doubling Cube"],
+    terms: ["doubling-cube", "take-point"],
     searchValues: ["The Doubling Cube", "A question-led learning path"]
   },
   {
     difficulties: ["Intermediate", "Advanced"],
     tracks: ["Engines and Analysis"],
+    terms: ["equity", "rollout"],
     searchValues: ["Reading Positions", "Understand engine output"]
   },
   {
     difficulties: ["Beginner"],
     tracks: ["Opening Play", "Checker Play"],
+    terms: ["opening-roll"],
     searchValues: ["Opening Play Lab", "Opening rolls and replies"]
   }
 ];
@@ -52,7 +55,7 @@ assert.equal(
     lessons[1],
     "engine output",
     ["Advanced"],
-    ["Engines and Analysis"]
+    ["rollout"]
   ),
   true,
   "lesson search combines with difficulty and track filters"
@@ -62,10 +65,41 @@ assert.equal(
     lessons[1],
     "opening",
     ["Advanced"],
-    ["Engines and Analysis"]
+    ["rollout"]
   ),
   false,
   "lesson search excludes nonmatching titles and descriptions"
+);
+assert.equal(
+  learn.itemMatchesLesson(lessons[0], "cube", ["Beginner"], ["take-point"]),
+  true,
+  "term selections combine with search and difficulty"
+);
+assert.equal(
+  learn.itemMatchesLesson(lessons[0], "cube", ["Beginner"], ["rollout"]),
+  false,
+  "a nonmatching term excludes the lesson"
+);
+
+const learnGroups = [
+  { open: true, hidden: false },
+  { open: true, hidden: false },
+  { open: true, hidden: false }
+];
+assert.deepEqual(
+  learn.groupControlState(learnGroups),
+  { collapseDisabled: false, expandDisabled: true },
+  "all lesson tracks begin expanded"
+);
+learn.setAllGroupsExpanded(learnGroups, false);
+assert.deepEqual(
+  learnGroups.map((group) => group.open),
+  [false, false, false],
+  "Collapse all closes every lesson track"
+);
+assert.deepEqual(
+  learn.groupControlState(learnGroups),
+  { collapseDisabled: true, expandDisabled: false }
 );
 assert.equal(
   learn.normalizeLearnSearch("  Doubling-Cubé  "),

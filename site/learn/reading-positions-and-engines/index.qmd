@@ -2,6 +2,8 @@
 title: "Reading Positions and Engine Analysis"
 description: "How to read position context, engine output, and uncertainty before turning an answer into a lesson."
 sidebar: learn
+learn-track: start-here
+learn-order: 2
 categories:
   - Intermediate
   - Advanced

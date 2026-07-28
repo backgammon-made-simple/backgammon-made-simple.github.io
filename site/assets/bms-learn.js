@@ -3,6 +3,7 @@
 
   const DIFFICULTY_SELECTOR = "[data-bms-filter-difficulty]";
   const TRACK_SELECTOR = "[data-bms-filter-track]";
+  const TERM_SELECTOR = "[data-bms-filter-term]";
   const LESSON_SELECTOR = "[data-bms-learn-item]";
   const GROUP_SELECTOR = "[data-bms-learn-group]";
 
@@ -41,7 +42,7 @@
       .toLocaleLowerCase();
   }
 
-  function itemMatchesLesson(item, query, difficulties, tracks) {
+  function itemMatchesLesson(item, query, difficulties, terms) {
     const normalizedQuery = normalizeLearnSearch(query);
     const matchesSearch =
       normalizedQuery.length === 0 ||
@@ -50,7 +51,8 @@
       });
     return (
       matchesSearch &&
-      itemMatchesTaxonomy(item, difficulties, tracks)
+      matchesAny(item.difficulties, difficulties) &&
+      matchesAny(item.terms, terms)
     );
   }
 
@@ -62,6 +64,30 @@
 
   function normalizeLookupQuery(value) {
     return String(value || "").trim();
+  }
+
+  function setAllGroupsExpanded(groups, expanded) {
+    groups.forEach(function (group) {
+      group.open = expanded;
+    });
+  }
+
+  function groupControlState(groups) {
+    const visibleGroups = groups.filter(function (group) {
+      return !group.hidden;
+    });
+    return {
+      collapseDisabled:
+        visibleGroups.length === 0 ||
+        visibleGroups.every(function (group) {
+          return !group.open;
+        }),
+      expandDisabled:
+        visibleGroups.length === 0 ||
+        visibleGroups.every(function (group) {
+          return group.open;
+        })
+    };
   }
 
   function initializeLearnFilters() {
@@ -77,7 +103,8 @@
         return {
           element: element,
           difficulties: parseList(element.dataset.bmsDifficulties),
-          tracks: parseList(element.dataset.bmsTracks),
+          track: element.dataset.bmsTrack || "",
+          terms: parseList(element.dataset.bmsTerms),
           searchValues: parseList(element.dataset.bmsSearch)
         };
       }
@@ -87,12 +114,16 @@
       panel.querySelectorAll(DIFFICULTY_SELECTOR)
     );
     const trackButtons = Array.from(panel.querySelectorAll(TRACK_SELECTOR));
+    const termButtons = Array.from(panel.querySelectorAll(TERM_SELECTOR));
     const searchInput = panel.querySelector("[data-bms-learn-search]");
     const resultCount = panel.querySelector("[data-bms-learn-result-count]");
     const clearButton = panel.querySelector("[data-bms-learn-clear]");
     const emptyState = document.querySelector("[data-bms-learn-empty]");
+    const collapseAll = document.querySelector("[data-bms-learn-collapse-all]");
+    const expandAll = document.querySelector("[data-bms-learn-expand-all]");
     const selectedDifficulties = new Set();
-    const selectedTracks = new Set();
+    const selectedTerms = new Set();
+    let selectedTrack = "";
     const parameters = new URLSearchParams(window.location.search);
     if (searchInput) {
       searchInput.value = parameters.get("search") || "";
@@ -113,7 +144,16 @@
           return button.dataset.bmsFilterTrack === value;
         })
       ) {
-        selectedTracks.add(value);
+        selectedTrack = value;
+      }
+    });
+    parameters.getAll("term").forEach(function (value) {
+      if (
+        termButtons.some(function (button) {
+          return button.dataset.bmsFilterTerm === value;
+        })
+      ) {
+        selectedTerms.add(value);
       }
     });
 
@@ -129,6 +169,7 @@
       const next = new URL(window.location.href);
       next.searchParams.delete("difficulty");
       next.searchParams.delete("track");
+      next.searchParams.delete("term");
       next.searchParams.delete("search");
       const query = searchInput ? searchInput.value.trim() : "";
       if (query) {
@@ -137,30 +178,40 @@
       sortedValues(selectedDifficulties).forEach(function (value) {
         next.searchParams.append("difficulty", value);
       });
-      sortedValues(selectedTracks).forEach(function (value) {
-        next.searchParams.append("track", value);
+      if (selectedTrack) {
+        next.searchParams.set("track", selectedTrack);
+      }
+      sortedValues(selectedTerms).forEach(function (value) {
+        next.searchParams.append("term", value);
       });
       window.history.replaceState({}, "", next);
     }
 
+    function updateGroupControls() {
+      const state = groupControlState(groups);
+      if (collapseAll) {
+        collapseAll.disabled = state.collapseDisabled;
+      }
+      if (expandAll) {
+        expandAll.disabled = state.expandDisabled;
+      }
+    }
+
     function updateCounts() {
       const query = searchInput ? searchInput.value : "";
+      const difficulties = sortedValues(selectedDifficulties);
+      const terms = sortedValues(selectedTerms);
       difficultyButtons.forEach(function (button) {
         const value = button.dataset.bmsFilterDifficulty || "";
         const count = items.filter(function (item) {
           return (
             item.difficulties.includes(value) &&
-            itemMatchesLesson(
-              item,
-              query,
-              [],
-              sortedValues(selectedTracks)
-            )
+            itemMatchesLesson(item, query, [], terms)
           );
         }).length;
         const countElement = button.querySelector(".bms-learn-filter-count");
         if (countElement) {
-          countElement.textContent = "×" + count;
+          countElement.textContent = "\u00d7" + count;
         }
         button.disabled =
           count === 0 && !selectedDifficulties.has(value);
@@ -170,27 +221,37 @@
         const value = button.dataset.bmsFilterTrack || "";
         const count = items.filter(function (item) {
           return (
-            item.tracks.includes(value) &&
-            itemMatchesLesson(
-              item,
-              query,
-              sortedValues(selectedDifficulties),
-              []
-            )
+            item.track === value &&
+            itemMatchesLesson(item, query, difficulties, terms)
           );
         }).length;
         const countElement = button.querySelector(".bms-learn-filter-count");
         if (countElement) {
-          countElement.textContent = "×" + count;
+          countElement.textContent = "\u00d7" + count;
         }
-        button.disabled = count === 0 && !selectedTracks.has(value);
+        button.disabled = false;
+      });
+
+      termButtons.forEach(function (button) {
+        const value = button.dataset.bmsFilterTerm || "";
+        const count = items.filter(function (item) {
+          return (
+            item.terms.includes(value) &&
+            itemMatchesLesson(item, query, difficulties, [])
+          );
+        }).length;
+        const countElement = button.querySelector(".bms-learn-filter-count");
+        if (countElement) {
+          countElement.textContent = "\u00d7" + count;
+        }
+        button.disabled = count === 0 && !selectedTerms.has(value);
       });
     }
 
     function applyFilters(options) {
       const shouldUpdateUrl = !options || options.updateUrl !== false;
       const difficulties = sortedValues(selectedDifficulties);
-      const tracks = sortedValues(selectedTracks);
+      const terms = sortedValues(selectedTerms);
       const query = searchInput ? searchInput.value : "";
       let visibleCount = 0;
 
@@ -199,7 +260,7 @@
           item,
           query,
           difficulties,
-          tracks
+          terms
         );
         item.element.hidden = !visible;
         if (visible) {
@@ -214,7 +275,9 @@
         const groupVisibleCount = groupItems.filter(function (element) {
           return !element.hidden;
         }).length;
-        group.hidden = groupVisibleCount === 0;
+        const totalCount = Number(group.dataset.bmsTotalLessons || "0");
+        group.hidden =
+          totalCount > 0 && groupVisibleCount === 0;
         const groupCount = group.querySelector(
           "[data-bms-learn-group-count]"
         );
@@ -230,8 +293,20 @@
         selectedDifficulties,
         "bmsFilterDifficulty"
       );
-      setPressed(trackButtons, selectedTracks, "bmsFilterTrack");
+      setPressed(
+        trackButtons,
+        new Set(selectedTrack ? [selectedTrack] : []),
+        "bmsFilterTrack"
+      );
+      setPressed(termButtons, selectedTerms, "bmsFilterTerm");
       updateCounts();
+
+      if (selectedTrack) {
+        groups.forEach(function (group) {
+          group.open = group.dataset.bmsTrackId === selectedTrack;
+        });
+      }
+      updateGroupControls();
 
       if (resultCount) {
         resultCount.textContent =
@@ -240,12 +315,13 @@
           (visibleCount === 1 ? " lesson." : " lessons.");
       }
       if (emptyState) {
-        emptyState.hidden = visibleCount !== 0;
+        emptyState.hidden = visibleCount !== 0 || items.length === 0;
       }
       if (clearButton) {
         clearButton.hidden =
           selectedDifficulties.size === 0 &&
-          selectedTracks.size === 0 &&
+          selectedTrack === "" &&
+          selectedTerms.size === 0 &&
           normalizeLearnSearch(query).length === 0;
       }
       if (shouldUpdateUrl) {
@@ -264,6 +340,7 @@
     panel.addEventListener("click", function (event) {
       const difficultyButton = event.target.closest(DIFFICULTY_SELECTOR);
       const trackButton = event.target.closest(TRACK_SELECTOR);
+      const termButton = event.target.closest(TERM_SELECTOR);
       const clear = event.target.closest("[data-bms-learn-clear]");
 
       if (difficultyButton) {
@@ -275,16 +352,27 @@
         return;
       }
       if (trackButton) {
+        const value = trackButton.dataset.bmsFilterTrack || "";
+        selectedTrack = selectedTrack === value ? "" : value;
+        if (!selectedTrack) {
+          setAllGroupsExpanded(groups, true);
+        }
+        applyFilters();
+        return;
+      }
+      if (termButton) {
         toggleSelection(
-          selectedTracks,
-          trackButton.dataset.bmsFilterTrack || ""
+          selectedTerms,
+          termButton.dataset.bmsFilterTerm || ""
         );
         applyFilters();
         return;
       }
       if (clear) {
         selectedDifficulties.clear();
-        selectedTracks.clear();
+        selectedTerms.clear();
+        selectedTrack = "";
+        setAllGroupsExpanded(groups, true);
         if (searchInput) {
           searchInput.value = "";
         }
@@ -299,31 +387,109 @@
     }
 
     list.addEventListener("click", function (event) {
-      const difficultyButton = event.target.closest(
-        "[data-bms-card-difficulty]"
-      );
-      const trackButton = event.target.closest("[data-bms-card-track]");
-
-      if (difficultyButton) {
-        toggleSelection(
-          selectedDifficulties,
-          difficultyButton.dataset.bmsCardDifficulty || ""
-        );
-        applyFilters();
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
-      }
-      if (trackButton) {
-        toggleSelection(
-          selectedTracks,
-          trackButton.dataset.bmsCardTrack || ""
-        );
-        applyFilters();
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (event.target.closest(".bms-learn-catalogue-link")) {
+        event.stopPropagation();
       }
     });
 
+    if (collapseAll) {
+      collapseAll.addEventListener("click", function () {
+        selectedTrack = "";
+        setAllGroupsExpanded(groups, false);
+        setPressed(trackButtons, new Set(), "bmsFilterTrack");
+        updateGroupControls();
+        updateUrl();
+      });
+    }
+    if (expandAll) {
+      expandAll.addEventListener("click", function () {
+        selectedTrack = "";
+        setAllGroupsExpanded(groups, true);
+        setPressed(trackButtons, new Set(), "bmsFilterTrack");
+        updateGroupControls();
+        updateUrl();
+      });
+    }
+    groups.forEach(function (group) {
+      group.addEventListener("toggle", updateGroupControls);
+    });
+
     applyFilters({ updateUrl: false });
+  }
+
+  function initializeLearnSidebarControls() {
+    const sidebar = document.getElementById("quarto-sidebar");
+    const menu = sidebar
+      ? sidebar.querySelector(".sidebar-menu-container")
+      : null;
+    const sections = sidebar
+      ? Array.from(sidebar.querySelectorAll(".sidebar-item-section"))
+      : [];
+    if (!menu || sections.length === 0) {
+      return;
+    }
+
+    const controls = document.createElement("div");
+    controls.className = "bms-learn-sidebar-actions";
+    controls.setAttribute("role", "group");
+    controls.setAttribute("aria-label", "Learn sidebar sections");
+    controls.innerHTML =
+      '<button type="button" data-bms-sidebar-collapse-all>Collapse all</button>' +
+      '<button type="button" data-bms-sidebar-expand-all>Expand all</button>';
+    menu.prepend(controls);
+    const collapse = controls.querySelector("[data-bms-sidebar-collapse-all]");
+    const expand = controls.querySelector("[data-bms-sidebar-expand-all]");
+
+    function toggles() {
+      return sections
+        .map(function (section) {
+          return section.querySelector(
+            ":scope > .sidebar-item-container .sidebar-item-toggle"
+          );
+        })
+        .filter(Boolean);
+    }
+
+    function setExpanded(expanded) {
+      toggles().forEach(function (toggle) {
+        const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+        if (isExpanded !== expanded) {
+          toggle.click();
+        }
+      });
+      update();
+    }
+
+    function update() {
+      const states = toggles().map(function (toggle) {
+        return toggle.getAttribute("aria-expanded") === "true";
+      });
+      if (collapse) {
+        collapse.disabled = states.every(function (state) {
+          return !state;
+        });
+      }
+      if (expand) {
+        expand.disabled = states.every(Boolean);
+      }
+    }
+
+    if (collapse) {
+      collapse.addEventListener("click", function () {
+        setExpanded(false);
+      });
+    }
+    if (expand) {
+      expand.addEventListener("click", function () {
+        setExpanded(true);
+      });
+    }
+    toggles().forEach(function (toggle) {
+      toggle.addEventListener("click", function () {
+        window.setTimeout(update, 0);
+      });
+    });
+    update();
   }
 
   function placeLessonTrackLinks() {
@@ -504,12 +670,14 @@
   }
 
   const publicApi = {
+    groupControlState: groupControlState,
     itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
     normalizeLearnSearch: normalizeLearnSearch,
     normalizeLookupQuery: normalizeLookupQuery,
-    parseList: parseList
+    parseList: parseList,
+    setAllGroupsExpanded: setAllGroupsExpanded
   };
 
   if (typeof module !== "undefined" && module.exports) {
@@ -519,6 +687,7 @@
   if (typeof document !== "undefined") {
     document.addEventListener("DOMContentLoaded", function () {
       initializeLearnFilters();
+      initializeLearnSidebarControls();
       initializeTermLookup();
       placeLessonTrackLinks();
       initializeAnswerChoices();

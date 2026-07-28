@@ -2,6 +2,8 @@
 title: "The Main Game Plans"
 description: "A compact refresher on race, holding game, prime, blitz, and backgame plans."
 sidebar: learn
+learn-track: start-here
+learn-order: 1
 categories:
   - Beginner
   - Intermediate

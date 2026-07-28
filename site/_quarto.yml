@@ -21,6 +21,9 @@ project:
 filters:
   - bms-link-policy
 
+metadata-files:
+  - _learn-navigation.yml
+
 website:
   title: "Backgammon Made Simple"
   description: "Learn the ideas behind strong backgammon decisions, one concept and one position at a time."
@@ -49,29 +52,6 @@ website:
         text: Research
       - href: about.qmd
         text: About
-  sidebar:
-    - id: learn
-      title: "Learn"
-      style: docked
-      collapse-level: 2
-      contents:
-        - text: "Learn Home"
-          href: learn/index.qmd
-        - section: "Start Here"
-          contents:
-            - learn/start-here/index.qmd
-            - learn/game-plans/index.qmd
-            - learn/reading-positions-and-engines/index.qmd
-        - section: "The Doubling Cube"
-          href: learn/cube/index.qmd
-          contents:
-            - learn/cube/why-is-25-percent-the-basic-take-point.qmd
-            - learn/cube/what-the-cube-is-asking.qmd
-        - section: "Opening Play Lab"
-          contents:
-            - learn/opening-play/index.qmd
-        - text: "Backgammon Glossary"
-          href: learn/glossary/index.qmd
   page-footer:
     left: |
       Copyright 2026 Marty Gale - Backgammon Made Simple

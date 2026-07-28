@@ -2,6 +2,8 @@
 title: "What the Cube Is Really Asking"
 description: "A first lesson scaffold for understanding the doubling cube."
 sidebar: learn
+learn-track: doubling-cube
+learn-order: 2
 categories:
   - Beginner
   - Intermediate
@@ -20,7 +22,6 @@ terms:
   - volatility
   - equity
 level: Foundation
-cube-order: 2
 body-classes: bms-learn-article
 page-layout: article
 toc: true

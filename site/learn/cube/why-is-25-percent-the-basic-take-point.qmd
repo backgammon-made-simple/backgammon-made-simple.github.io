@@ -6,6 +6,8 @@ description: >
   with passing, and why gammons, cube ownership, future redoubles, and
   match score can move the real take point away from 25%.
 sidebar: learn
+learn-track: doubling-cube
+learn-order: 1
 categories:
   - Beginner
   - Intermediate
@@ -24,7 +26,6 @@ terms:
   - volatility
   - equity
 level: Foundation
-cube-order: 1
 body-classes: bms-learn-article
 page-layout: article
 toc: true

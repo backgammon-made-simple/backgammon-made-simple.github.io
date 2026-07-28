@@ -30,16 +30,41 @@ Edit `site/_quarto.yml` to change the navbar. The current public navigation is:
 
 ## Learn Sidebar
 
-The Learn sidebar also lives in `site/_quarto.yml`. It is the place to reorder lessons, move sections, and expose or hide learning tracks.
+The Learn sidebar is generated into `site/_learn-navigation.yml`. Do not edit
+that file or add a second manual Learn sidebar to `site/_quarto.yml`.
+Track-index and lesson front matter define the hierarchy and order.
 
 ## Learn Catalogue
 
-The Learn index catalogue is a searchable view of the Learn sidebar, not a
-second curriculum definition. Its groups, order, and parent/child hierarchy
-come from the `learn` sidebar in `site/_quarto.yml`; titles, descriptions,
-difficulties, and learning tracks come from each lesson's front matter. Add a
-lesson to that sidebar and run the generator to update
-`site/learn/_lesson-catalogue.html`.
+The Learn index, each track index, and the Learn sidebar are three generated
+views of the same curriculum metadata. The Learn index provides search,
+difficulty filters, and track focus. Each track index provides search,
+difficulty filters, and term filters.
+
+A track index declares a stable ID and its top-level order:
+
+```yaml
+---
+title: "The Doubling Cube"
+description: "Lessons about cube action, take points, market losers, and cube timing."
+sidebar: learn
+learn-track-index: doubling-cube
+learn-track-order: 2
+page-layout: full
+body-classes: "bms-learn-article bms-learn-track-index"
+toc: false
+term-lookup: false
+lesson-taxonomy: false
+---
+
+{{< include _lesson-index.html >}}
+```
+
+Every lesson then names exactly one primary track and its order within that
+track. Running the generator updates `site/_learn-navigation.yml`,
+`site/learn/_lesson-catalogue.html`, and every track's `_lesson-index.html`.
+The Roman numerals are derived from the numeric order metadata and never
+belong in titles.
 
 ## Learn Lesson Taxonomy
 
@@ -69,6 +94,8 @@ A complete lesson header looks like:
 title: "Why Is 25% the Basic Take Point When a Double Is Offered?"
 description: "Learn the simplified comparison between taking and passing."
 sidebar: learn
+learn-track: doubling-cube
+learn-order: 1
 categories:
   - Beginner
   - Intermediate
@@ -90,10 +117,10 @@ python scripts/learn_glossary.py validate
 
 Do not add glossary relationships by scanning lesson prose. A keyword scan may be used as an authoring warning, but the public relationship must remain explicit in `terms`.
 
-Cube lessons also require one unique positive `cube-order` value. That metadata
-is the authoritative automatic sequence for `/learn/cube/`; keep the Learn
-sidebar as a validated mirror of the same order. Landing-page numbers are
-generated from the resulting sequence and never belong in lesson titles.
+`learn-track` must match a `learn-track-index` ID. `learn-order` must be a
+unique, contiguous positive integer within that track. The generator uses
+those two fields as the single curriculum sequence for the global Learn index,
+the relevant track index, and the sidebar.
 
 ## Single-Page Glossary
 

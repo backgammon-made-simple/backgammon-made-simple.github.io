@@ -56,9 +56,11 @@ class LearnGlossaryTests(unittest.TestCase):
             learn_glossary.PUBLIC_DATA_PATH.read_text(encoding="utf-8")
         )
         cls.entries = learn_glossary.validate_public_data(cls.data)
+        cls.tracks = learn_glossary.discover_tracks()
         cls.lessons = learn_glossary.discover_lessons()
-        cls.lesson_sections = learn_glossary.discover_learn_catalogue_sections(
-            cls.lessons
+        cls.lesson_sections = learn_glossary.build_curriculum(
+            cls.tracks,
+            cls.lessons,
         )
         cls.related_lessons = learn_glossary.validate_lessons(
             cls.lessons,
@@ -96,25 +98,29 @@ class LearnGlossaryTests(unittest.TestCase):
     def test_generator_manages_glossary_and_sidebar_driven_learn_outputs(self) -> None:
         outputs = learn_glossary.generated_outputs(
             self.entries,
-            self.lessons,
             self.lesson_sections,
             self.related_lessons,
             self.related_research,
         )
+        track_outputs = {
+            track["path"].parent / "_lesson-index.html"
+            for track in self.lesson_sections
+        }
         self.assertEqual(
             set(outputs),
             {
                 learn_glossary.GENERATED_LESSON_CATALOGUE_PATH,
+                learn_glossary.GENERATED_NAVIGATION_PATH,
                 learn_glossary.GENERATED_ENTRIES_PATH,
                 learn_glossary.AUTHORING_TERMS_PATH,
-            },
+                *track_outputs,
+            }
         )
-        self.assertEqual(len(outputs), 3)
+        self.assertEqual(len(outputs), 7)
         self.assertEqual(
             outputs,
             learn_glossary.generated_outputs(
                 self.entries,
-                self.lessons,
                 self.lesson_sections,
                 self.related_lessons,
                 self.related_research,
@@ -196,7 +202,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("bms-glossary-anchor", self.entries_html)
         self.assertEqual(
             sum(len(value) for value in self.related_lessons.values()),
-            62,
+            40,
         )
         self.assertEqual(
             sum(len(value) for value in self.related_research.values()),
@@ -367,9 +373,9 @@ class LearnGlossaryTests(unittest.TestCase):
         learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
-        self.assertIn(
-            "[Look Up a Term](/learn/glossary/){.bms-button-outline}",
-            learn_home,
+        self.assertEqual(
+            learn_home.split("---", 2)[-1].strip(),
+            "{{< include _lesson-catalogue.html >}}",
         )
         self.assertIn('href="#letter-a"', self.entries_html)
         self.assertIn('href="/learn/', self.entries_html)
@@ -394,7 +400,8 @@ class LearnGlossaryTests(unittest.TestCase):
 
     def test_learn_and_research_terms_metadata_is_canonical(self) -> None:
         canonical = {entry["slug"] for entry in self.entries}
-        self.assertEqual(len(self.lessons), 7)
+        self.assertEqual(len(self.tracks), 3)
+        self.assertEqual(len(self.lessons), 4)
         for lesson in self.lessons:
             self.assertTrue(
                 set(lesson["categories"]).issubset(learn_glossary.DIFFICULTIES)
@@ -418,7 +425,7 @@ class LearnGlossaryTests(unittest.TestCase):
                     f"{path.relative_to(ROOT)} uses obsolete glossary route {href}",
                 )
 
-    def test_a5_cube_listing_is_preserved(self) -> None:
+    def test_cube_sequence_is_preserved_in_generated_track_index(self) -> None:
         self.assertEqual(
             [lesson["relative_path"] for lesson in self.cube_lessons],
             [
@@ -433,12 +440,17 @@ class LearnGlossaryTests(unittest.TestCase):
         cube_index = (learn_glossary.CUBE_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
-        self.assertIn("template: ../_lesson-listing.ejs.md", cube_index)
-        self.assertIn('sort: "cube-order"', cube_index)
-        self.assertNotIn("**Planned", cube_index)
-        self.assertFalse(
-            (learn_glossary.CUBE_ROOT / "_cube-lesson-listing.ejs.md").exists()
+        self.assertIn("learn-track-index: doubling-cube", cube_index)
+        self.assertIn("{{< include _lesson-index.html >}}", cube_index)
+        generated = (learn_glossary.CUBE_ROOT / "_lesson-index.html").read_text(
+            encoding="utf-8"
         )
+        self.assertTrue(
+            generated.index(str(self.cube_lessons[0]["title"]))
+            < generated.index(str(self.cube_lessons[1]["title"]))
+        )
+        self.assertNotIn("data-bms-filter-track", generated)
+        self.assertIn("data-bms-filter-term", generated)
 
     def test_custom_404_source_contract(self) -> None:
         not_found_path = learn_glossary.SITE_ROOT / "404.qmd"
@@ -522,7 +534,9 @@ class LearnGlossaryTests(unittest.TestCase):
             "Do not create a directory or page for an individual term",
             "site/404.qmd",
             "canonical `terms` metadata",
-            "authoritative automatic sequence",
+            "single curriculum sequence",
+            "learn-track-index",
+            "learn-order",
             "## Updates RSS",
             "published: true",
         ):
@@ -581,23 +595,24 @@ class LearnGlossaryTests(unittest.TestCase):
             [1, 2],
         )
 
-        config = (learn_glossary.SITE_ROOT / "_quarto.yml").read_text(
+        navigation = learn_glossary.GENERATED_NAVIGATION_PATH.read_text(
             encoding="utf-8"
         )
         sidebar_paths = [f"learn/cube/{path}" for path in expected_paths]
         self.assertTrue(
-            config.index(sidebar_paths[0]) < config.index(sidebar_paths[1])
+            navigation.index(sidebar_paths[0]) < navigation.index(sidebar_paths[1])
         )
         for path in sidebar_paths:
-            self.assertEqual(config.count(path), 1)
+            self.assertEqual(navigation.count(path), 1)
 
         cube_index = (learn_glossary.CUBE_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
-        self.assertIn('sort: "cube-order"', cube_index)
+        self.assertIn("learn-track-order: 2", cube_index)
         for lesson in self.cube_lessons:
             lesson_source = lesson["path"].read_text(encoding="utf-8")
-            self.assertEqual(lesson_source.count("cube-order:"), 1)
+            self.assertEqual(lesson_source.count("cube-order:"), 0)
+            self.assertEqual(lesson_source.count("learn-order:"), 1)
 
     def test_learn_catalogue_uses_sidebar_hierarchy_and_lesson_metadata(self) -> None:
         self.assertEqual(
@@ -618,6 +633,33 @@ class LearnGlossaryTests(unittest.TestCase):
             catalogue,
             r'<details class="bms-learn-catalogue-description"[^>]*\sopen',
         )
+        self.assertEqual(
+            catalogue.count(
+                '<details class="bms-learn-catalogue-section" '
+                "data-bms-learn-group"
+            ),
+            3,
+        )
+        self.assertEqual(
+            re.findall(
+                r'<span class="bms-learn-track-number"[^>]*>([^<]+)</span>',
+                catalogue,
+            ),
+            ["I", "II", "III"],
+        )
+        self.assertEqual(
+            re.findall(
+                r'<span class="bms-learn-lesson-number"[^>]*>([^<]+)</span>',
+                catalogue,
+            ),
+            ["i", "ii", "i", "ii"],
+        )
+        self.assertNotIn("bms-learn-catalogue-tag", catalogue)
+        self.assertNotIn(">Description<", catalogue)
+        self.assertIn("Difficulty Filter", catalogue)
+        self.assertIn("Learning Track Filter", catalogue)
+        self.assertEqual(catalogue.count("data-bms-learn-collapse-all"), 1)
+        self.assertEqual(catalogue.count("data-bms-learn-expand-all"), 1)
         for lesson in self.lessons:
             self.assertIn(
                 f'href="{lesson["route"]}">{lesson["title"]}</a>',
@@ -631,6 +673,25 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertIn("{{< include _lesson-catalogue.html >}}", learn_index)
         for lesson in self.lessons:
             self.assertNotIn(str(lesson["relative_path"]), learn_index)
+
+        navigation = learn_glossary.GENERATED_NAVIGATION_PATH.read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("Generated by scripts/learn_glossary.py", navigation)
+        for track in self.lesson_sections:
+            self.assertIn(
+                f'{learn_glossary.roman_number(int(track["order"]))} '
+                f'{track["title"]}',
+                navigation,
+            )
+            track_page = track["path"].read_text(encoding="utf-8")
+            self.assertIn("{{< include _lesson-index.html >}}", track_page)
+            generated_track = (
+                track["path"].parent / "_lesson-index.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn('data-bms-learn-mode="track"', generated_track)
+            self.assertIn("Term Filter", generated_track)
+            self.assertNotIn("Learning Track Filter", generated_track)
 
     def test_lesson_finder_is_removed_and_track_links_target_learn(self) -> None:
         self.assertFalse(
@@ -656,39 +717,44 @@ class LearnGlossaryTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn('href="/learn/?track=', taxonomy_filter)
 
-    def test_cube_landing_uses_local_filters_and_excludes_lookup(self) -> None:
+    def test_track_landings_use_generated_difficulty_and_term_filters(self) -> None:
         cube_index = (learn_glossary.CUBE_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
         self.assertIn("term-lookup: false", cube_index)
         self.assertIn("lesson-taxonomy: false", cube_index)
-        self.assertNotIn("/learn/lesson-finder/", cube_index)
-        self.assertNotIn("target=", cube_index)
-        self.assertIn("data-bms-learn-filters", cube_index)
-        self.assertIn("data-bms-learn-clear", cube_index)
-        self.assertIn("data-bms-learn-empty", cube_index)
+        self.assertIn("{{< include _lesson-index.html >}}", cube_index)
 
-        difficulty_buttons = set(
-            re.findall(r'data-bms-filter-difficulty="([^"]+)"', cube_index)
+        generated = (learn_glossary.CUBE_ROOT / "_lesson-index.html").read_text(
+            encoding="utf-8"
         )
-        track_buttons = set(
-            re.findall(r'data-bms-filter-track="([^"]+)"', cube_index)
+        difficulty_buttons = set(
+            re.findall(r'data-bms-filter-difficulty="([^"]+)"', generated)
+        )
+        term_buttons = set(
+            re.findall(r'data-bms-filter-term="([^"]+)"', generated)
         )
         expected_difficulties = {
             str(value)
             for lesson in self.cube_lessons
             for value in lesson["categories"]
         }
-        expected_tracks = {
+        cube_curriculum_lessons = [
+            lesson
+            for lesson in self.lessons
+            if lesson["track_id"] == "doubling-cube"
+        ]
+        expected_terms = {
             str(value)
-            for lesson in self.cube_lessons
-            for value in lesson["tags"]
+            for lesson in cube_curriculum_lessons
+            for value in lesson["terms"]
         }
         self.assertEqual(difficulty_buttons, expected_difficulties)
-        self.assertEqual(track_buttons, expected_tracks)
+        self.assertEqual(term_buttons, expected_terms)
+        self.assertNotIn("data-bms-filter-track", generated)
         self.assertEqual(
-            cube_index.count('aria-pressed="false"'),
-            len(difficulty_buttons) + len(track_buttons),
+            generated.count('aria-pressed="false"'),
+            len(difficulty_buttons) + len(term_buttons),
         )
 
         taxonomy_filter = (
@@ -698,6 +764,7 @@ class LearnGlossaryTests(unittest.TestCase):
             / "bms-learn-taxonomy.lua"
         ).read_text(encoding="utf-8")
         self.assertIn('doc.meta["lesson-taxonomy"]', taxonomy_filter)
+        self.assertIn('doc.meta["learn-track"]', taxonomy_filter)
         self.assertIn("== false", taxonomy_filter)
 
         lesson_source = (
@@ -710,38 +777,40 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("term-lookup: false", lesson_source)
         self.assertNotIn("term-lookup: false", research_source)
 
-    def test_cube_numbering_is_landing_only_and_sequence_generated(self) -> None:
-        template = (
-            learn_glossary.LEARN_ROOT / "_lesson-listing.ejs.md"
-        ).read_text(encoding="utf-8")
+    def test_roman_numbering_is_generated_for_catalogues_and_sidebar(self) -> None:
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
         ).read_text(encoding="utf-8")
-        self.assertEqual(template.count("bms-cube-lesson-number"), 1)
-        self.assertIn("#listing-cube-lessons .bms-cube-lesson-number", css)
-        self.assertIn("counter-reset: bms-cube-lesson", css)
-        self.assertIn("counter-increment: bms-cube-lesson", css)
-        self.assertIn('content: counter(bms-cube-lesson) ". "', css)
+        self.assertFalse(
+            (learn_glossary.LEARN_ROOT / "_lesson-listing.ejs.md").exists()
+        )
+        self.assertEqual(learn_glossary.roman_number(1), "I")
+        self.assertEqual(learn_glossary.roman_number(3), "III")
+        self.assertEqual(
+            learn_glossary.roman_number(2, uppercase=False),
+            "ii",
+        )
+        self.assertIn(".bms-learn-track-number", css)
+        self.assertIn(".bms-learn-lesson-number", css)
         for lesson in self.cube_lessons:
             self.assertNotRegex(str(lesson["title"]), r"^\d+\.\s")
 
-    def test_learn_home_cube_navigation_is_same_tab(self) -> None:
+    def test_learn_home_contains_only_generated_catalogue(self) -> None:
         source = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
-        self.assertIn(
-            "[Start with the Cube Lessons](/learn/cube/){.bms-button-outline}",
-            source,
-        )
-        cube_link = re.search(
-            r"\[Start with the Cube Lessons\]\(/learn/cube/\)(\{[^}]*\})?",
-            source,
-        )
-        self.assertIsNotNone(cube_link)
-        attributes = cube_link.group(1) or ""
-        self.assertNotIn("_blank", attributes)
-        self.assertNotIn("noopener", attributes)
-        self.assertNotIn("opens in a new tab", attributes)
+        body = source.split("---", 2)[-1].strip()
+        self.assertEqual(body, "{{< include _lesson-catalogue.html >}}")
+        for removed in (
+            "Come with a question",
+            "Start with the Cube Lessons",
+            "Look Up a Term",
+            "How Each Lesson Works",
+            "A Real Question",
+            "A Board Position",
+            "A Reusable Idea",
+        ):
+            self.assertNotIn(removed, source)
 
     def test_clean_glossary_canonical_and_sitemap_contract(self) -> None:
         source = (learn_glossary.GLOSSARY_ROOT / "index.qmd").read_text(
@@ -1023,11 +1092,13 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["alias_entries"], 181)
         self.assertEqual(result["canonical_anchors"], 624)
         self.assertEqual(result["standalone_term_pages"], 0)
-        self.assertEqual(result["generated_files"], 3)
+        self.assertEqual(result["generated_files"], 7)
         self.assertEqual(result["lesson_catalogue_sections"], 3)
+        self.assertEqual(result["learn_tracks"], 3)
+        self.assertEqual(result["lessons"], 4)
         self.assertEqual(result["cube_lessons"], 2)
         self.assertEqual(result["updates_publications"], 0)
-        self.assertEqual(result["related_lesson_links"], 62)
+        self.assertEqual(result["related_lesson_links"], 40)
         self.assertEqual(result["related_research_links"], 3)
 
 
