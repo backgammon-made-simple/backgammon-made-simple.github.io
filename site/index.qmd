@@ -10,30 +10,37 @@ format:
 
 :::::::::: {.bms-landing}
 
-::::::: {.bms-hero .bms-hero--editorial}
+:::::: {.bms-hero .bms-hero--editorial}
 ::: {.bms-eyebrow}
 BACKGAMMON MADE SIMPLE
 :::
 
-<h1>Understand the game,<br>not just the right move.</h1>
+<h1>Understand the game,<br class="bms-home-desktop-break">not just the right move.</h1>
 
-::: {.bms-mantra}
-Start with a question. Leave with a clear mental model you can use at the board.
+::: {.bms-hero-copy}
+Clear lessons and tools for stronger backgammon decisions.
 :::
+::::::
 
+:::::: {.bms-home-explore aria-labelledby="bms-home-explore-title"}
+<h2 id="bms-home-explore-title">Explore</h2>
 
+::::: {.bms-home-explore-grid}
+[Start learning<br>
+<span class="bms-home-explore-description">Backgammon lessons</span>](learn/index.qmd){.bms-home-explore-link}
 
-[Start learning](learn/index.qmd){.bms-button-primary} Clear, position-based lessons that build from beginner concepts to advanced decisions.
+[Analyze a position<br>
+<span class="bms-home-explore-description">Free engine analysis</span>](analyze/index.qmd){.bms-home-explore-link}
 
-[Analyzer](analyze/index.qmd){.bms-button-outline} Free 4-ply analysis, rollouts, and tools for understanding engine results.
+[Sage vs GNU<br>
+<span class="bms-home-explore-description">Engine matches</span>](engine-benchmark/sage-vs-gnu-stage1/index.qmd){.bms-home-explore-link}
 
-[Sage vs GNU](analyze/index.qmd){.bms-button-outline} Engine-versus-engine matches, results, and decision comparisons.
+[Research<br>
+<span class="bms-home-explore-description">Methods and results</span>](research/index.qmd){.bms-home-explore-link}
 
-[Research](analyze/index.qmd){.bms-button-outline} Details on the experiments, methods, and tools we are developing.
-
-[Glossary](analyze/index.qmd){.bms-button-outline} Simple explanations of backgammon terms and concepts.
-
-
-:::::::
+[Glossary<br>
+<span class="bms-home-explore-description">Backgammon terms</span>](learn/glossary/index.qmd){.bms-home-explore-link}
+:::::
+::::::
 
 ::::::::::
