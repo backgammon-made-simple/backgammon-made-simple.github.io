@@ -1070,6 +1070,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 
 .bms-site-tools {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   width: 100%;
   gap: 0.65rem;
   margin-top: 1rem;
@@ -1129,6 +1130,11 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 .bms-site-tools--sidebar .bms-term-lookup-reveal {
   justify-self: end;
   width: auto;
+}
+
+.bms-site-tools--sidebar > * {
+  grid-column: 1 / -1;
+  min-width: 0;
 }
 
 .bms-site-tools--sidebar .bms-site-back-to-top {
