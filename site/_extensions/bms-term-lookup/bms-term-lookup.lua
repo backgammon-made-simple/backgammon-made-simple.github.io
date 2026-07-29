@@ -29,10 +29,10 @@ end
 
 local function lookup_html()
   return table.concat({
-    '<aside class="bms-term-lookup" data-bms-term-lookup hidden>',
+    '<aside id="bms-term-lookup-panel" class="bms-term-lookup" data-bms-term-lookup hidden>',
     '  <div class="bms-term-lookup-heading">',
     '    <strong>Look Up a Term</strong>',
-    '    <button type="button" class="bms-term-lookup-close" data-bms-term-lookup-close aria-label="Close term lookup">&times;</button>',
+    '    <button type="button" class="bms-term-lookup-close" data-bms-term-lookup-close aria-label="Collapse term lookup to the right">Collapse <span aria-hidden="true">&rarr;</span></button>',
     '  </div>',
     '  <form action="/learn/glossary/" method="get" data-bms-term-lookup-form>',
     '    <label class="visually-hidden" for="bms-term-lookup-input">Term or alias</label>',
