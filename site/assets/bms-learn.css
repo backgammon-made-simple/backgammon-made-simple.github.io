@@ -1147,6 +1147,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   white-space: nowrap;
 }
 
+.bms-site-tools--sidebar .bms-toc-toggle,
 .bms-site-tools--sidebar .bms-margin-sidebar-toggle {
   width: 100%;
   min-height: 1.4rem;
@@ -1219,6 +1220,10 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   #quarto-margin-sidebar.bms-margin-sidebar-collapsed {
     max-height: none;
     overflow: visible;
+  }
+
+  #quarto-margin-sidebar.bms-toc-collapsed #TOC {
+    display: none !important;
   }
 
   #quarto-margin-sidebar.bms-margin-sidebar-collapsed

@@ -733,15 +733,19 @@
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false"><span aria-hidden="true">&larr;</span> ' +
       "Look Up a Term</button>" +
+      '<button type="button" class="bms-toc-toggle" ' +
+      'data-bms-toc-toggle aria-controls="TOC" aria-expanded="true" ' +
+      'aria-label="Collapse table of contents" hidden>Collapse TOC</button>' +
       '<button type="button" class="bms-margin-sidebar-toggle" ' +
       'data-bms-margin-sidebar-toggle aria-controls="quarto-margin-sidebar" ' +
-      'aria-expanded="true" aria-label="Collapse right sidebar" hidden>' +
-      'Collapse <span aria-hidden="true">&uarr;</span></button>' +
+      'aria-expanded="true" aria-label="Collapse all right sidebar content" hidden>' +
+      'Collapse All <span aria-hidden="true">&uarr;</span></button>' +
       '<button type="button" class="bms-site-back-to-top" ' +
       'data-bms-site-back-to-top hidden>Back to top ' +
       '<span aria-hidden="true">&uarr;</span></button>';
 
     const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
+    const tocToggle = tools.querySelector("[data-bms-toc-toggle]");
     const marginSidebarToggle = tools.querySelector(
       "[data-bms-margin-sidebar-toggle]"
     );
@@ -761,8 +765,10 @@
       : null;
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
+    const toc = marginSidebar ? marginSidebar.querySelector("#TOC") : null;
     let lookupEntriesPromise = null;
     let desktopCollapsed = false;
+    let tocCollapsed = false;
     let marginSidebarCollapsed = false;
 
     if (lookup && marginSidebarToggle) {
@@ -840,11 +846,32 @@
       );
       marginSidebarToggle.setAttribute(
         "aria-label",
-        collapsed ? "Expand right sidebar" : "Collapse right sidebar"
+        collapsed
+          ? "Expand all right sidebar content"
+          : "Collapse all right sidebar content"
       );
       marginSidebarToggle.innerHTML = collapsed
-        ? 'Expand <span aria-hidden="true">&darr;</span>'
-        : 'Collapse <span aria-hidden="true">&uarr;</span>';
+        ? 'Expand All <span aria-hidden="true">&darr;</span>'
+        : 'Collapse All <span aria-hidden="true">&uarr;</span>';
+    };
+
+    const updateToc = function () {
+      if (!marginSidebar || !tocToggle) {
+        return;
+      }
+      const available = inDesktopSidebar() && Boolean(toc);
+      const collapsed = available && tocCollapsed;
+      marginSidebar.classList.toggle("bms-toc-collapsed", collapsed);
+      tocToggle.hidden = !available;
+      tocToggle.setAttribute(
+        "aria-expanded",
+        collapsed ? "false" : "true"
+      );
+      tocToggle.setAttribute(
+        "aria-label",
+        collapsed ? "Expand table of contents" : "Collapse table of contents"
+      );
+      tocToggle.textContent = collapsed ? "Expand TOC" : "Collapse TOC";
     };
 
     const placeTools = function () {
@@ -871,6 +898,7 @@
           closeLookup();
         }
       }
+      updateToc();
       updateMarginSidebar();
     };
 
@@ -888,6 +916,12 @@
       marginSidebarToggle.addEventListener("click", function () {
         marginSidebarCollapsed = !marginSidebarCollapsed;
         updateMarginSidebar();
+      });
+    }
+    if (tocToggle) {
+      tocToggle.addEventListener("click", function () {
+        tocCollapsed = !tocCollapsed;
+        updateToc();
       });
     }
     document.addEventListener("keydown", function (event) {
