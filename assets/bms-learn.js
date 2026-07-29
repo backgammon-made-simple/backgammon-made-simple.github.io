@@ -623,13 +623,15 @@
   function createTermLookup() {
     const lookup = document.createElement("aside");
     lookup.className = "bms-term-lookup";
+    lookup.id = "bms-term-lookup-panel";
     lookup.dataset.bmsTermLookup = "";
     lookup.hidden = true;
     lookup.innerHTML =
       '<div class="bms-term-lookup-heading">' +
       "<strong>Look Up a Term</strong>" +
       '<button type="button" class="bms-term-lookup-close" ' +
-      'data-bms-term-lookup-close aria-label="Close term lookup">&times;</button>' +
+      'data-bms-term-lookup-close aria-label="Collapse term lookup to the right">' +
+      'Collapse <span aria-hidden="true">&rarr;</span></button>' +
       "</div>" +
       '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
@@ -718,8 +720,8 @@
     }
     if (lookup) {
       lookup.classList.add("bms-term-lookup--site");
+      lookup.id = lookup.id || "bms-term-lookup-panel";
       lookup.hidden = true;
-      document.body.appendChild(lookup);
     }
 
     const tools = document.createElement("div");
@@ -727,14 +729,19 @@
     tools.setAttribute("role", "group");
     tools.setAttribute("aria-label", "Page tools");
     tools.innerHTML =
-      '<button type="button" data-bms-site-term-toggle ' +
-      'aria-expanded="false">Look Up a Term</button>' +
-      '<button type="button" data-bms-site-back-to-top hidden>' +
-      "Back to Top \u2191</button>";
-    document.body.appendChild(tools);
+      '<button type="button" class="bms-term-lookup-reveal" ' +
+      'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
+      'aria-expanded="false"><span aria-hidden="true">&larr;</span> ' +
+      "Look Up a Term</button>" +
+      '<button type="button" class="bms-site-back-to-top" ' +
+      'data-bms-site-back-to-top hidden>Back to top ' +
+      '<span aria-hidden="true">&uarr;</span></button>';
 
     const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
     const backToTop = tools.querySelector("[data-bms-site-back-to-top]");
+    if (termToggle && !lookup) {
+      termToggle.removeAttribute("aria-controls");
+    }
     const form = lookup
       ? lookup.querySelector("[data-bms-term-lookup-form]")
       : null;
@@ -745,9 +752,21 @@
     const close = lookup
       ? lookup.querySelector("[data-bms-term-lookup-close]")
       : null;
+    const desktopQuery = window.matchMedia("(min-width: 992px)");
+    const marginSidebar = document.getElementById("quarto-margin-sidebar");
     let lookupEntriesPromise = null;
+    let desktopCollapsed = false;
 
-    const open = function () {
+    if (lookup && backToTop) {
+      tools.insertBefore(lookup, backToTop);
+    }
+
+    const inDesktopSidebar = function () {
+      return desktopQuery.matches && Boolean(marginSidebar);
+    };
+
+    const open = function (options) {
+      const focusInput = !options || options.focusInput !== false;
       if (glossarySearch) {
         glossarySearch.scrollIntoView({ behavior: "smooth", block: "center" });
         glossarySearch.focus();
@@ -756,48 +775,91 @@
       if (!lookup) {
         return;
       }
+      if (inDesktopSidebar()) {
+        desktopCollapsed = false;
+      }
       lookup.hidden = false;
+      if (termToggle) {
+        termToggle.hidden = true;
+      }
       document.body.classList.add("bms-term-lookup-open");
       document
         .querySelectorAll("[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]")
         .forEach(function (button) {
           button.setAttribute("aria-expanded", "true");
         });
-      if (input) {
+      if (input && focusInput) {
         input.focus();
       }
     };
 
-    const closeLookup = function () {
+    const closeLookup = function (options) {
+      const settings = options || {};
       if (!lookup) {
         return;
       }
+      if (settings.rememberDesktop && inDesktopSidebar()) {
+        desktopCollapsed = true;
+      }
       lookup.hidden = true;
+      if (termToggle) {
+        termToggle.hidden = false;
+      }
       document.body.classList.remove("bms-term-lookup-open");
       document
         .querySelectorAll("[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]")
         .forEach(function (button) {
           button.setAttribute("aria-expanded", "false");
         });
+      if (settings.returnFocus && termToggle && !termToggle.hidden) {
+        termToggle.focus();
+      }
+    };
+
+    const placeTools = function () {
+      if (inDesktopSidebar()) {
+        tools.classList.add("bms-site-tools--sidebar");
+        tools.classList.remove("bms-site-tools--floating");
+        if (lookup) {
+          lookup.classList.remove("bms-term-lookup--floating");
+        }
+        marginSidebar.appendChild(tools);
+        if (lookup && !desktopCollapsed) {
+          open({ focusInput: false });
+        } else if (lookup) {
+          closeLookup();
+        }
+      } else {
+        tools.classList.remove("bms-site-tools--sidebar");
+        tools.classList.add("bms-site-tools--floating");
+        if (lookup) {
+          lookup.classList.add("bms-term-lookup--floating");
+        }
+        document.body.appendChild(tools);
+        if (lookup) {
+          closeLookup();
+        }
+      }
     };
 
     if (termToggle) {
       termToggle.addEventListener("click", function () {
-        if (lookup && !lookup.hidden) {
-          closeLookup();
-        } else {
-          open();
-        }
+        open();
       });
     }
     if (close) {
-      close.addEventListener("click", closeLookup);
+      close.addEventListener("click", function () {
+        closeLookup({ rememberDesktop: true, returnFocus: true });
+      });
     }
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && lookup && !lookup.hidden) {
-        closeLookup();
+        closeLookup({ rememberDesktop: true, returnFocus: true });
       }
     });
+
+    placeTools();
+    desktopQuery.addEventListener("change", placeTools);
 
     if (form && input && result) {
       form.addEventListener("submit", function (event) {
