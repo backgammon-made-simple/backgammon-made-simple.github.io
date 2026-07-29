@@ -733,11 +733,18 @@
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false"><span aria-hidden="true">&larr;</span> ' +
       "Look Up a Term</button>" +
+      '<button type="button" class="bms-margin-sidebar-toggle" ' +
+      'data-bms-margin-sidebar-toggle aria-controls="quarto-margin-sidebar" ' +
+      'aria-expanded="true" aria-label="Collapse right sidebar" hidden>' +
+      'Collapse <span aria-hidden="true">&uarr;</span></button>' +
       '<button type="button" class="bms-site-back-to-top" ' +
       'data-bms-site-back-to-top hidden>Back to top ' +
       '<span aria-hidden="true">&uarr;</span></button>';
 
     const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
+    const marginSidebarToggle = tools.querySelector(
+      "[data-bms-margin-sidebar-toggle]"
+    );
     const backToTop = tools.querySelector("[data-bms-site-back-to-top]");
     if (termToggle && !lookup) {
       termToggle.removeAttribute("aria-controls");
@@ -756,9 +763,10 @@
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
     let lookupEntriesPromise = null;
     let desktopCollapsed = false;
+    let marginSidebarCollapsed = false;
 
-    if (lookup && backToTop) {
-      tools.insertBefore(lookup, backToTop);
+    if (lookup && marginSidebarToggle) {
+      tools.insertBefore(lookup, marginSidebarToggle);
     }
 
     const inDesktopSidebar = function () {
@@ -816,6 +824,29 @@
       }
     };
 
+    const updateMarginSidebar = function () {
+      if (!marginSidebar || !marginSidebarToggle) {
+        return;
+      }
+      const collapsed = inDesktopSidebar() && marginSidebarCollapsed;
+      marginSidebar.classList.toggle(
+        "bms-margin-sidebar-collapsed",
+        collapsed
+      );
+      marginSidebarToggle.hidden = !inDesktopSidebar();
+      marginSidebarToggle.setAttribute(
+        "aria-expanded",
+        collapsed ? "false" : "true"
+      );
+      marginSidebarToggle.setAttribute(
+        "aria-label",
+        collapsed ? "Expand right sidebar" : "Collapse right sidebar"
+      );
+      marginSidebarToggle.innerHTML = collapsed
+        ? 'Expand <span aria-hidden="true">&darr;</span>'
+        : 'Collapse <span aria-hidden="true">&uarr;</span>';
+    };
+
     const placeTools = function () {
       if (inDesktopSidebar()) {
         tools.classList.add("bms-site-tools--sidebar");
@@ -840,6 +871,7 @@
           closeLookup();
         }
       }
+      updateMarginSidebar();
     };
 
     if (termToggle) {
@@ -850,6 +882,12 @@
     if (close) {
       close.addEventListener("click", function () {
         closeLookup({ rememberDesktop: true, returnFocus: true });
+      });
+    }
+    if (marginSidebarToggle) {
+      marginSidebarToggle.addEventListener("click", function () {
+        marginSidebarCollapsed = !marginSidebarCollapsed;
+        updateMarginSidebar();
       });
     }
     document.addEventListener("keydown", function (event) {
