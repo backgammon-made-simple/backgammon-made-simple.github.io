@@ -388,6 +388,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "](https://backgammon-made-simple.shinyapps.io/",
             analyze,
         )
+        self.assertIn("bms-analyze-page", analyze)
 
         link_policy = (
             learn_glossary.SITE_ROOT
@@ -902,6 +903,11 @@ class LearnGlossaryTests(unittest.TestCase):
             css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
             r"white-space: nowrap;",
+        )
+        self.assertRegex(
+            css,
+            r"body\.bms-analyze-page \.bms-site-tools--floating,[^}]*"
+            r"left: calc\(50% \+ 26\.625rem\);",
         )
         self.assertRegex(
             css,

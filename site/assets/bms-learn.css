@@ -1135,6 +1135,18 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   box-shadow: 0 8px 28px rgb(17 24 47 / 18%);
 }
 
+@media (min-width: 1200px) {
+  body.bms-analyze-page .bms-site-tools--floating,
+  body.bms-analyze-page .bms-term-lookup--floating {
+    right: auto;
+    left: calc(50% + 26.625rem);
+  }
+
+  body.bms-analyze-page .bms-term-lookup--floating {
+    width: min(18rem, calc(50vw - 27.625rem));
+  }
+}
+
 .bms-site-tools--sidebar {
   display: flex;
   flex-direction: column;

@@ -7,7 +7,7 @@ toc: false
 format:
   html:
     title-block-style: plain
-    body-classes: "bms-editorial-page bms-title-eyebrow"
+    body-classes: "bms-editorial-page bms-title-eyebrow bms-analyze-page"
 ---
 
 :::: {.bms-page-shell}
