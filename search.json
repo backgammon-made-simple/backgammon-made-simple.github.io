@@ -630,7 +630,7 @@
     "href": "index.html",
     "title": "Backgammon Made Simple",
     "section": "",
-    "text": "BACKGAMMON MADE SIMPLE\n\n\nUnderstand the game,not just the right move.\n\n\nClear lessons and tools for stronger backgammon decisions.\n\n\n\n\nExplore\n\n\nStart learning Question-led lessons that explain how to recognize and solve recurring backgammon decisions.\nAnalyze a position Enter a position to compare engine recommendations and understand why one choice is stronger.\nSage vs GNU Follow engine-versus-engine matches and see where their play and evaluations differ.\nResearch Read the methods, experiments, and results behind the tools and analysis.\nGlossary Look up backgammon terms, aliases, and related concepts."
+    "text": "BACKGAMMON MADE SIMPLE\n\n\nUnderstand the game,not just the right move.\n\n\nClear lessons and tools for stronger backgammon decisions.\n\n\n\n\nChoose where to start\n\n\nStart learning Question-led, position-based lessons that teach ideas you can recognize and reuse.\nAnalyze a position Free 4-ply evaluations and rollouts, with tools that explain why one choice is stronger.\nSage vs GNU See how Sage and GNU perform, where they differ, and how we test them.\nResearch Read about our experiments, current work, and the tools we are building.\nGlossary Look up backgammon terms and get simple explanations of related ideas."
   },
   {
     "objectID": "learn/cube/what-the-cube-is-asking.html",
