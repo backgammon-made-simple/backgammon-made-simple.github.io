@@ -286,10 +286,26 @@
 .bms-learn-filter-panel,
 .bms-glossary-filter-panel {
   margin: 1rem 0 1.6rem;
-  padding: 1.1rem;
   border: 1px solid var(--bms-border);
   border-radius: 8px;
   background: var(--bms-surface);
+}
+
+.bms-glossary-filter-panel {
+  padding: 1.1rem;
+}
+
+.bms-learn-filters-summary {
+  padding: 0.35rem 0.55rem;
+  color: var(--bms-text-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.bms-learn-filter-body {
+  padding: 0.7rem;
+  border-top: 1px solid var(--bms-border);
 }
 
 .bms-learn-search-group label {
@@ -472,7 +488,6 @@ body.bms-learn-track-index main#quarto-document-content {
 body.bms-learn-index .bms-learn-filter-panel,
 body.bms-learn-track-index .bms-learn-filter-panel {
   margin: 0 0 0.55rem;
-  padding: 0.65rem;
 }
 
 body.bms-learn-index .bms-learn-filter-options,
@@ -584,15 +599,6 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   text-decoration: none;
 }
 
-.bms-learn-track-number {
-  min-width: 1.4rem;
-  color: var(--bms-copper-dark);
-  font-family: "Source Code Pro", ui-monospace, monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-align: right;
-}
-
 .bms-learn-catalogue-section-heading > span:last-child {
   flex: 0 0 auto;
   color: var(--bms-text-muted);
@@ -624,9 +630,9 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 }
 
 .bms-learn-catalogue-link {
-  color: var(--bms-navy-dark);
+  color: var(--bms-text);
   font-size: 0.86rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.25;
   text-decoration: none;
 }

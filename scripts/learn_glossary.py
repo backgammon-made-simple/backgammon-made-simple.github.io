@@ -934,10 +934,9 @@ def build_navigation_yaml(curriculum: list[dict[str, object]]) -> str:
         "          href: learn/index.qmd",
     ]
     for track in curriculum:
-        prefix = roman_number(int(track["order"]))
         lines.extend(
             [
-                f'        - section: "{prefix} {str(track["title"]).replace(chr(34), chr(39))}"',
+                f'        - section: "{str(track["title"]).replace(chr(34), chr(39))}"',
                 f"          href: {track['source_path']}",
             ]
         )
@@ -1001,8 +1000,10 @@ def build_lesson_catalogue_html(
     mode = "global" if selected_track_id is None else "track"
     lines = [
         GENERATED_MARKER,
-        '<section class="bms-learn-filter-panel" data-bms-learn-filters '
+        '<details class="bms-learn-filter-panel" data-bms-learn-filters '
         f'data-bms-learn-mode="{mode}" aria-label="Search and filter lessons">',
+        '<summary class="bms-learn-filters-summary">Click for filters</summary>',
+        '<div class="bms-learn-filter-body">',
         '<div class="bms-learn-search-group">',
         '<label for="bms-learn-search">Search lessons</label>',
         '<input id="bms-learn-search" type="search" '
@@ -1043,7 +1044,8 @@ def build_lesson_catalogue_html(
             '<button type="button" class="bms-learn-clear" '
             "data-bms-learn-clear hidden>Clear search and filters</button>",
             "</div>",
-            "</section>",
+            "</div>",
+            "</details>",
             '<div class="bms-learn-section-actions" role="group" '
             'aria-label="Lesson tracks">',
             '<button type="button" data-bms-learn-collapse-all>Collapse all</button>',
@@ -1059,8 +1061,6 @@ def build_lesson_catalogue_html(
             raise ValidationError(f"Track {track['id']} has invalid lessons")
         track_title = str(track["title"])
         heading = (
-            f'<span class="bms-learn-track-number" aria-hidden="true">'
-            f'{roman_number(int(track["order"]))}</span>'
             f'<a href="{html_attr(track["route"])}">{html.escape(track_title)}</a>'
             if selected_track_id is None
             else '<span class="bms-learn-track-lessons-label">Lessons</span>'
