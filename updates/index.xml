@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Backgammon Made Simple Updates</title>
+<link>https://backgammon-made-simple.github.io/updates/</link>
+<atom:link href="https://backgammon-made-simple.github.io/updates/index.xml" rel="self" type="application/rss+xml"/>
+<description>Dated public lessons, Research articles, studies, and benchmark reports.</description>
+<image>
+<url>https://backgammon-made-simple.github.io/assets/social/generated/social-default.png</url>
+<title>Backgammon Made Simple Updates</title>
+<link>https://backgammon-made-simple.github.io/updates/</link>
+</image>
+<generator>quarto-1.9.38</generator>
+<lastBuildDate>Wed, 29 Jul 2026 19:09:18 GMT</lastBuildDate>
+</channel>
+</rss>

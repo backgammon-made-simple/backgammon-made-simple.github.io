@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A compact refresher on race, holding game, prime, blitz, and backgame plans.">
+<meta name="description" content="How to read position context, engine output, and uncertainty before turning an answer into a lesson.">
 
-<title>The Main Game Plans – Backgammon Made Simple</title>
+<title>Reading Positions and Engine Analysis – Backgammon Made Simple</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -89,14 +89,14 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../assets/bms-shared.css">
 <link rel="stylesheet" href="../../assets/bms-components.css">
 <link rel="stylesheet" href="../../assets/bms-learn.css">
-<meta property="og:title" content="The Main Game Plans – Backgammon Made Simple">
-<meta property="og:description" content="A compact refresher on race, holding game, prime, blitz, and backgame plans.">
+<meta property="og:title" content="Reading Positions and Engine Analysis – Backgammon Made Simple">
+<meta property="og:description" content="How to read position context, engine output, and uncertainty before turning an answer into a lesson.">
 <meta property="og:image" content="https://backgammon-made-simple.github.io/assets/social/generated/social-default.png">
 <meta property="og:site_name" content="Backgammon Made Simple">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="The Main Game Plans – Backgammon Made Simple">
-<meta name="twitter:description" content="A compact refresher on race, holding game, prime, blitz, and backgame plans.">
+<meta name="twitter:title" content="Reading Positions and Engine Analysis – Backgammon Made Simple">
+<meta name="twitter:description" content="How to read position context, engine output, and uncertainty before turning an answer into a lesson.">
 <meta name="twitter:image" content="https://backgammon-made-simple.github.io/assets/social/generated/social-default.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="630">
@@ -163,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/start-here/index.html">I Start Here</a></li><li class="breadcrumb-item"><a href="../../learn/game-plans/index.html">1 The Main Game Plans</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/start-here/index.html">I Start Here</a></li><li class="breadcrumb-item"><a href="../../learn/reading-positions-and-engines/index.html">2 Reading Positions and Engine Analysis</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -192,13 +192,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../learn/game-plans/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../learn/game-plans/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">1 The Main Game Plans</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../learn/reading-positions-and-engines/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../learn/reading-positions-and-engines/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">2 Reading Positions and Engine Analysis</span></a>
   </div>
 </li>
@@ -247,29 +247,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#race" id="toc-race" class="nav-link active" data-scroll-target="#race">Race</a></li>
-  <li><a href="#holding-game" id="toc-holding-game" class="nav-link" data-scroll-target="#holding-game">Holding Game</a></li>
-  <li><a href="#prime" id="toc-prime" class="nav-link" data-scroll-target="#prime">Prime</a></li>
-  <li><a href="#blitz" id="toc-blitz" class="nav-link" data-scroll-target="#blitz">Blitz</a></li>
-  <li><a href="#backgame" id="toc-backgame" class="nav-link" data-scroll-target="#backgame">Backgame</a></li>
+  <li><a href="#position-context" id="toc-position-context" class="nav-link active" data-scroll-target="#position-context">Position Context</a></li>
+  <li><a href="#engine-output" id="toc-engine-output" class="nav-link" data-scroll-target="#engine-output">Engine Output</a></li>
+  <li><a href="#close-decisions" id="toc-close-decisions" class="nav-link" data-scroll-target="#close-decisions">Close Decisions</a></li>
+  <li><a href="#practical-use" id="toc-practical-use" class="nav-link" data-scroll-target="#practical-use">Practical Use</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/start-here/index.html">I Start Here</a></li><li class="breadcrumb-item"><a href="../../learn/game-plans/index.html">1 The Main Game Plans</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/start-here/index.html">I Start Here</a></li><li class="breadcrumb-item"><a href="../../learn/reading-positions-and-engines/index.html">2 Reading Positions and Engine Analysis</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">The Main Game Plans</h1>
+<h1 class="title">Reading Positions and Engine Analysis</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Beginner</div>
     <div class="quarto-category">Intermediate</div>
+    <div class="quarto-category">Advanced</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    A compact refresher on race, holding game, prime, blitz, and backgame plans.
+    How to read position context, engine output, and uncertainty before turning an answer into a lesson.
   </div>
 </div>
 
@@ -302,8 +301,8 @@ ul.task-list li input[type="checkbox"] {
 </aside>
 <div class="bms-lesson-taxonomy" data-bms-lesson-taxonomy="">
 <div class="bms-lesson-difficulties" role="list" aria-label="Lesson difficulty">
-  <span class="bms-lesson-difficulty" role="listitem">Beginner</span>
   <span class="bms-lesson-difficulty" role="listitem">Intermediate</span>
+  <span class="bms-lesson-difficulty" role="listitem">Advanced</span>
 </div>
 <nav class="bms-lesson-track-nav" data-bms-lesson-track-nav="" aria-label="Learning tracks">
   <p class="bms-lesson-track-label">Learning track</p>
@@ -312,26 +311,28 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </nav>
 </div>
-<p>This refresher is a bridge into the cube curriculum, not a complete beginner unit.</p>
-<section id="race" class="level2">
-<h2 class="anchored" data-anchor-id="race">Race</h2>
-<p>The race is about efficient checkers, wastage, and timing. Cube decisions often become clearer because contact threats are reduced.</p>
+<p>Engine analysis is useful when it helps you understand a decision, not when it becomes a substitute for reading the position.</p>
+<section id="position-context" class="level2">
+<h2 class="anchored" data-anchor-id="position-context">Position Context</h2>
+<p>Before looking for an answer, identify the player on roll, score, cube value and ownership, game type, race shape, contact, anchors, primes, threats, and gammon chances.</p>
 </section>
-<section id="holding-game" class="level2">
-<h2 class="anchored" data-anchor-id="holding-game">Holding Game</h2>
-<p>A holding game preserves contact from an advanced anchor. Cube timing depends on racing lead, shot equity, and the strength of the anchor.</p>
+<section id="engine-output" class="level2">
+<h2 class="anchored" data-anchor-id="engine-output">Engine Output</h2>
+<p>Treat the top play as the beginning of the explanation. Record the engine, version, analysis depth, rollout settings where available, equity, winning chances, gammons, backgammons, and the margin between close choices.</p>
 </section>
-<section id="prime" class="level2">
-<h2 class="anchored" data-anchor-id="prime">Prime</h2>
-<p>A prime tries to trap opposing checkers behind connected points. Gammons and market losers can appear quickly when the trapped checkers cannot escape.</p>
+<section id="close-decisions" class="level2">
+<h2 class="anchored" data-anchor-id="close-decisions">Close Decisions</h2>
+<p>Close results deserve humility. A tiny equity difference may be a practical tie, a rollout may have sampling error, and a position can teach more through its alternatives than through a single label.</p>
 </section>
-<section id="blitz" class="level2">
-<h2 class="anchored" data-anchor-id="blitz">Blitz</h2>
-<p>A blitz attacks loose checkers and aims to close points while the opponent is on the bar. Cube timing can become volatile because gammons matter.</p>
-</section>
-<section id="backgame" class="level2">
-<h2 class="anchored" data-anchor-id="backgame">Backgame</h2>
-<p>A backgame keeps deep anchors and waits for late shots. Cube action depends heavily on timing, containment, and whether the defender still has a real game.</p>
+<section id="practical-use" class="level2">
+<h2 class="anchored" data-anchor-id="practical-use">Practical Use</h2>
+<p>Use the analyzer to test one changed feature at a time. Ask what moved the decision: race, timing, threats, cube ownership, gammons, or match score.</p>
+<div class="bms-callout">
+<div class="bms-callout-title">
+<p>Teaching rule</p>
+</div>
+<p>Engine evidence should explain transferable ideas. It should not present every numerical output as a permanent truth.</p>
+</div>
 
 
 </section>

@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A compact refresher on race, holding game, prime, blitz, and backgame plans.">
+<meta name="description" content="How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.">
 
-<title>The Main Game Plans – Backgammon Made Simple</title>
+<title>What We Are Building – Backgammon Made Simple</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,24 +27,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<link href="../../assets/icons/favicon.ico" rel="icon">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5a16c59de3ad3147629dc1d32c99e47e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-0afc15f06fc0d6d0814539d5fe22bd6b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../assets/icons/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5a16c59de3ad3147629dc1d32c99e47e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ccd5a00dc6e8596bccddf1cebaba4c1d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,49 +72,127 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<link rel="icon" type="image/png" href="../../assets/icons/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="../assets/icons/favicon-96x96.png" sizes="96x96">
 
-<link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
 
-<link rel="shortcut icon" href="../../assets/icons/favicon.ico">
+<link rel="shortcut icon" href="../assets/icons/favicon.ico">
 
-<link rel="apple-touch-icon" sizes="180x180" href="../../assets/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
 
 <meta name="apple-mobile-web-app-title" content="BGMS">
 
-<link rel="manifest" href="../../assets/icons/site.webmanifest">
+<link rel="manifest" href="../assets/icons/site.webmanifest">
+
+<style id="bms-research-taxonomy-styles">
+#title-block-header .quarto-categories {
+  display: none;
+}
+
+.bms-post-taxonomy {
+  margin: 0 0 1.2rem;
+  padding: 0 0 1.1rem;
+  border-bottom: 1px solid var(--bms-border, #d9d3c7);
+}
+
+.bms-post-taxonomy-group + .bms-post-taxonomy-group {
+  margin-top: 0.9rem;
+}
+
+.bms-post-taxonomy-label {
+  margin: 0 0 0.45rem;
+  color: var(--bms-text-muted, #68625a);
+  font-family:
+    "Source Code Pro",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.68rem;
+  font-weight: 680;
+  letter-spacing: 0.065em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.bms-post-taxonomy-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.bms-post-taxonomy-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding: 0.3rem 0.52rem;
+  border: 1px solid var(--bms-border-strong, #bcb4a7);
+  background: var(--bms-surface, #fff);
+  color: var(--bms-text-secondary, #4c4841);
+  font-size: 0.72rem;
+  font-weight: 680;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.bms-post-taxonomy-link--category {
+  border-radius: 4px;
+}
+
+.bms-post-taxonomy-link--tag {
+  border-color: var(--bms-border, #d9d3c7);
+  border-radius: 999px;
+  background: var(--bms-ivory, #f7f3ea);
+  color: var(--bms-copper-dark, #7a482d);
+}
+
+.bms-post-taxonomy-link:hover,
+.bms-post-taxonomy-link:focus-visible {
+  border-color: var(--bms-link-hover, #6d3f27);
+  color: var(--bms-link-hover, #6d3f27);
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+@media (max-width: 991.98px) {
+  .bms-post-taxonomy {
+    display: none;
+  }
+}
+</style>
 
 
-
-<link rel="stylesheet" href="../../assets/bms-shared.css">
-<link rel="stylesheet" href="../../assets/bms-components.css">
-<link rel="stylesheet" href="../../assets/bms-learn.css">
-<meta property="og:title" content="The Main Game Plans – Backgammon Made Simple">
-<meta property="og:description" content="A compact refresher on race, holding game, prime, blitz, and backgame plans.">
+<link rel="stylesheet" href="../assets/bms-shared.css">
+<link rel="stylesheet" href="../assets/bms-components.css">
+<link rel="stylesheet" href="../assets/bms-learn.css">
+<meta property="og:title" content="What We Are Building – Backgammon Made Simple">
+<meta property="og:description" content="How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.">
 <meta property="og:image" content="https://backgammon-made-simple.github.io/assets/social/generated/social-default.png">
 <meta property="og:site_name" content="Backgammon Made Simple">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="The Main Game Plans – Backgammon Made Simple">
-<meta name="twitter:description" content="A compact refresher on race, holding game, prime, blitz, and backgame plans.">
+<meta name="twitter:title" content="What We Are Building – Backgammon Made Simple">
+<meta name="twitter:description" content="How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.">
 <meta name="twitter:image" content="https://backgammon-made-simple.github.io/assets/social/generated/social-default.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="630">
 <meta name="twitter:image-width" content="1200">
 </head>
 
-<body class="nav-sidebar docked nav-fixed bms-learn-article quarto-light">
+<body class="nav-fixed bms-editorial-page bms-title-eyebrow quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/logo.svg" alt="Backgammon Made Simple" class="navbar-logo light-content">
-    <img src="../../assets/logo.svg" alt="Backgammon Made Simple" class="navbar-logo dark-content">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../assets/logo.svg" alt="Backgammon Made Simple" class="navbar-logo light-content">
+    <img src="../assets/logo.svg" alt="Backgammon Made Simple" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Backgammon Made Simple</span>
     </a>
   </div>
@@ -125,31 +203,31 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../../learn/index.html" aria-current="page"> 
+    <a class="nav-link" href="../learn/index.html"> 
 <span class="menu-text">Learn</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../analyze/index.html"> 
+    <a class="nav-link" href="../analyze/index.html"> 
 <span class="menu-text">Analyze</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../match-predictor/index.html"> 
+    <a class="nav-link" href="../match-predictor/index.html"> 
 <span class="menu-text">Match Predictor</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../engine-benchmark/sage-vs-gnu-stage1/index.html"> 
+    <a class="nav-link" href="../engine-benchmark/sage-vs-gnu-stage1/index.html"> 
 <span class="menu-text">Sage vs GNU</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../research/index.html"> 
+    <a class="nav-link" href="../research/index.html"> 
 <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../learn/glossary/index.html"> 
+    <a class="nav-link" href="../learn/glossary/index.html"> 
 <span class="menu-text">Glossary</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -158,118 +236,43 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/start-here/index.html">I Start Here</a></li><li class="breadcrumb-item"><a href="../../learn/game-plans/index.html">1 The Main Game Plans</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Learn Home</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../../learn/start-here/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I Start Here</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/game-plans/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">1 The Main Game Plans</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/reading-positions-and-engines/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2 Reading Positions and Engine Analysis</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../../learn/cube/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II The Doubling Cube</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/cube/why-is-25-percent-the-basic-take-point.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1 Why Is 25% the Basic Take Point When a Double Is Offered?</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/cube/what-the-cube-is-asking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2 What the Cube Is Really Asking</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">III Opening Play Lab</span></span>
-  </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../learn/glossary/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Backgammon Glossary</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">On this Page</h2>
    
-  <ul>
-  <li><a href="#race" id="toc-race" class="nav-link active" data-scroll-target="#race">Race</a></li>
-  <li><a href="#holding-game" id="toc-holding-game" class="nav-link" data-scroll-target="#holding-game">Holding Game</a></li>
-  <li><a href="#prime" id="toc-prime" class="nav-link" data-scroll-target="#prime">Prime</a></li>
-  <li><a href="#blitz" id="toc-blitz" class="nav-link" data-scroll-target="#blitz">Blitz</a></li>
-  <li><a href="#backgame" id="toc-backgame" class="nav-link" data-scroll-target="#backgame">Backgame</a></li>
+  <ul class="collapse">
+  <li><a href="#the-learning-and-analysis-tools" id="toc-the-learning-and-analysis-tools" class="nav-link active" data-scroll-target="#the-learning-and-analysis-tools">The learning and analysis tools</a></li>
+  <li><a href="#engine-comparison-and-research" id="toc-engine-comparison-and-research" class="nav-link" data-scroll-target="#engine-comparison-and-research">Engine comparison and research</a></li>
+  <li><a href="#open-source-tools" id="toc-open-source-tools" class="nav-link" data-scroll-target="#open-source-tools">Open-source tools</a></li>
+  <li><a href="#how-it-fits-together" id="toc-how-it-fits-together" class="nav-link" data-scroll-target="#how-it-fits-together">How it fits together</a></li>
+  <li><a href="#related-pages" id="toc-related-pages" class="nav-link" data-scroll-target="#related-pages">Related pages</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../learn/start-here/index.html">I Start Here</a></li><li class="breadcrumb-item"><a href="../../learn/game-plans/index.html">1 The Main Game Plans</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Main Game Plans</h1>
+<h1 class="title">What We Are Building</h1>
+<p class="subtitle lead">Backgammon Made Simple project update</p>
   <div class="quarto-categories">
-    <div class="quarto-category">Beginner</div>
-    <div class="quarto-category">Intermediate</div>
+    <div class="quarto-category">Learn</div>
+    <div class="quarto-category">Position Analyzer</div>
+    <div class="quarto-category">Match Predictor</div>
+    <div class="quarto-category">Engine Benchmark</div>
+    <div class="quarto-category">Research</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    A compact refresher on race, holding game, prime, blitz, and backgame plans.
+    <p>How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.</p>
   </div>
 </div>
 
@@ -300,46 +303,110 @@ ul.task-list li input[type="checkbox"] {
   </form>
   <div class="bms-term-lookup-result" data-bms-term-lookup-result="" aria-live="polite" hidden=""></div>
 </aside>
-<div class="bms-lesson-taxonomy" data-bms-lesson-taxonomy="">
-<div class="bms-lesson-difficulties" role="list" aria-label="Lesson difficulty">
-  <span class="bms-lesson-difficulty" role="listitem">Beginner</span>
-  <span class="bms-lesson-difficulty" role="listitem">Intermediate</span>
-</div>
-<nav class="bms-lesson-track-nav" data-bms-lesson-track-nav="" aria-label="Learning tracks">
-  <p class="bms-lesson-track-label">Learning track</p>
-  <div class="bms-lesson-track-links">
-    <a href="../../learn/?track=start-here">Start Here</a>
+<div id="bms-research-taxonomy-source" hidden="">
+<nav class="bms-post-taxonomy" aria-label="Article categories and tags">
+  <div class="bms-post-taxonomy-group">
+    <p class="bms-post-taxonomy-label">Categories</p>
+    <div class="bms-post-taxonomy-links">
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--category" href="index.html?category=Learn">Learn</a>
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--category" href="index.html?category=Position Analyzer">Position Analyzer</a>
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--category" href="index.html?category=Match Predictor">Match Predictor</a>
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--category" href="index.html?category=Engine Benchmark">Engine Benchmark</a>
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--category" href="index.html?category=Research">Research</a>
+    </div>
+  </div>
+  <div class="bms-post-taxonomy-group">
+    <p class="bms-post-taxonomy-label">Tags</p>
+    <div class="bms-post-taxonomy-links">
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--tag" href="index.html?tag=Project Updates">Project Updates</a>
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--tag" href="index.html?tag=Open-source Tools">Open-source Tools</a>
+      <a class="bms-post-taxonomy-link bms-post-taxonomy-link--tag" href="index.html?tag=Site Development">Site Development</a>
+    </div>
   </div>
 </nav>
 </div>
-<p>This refresher is a bridge into the cube curriculum, not a complete beginner unit.</p>
-<section id="race" class="level2">
-<h2 class="anchored" data-anchor-id="race">Race</h2>
-<p>The race is about efficient checkers, wastage, and timing. Cube decisions often become clearer because contact threats are reduced.</p>
+<div class="bms-editorial-lead">
+<p>Backgammon Made Simple is growing into more than a collection of lessons. We are building a set of connected tools and projects that help players learn, analyze positions, follow interesting matches, and understand how backgammon engines reach their conclusions.</p>
+</div>
+<p>Each part of the site has a different job, but they all support the same goal: make strong backgammon ideas easier to understand and use.</p>
+<section id="the-learning-and-analysis-tools" class="level2">
+<h2 class="anchored" data-anchor-id="the-learning-and-analysis-tools">The learning and analysis tools</h2>
+<section id="learn" class="level3">
+<h3 class="anchored" data-anchor-id="learn">Learn</h3>
+<p>Learn is the main teaching section of the site.</p>
+<p>Each lesson starts with a real question, uses a position as an example, and explains the main idea in plain language. The goal is not only to show the best move. It is to help you recognize the same idea when a different position comes up in one of your own games.</p>
 </section>
-<section id="holding-game" class="level2">
-<h2 class="anchored" data-anchor-id="holding-game">Holding Game</h2>
-<p>A holding game preserves contact from an advanced anchor. Cube timing depends on racing lead, shot equity, and the strength of the anchor.</p>
+<section id="explain" class="level3">
+<h3 class="anchored" data-anchor-id="explain">Explain</h3>
+<p>Explain lets you enter a position and see analysis from GNU and Sage.</p>
+<p>Engines are very good at ranking moves, but their output does not always explain <em>why</em> one choice is better. We want to improve that by building a simple, interpretable model that connects engine results to features players can recognize, such as the race, board strength, anchors, primes, contact, and threats.</p>
+<p>The explainer will not replace the engines. It will help turn their results into something easier to learn from.</p>
 </section>
-<section id="prime" class="level2">
-<h2 class="anchored" data-anchor-id="prime">Prime</h2>
-<p>A prime tries to trap opposing checkers behind connected points. Gammons and market losers can appear quickly when the trapped checkers cannot escape.</p>
+<section id="match-predictor" class="level3">
+<h3 class="anchored" data-anchor-id="match-predictor">Match Predictor</h3>
+<p>Match Predictor uses match data to explore how differences in Performance Rating, or PR, affect match results.</p>
+<p>It is also meant to be fun. Before a big match, you can compare the players, see what the data suggests, and build some excitement around the matchup. It will never know who is going to win, because dice and match situations still matter, but it can give useful context.</p>
 </section>
-<section id="blitz" class="level2">
-<h2 class="anchored" data-anchor-id="blitz">Blitz</h2>
-<p>A blitz attacks loose checkers and aims to close points while the opponent is on the bar. Cube timing can become volatile because gammons matter.</p>
 </section>
-<section id="backgame" class="level2">
-<h2 class="anchored" data-anchor-id="backgame">Backgame</h2>
-<p>A backgame keeps deep anchors and waits for late shots. Cube action depends heavily on timing, containment, and whether the defender still has a real game.</p>
+<section id="engine-comparison-and-research" class="level2">
+<h2 class="anchored" data-anchor-id="engine-comparison-and-research">Engine comparison and research</h2>
+<section id="gnu-vs-sage" class="level3">
+<h3 class="anchored" data-anchor-id="gnu-vs-sage">GNU vs Sage</h3>
+<p>GNU vs Sage compares two backgammon bots by having them play and then studying where their decisions differ.</p>
+<p>The match results are interesting on their own, but the project also helps the rest of the site. Engine disagreements can become Learn lessons, detailed Research posts, or examples for improving the explainer model.</p>
+<p>The code and data are being organized so the results can be checked and reproduced, not just posted as a scoreboard.</p>
+</section>
+<section id="research" class="level3">
+<h3 class="anchored" data-anchor-id="research">Research</h3>
+<p>Research is where we can go into more detail.</p>
+<p>It will include articles and blog-like posts about what we are planning, what we are testing, what we have learned, and what still needs work. It is also where we can share extra charts, methods, and explanations that would make the main pages too crowded.</p>
+<p>The front page should stay clear and easy to follow. Research is for readers who want to look deeper.</p>
+</section>
+</section>
+<section id="open-source-tools" class="level2">
+<h2 class="anchored" data-anchor-id="open-source-tools">Open-source tools</h2>
+<p>Several open-source projects support the website.</p>
+<section id="engine-kit" class="level3">
+<h3 class="anchored" data-anchor-id="engine-kit"><code>engine-kit</code></h3>
+<p><code>engine-kit</code> provides helper functions for working with board positions and bot services. It gives the different engines and applications a common way to describe the same position, move, cube state, and match situation.</p>
+</section>
+<section id="engine-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="engine-benchmark"><code>engine-benchmark</code></h3>
+<p><code>engine-benchmark</code> contains the code used to run and reproduce the bot-versus-bot matches. This is where the GNU vs Sage results can be generated, checked, and repeated.</p>
+</section>
+<section id="the-explain-app" class="level3">
+<h3 class="anchored" data-anchor-id="the-explain-app">The Explain app</h3>
+<p>The position explainer on the website is also open source. That means its analysis and explanation system can be inspected and improved over time.</p>
+</section>
+<section id="backgammonboard" class="level3">
+<h3 class="anchored" data-anchor-id="backgammonboard"><code>backgammonboard</code></h3>
+<p><code>backgammonboard</code> is an R library for drawing backgammon positions. We use it for Learn lessons, match analysis, bot comparisons, and Research posts.</p>
+</section>
+<section id="backgammoncalculator" class="level3">
+<h3 class="anchored" data-anchor-id="backgammoncalculator"><code>backgammoncalculator</code></h3>
+<p><code>backgammoncalculator</code> is an R library for reusable backgammon calculations. It supports lessons, match analysis, bot results, and research without requiring the same calculations to be rebuilt for every project.</p>
+</section>
+</section>
+<section id="how-it-fits-together" class="level2">
+<h2 class="anchored" data-anchor-id="how-it-fits-together">How it fits together</h2>
+<p>A GNU vs Sage match may uncover an interesting position. That position may become a Research post, a new Learn lesson, or an example used to improve Explain. The same open-source tools help us draw the board, run the analysis, check the results, and publish what we learned.</p>
+<p>That is what we are building: a place to learn the game, explore difficult positions, follow interesting experiments, and understand more of what the engines are seeing.</p>
+</section>
+<section id="related-pages" class="level2">
+<h2 class="anchored" data-anchor-id="related-pages">Related pages</h2>
+<ul>
+<li><a href="../research/index.html">Browse all Research posts</a></li>
+<li><a href="../engine-benchmark/index.html">Read about the Backgammon Engine Benchmark</a></li>
+<li><a href="../engine-benchmark/sage-vs-gnu-stage1/index.html">Read Sage vs GNU: Stage 1</a></li>
+</ul>
 
 
 </section>
 
 </main> <!-- /main -->
-<script src="../../assets/bms-learn.js" defer=""></script>
+<script src="../assets/bms-learn.js" defer=""></script>
 
-<script src="../../assets/bms-glossary.js" defer=""></script>
+<script src="../assets/bms-glossary.js" defer=""></script>
 
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -750,7 +817,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../../licensing.html">
+    <a class="nav-link" href="../licensing.html">
 <p>Code: AGPL-3.0-only · Educational content: CC BY-SA 4.0 · Licensing</p>
 </a>
   </li>  
@@ -767,9 +834,113 @@ ul.task-list li input[type="checkbox"] {
     </div>
   </div>
 </footer>
+<script id="bms-research-taxonomy-script">
+(function () {
+  "use strict";
+
+  function moveResearchTaxonomy() {
+    var source = document.getElementById("bms-research-taxonomy-source");
+
+    if (!source) {
+      return;
+    }
+
+    var taxonomy = source.querySelector(".bms-post-taxonomy");
+
+    if (!taxonomy) {
+      source.remove();
+      return;
+    }
+
+    var sidebar = document.getElementById("quarto-margin-sidebar");
+    var toc = sidebar ? sidebar.querySelector("#TOC") : null;
+
+    if (sidebar && toc) {
+      var anchor = toc;
+
+      while (anchor.parentElement && anchor.parentElement !== sidebar) {
+        anchor = anchor.parentElement;
+      }
+
+      sidebar.insertBefore(taxonomy, anchor);
+    } else if (sidebar) {
+      sidebar.prepend(taxonomy);
+    } else {
+      var titleBlock = document.getElementById("title-block-header");
+
+      if (titleBlock) {
+        titleBlock.insertAdjacentElement("afterend", taxonomy);
+      }
+    }
+
+    source.remove();
+  }
+
+  function matchingButton(selector, datasetKey, value) {
+    return Array.from(document.querySelectorAll(selector)).find(
+      function (button) {
+        return button.dataset[datasetKey] === value;
+      }
+    );
+  }
+
+  function applyRequestedResearchFilters() {
+    var parameters = new URLSearchParams(window.location.search);
+    var category = parameters.get("category") || "";
+    var tag = parameters.get("tag") || "";
+
+    if (!category && !tag) {
+      return;
+    }
+
+    window.setTimeout(function () {
+      if (category) {
+        var categoryButton = matchingButton(
+          "[data-bms-filter-category]",
+          "bmsFilterCategory",
+          category
+        );
+
+        if (
+          categoryButton &&
+          categoryButton.getAttribute("aria-pressed") !== "true"
+        ) {
+          categoryButton.click();
+        }
+      }
+
+      if (tag) {
+        var tagButton = matchingButton(
+          "[data-bms-filter-tag]",
+          "bmsFilterTag",
+          tag
+        );
+
+        if (
+          tagButton &&
+          tagButton.getAttribute("aria-pressed") !== "true"
+        ) {
+          tagButton.click();
+        }
+      }
+    }, 0);
+  }
+
+  function initialize() {
+    moveResearchTaxonomy();
+    applyRequestedResearchFilters();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize);
+  } else {
+    initialize();
+  }
+})();
+</script>
 
 
 
 
-<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
