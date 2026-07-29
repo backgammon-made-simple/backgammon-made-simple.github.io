@@ -970,7 +970,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   justify-content: space-between;
   gap: 0.75rem;
   margin-bottom: 0.5rem;
-  color: var(--bms-navy-dark);
+  color: inherit;
   font-size: 0.92rem;
   font-weight: 720;
 }
@@ -1009,11 +1009,19 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 .bms-term-lookup-controls button {
   min-height: 2.35rem;
   padding: 0.4rem 0.6rem;
-  border: 1px solid var(--bms-navy-dark);
+  border: 1px solid var(--bms-border-strong);
   border-radius: 5px;
-  background: var(--bms-navy-dark);
-  color: var(--bms-text-inverse);
+  background: var(--bms-surface);
+  color: var(--bms-text-secondary);
+  cursor: pointer;
   font-weight: 700;
+}
+
+.bms-term-lookup-controls button:hover,
+.bms-term-lookup-controls button:focus-visible {
+  border-color: var(--bms-copper);
+  background: var(--bms-callout-surface);
+  color: var(--bms-link-hover);
 }
 
 .bms-term-lookup-result {
@@ -1138,8 +1146,11 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 }
 
 .bms-site-tools--sidebar .bms-site-back-to-top {
-  width: 100%;
+  justify-self: stretch;
+  width: 100% !important;
+  min-width: 100%;
   margin-top: 0.15rem;
+  box-sizing: border-box;
 }
 
 .bms-mobile-lesson-index-label,
