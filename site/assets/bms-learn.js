@@ -779,6 +779,18 @@
       return desktopQuery.matches && Boolean(marginSidebar);
     };
 
+    const inEditorialDock = function () {
+      return (
+        desktopQuery.matches &&
+        !marginSidebar &&
+        document.body.classList.contains("bms-research-index")
+      );
+    };
+
+    const inDesktopDock = function () {
+      return inDesktopSidebar() || inEditorialDock();
+    };
+
     const open = function (options) {
       const focusInput = !options || options.focusInput !== false;
       if (glossarySearch) {
@@ -789,7 +801,7 @@
       if (!lookup) {
         return;
       }
-      if (inDesktopSidebar()) {
+      if (inDesktopDock()) {
         desktopCollapsed = false;
       }
       lookup.hidden = false;
@@ -812,7 +824,7 @@
       if (!lookup) {
         return;
       }
-      if (settings.rememberDesktop && inDesktopSidebar()) {
+      if (settings.rememberDesktop && inDesktopDock()) {
         desktopCollapsed = true;
       }
       lookup.hidden = true;
@@ -877,6 +889,7 @@
     const placeTools = function () {
       if (inDesktopSidebar()) {
         tools.classList.add("bms-site-tools--sidebar");
+        tools.classList.remove("bms-site-tools--editorial-dock");
         tools.classList.remove("bms-site-tools--floating");
         if (lookup) {
           lookup.classList.remove("bms-term-lookup--floating");
@@ -887,8 +900,24 @@
         } else if (lookup) {
           closeLookup();
         }
+      } else if (inEditorialDock()) {
+        tools.classList.add(
+          "bms-site-tools--sidebar",
+          "bms-site-tools--editorial-dock"
+        );
+        tools.classList.remove("bms-site-tools--floating");
+        if (lookup) {
+          lookup.classList.remove("bms-term-lookup--floating");
+        }
+        document.body.appendChild(tools);
+        if (lookup && !desktopCollapsed) {
+          open({ focusInput: false });
+        } else if (lookup) {
+          closeLookup();
+        }
       } else {
         tools.classList.remove("bms-site-tools--sidebar");
+        tools.classList.remove("bms-site-tools--editorial-dock");
         tools.classList.add("bms-site-tools--floating");
         if (lookup) {
           lookup.classList.add("bms-term-lookup--floating");

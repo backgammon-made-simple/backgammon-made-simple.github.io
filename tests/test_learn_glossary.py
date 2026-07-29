@@ -390,6 +390,17 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertIn("bms-analyze-page", analyze)
 
+        engine_benchmark = (
+            learn_glossary.SITE_ROOT / "engine-benchmark" / "index.qmd"
+        ).read_text(encoding="utf-8")
+        self.assertIn("bms-engine-benchmark-page", engine_benchmark)
+
+        research_index = (
+            learn_glossary.SITE_ROOT / "research" / "index.qmd"
+        ).read_text(encoding="utf-8")
+        self.assertIn("bms-research-index", research_index)
+        self.assertNotIn("term-lookup: false", research_index)
+
         link_policy = (
             learn_glossary.SITE_ROOT
             / "_extensions"
@@ -846,6 +857,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "data-bms-toc-toggle",
             "data-bms-margin-sidebar-toggle",
             "bms-site-tools--sidebar",
+            "bms-site-tools--editorial-dock",
             "bms-site-tools--floating",
             'aria-controls="bms-term-lookup-panel"',
             'aria-controls="quarto-margin-sidebar"',
@@ -857,6 +869,8 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-toc-collapsed",
             "bms-margin-sidebar-collapsed",
             "marginSidebar.appendChild(tools)",
+            "inEditorialDock",
+            "bms-research-index",
             "desktopCollapsed",
             "tocCollapsed",
             "marginSidebarCollapsed",
@@ -901,6 +915,12 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertRegex(
             css,
+            r"body\.bms-engine-benchmark-page #quarto-margin-sidebar \{[^}]*"
+            r"width: clamp\(10rem, 16vw, 18rem\);[^}]*"
+            r"min-width: clamp\(10rem, 16vw, 18rem\);",
+        )
+        self.assertRegex(
+            css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
             r"white-space: nowrap;",
         )
@@ -930,6 +950,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "#quarto-margin-sidebar.bms-toc-collapsed #TOC",
             "> :not(.bms-margin-sidebar-toggle)",
             ".bms-site-tools--floating",
+            ".bms-site-tools--editorial-dock",
             ".bms-term-lookup--floating",
             "z-index: 1060",
         ):

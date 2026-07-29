@@ -1177,6 +1177,17 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   margin-top: 0.15rem;
 }
 
+.bms-site-tools--editorial-dock {
+  position: fixed;
+  top: 4.75rem;
+  right: 1rem;
+  z-index: 1050;
+  width: clamp(10rem, 16vw, 18rem);
+  max-height: calc(100vh - 5.75rem);
+  margin: 0;
+  overflow-y: auto;
+}
+
 .bms-mobile-lesson-index-label,
 .bms-mobile-term-toggle {
   display: none;
@@ -1189,6 +1200,12 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 
 @media (min-width: 992px) {
   body.bms-learn-article #quarto-margin-sidebar {
+    width: clamp(10rem, 16vw, 18rem);
+    min-width: clamp(10rem, 16vw, 18rem);
+    box-sizing: border-box;
+  }
+
+  body.bms-engine-benchmark-page #quarto-margin-sidebar {
     width: clamp(10rem, 16vw, 18rem);
     min-width: clamp(10rem, 16vw, 18rem);
     box-sizing: border-box;

@@ -11,7 +11,7 @@ format:
     toc-depth: 2
     toc-expand: 2
     title-block-style: plain
-    body-classes: "bms-editorial-page bms-title-eyebrow"
+    body-classes: "bms-editorial-page bms-title-eyebrow bms-engine-benchmark-page"
 ---
 
 ::: {.bms-editorial-lead}
