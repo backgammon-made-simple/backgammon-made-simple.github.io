@@ -1133,7 +1133,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 }
 
 .bms-site-tools--sidebar > * {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1 !important;
   min-width: 0;
 }
 
