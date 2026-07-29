@@ -37,7 +37,7 @@ local function lookup_html()
     '  <form action="/learn/glossary/" method="get" data-bms-term-lookup-form>',
     '    <label class="visually-hidden" for="bms-term-lookup-input">Term or alias</label>',
     '    <div class="bms-term-lookup-controls">',
-    '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="Term or otherwise known as&hellip;">',
+    '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="Enter Term">',
     '      <button type="submit">Search</button>',
     '    </div>',
     '  </form>',

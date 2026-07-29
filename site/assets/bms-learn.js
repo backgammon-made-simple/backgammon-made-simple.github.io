@@ -639,7 +639,7 @@
       '<div class="bms-term-lookup-controls">' +
       '<input id="bms-term-lookup-input" name="q" type="search" required ' +
       'autocomplete="off" spellcheck="false" ' +
-      'placeholder="Term or otherwise known as&hellip;">' +
+      'placeholder="Enter Term">' +
       '<button type="submit">Search</button>' +
       "</div></form>" +
       '<div class="bms-term-lookup-result" data-bms-term-lookup-result ' +
