@@ -707,15 +707,14 @@
   }
 
   function initializeTermLookup() {
-    if (isMainSiteIndex()) {
-      return null;
-    }
-
+    const lookupDisabled = isMainSiteIndex();
     const glossarySearch = document.querySelector(
       "[data-bms-glossary-search]"
     );
-    let lookup = document.querySelector("[data-bms-term-lookup]");
-    if (!lookup && !glossarySearch) {
+    let lookup = lookupDisabled
+      ? null
+      : document.querySelector("[data-bms-term-lookup]");
+    if (!lookupDisabled && !lookup && !glossarySearch) {
       lookup = createTermLookup();
     }
     if (lookup) {
@@ -750,8 +749,9 @@
       "[data-bms-margin-sidebar-toggle]"
     );
     const backToTop = tools.querySelector("[data-bms-site-back-to-top]");
-    if (termToggle && !lookup) {
+    if (termToggle && !lookup && !glossarySearch) {
       termToggle.removeAttribute("aria-controls");
+      termToggle.hidden = true;
     }
     const form = lookup
       ? lookup.querySelector("[data-bms-term-lookup-form]")
@@ -1010,7 +1010,7 @@
     }
     const updateBackToTop = function () {
       if (backToTop) {
-        backToTop.hidden = window.scrollY < 400;
+        backToTop.hidden = window.scrollY <= window.innerHeight;
       }
     };
     if (backToTop) {
@@ -1024,6 +1024,7 @@
         });
       });
       window.addEventListener("scroll", updateBackToTop, { passive: true });
+      window.addEventListener("resize", updateBackToTop);
       updateBackToTop();
     }
 

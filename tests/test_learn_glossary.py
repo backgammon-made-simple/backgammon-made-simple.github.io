@@ -879,6 +879,9 @@ class LearnGlossaryTests(unittest.TestCase):
             "related_lessons",
             r"Full Glossary Lookup \u2192",
             "isMainSiteIndex",
+            "lookupDisabled",
+            "window.scrollY <= window.innerHeight",
+            'window.addEventListener("resize", updateBackToTop)',
         ):
             self.assertIn(required, javascript)
 
@@ -923,6 +926,11 @@ class LearnGlossaryTests(unittest.TestCase):
             css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
             r"white-space: nowrap;",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools > \.bms-site-back-to-top \{[^}]*"
+            r"min-width: 8\.5rem;",
         )
         self.assertRegex(
             css,

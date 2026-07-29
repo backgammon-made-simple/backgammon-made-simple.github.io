@@ -1110,6 +1110,12 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   display: none;
 }
 
+.bms-site-tools > .bms-site-back-to-top {
+  min-width: 8.5rem;
+  padding-inline: 1rem;
+  text-align: center;
+}
+
 .bms-site-tools--floating {
   position: fixed;
   right: 1rem;
