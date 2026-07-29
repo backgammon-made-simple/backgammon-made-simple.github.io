@@ -881,6 +881,23 @@ class LearnGlossaryTests(unittest.TestCase):
             r"body:is\(\.bms-learn-index, \.bms-learn-track-index\)"
             r"\s+\.bms-learn-filter-disclosure \{\s+border-top: 0;",
         )
+        self.assertRegex(
+            css,
+            r"body\.bms-learn-article #quarto-margin-sidebar \{[^}]*"
+            r"width: clamp\(10rem, 16vw, 18rem\);[^}]*"
+            r"min-width: clamp\(10rem, 16vw, 18rem\);",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
+            r"white-space: nowrap;",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-term-lookup-controls button \{[^}]*"
+            r"background: var\(--bms-surface\);[^}]*"
+            r"color: var\(--bms-link\);",
+        )
         for required in (
             "#quarto-margin-sidebar > *",
             "opacity: 1 !important",
