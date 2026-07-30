@@ -1191,7 +1191,7 @@ class LearnGlossaryTests(unittest.TestCase):
             r"Full Glossary Lookup \u2192",
             "isMainSiteIndex",
             "lookupDisabled",
-            "let desktopCollapsed = true;",
+            "let desktopCollapsed = !refinedRightRailPage;",
             "window.scrollY <= window.innerHeight",
             'window.addEventListener("resize", updateBackToTop)',
         ):
@@ -1272,7 +1272,9 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
-            r"width: 1\.45rem;[^}]*"
+            r"width: auto;[^}]*"
+            r"background: var\(--bms-ivory\);[^}]*"
+            r"color: var\(--bms-text-muted\);[^}]*"
             r"white-space: nowrap;",
         )
         self.assertRegex(
@@ -1343,10 +1345,13 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-lesson-track-content",
             "bms-lesson-track-toggle",
             'aria-label",\n            collapsed ? "Expand lesson track"',
-            'trackToggle.textContent = collapsed ? "\\u203a" : "\\u2039"',
+            'trackToggle.textContent = collapsed ? "\\u2039" : "\\u203a"',
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
-            'tocHeadingToggle.textContent = tocCollapsed ? "\\u2304" : "\\u2303"',
+            'tocHeadingToggle.textContent = tocCollapsed ? "\\u2193" : "\\u2191"',
+            "toc.appendChild(tocHeadingToggle)",
+            "updateLookupForScroll",
+            "window.scrollY <= 32",
             "Browse the full glossary",
             "marginSidebarToggle || backToTop",
             "inRefinedRightRail",
@@ -1421,7 +1426,7 @@ class LearnGlossaryTests(unittest.TestCase):
             self.assertIn(required, css)
         self.assertNotIn("@keyframes bms-term-lookup-slide-in", css)
 
-    def test_lookup_result_uses_short_definition(self) -> None:
+    def test_lookup_result_uses_full_definition(self) -> None:
         javascript = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
         ).read_text(encoding="utf-8")
@@ -1430,11 +1435,11 @@ class LearnGlossaryTests(unittest.TestCase):
             javascript.index("  function initializeTermLookup()")
         ]
         self.assertIn(
-            "definition.textContent = entry.short_definition;",
+            "definition.textContent = entry.definition;",
             lookup_renderer,
         )
         self.assertNotIn(
-            "definition.textContent = entry.definition;",
+            "definition.textContent = entry.short_definition;",
             lookup_renderer,
         )
 

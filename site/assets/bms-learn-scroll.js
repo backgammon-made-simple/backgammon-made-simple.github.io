@@ -485,13 +485,12 @@
       return node.cloneNode(true);
     });
     globalToc.replaceChildren.apply(globalToc, children);
-    const tocTitle = globalToc.querySelector("#toc-title");
     const tocLinks = globalToc.querySelector(":scope > ul");
-    if (headingToggle && tocTitle && tocLinks) {
+    if (headingToggle && tocLinks) {
       if (controlledLinksId) {
         tocLinks.id = controlledLinksId;
       }
-      tocTitle.appendChild(headingToggle);
+      globalToc.appendChild(headingToggle);
     }
     globalToc.hidden = false;
     globalToc.removeAttribute("aria-hidden");

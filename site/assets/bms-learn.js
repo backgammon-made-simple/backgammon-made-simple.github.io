@@ -822,7 +822,7 @@
             "aria-label",
             collapsed ? "Expand lesson track" : "Collapse lesson track"
           );
-          trackToggle.textContent = collapsed ? "\u203a" : "\u2039";
+          trackToggle.textContent = collapsed ? "\u2039" : "\u203a";
         }
 
         if (trackToggle) {
@@ -981,7 +981,7 @@
 
     const definition = document.createElement("p");
     definition.className = "bms-term-lookup-definition";
-    definition.textContent = entry.short_definition;
+    definition.textContent = entry.definition;
     container.appendChild(definition);
 
     if (
@@ -1040,7 +1040,7 @@
       '<button type="button" class="bms-term-lookup-reveal" ' +
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false" aria-label="Open term lookup">' +
-      '<span aria-hidden="true">&larr;</span></button>' +
+      '<span aria-hidden="true">&larr;</span> Term Search</button>' +
       (refinedRightRailPage
         ? ""
         : '<button type="button" class="bms-toc-toggle" ' +
@@ -1079,7 +1079,7 @@
     let toc = null;
     let tocHeadingToggle = null;
     let tocObserver = null;
-    let desktopCollapsed = true;
+    let desktopCollapsed = !refinedRightRailPage;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
 
@@ -1129,9 +1129,8 @@
         bindTocHeadingToggle(tocHeadingToggle);
         return true;
       }
-      const tocTitle = toc.querySelector("#toc-title");
       const tocLinks = toc.querySelector(":scope > ul");
-      if (tocTitle && tocLinks) {
+      if (tocLinks) {
         tocLinks.id = tocLinks.id || "bms-toc-links";
         tocHeadingToggle = document.createElement("button");
         tocHeadingToggle.type = "button";
@@ -1140,7 +1139,7 @@
         tocHeadingToggle.setAttribute("aria-controls", tocLinks.id);
         tocHeadingToggle.hidden = true;
         bindTocHeadingToggle(tocHeadingToggle);
-        tocTitle.appendChild(tocHeadingToggle);
+        toc.appendChild(tocHeadingToggle);
         return true;
       }
       return false;
@@ -1292,7 +1291,7 @@
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = tocCollapsed ? "\u2304" : "\u2303";
+        tocHeadingToggle.textContent = tocCollapsed ? "\u2193" : "\u2191";
         return;
       }
       if (tocHeadingToggle) {
@@ -1421,6 +1420,25 @@
 
     placeTools();
     desktopQuery.addEventListener("change", placeTools);
+
+    const updateLookupForScroll = function () {
+      if (!lookup || !inRefinedRightRail()) {
+        return;
+      }
+      if (window.scrollY <= 32) {
+        if (lookup.hidden) {
+          open({ focusInput: false });
+        }
+      } else if (!lookup.hidden) {
+        closeLookup({ rememberDesktop: true });
+      }
+    };
+    if (refinedRightRailPage) {
+      window.addEventListener("scroll", updateLookupForScroll, {
+        passive: true
+      });
+      updateLookupForScroll();
+    }
 
     if (form && input && result) {
       form.addEventListener("submit", function (event) {

@@ -15,7 +15,8 @@ assert.match(
   /querySelector\(\s*"\[data-bms-toc-heading-toggle\]"\s*\)/
 );
 assert.match(scrollSource, /tocLinks\.id = controlledLinksId/);
-assert.match(scrollSource, /tocTitle\.appendChild\(headingToggle\)/);
+assert.match(scrollSource, /globalToc\.appendChild\(headingToggle\)/);
+assert.doesNotMatch(scrollSource, /tocTitle\.appendChild\(headingToggle\)/);
 assert.match(
   scrollSource,
   /!document\.body\.classList\.contains\("bms-learn-article"\)/

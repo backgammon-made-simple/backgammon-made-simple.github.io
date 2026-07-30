@@ -76,7 +76,17 @@ const duplicateIds = (tab) =>
       .sort();
   });
 
-const interactWithLookup = async (tab, check, context) => {
+const interactWithLookup = async (tab, check, context, desktop) => {
+  if (desktop) {
+    const openLookup = await visibleLocator(
+      tab.playwright.locator("[data-bms-term-lookup]")
+    );
+    check(
+      Boolean(openLookup),
+      context,
+      "desktop term lookup is open at the top of the page"
+    );
+  }
   await scrollTo(tab, 320);
   const toggle = await visibleLocator(
     tab.playwright.locator(
@@ -341,7 +351,7 @@ const runPageInteraction = async ({
   if (page.kind === "learn-lesson") {
     await interactWithLessonTrack(tab, check, context, desktop);
     await interactWithToc(tab, check, context, desktop);
-    await interactWithLookup(tab, check, context);
+    await interactWithLookup(tab, check, context, desktop);
     await interactWithRichFixture(tab, check, context);
   }
   if (page.kind === "rich-scroll-fixture") {
@@ -352,7 +362,7 @@ const runPageInteraction = async ({
   }
   if (page.kind === "research-article") {
     await interactWithToc(tab, check, context, desktop);
-    await interactWithLookup(tab, check, context);
+    await interactWithLookup(tab, check, context, desktop);
   }
   if (page.kind === "glossary") {
     await interactWithGlossary(tab, check, context);
