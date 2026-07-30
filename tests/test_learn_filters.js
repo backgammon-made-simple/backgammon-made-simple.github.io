@@ -36,6 +36,27 @@ const inlineLookup = [
   }
 ];
 
+assert.equal(
+  learn.isMobileDrawerSwipe(20, 100, 48, 103),
+  true,
+  "a horizontal gesture from the left edge opens mobile page tools"
+);
+assert.equal(
+  learn.isMobileDrawerSwipe(20, 100, 2, 101),
+  false,
+  "a very short edge gesture is ignored"
+);
+assert.equal(
+  learn.isMobileDrawerSwipe(80, 100, 20, 102),
+  false,
+  "a gesture away from the left edge is ignored"
+);
+assert.equal(
+  learn.isMobileDrawerSwipe(20, 100, 25, 155),
+  false,
+  "vertical scrolling does not open mobile page tools"
+);
+
 [
   ["#section", "https://example.test/research/article.html", true],
   [

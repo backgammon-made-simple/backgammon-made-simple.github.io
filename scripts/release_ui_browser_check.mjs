@@ -129,6 +129,46 @@ const interactWithLookup = async (tab, check, context, desktop) => {
   }
 };
 
+const interactWithMobileDrawer = async (tab, check, context) => {
+  const edge = await visibleLocator(
+    tab.playwright.locator("[data-bms-mobile-tools-edge]")
+  );
+  check(Boolean(edge), context, "mobile page-tools edge bar is visible");
+  if (!edge) {
+    return;
+  }
+  check(
+    (await edge.textContent()).trim() === "",
+    context,
+    "mobile edge bar has no arrow or visible label"
+  );
+  await edge.click();
+  const drawer = await visibleLocator(
+    tab.playwright.locator("[data-bms-mobile-tools-drawer]")
+  );
+  check(Boolean(drawer), context, "mobile page-tools drawer opens");
+  if (!drawer) {
+    return;
+  }
+  check(
+    (await drawer.locator("a[href]").count()) >= 1,
+    context,
+    "mobile drawer contains table-of-contents links"
+  );
+  check(
+    (await drawer.locator("[data-bms-term-lookup]").count()) === 1,
+    context,
+    "mobile drawer contains term search beneath the TOC"
+  );
+  const close = drawer.locator("[data-bms-mobile-tools-close]");
+  await close.click();
+  check(
+    (await edge.getAttribute("aria-expanded")) === "false",
+    context,
+    "mobile page-tools drawer closes"
+  );
+};
+
 const interactWithToc = async (tab, check, context, desktop) => {
   const toggle = await visibleLocator(
     tab.playwright.locator("[data-bms-toc-heading-toggle]")
@@ -351,7 +391,11 @@ const runPageInteraction = async ({
   if (page.kind === "learn-lesson") {
     await interactWithLessonTrack(tab, check, context, desktop);
     await interactWithToc(tab, check, context, desktop);
-    await interactWithLookup(tab, check, context, desktop);
+    if (desktop) {
+      await interactWithLookup(tab, check, context, desktop);
+    } else {
+      await interactWithMobileDrawer(tab, check, context);
+    }
     await interactWithRichFixture(tab, check, context);
   }
   if (page.kind === "rich-scroll-fixture") {
@@ -362,7 +406,11 @@ const runPageInteraction = async ({
   }
   if (page.kind === "research-article") {
     await interactWithToc(tab, check, context, desktop);
-    await interactWithLookup(tab, check, context, desktop);
+    if (desktop) {
+      await interactWithLookup(tab, check, context, desktop);
+    } else {
+      await interactWithMobileDrawer(tab, check, context);
+    }
   }
   if (page.kind === "glossary") {
     await interactWithGlossary(tab, check, context);

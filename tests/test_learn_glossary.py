@@ -1153,6 +1153,10 @@ class LearnGlossaryTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         for required in (
             "initializeMobileLessonBar",
+            "isMobileDrawerSwipe",
+            "bms-mobile-tools-drawer",
+            "bms-mobile-tools-edge",
+            "Open table of contents and term search",
             r"\u2190 Expand Lesson Index",
             r"Look Up a Term \u2192",
             "data-bms-site-back-to-top",
@@ -1398,7 +1402,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertIn("bms-learn-track-index", cube_landing)
         self.assertNotIn("bms-research-article", analyze)
 
-    def test_phone_desktop_view_lookup_stays_in_place_and_uses_side_drawer(
+    def test_mobile_articles_use_a_swipeable_left_page_tools_drawer(
         self,
     ) -> None:
         javascript = (
@@ -1415,13 +1419,18 @@ class LearnGlossaryTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         for required in (
             "@media (max-width: 991.98px)",
-            "[data-bms-site-term-toggle]:not([hidden])",
-            "top: 56vh;",
+            ".bms-mobile-tools-edge",
+            "left: 0;",
+            "width: 0.42rem;",
+            ".bms-mobile-tools-drawer",
+            "transform: translateX(-102%);",
+            ".bms-mobile-tools-drawer--open",
+            ".bms-mobile-tools-toc",
+            ".bms-mobile-tools-drawer .bms-term-lookup",
+            "[data-bms-site-term-toggle]",
+            "display: none !important;",
             ".bms-mobile-term-toggle {\n    display: none;",
             "color: var(--bms-text-muted);",
-            "font-size: 0.68rem;",
-            "font-weight: 500;",
-            "transform: translateY(-50%);",
         ):
             self.assertIn(required, css)
         self.assertNotIn("@keyframes bms-term-lookup-slide-in", css)

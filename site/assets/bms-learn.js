@@ -43,6 +43,16 @@
       .toLocaleLowerCase();
   }
 
+  function isMobileDrawerSwipe(startX, startY, endX, endY) {
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+    return (
+      startX <= 56 &&
+      Math.abs(deltaX) >= 24 &&
+      Math.abs(deltaX) > Math.abs(deltaY) * 1.25
+    );
+  }
+
   function itemMatchesLesson(item, query, difficulties, terms) {
     const normalizedQuery = normalizeLearnSearch(query);
     const matchesSearch =
@@ -1082,6 +1092,60 @@
     let desktopCollapsed = !refinedRightRailPage;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
+    let mobileDrawerOpen = false;
+    let mobileTouchStart = null;
+    let mobileDrawer = null;
+    let mobileDrawerEdge = null;
+    let mobileDrawerBackdrop = null;
+    let mobileDrawerToc = null;
+    let mobileDrawerLookup = null;
+
+    if (refinedRightRailPage) {
+      mobileDrawerEdge = document.createElement("button");
+      mobileDrawerEdge.type = "button";
+      mobileDrawerEdge.className = "bms-mobile-tools-edge";
+      mobileDrawerEdge.dataset.bmsMobileToolsEdge = "";
+      mobileDrawerEdge.setAttribute("aria-controls", "bms-mobile-tools-drawer");
+      mobileDrawerEdge.setAttribute("aria-expanded", "false");
+      mobileDrawerEdge.setAttribute(
+        "aria-label",
+        "Open table of contents and term search"
+      );
+
+      mobileDrawer = document.createElement("aside");
+      mobileDrawer.id = "bms-mobile-tools-drawer";
+      mobileDrawer.className = "bms-mobile-tools-drawer";
+      mobileDrawer.dataset.bmsMobileToolsDrawer = "";
+      mobileDrawer.setAttribute("aria-label", "Page contents and term search");
+      mobileDrawer.setAttribute("aria-hidden", "true");
+      mobileDrawer.innerHTML =
+        '<div class="bms-mobile-tools-heading">' +
+        "<strong>Page tools</strong>" +
+        '<button type="button" data-bms-mobile-tools-close>Close</button>' +
+        "</div>" +
+        '<nav class="bms-mobile-tools-toc" aria-label="On this page" ' +
+        "data-bms-mobile-tools-toc></nav>" +
+        '<div class="bms-mobile-tools-lookup" ' +
+        "data-bms-mobile-tools-lookup></div>";
+      mobileDrawerToc = mobileDrawer.querySelector(
+        "[data-bms-mobile-tools-toc]"
+      );
+      mobileDrawerLookup = mobileDrawer.querySelector(
+        "[data-bms-mobile-tools-lookup]"
+      );
+
+      mobileDrawerBackdrop = document.createElement("button");
+      mobileDrawerBackdrop.type = "button";
+      mobileDrawerBackdrop.className = "bms-mobile-tools-backdrop";
+      mobileDrawerBackdrop.dataset.bmsMobileToolsBackdrop = "";
+      mobileDrawerBackdrop.setAttribute("aria-label", "Close page tools");
+      mobileDrawerBackdrop.hidden = true;
+      document.body.append(
+        mobileDrawerBackdrop,
+        mobileDrawer,
+        mobileDrawerEdge
+      );
+    }
 
     const preservePagePosition = function (callback) {
       const scrollX = window.scrollX;
@@ -1180,6 +1244,130 @@
     const inDesktopDock = function () {
       return inDesktopSidebar() || inEditorialDock();
     };
+
+    const refreshMobileDrawerToc = function () {
+      if (!mobileDrawerToc) {
+        return;
+      }
+      const sourceToc = Array.from(document.querySelectorAll("#TOC")).find(
+        tocHasHashLinks
+      );
+      mobileDrawerToc.replaceChildren();
+      if (!sourceToc) {
+        mobileDrawerToc.hidden = true;
+        return;
+      }
+      const sourceLinks = sourceToc.querySelector(":scope > ul");
+      if (!sourceLinks) {
+        mobileDrawerToc.hidden = true;
+        return;
+      }
+      const heading = document.createElement("strong");
+      heading.className = "bms-mobile-tools-toc-title";
+      heading.textContent = "On this page";
+      const links = sourceLinks.cloneNode(true);
+      links.querySelectorAll("[id]").forEach(function (element) {
+        element.removeAttribute("id");
+      });
+      links.querySelectorAll("[aria-controls]").forEach(function (element) {
+        element.removeAttribute("aria-controls");
+      });
+      mobileDrawerToc.append(heading, links);
+      mobileDrawerToc.hidden = false;
+    };
+
+    const setMobileDrawerOpen = function (expanded, options) {
+      if (!mobileDrawer || !mobileDrawerEdge || !mobileDrawerBackdrop) {
+        return;
+      }
+      mobileDrawerOpen = expanded;
+      if (expanded) {
+        refreshMobileDrawerToc();
+      }
+      mobileDrawer.classList.toggle("bms-mobile-tools-drawer--open", expanded);
+      mobileDrawer.setAttribute("aria-hidden", expanded ? "false" : "true");
+      mobileDrawerEdge.setAttribute(
+        "aria-expanded",
+        expanded ? "true" : "false"
+      );
+      mobileDrawerBackdrop.hidden = !expanded;
+      document.body.classList.toggle("bms-mobile-tools-open", expanded);
+      if (expanded && (!options || options.focus !== false)) {
+        const firstLink = mobileDrawer.querySelector("a[href]");
+        const target = firstLink || input;
+        if (target) {
+          target.focus({ preventScroll: true });
+        }
+      }
+    };
+
+    if (mobileDrawerEdge && mobileDrawer && mobileDrawerBackdrop) {
+      mobileDrawerEdge.addEventListener("click", function () {
+        setMobileDrawerOpen(true);
+      });
+      mobileDrawerBackdrop.addEventListener("click", function () {
+        setMobileDrawerOpen(false);
+      });
+      const drawerClose = mobileDrawer.querySelector(
+        "[data-bms-mobile-tools-close]"
+      );
+      if (drawerClose) {
+        drawerClose.addEventListener("click", function () {
+          setMobileDrawerOpen(false);
+          mobileDrawerEdge.focus();
+        });
+      }
+      mobileDrawer.addEventListener("click", function (event) {
+        if (event.target.closest("a[href^='#']")) {
+          setMobileDrawerOpen(false);
+        }
+      });
+      document.addEventListener(
+        "touchstart",
+        function (event) {
+          if (
+            desktopQuery.matches ||
+            mobileDrawerOpen ||
+            event.touches.length !== 1
+          ) {
+            mobileTouchStart = null;
+            return;
+          }
+          const touch = event.touches[0];
+          mobileTouchStart =
+            touch.clientX <= 56
+              ? { x: touch.clientX, y: touch.clientY }
+              : null;
+        },
+        { passive: true }
+      );
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          if (
+            !mobileTouchStart ||
+            desktopQuery.matches ||
+            event.changedTouches.length !== 1
+          ) {
+            mobileTouchStart = null;
+            return;
+          }
+          const touch = event.changedTouches[0];
+          if (
+            isMobileDrawerSwipe(
+              mobileTouchStart.x,
+              mobileTouchStart.y,
+              touch.clientX,
+              touch.clientY
+            )
+          ) {
+            setMobileDrawerOpen(true);
+          }
+          mobileTouchStart = null;
+        },
+        { passive: true }
+      );
+    }
 
     const open = function (options) {
       const focusInput = !options || options.focusInput !== false;
@@ -1317,6 +1505,10 @@
 
     const placeTools = function () {
       if (inDesktopSidebar()) {
+        setMobileDrawerOpen(false, { focus: false });
+        if (lookup && lookup.parentElement !== tools) {
+          tools.insertBefore(lookup, marginSidebarToggle || backToTop);
+        }
         tools.classList.add("bms-site-tools--sidebar");
         tools.classList.remove("bms-site-tools--editorial-dock");
         tools.classList.remove("bms-site-tools--floating");
@@ -1330,6 +1522,10 @@
           closeLookup();
         }
       } else if (inEditorialDock()) {
+        setMobileDrawerOpen(false, { focus: false });
+        if (lookup && lookup.parentElement !== tools) {
+          tools.insertBefore(lookup, marginSidebarToggle || backToTop);
+        }
         tools.classList.add(
           "bms-site-tools--sidebar",
           "bms-site-tools--editorial-dock"
@@ -1344,6 +1540,24 @@
         } else if (lookup) {
           closeLookup();
         }
+      } else if (
+        refinedRightRailPage &&
+        mobileDrawer &&
+        mobileDrawerLookup
+      ) {
+        tools.classList.remove("bms-site-tools--sidebar");
+        tools.classList.remove("bms-site-tools--editorial-dock");
+        tools.classList.add("bms-site-tools--floating");
+        document.body.appendChild(tools);
+        if (lookup) {
+          lookup.classList.remove("bms-term-lookup--floating");
+          mobileDrawerLookup.appendChild(lookup);
+          lookup.hidden = false;
+        }
+        if (termToggle) {
+          termToggle.hidden = true;
+        }
+        refreshMobileDrawerToc();
       } else {
         tools.classList.remove("bms-site-tools--sidebar");
         tools.classList.remove("bms-site-tools--editorial-dock");
@@ -1406,6 +1620,13 @@
       });
     }
     document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && mobileDrawerOpen) {
+        setMobileDrawerOpen(false);
+        if (mobileDrawerEdge) {
+          mobileDrawerEdge.focus();
+        }
+        return;
+      }
       if (
         event.key === "Escape" &&
         lookup &&
@@ -1494,6 +1715,10 @@
 
     return {
       open: function () {
+        if (!desktopQuery.matches && mobileDrawer) {
+          setMobileDrawerOpen(true);
+          return;
+        }
         preservePagePosition(function () {
           open();
         });
@@ -1659,6 +1884,7 @@
     canonicalShortDefinition: canonicalShortDefinition,
     groupControlState: groupControlState,
     inlineGlossaryTooltipPosition: inlineGlossaryTooltipPosition,
+    isMobileDrawerSwipe: isMobileDrawerSwipe,
     isSamePageTocHref: isSamePageTocHref,
     itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
