@@ -78,13 +78,13 @@ class LearnGlossaryTests(unittest.TestCase):
         )
 
     def test_public_safe_counts_and_forbidden_guards(self) -> None:
-        self.assertEqual(len(self.data["entries"]), 624)
-        self.assertEqual(len(self.entries), 624)
+        self.assertEqual(len(self.data["entries"]), 625)
+        self.assertEqual(len(self.entries), 625)
         self.assertEqual(
             sum(len(entry["aliases"]) for entry in self.entries),
-            181,
+            185,
         )
-        self.assertEqual(624 + 181, 805)
+        self.assertEqual(625 + 185, 810)
         learn_glossary.assert_no_forbidden_keys(self.data)
         learn_glossary.assert_no_forbidden_text(
             learn_glossary.PUBLIC_DATA_PATH.read_text(encoding="utf-8"),
@@ -152,18 +152,18 @@ class LearnGlossaryTests(unittest.TestCase):
             r'<details class="bms-glossary-entry" id="([^"]+)"',
             self.entries_html,
         )
-        self.assertEqual(len(anchors), 624)
-        self.assertEqual(len(set(anchors)), 624)
+        self.assertEqual(len(anchors), 625)
+        self.assertEqual(len(set(anchors)), 625)
         self.assertEqual(set(anchors), canonical)
         self.assertEqual(
             self.entries_html.count('class="bms-glossary-entry-summary"'),
-            624,
+            625,
         )
         entry_tags = re.findall(
             r'<details class="bms-glossary-entry"[^>]*>',
             self.entries_html,
         )
-        self.assertEqual(len(entry_tags), 624)
+        self.assertEqual(len(entry_tags), 625)
         self.assertTrue(all(" open" not in tag for tag in entry_tags))
 
     def test_aliases_map_to_canonical_entries_without_visible_duplicates(self) -> None:
@@ -173,11 +173,11 @@ class LearnGlossaryTests(unittest.TestCase):
             for entry in self.entries
             for alias in entry["aliases"]
         }
-        self.assertEqual(len(alias_to_canonical), 181)
+        self.assertEqual(len(alias_to_canonical), 185)
         self.assertEqual(alias_to_canonical["accept-a-double"], "take")
         self.assertEqual(alias_to_canonical["cube-ownership"], "own-the-cube")
         self.assertNotIn("accept-a-double", canonical)
-        self.assertEqual(self.entries_html.count('data-bms-alias="'), 181)
+        self.assertEqual(self.entries_html.count('data-bms-alias="'), 185)
         self.assertIn(
             'data-bms-aliases="[&quot;accept-a-double&quot;]"',
             self.entries_html,
@@ -187,7 +187,7 @@ class LearnGlossaryTests(unittest.TestCase):
     def test_full_definitions_usage_and_related_links_are_initial_html(self) -> None:
         self.assertEqual(
             self.entries_html.count('class="bms-glossary-definition"'),
-            624,
+            625,
         )
         self.assertIn('class="bms-glossary-usage-note"', self.entries_html)
         self.assertIn("Learn more (", self.entries_html)
@@ -564,7 +564,7 @@ class LearnGlossaryTests(unittest.TestCase):
         ):
             self.assertIn(required, guide)
         self.assertIn("there are no standalone term routes", terms)
-        self.assertEqual(terms.count("/learn/glossary/#"), 624)
+        self.assertEqual(terms.count("/learn/glossary/#"), 625)
 
     def test_moved_analyzer_include_and_all_cube_includes_resolve(self) -> None:
         include_copies = list(
@@ -849,10 +849,10 @@ class LearnGlossaryTests(unittest.TestCase):
             )
         )
         entries = lookup["entries"]
-        self.assertEqual(len(entries), 624)
+        self.assertEqual(len(entries), 625)
         self.assertEqual(
             sum(len(entry["aliases"]) for entry in entries),
-            181,
+            185,
         )
         self.assertEqual(
             sum(len(entry["related_lessons"]) for entry in entries),
@@ -1506,9 +1506,9 @@ class LearnGlossaryTests(unittest.TestCase):
     def test_validation_reports_single_page_counts(self) -> None:
         result = learn_glossary.validate_generated()
         self.assertEqual(result["source_entries"], 805)
-        self.assertEqual(result["canonical_entries"], 624)
-        self.assertEqual(result["alias_entries"], 181)
-        self.assertEqual(result["canonical_anchors"], 624)
+        self.assertEqual(result["canonical_entries"], 625)
+        self.assertEqual(result["alias_entries"], 185)
+        self.assertEqual(result["canonical_anchors"], 625)
         self.assertEqual(result["standalone_term_pages"], 0)
         self.assertEqual(result["generated_files"], 8)
         self.assertEqual(result["lesson_catalogue_sections"], 3)

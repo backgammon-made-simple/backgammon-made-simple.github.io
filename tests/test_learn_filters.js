@@ -27,6 +27,47 @@ const lessons = [
   }
 ];
 
+const inlineLookup = [
+  {
+    slug: "anchor",
+    term: "Anchor",
+    aliases: ["Holding Point"],
+    short_definition: "The canonical anchor summary."
+  }
+];
+
+assert.equal(
+  learn.canonicalEntryBySlug(inlineLookup, "anchor"),
+  inlineLookup[0],
+  "canonical slugs resolve to the canonical generated record"
+);
+assert.equal(
+  learn.canonicalShortDefinition(inlineLookup, "anchor"),
+  "The canonical anchor summary.",
+  "inline summaries come from canonical short_definition"
+);
+assert.equal(
+  learn.bestLookupEntry(inlineLookup, "Holding Point"),
+  inlineLookup[0],
+  "aliases resolve to the same canonical record"
+);
+assert.equal(
+  learn.canonicalShortDefinition(
+    inlineLookup,
+    learn.bestLookupEntry(inlineLookup, "Holding Point").slug
+  ),
+  "The canonical anchor summary.",
+  "alias lookup uses the canonical record's short definition"
+);
+assert.equal(
+  learn.canonicalShortDefinition(
+    [{ ...inlineLookup[0], short_definition: "A changed canonical summary." }],
+    "anchor"
+  ),
+  "A changed canonical summary.",
+  "changing the canonical short definition changes the inline summary"
+);
+
 assert.equal(
   learn.itemMatchesTaxonomy(
     lessons[0],
@@ -291,19 +332,77 @@ const generatedGlossaryItems = Array.from(
   (match) => {
     const tag = match[0];
     const searchValues = JSON.parse(attributeValue(tag, "data-bms-search"));
+    const categoriesAttribute = attributeValue(tag, "data-bms-categories");
+    const primaryCategory = attributeValue(tag, "data-bms-category");
     return {
       slug: attributeValue(tag, "data-bms-slug"),
       aliasSlugs: JSON.parse(attributeValue(tag, "data-bms-aliases")),
       canonical: searchValues[0],
       aliases: searchValues.slice(1),
+      categories: categoriesAttribute
+        ? JSON.parse(categoriesAttribute)
+        : primaryCategory
+          ? [primaryCategory]
+          : [],
       searchValues,
       element: { open: false }
     };
   }
 );
+
+const multiCategoryItems = [
+  {
+    categories: ["checker play and tactics", "strategy and position types"],
+    element: { hidden: false, open: false },
+    canonical: "Active Builder",
+    aliases: [],
+    tracks: []
+  },
+  {
+    categories: ["checker play and tactics"],
+    element: { hidden: false, open: false },
+    canonical: "Ace",
+    aliases: [],
+    tracks: []
+  }
+];
+assert.equal(
+  glossary.itemMatchesGlossary(
+    multiCategoryItems[0],
+    "",
+    ["strategy and position types"],
+    []
+  ),
+  true,
+  "a secondary category matches a multi-category entry"
+);
+assert.equal(
+  glossary.expandCategoryMatches(
+    multiCategoryItems,
+    "strategy and position types"
+  )[0].canonical,
+  "Active Builder",
+  "either Active Builder category resolves to the canonical entry"
+);
+multiCategoryItems.forEach((item) => {
+  item.element.open = false;
+});
+assert.equal(
+  glossary.expandCategoryMatches(
+    multiCategoryItems,
+    "checker play and tactics"
+  ).length,
+  2,
+  "category filtering expands every matching entry"
+);
+assert.equal(
+  multiCategoryItems.every((item) => item.element.open),
+  true,
+  "all category matches are expanded"
+);
 assert.equal(
   generatedGlossaryItems.length,
-  624,
+  625,
   "the JavaScript integration fixture uses all generated canonical entries"
 );
 assert.equal(
@@ -311,7 +410,7 @@ assert.equal(
     (count, item) => count + item.aliasSlugs.length,
     0
   ),
-  181,
+  185,
   "the JavaScript integration fixture uses every generated alias"
 );
 
@@ -473,13 +572,13 @@ const lookupData = JSON.parse(
     "utf8"
   )
 );
-assert.equal(lookupData.entries.length, 624);
+assert.equal(lookupData.entries.length, 625);
 assert.equal(
   lookupData.entries.reduce(
     (total, entry) => total + entry.aliases.length,
     0
   ),
-  181
+  185
 );
 assert.equal(
   lookupData.entries.reduce(

@@ -8,6 +8,7 @@ import hashlib
 import html
 import json
 import re
+import subprocess
 import sys
 from collections import defaultdict
 from datetime import date
@@ -35,8 +36,8 @@ QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
-EXPECTED_CANONICAL_ENTRIES = 624
-EXPECTED_ALIAS_ENTRIES = 181
+EXPECTED_CANONICAL_ENTRIES = 625
+EXPECTED_ALIAS_ENTRIES = 185
 FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
 FULL_BUILD_MARKER_SCHEMA = 1
 RENDERED_CORE_PATHS = (
@@ -77,6 +78,20 @@ TRACKS = (
     "Endgames",
     "Engines and Analysis",
 )
+GLOSSARY_CATEGORIES = (
+    "analysis and probability",
+    "board, equipment, and notation",
+    "checker play and tactics",
+    "cube and scoring",
+    "language, rules, and culture",
+    "match and tournament play",
+    "organizations and community",
+    "race and bearoff",
+    "software and online play",
+    "strategy and position types",
+    "variants and history",
+)
+CANONICAL_SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 FORBIDDEN_KEYS = {
     "source_ids",
@@ -129,6 +144,18 @@ def write_if_changed(path: Path, content: str) -> bool:
         return False
     path.write_text(content, encoding="utf-8", newline="\n")
     return True
+
+
+def run_glossary_source_command(command: str) -> None:
+    subprocess.run(
+        [
+            sys.executable,
+            str(REPOSITORY_ROOT / "scripts" / "glossary_source.py"),
+            command,
+        ],
+        cwd=REPOSITORY_ROOT,
+        check=True,
+    )
 
 
 def assert_no_forbidden_keys(value: object, location: str = "$") -> None:
@@ -295,7 +322,123 @@ def import_public_safe(input_path: Path) -> dict[str, object]:
     return public_data
 
 
-def validate_public_data(data: object) -> list[dict[str, object]]:
+def glossary_categories(
+    entry: dict[str, object],
+    label: str,
+) -> list[str]:
+    """Return ordered categories for legacy or richer glossary entries."""
+    raw_categories = entry.get("categories")
+    if raw_categories is None:
+        primary = require_string(entry, "category", label)
+        categories = [primary]
+    elif not isinstance(raw_categories, list):
+        raise ValidationError(f"{label} categories must be a list")
+    else:
+        categories = []
+        for index, value in enumerate(raw_categories):
+            if not isinstance(value, str) or not value.strip():
+                raise ValidationError(
+                    f"{label} categories[{index}] must be a non-empty string"
+                )
+            categories.append(value.strip())
+        if categories:
+            primary = require_string(entry, "category", label)
+            if primary != categories[0]:
+                raise ValidationError(
+                    f"{label} category must equal the first categories value"
+                )
+        elif entry.get("category") not in (None, ""):
+            raise ValidationError(
+                f"{label} with zero categories must omit legacy category"
+            )
+
+    if len(categories) != len(set(categories)):
+        raise ValidationError(f"{label} categories must not repeat values")
+    invalid = [value for value in categories if value not in GLOSSARY_CATEGORIES]
+    if invalid:
+        raise ValidationError(f"{label} has invalid categories: {invalid}")
+    return categories
+
+
+def validate_definition_links(entry: dict[str, object], label: str) -> set[str]:
+    raw_links = entry.get("definition_links")
+    if raw_links is None:
+        return set()
+    if not isinstance(raw_links, list):
+        raise ValidationError(f"{label} definition_links must be a list")
+    target_slugs: set[str] = set()
+    visible_terms: set[str] = set()
+    for index, link in enumerate(raw_links):
+        if not isinstance(link, dict) or set(link) != {"slug", "text"}:
+            raise ValidationError(
+                f"{label} definition_links[{index}] must contain only slug and text"
+            )
+        slug = require_string(link, "slug", f"{label} definition link {index}")
+        text = require_string(link, "text", f"{label} definition link {index}")
+        normalized_text = " ".join(text.casefold().split())
+        if normalized_text in visible_terms:
+            raise ValidationError(f"{label} repeats a definition-link phrase")
+        visible_terms.add(normalized_text)
+        target_slugs.add(slug)
+    return target_slugs
+
+
+def validate_related_terms(entry: dict[str, object], label: str) -> set[str]:
+    raw_terms = entry.get("related_terms")
+    if raw_terms is None:
+        return set()
+    if not isinstance(raw_terms, list):
+        raise ValidationError(f"{label} related_terms must be a list")
+    target_slugs: set[str] = set()
+    names: set[str] = set()
+    for index, related in enumerate(raw_terms):
+        if not isinstance(related, dict):
+            raise ValidationError(f"{label} related_terms[{index}] must be an object")
+        unexpected = set(related) - {"slug", "term"}
+        if unexpected or "term" not in related:
+            raise ValidationError(
+                f"{label} related_terms[{index}] has invalid fields: "
+                f"{sorted(set(related))}"
+            )
+        term = require_string(related, "term", f"{label} related term {index}")
+        normalized_term = " ".join(term.casefold().split())
+        if normalized_term in names:
+            raise ValidationError(f"{label} repeats a related term")
+        names.add(normalized_term)
+        slug = optional_string(related, "slug")
+        if slug:
+            target_slugs.add(slug)
+    return target_slugs
+
+
+def validate_learning_tracks(entry: dict[str, object], label: str) -> list[str]:
+    raw_tracks = entry.get("learning_tracks")
+    if raw_tracks is None:
+        return []
+    if not isinstance(raw_tracks, list):
+        raise ValidationError(f"{label} learning_tracks must be a list")
+    tracks: list[str] = []
+    for index, value in enumerate(raw_tracks):
+        if not isinstance(value, str) or not value.strip():
+            raise ValidationError(
+                f"{label} learning_tracks[{index}] must be a non-empty string"
+            )
+        tracks.append(value.strip())
+    if len(tracks) != len(set(tracks)):
+        raise ValidationError(f"{label} learning_tracks must not repeat values")
+    invalid = [track for track in tracks if track not in TRACKS]
+    if invalid:
+        raise ValidationError(f"{label} has invalid learning tracks: {invalid}")
+    return tracks
+
+
+def validate_public_data(
+    data: object,
+    *,
+    expected_canonical_entries: int = EXPECTED_CANONICAL_ENTRIES,
+    expected_alias_entries: int = EXPECTED_ALIAS_ENTRIES,
+    reference_entries: list[dict[str, object]] | None = None,
+) -> list[dict[str, object]]:
     if not isinstance(data, dict):
         raise ValidationError("Tracked glossary data must be a JSON object")
     assert_no_forbidden_keys(data)
@@ -305,21 +448,28 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
         raise ValidationError("Unsupported tracked glossary schema version")
 
     entries = data.get("entries")
-    if not isinstance(entries, list) or len(entries) != EXPECTED_CANONICAL_ENTRIES:
+    if not isinstance(entries, list) or len(entries) != expected_canonical_entries:
         raise ValidationError(
-            f"Tracked glossary data must contain {EXPECTED_CANONICAL_ENTRIES} entries"
+            f"Tracked glossary data must contain {expected_canonical_entries} entries"
         )
 
     canonical_slugs: set[str] = set()
+    canonical_terms: set[str] = set()
     alias_slugs: set[str] = set()
+    referenced_slugs: set[str] = set()
     alias_count = 0
     for index, entry in enumerate(entries):
         if not isinstance(entry, dict):
             raise ValidationError(f"Tracked glossary entry {index} must be an object")
         unexpected = set(entry) - {
             "aliases",
+            "categories",
             "category",
             "definition",
+            "definition_links",
+            "learning_tracks",
+            "related_terms",
+            "short_definition",
             "slug",
             "term",
             "usage_note",
@@ -329,13 +479,26 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
                 f"Tracked glossary entry {index} has unexpected fields: {sorted(unexpected)}"
             )
         slug = require_string(entry, "slug", f"tracked entry {index}")
-        require_string(entry, "term", f"tracked entry {slug}")
-        require_string(entry, "category", f"tracked entry {slug}")
+        term = require_string(entry, "term", f"tracked entry {slug}")
+        glossary_categories(entry, f"tracked entry {slug}")
         require_string(entry, "definition", f"tracked entry {slug}")
+        if "short_definition" in entry:
+            require_string(entry, "short_definition", f"tracked entry {slug}")
+        referenced_slugs.update(
+            validate_definition_links(entry, f"tracked entry {slug}")
+        )
+        referenced_slugs.update(
+            validate_related_terms(entry, f"tracked entry {slug}")
+        )
+        validate_learning_tracks(entry, f"tracked entry {slug}")
         optional_string(entry, "usage_note")
         if slug in canonical_slugs:
             raise ValidationError(f"Duplicate canonical term slug: {slug}")
+        normalized_term = " ".join(term.casefold().split())
+        if normalized_term in canonical_terms:
+            raise ValidationError(f"Duplicate canonical term: {term}")
         canonical_slugs.add(slug)
+        canonical_terms.add(normalized_term)
 
         aliases = entry.get("aliases")
         if not isinstance(aliases, list):
@@ -359,9 +522,30 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
     overlap = canonical_slugs.intersection(alias_slugs)
     if overlap:
         raise ValidationError(f"Canonical and alias slugs overlap: {sorted(overlap)}")
-    if alias_count != EXPECTED_ALIAS_ENTRIES:
+    expected_order = sorted(
+        entries,
+        key=lambda item: (
+            str(item["term"]).casefold(),
+            str(item["slug"]),
+        ),
+    )
+    if entries != expected_order:
+        raise ValidationError("Tracked glossary entries have unstable output ordering")
+    if alias_count != expected_alias_entries:
         raise ValidationError(
-            f"Tracked glossary data must contain {EXPECTED_ALIAS_ENTRIES} aliases"
+            f"Tracked glossary data must contain {expected_alias_entries} aliases"
+        )
+    available_slugs = set(canonical_slugs)
+    if reference_entries:
+        available_slugs.update(
+            require_string(entry, "slug", "reference entry")
+            for entry in reference_entries
+        )
+    missing_targets = referenced_slugs - available_slugs
+    if missing_targets:
+        raise ValidationError(
+            f"Glossary rich fields have missing canonical targets: "
+            f"{sorted(missing_targets)}"
         )
     return entries
 
@@ -430,6 +614,42 @@ def parse_complete_front_matter(path: Path) -> dict[str, object]:
             f"{path.relative_to(REPOSITORY_ROOT)} front matter must be a mapping"
         )
     return {str(key): value for key, value in metadata.items()}
+
+
+def normalized_metadata_slug(value: object) -> str:
+    return re.sub(
+        r"-+",
+        "-",
+        re.sub(r"[^a-z0-9]+", "-", str(value).strip().casefold()),
+    ).strip("-")
+
+
+def highlighted_terms_from_metadata(
+    metadata: dict[str, object],
+    label: str,
+) -> list[str]:
+    if "highlighted-terms" not in metadata:
+        return []
+    raw_values = metadata["highlighted-terms"]
+    if not isinstance(raw_values, list):
+        raise ValidationError(f"{label} highlighted-terms must be a YAML list")
+
+    values = [str(value).strip() for value in raw_values]
+    normalized_values = [normalized_metadata_slug(value) for value in values]
+    if len(normalized_values) != len(set(normalized_values)):
+        raise ValidationError(
+            f"{label} has duplicate normalized highlighted-terms values"
+        )
+    malformed = [
+        value
+        for value in values
+        if not CANONICAL_SLUG_PATTERN.fullmatch(value)
+    ]
+    if malformed:
+        raise ValidationError(
+            f"{label} has malformed highlighted-terms slugs: {sorted(malformed)}"
+        )
+    return sorted(values)
 
 
 def route_for_source(path: Path) -> str:
@@ -549,6 +769,10 @@ def discover_lessons() -> list[dict[str, object]]:
                     f"Lesson {relative.as_posix()} has duplicate {key} values"
                 )
             lesson[key] = [str(item) for item in value]
+        lesson["highlighted_terms"] = highlighted_terms_from_metadata(
+            complete_metadata,
+            f"Lesson {relative.as_posix()}",
+        )
         lessons.append(lesson)
 
     if not lessons:
@@ -773,6 +997,20 @@ def validate_lessons(
             if slug not in canonical_slugs:
                 raise ValidationError(f"Lesson {relative} uses unknown term slug {slug}")
             related[slug].append(lesson)
+        for slug in lesson.get("highlighted_terms", []):
+            if slug in alias_to_canonical:
+                raise ValidationError(
+                    f"Lesson {relative} highlighted-terms uses alias slug {slug}; "
+                    f"use canonical slug {alias_to_canonical[slug]}"
+                )
+            if slug not in canonical_slugs:
+                raise ValidationError(
+                    f"Lesson {relative} highlighted-terms uses unknown term slug {slug}"
+                )
+            if slug not in lesson["terms"]:
+                raise ValidationError(
+                    f"Lesson {relative} highlighted term {slug} is missing from terms"
+                )
 
     for related_lessons in related.values():
         related_lessons.sort(key=lambda lesson: str(lesson["title"]).casefold())
@@ -1192,6 +1430,90 @@ def usage_notes_html(entry: dict[str, object]) -> str:
     return "\n".join(notes)
 
 
+def linked_definition_html(entry: dict[str, object]) -> str:
+    definition = str(entry["definition"])
+    raw_links = entry.get("definition_links")
+    if not isinstance(raw_links, list) or not raw_links:
+        return html.escape(definition)
+
+    links_by_text = {
+        str(link["text"]).casefold(): str(link["slug"])
+        for link in raw_links
+        if isinstance(link, dict)
+    }
+    phrases = sorted(
+        (str(link["text"]) for link in raw_links if isinstance(link, dict)),
+        key=lambda value: (-len(value), value.casefold()),
+    )
+    pattern = re.compile(
+        "|".join(re.escape(phrase) for phrase in phrases),
+        re.IGNORECASE,
+    )
+    parts: list[str] = []
+    cursor = 0
+    for match in pattern.finditer(definition):
+        parts.append(html.escape(definition[cursor:match.start()]))
+        visible = match.group(0)
+        slug = links_by_text[visible.casefold()]
+        parts.append(
+            f'<a href="/learn/glossary/#{html_attr(slug)}" '
+            f'data-bms-definition-link="{html_attr(slug)}">'
+            f"{html.escape(visible)}</a>"
+        )
+        cursor = match.end()
+    parts.append(html.escape(definition[cursor:]))
+    return "".join(parts)
+
+
+def related_terms_html(entry: dict[str, object]) -> str:
+    raw_terms = entry.get("related_terms")
+    if not isinstance(raw_terms, list) or not raw_terms:
+        return ""
+    lines = [
+        '<section class="bms-glossary-related-terms">',
+        "<h4>See also</h4>",
+        "<ul>",
+    ]
+    for related in raw_terms:
+        if not isinstance(related, dict):
+            continue
+        term = str(related["term"])
+        slug = related.get("slug")
+        if slug:
+            lines.append(
+                f'<li><a href="/learn/glossary/#{html_attr(slug)}">'
+                f"{html.escape(term)}</a></li>"
+            )
+        else:
+            lines.append(f"<li>{html.escape(term)}</li>")
+    lines.extend(["</ul>", "</section>"])
+    return "\n".join(lines)
+
+
+def category_html(entry: dict[str, object], categories: list[str]) -> str:
+    if "categories" not in entry:
+        category = str(entry["category"])
+        return (
+            '<p class="bms-glossary-category"><strong>Category:</strong> '
+            f'<button type="button" data-bms-card-category="{html_attr(category)}" '
+            'aria-pressed="false">'
+            f"{html.escape(display_category(category))}</button></p>"
+        )
+    if not categories:
+        return ""
+    label = "Category" if len(categories) == 1 else "Categories"
+    buttons = ", ".join(
+        f'<button type="button" data-bms-card-category="{html_attr(category)}" '
+        'aria-pressed="false">'
+        f"{html.escape(display_category(category))}</button>"
+        for category in categories
+    )
+    return (
+        f'<p class="bms-glossary-category"><strong>{label}:</strong> '
+        f"{buttons}</p>"
+    )
+
+
 def build_entries_html(
     entries: list[dict[str, object]],
     related_lessons_by_slug: dict[str, list[dict[str, object]]],
@@ -1243,14 +1565,15 @@ def build_entries_html(
         )
         for entry in group_entries:
             slug = str(entry["slug"])
+            categories = glossary_categories(entry, f"entry {slug}")
             related_lessons = related_lessons_by_slug.get(slug, [])
             related_research = related_research_by_slug.get(slug, [])
             tracks = sorted(
-                {
+                set(validate_learning_tracks(entry, f"entry {slug}")).union(
                     str(track)
                     for lesson in related_lessons
                     for track in lesson["tags"]
-                },
+                ),
                 key=TRACKS.index,
             )
             search_values = [str(entry["term"])] + [
@@ -1259,12 +1582,22 @@ def build_entries_html(
             alias_slugs = [
                 str(alias["slug"]) for alias in entry["aliases"]  # type: ignore[index]
             ]
+            category_attributes = ""
+            if categories:
+                category_attributes = (
+                    f'data-bms-category="{html_attr(categories[0])}" '
+                )
+            if "categories" in entry:
+                category_attributes += (
+                    f'data-bms-categories="'
+                    f'{html_attr(json.dumps(categories, ensure_ascii=False))}" '
+                )
             lines.extend(
                 [
                     f'<details class="bms-glossary-entry" id="{html_attr(slug)}" '
                     f'data-bms-glossary-entry data-bms-slug="{html_attr(slug)}" '
                     f'data-bms-letter="{html_attr(group)}" '
-                    f'data-bms-category="{html_attr(entry["category"])}" '
+                    f"{category_attributes}"
                     f'data-bms-tracks="{html_attr(json.dumps(tracks, ensure_ascii=False))}" '
                     f'data-bms-aliases="{html_attr(json.dumps(alias_slugs, ensure_ascii=False))}" '
                     f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
@@ -1273,10 +1606,16 @@ def build_entries_html(
                     f'{html.escape(str(entry["term"]))}</span></summary>',
                     '<div class="bms-glossary-entry-body">',
                     alias_html(entry["aliases"]),  # type: ignore[arg-type]
-                    f'<p class="bms-glossary-definition">{html.escape(str(entry["definition"]))}</p>',
-                    f'<p class="bms-glossary-category"><strong>Category:</strong> '
-                    f'<button type="button" data-bms-card-category="{html_attr(entry["category"])}">'
-                    f'{html.escape(display_category(str(entry["category"])))}</button></p>',
+                    (
+                        '<p class="bms-glossary-short-definition">'
+                        f'{html.escape(str(entry["short_definition"]))}</p>'
+                        if "short_definition" in entry
+                        else ""
+                    ),
+                    f'<p class="bms-glossary-definition">'
+                    f"{linked_definition_html(entry)}</p>",
+                    category_html(entry, categories),
+                    related_terms_html(entry),
                     usage_notes_html(entry),
                 ]
             )
@@ -1319,24 +1658,38 @@ def build_lookup_data(
     lookup_entries = []
     for entry in entries:
         slug = str(entry["slug"])
-        lookup_entries.append(
-            {
-                "aliases": [
-                    str(alias["term"])
-                    for alias in entry["aliases"]  # type: ignore[index]
-                ],
-                "definition": str(entry["definition"]),
-                "related_lessons": [
-                    {
-                        "route": str(lesson["route"]),
-                        "title": str(lesson["title"]),
-                    }
-                    for lesson in related_lessons.get(slug, [])
-                ],
-                "slug": slug,
-                "term": str(entry["term"]),
-            }
-        )
+        lookup_entry: dict[str, object] = {
+            "aliases": [
+                str(alias["term"])
+                for alias in entry["aliases"]  # type: ignore[index]
+            ],
+            "alias_slugs": [
+                str(alias["slug"])
+                for alias in entry["aliases"]  # type: ignore[index]
+            ],
+            "definition": str(entry["definition"]),
+            "related_lessons": [
+                {
+                    "route": str(lesson["route"]),
+                    "title": str(lesson["title"]),
+                }
+                for lesson in related_lessons.get(slug, [])
+            ],
+            "slug": slug,
+            "short_definition": str(
+                entry.get("short_definition") or entry["definition"]
+            ),
+            "term": str(entry["term"]),
+        }
+        for field in (
+            "categories",
+            "definition_links",
+            "learning_tracks",
+            "related_terms",
+        ):
+            if field in entry:
+                lookup_entry[field] = entry[field]
+        lookup_entries.append(lookup_entry)
     content = json.dumps(
         {"entries": lookup_entries},
         ensure_ascii=False,
@@ -2015,6 +2368,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     import_parser.add_argument("--input", required=True, type=Path)
 
     subparsers.add_parser("generate", help="Regenerate glossary sources")
+    subparsers.add_parser(
+        "generate-source",
+        help="Generate production glossary JSON from confirmed Markdown and migration data",
+    )
+    subparsers.add_parser(
+        "check-source",
+        help="Fail when tracked production glossary JSON differs from source generation",
+    )
     subparsers.add_parser("validate", help="Validate data, metadata, and generated sources")
 
     rendered_parser = subparsers.add_parser(
@@ -2037,13 +2398,21 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
         if command == "generate":
+            run_glossary_source_command("generate-source")
             changed, total, removed = generate()
             print(
                 "Glossary generation complete: "
                 f"{changed} changed, {total} checked, {removed} obsolete files removed"
             )
             return 0
+        if command == "generate-source":
+            run_glossary_source_command("generate-source")
+            return 0
+        if command == "check-source":
+            run_glossary_source_command("check-source")
+            return 0
         if command == "validate":
+            run_glossary_source_command("check-source")
             result = validate_generated()
             print("Glossary validation passed: " + json.dumps(result, sort_keys=True))
             return 0
@@ -2051,7 +2420,12 @@ def main(argv: list[str] | None = None) -> int:
             result = check_rendered(args.output.resolve())
             print("Rendered glossary check passed: " + json.dumps(result, sort_keys=True))
             return 0
-    except (OSError, json.JSONDecodeError, ValidationError) as error:
+    except (
+        OSError,
+        json.JSONDecodeError,
+        subprocess.CalledProcessError,
+        ValidationError,
+    ) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
     raise AssertionError(f"Unhandled command: {command}")

@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "alias_slugs": [],
+      "aliases": [],
+      "short_definition": "A made point.",
+      "slug": "anchor",
+      "term": "Anchor"
+    },
+    {
+      "alias_slugs": [
+        "anchor-alias"
+      ],
+      "aliases": [
+        "Anchor"
+      ],
+      "short_definition": "A holding point.",
+      "slug": "holding-point",
+      "term": "Holding Point"
+    }
+  ]
+}
