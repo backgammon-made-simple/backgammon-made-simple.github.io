@@ -144,9 +144,21 @@ class ScrollingTestLessonGeneratorTests(unittest.TestCase):
         self.assertEqual(content.count("<svg"), 2)
         self.assertEqual(
             content.count('class="bms-button-outline bms-answer-choice"'),
-            2,
+            4,
         )
         self.assertEqual(content.count("<details"), 2)
+        self.assertIn(">Take</button>", content)
+        self.assertIn(">Pass</button>", content)
+        self.assertIn("bms-scroll-fixture-explanation", content)
+        self.assertLess(
+            content.index("bms-scroll-fixture-explanation"),
+            content.index("bms-scroll-fixture-svg-nested"),
+        )
+        nested_content = content.split(
+            '<details id="bms-scroll-fixture-follow-up"',
+            1,
+        )[1]
+        self.assertEqual(nested_content.count("<p>"), 2)
         self.assertIn('data-answer-panel="bms-scroll-fixture-follow-up"', content)
         self.assertIn('id="bms-scroll-fixture-follow-up"', content)
         self.assertIn('fill="url(#bms-scroll-fixture-board-gradient)"', content)

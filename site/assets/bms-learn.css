@@ -154,6 +154,10 @@
   font-weight: 650;
 }
 
+.bms-scroll-fixture-explanation {
+  margin: 0;
+}
+
 .bms-scroll-fixture-nested {
   margin: 0;
 }
