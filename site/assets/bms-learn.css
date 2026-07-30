@@ -1315,6 +1315,14 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   }
 
   body.bms-learn-article:not(.bms-learn-track-index)
+    #quarto-margin-sidebar
+    > .bms-right-rail-card--stacked {
+    width: 100%;
+    margin: 1rem 0 0;
+    box-sizing: border-box;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
     .bms-lesson-track-toggle {
     position: absolute;
     top: 0;

@@ -1108,6 +1108,48 @@ class LearnGlossaryTests(unittest.TestCase):
             1,
         )
 
+    def test_lesson_right_rail_card_joins_sidebar_stack_contract(self) -> None:
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        placement = javascript[
+            javascript.index("  function placeLessonRightRailCards() {") :
+            javascript.index("  function isMainSiteIndex() {")
+        ]
+        for required in (
+            'document.body.classList.contains("bms-learn-article")',
+            '!document.body.classList.contains("bms-learn-track-index")',
+            '".column-margin .bms-right-rail-card"',
+            'document.getElementById("quarto-margin-sidebar")',
+            'window.matchMedia("(min-width: 992px)")',
+            'margin: card.closest(".column-margin")',
+            "sidebar.appendChild(placement.card);",
+            "placement.margin.hidden = true;",
+            "placement.margin.hidden = false;",
+            'placement.card.classList.add("bms-right-rail-card--stacked")',
+            'placement.card.classList.remove("bms-right-rail-card--stacked")',
+        ):
+            self.assertIn(required, placement)
+        self.assertNotIn("bms-research-article", placement)
+        self.assertNotIn("position", placement)
+        self.assertLess(
+            javascript.index("      placeLessonTrackLinks();"),
+            javascript.index("      placeLessonRightRailCards();"),
+        )
+
+        css = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
+        ).read_text(encoding="utf-8")
+        self.assertRegex(
+            css,
+            r"body\.bms-learn-article:not\(\.bms-learn-track-index\)"
+            r"\s+#quarto-margin-sidebar"
+            r"\s+> \.bms-right-rail-card--stacked \{[^}]*"
+            r"width: 100%;[^}]*"
+            r"margin: 1rem 0 0;[^}]*"
+            r"box-sizing: border-box;",
+        )
+
     def test_learn_home_contains_only_generated_catalogue(self) -> None:
         source = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
             encoding="utf-8"

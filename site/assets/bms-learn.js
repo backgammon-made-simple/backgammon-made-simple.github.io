@@ -668,6 +668,62 @@
       });
   }
 
+  function placeLessonRightRailCards() {
+    const lessonPage =
+      document.body.classList.contains("bms-learn-article") &&
+      !document.body.classList.contains("bms-learn-track-index");
+    if (!lessonPage) {
+      return;
+    }
+
+    const placements = Array.from(
+      document.querySelectorAll(".column-margin .bms-right-rail-card")
+    ).map(function (card) {
+      return {
+        card: card,
+        margin: card.closest(".column-margin"),
+        nextSibling: card.nextSibling,
+        source: card.parentElement
+      };
+    });
+    if (!placements.length) {
+      return;
+    }
+
+    const desktopQuery = window.matchMedia("(min-width: 992px)");
+
+    function place() {
+      const sidebar = document.getElementById("quarto-margin-sidebar");
+      const useSidebar = desktopQuery.matches && Boolean(sidebar);
+
+      placements.forEach(function (placement) {
+        if (useSidebar) {
+          sidebar.appendChild(placement.card);
+          placement.margin.hidden = true;
+          placement.card.classList.add("bms-right-rail-card--stacked");
+          return;
+        }
+
+        placement.margin.hidden = false;
+        if (
+          placement.nextSibling &&
+          placement.nextSibling.parentNode === placement.source
+        ) {
+          placement.source.insertBefore(
+            placement.card,
+            placement.nextSibling
+          );
+        } else {
+          placement.source.appendChild(placement.card);
+        }
+        placement.card.classList.remove("bms-right-rail-card--stacked");
+      });
+    }
+
+    place();
+    desktopQuery.addEventListener("change", place);
+  }
+
   function isMainSiteIndex() {
     const path = window.location.pathname.replace(/\/index\.html$/, "/");
     return path === "/";
@@ -1317,6 +1373,7 @@
       const termLookup = initializeTermLookup();
       initializeMobileLessonBar(termLookup);
       placeLessonTrackLinks();
+      placeLessonRightRailCards();
       initializeAnswerChoices();
       initializeLazyAnalyzerFrames();
     });
