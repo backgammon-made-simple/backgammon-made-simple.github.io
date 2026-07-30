@@ -134,6 +134,37 @@ class ScrollingTestLessonGeneratorTests(unittest.TestCase):
             real_lesson,
         )
 
+    def test_one_fixture_per_track_includes_ui_edge_cases(self) -> None:
+        outputs = generator.build_expected_outputs(self.test_root)
+        included_paths = {
+            path.relative_to(self.test_root).as_posix()
+            for path, content in outputs.items()
+            if generator.EDGE_CASE_INCLUDE in content
+        }
+        self.assertEqual(
+            included_paths,
+            {
+                "start-here/lesson-01.qmd",
+                "doubling-cube/lesson-03.qmd",
+                "opening-play/lesson-01.qmd",
+            },
+        )
+
+    def test_ui_edge_fixture_covers_wrapping_scroll_and_rewritten_ids(self) -> None:
+        include_path = (
+            ROOT / "site" / "includes" / "scrolling-ui-edge-cases.html"
+        )
+        content = include_path.read_text(encoding="utf-8")
+        self.assertIn("data-bms-ui-edge-fixture", content)
+        self.assertIn("bms-ui-edge-unbroken", content)
+        self.assertIn("bms-ui-edge-scroll-region", content)
+        self.assertIn('data-answer-panel="bms-ui-edge-response"', content)
+        self.assertIn('id="bms-ui-edge-response"', content)
+        self.assertIn('href="#bms-ui-edge-anchor"', content)
+        self.assertIn('id="bms-ui-edge-anchor"', content)
+        self.assertIn('fill="url(#bms-ui-edge-gradient)"', content)
+        self.assertIn('aria-labelledby="bms-ui-edge-svg-title ', content)
+
     def test_rich_disclosure_exercises_svg_ids_buttons_and_nesting(self) -> None:
         include_path = (
             ROOT / "site" / "includes" / "scrolling-position-disclosure.html"

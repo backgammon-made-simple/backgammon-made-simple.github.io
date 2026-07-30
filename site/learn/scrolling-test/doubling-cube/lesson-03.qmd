@@ -37,6 +37,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus molli
 
 Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.
 
+{{< include ../../../includes/scrolling-ui-edge-cases.html >}}
+
 ### Scenario
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.

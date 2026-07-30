@@ -171,6 +171,61 @@
   margin: 0;
 }
 
+.bms-ui-edge-fixture {
+  min-width: 0;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid var(--bms-border);
+  border-radius: 8px;
+  background: var(--bms-surface);
+}
+
+.bms-ui-edge-fixture > :first-child {
+  margin-top: 0;
+}
+
+.bms-ui-edge-fixture > :last-child {
+  margin-bottom: 0;
+}
+
+.bms-ui-edge-unbroken,
+.bms-ui-edge-fixture a {
+  overflow-wrap: anywhere;
+}
+
+.bms-ui-edge-panel .bms-answer-panel-content {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.bms-ui-edge-panel .bms-answer-panel-content > * {
+  min-width: 0;
+  margin-block: 0;
+}
+
+.bms-ui-edge-scroll-region,
+.bms-ui-edge-code {
+  max-width: 100%;
+  overflow: auto;
+}
+
+.bms-ui-edge-scroll-region:focus-visible {
+  outline: 3px solid var(--bms-navy);
+  outline-offset: 3px;
+}
+
+.bms-ui-edge-scroll-region table {
+  min-width: 50rem;
+  margin: 0;
+}
+
+.bms-ui-edge-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .bms-analyzer-placeholder {
   min-height: 150px;
   padding: 1.15rem;

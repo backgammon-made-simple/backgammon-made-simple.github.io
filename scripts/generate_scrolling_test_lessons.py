@@ -41,6 +41,16 @@ FIXTURE_TERM = "backgammon"
 RICH_DISCLOSURE_INCLUDE = (
     "{{< include ../../../includes/scrolling-position-disclosure.html >}}"
 )
+EDGE_CASE_INCLUDE = (
+    "{{< include ../../../includes/scrolling-ui-edge-cases.html >}}"
+)
+EDGE_CASE_FIXTURES = frozenset(
+    {
+        ("start-here", 1),
+        ("doubling-cube", 3),
+        ("opening-play", 1),
+    }
+)
 
 
 class FixtureValidationError(RuntimeError):
@@ -124,6 +134,12 @@ def lesson_content(
         if track["id"] == "doubling-cube" and lesson_number in (1, 2)
         else ""
     )
+    edge_case_fixture = (
+        "\n" + EDGE_CASE_INCLUDE + "\n"
+        if (str(track["id"]), lesson_number) in EDGE_CASE_FIXTURES
+        else ""
+    )
+    interactive_fixtures = rich_disclosure + edge_case_fixture
     return f"""---
 title: {yaml_string(title)}
 description: {yaml_string(description)}
@@ -162,7 +178,7 @@ Temporary margin note for {track_title} lesson {lesson_number:02d}.
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.
 
 Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.
-{rich_disclosure}
+{interactive_fixtures}
 ### Scenario
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.
