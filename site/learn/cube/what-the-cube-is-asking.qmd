@@ -72,22 +72,7 @@ Take point ~= risk / (risk + reward)
 
 ## Worked Position
 
-::: bms-placeholder-board
-Verified board position placeholder
-:::
-
-::: {.bms-decision-prompt}
-What would you do?
-
-[Double](#){.bms-button-outline} [Wait](#){.bms-button-outline}
-:::
-
-<details>
-<summary>Show answer and explanation</summary>
-
-This scaffold will be replaced with a verified position and engine-backed explanation.
-
-</details>
+{{< include ../../includes/scrolling-position-disclosure.html >}}
 
 ## What Changes the Answer?
 

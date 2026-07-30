@@ -199,6 +199,8 @@ class FakeRoot {
 
 const panel = new FakeElement({ id: "answer-panel" });
 const label = new FakeElement({ id: "choice-label" });
+const gradient = new FakeElement({ id: "board-gradient" });
+const clip = new FakeElement({ id: "board-clip" });
 const references = new FakeElement({
   for: "answer-panel",
   "aria-labelledby": "choice-label answer-panel",
@@ -211,10 +213,22 @@ const references = new FakeElement({
   href: "#answer-panel",
   style: "filter: url(#answer-panel)"
 });
+const svgReferences = new FakeElement({
+  fill: "url(#board-gradient)",
+  "clip-path": "url(#board-clip)"
+});
 const otherPageLink = new FakeElement({
   href: "/learn/other.html#answer-panel"
 });
-const root = new FakeRoot([panel, label, references, otherPageLink]);
+const root = new FakeRoot([
+  panel,
+  label,
+  gradient,
+  clip,
+  references,
+  svgReferences,
+  otherPageLink
+]);
 const prefix = "bms-learn-scroll-example-";
 scroll.rewriteIdReferences(root, prefix);
 assert.equal(panel.id, prefix + "answer-panel");
@@ -234,6 +248,14 @@ assert.equal(references.getAttribute("href"), "#" + prefix + "answer-panel");
 assert.equal(
   references.getAttribute("style"),
   "filter: url(#" + prefix + "answer-panel)"
+);
+assert.equal(
+  svgReferences.getAttribute("fill"),
+  "url(#" + prefix + "board-gradient)"
+);
+assert.equal(
+  svgReferences.getAttribute("clip-path"),
+  "url(#" + prefix + "board-clip)"
 );
 assert.equal(
   otherPageLink.getAttribute("href"),

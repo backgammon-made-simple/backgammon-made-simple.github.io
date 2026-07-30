@@ -37,6 +37,10 @@ WARNING_TEXT = (
     "Temporary scrolling test content. "
     "This page is not part of the finished curriculum."
 )
+FIXTURE_TERM = "backgammon"
+RICH_DISCLOSURE_INCLUDE = (
+    "{{< include ../../../includes/scrolling-position-disclosure.html >}}"
+)
 
 
 class FixtureValidationError(RuntimeError):
@@ -88,11 +92,8 @@ def metadata_tag(
 
 
 def canonical_fixture_term() -> str:
-    entries = learn_glossary.validate_public_data(
-        learn_glossary.read_json(learn_glossary.PUBLIC_DATA_PATH)
-    )
-    slugs = {str(entry["slug"]) for entry in entries}
-    return "backgammon" if "backgammon" in slugs else sorted(slugs)[0]
+    """Keep scrolling fixtures stable when approved glossary terms change."""
+    return FIXTURE_TERM
 
 
 def lesson_content(
@@ -116,6 +117,11 @@ def lesson_content(
         "\n"
         f"[Continue to the next test track]({next_track_route}).\n"
         if next_track_route
+        else ""
+    )
+    rich_disclosure = (
+        "\n" + RICH_DISCLOSURE_INCLUDE + "\n"
+        if track["id"] == "doubling-cube" and lesson_number in (1, 2)
         else ""
     )
     return f"""---
@@ -156,7 +162,7 @@ Temporary margin note for {track_title} lesson {lesson_number:02d}.
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.
 
 Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.
-
+{rich_disclosure}
 ### Scenario
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.

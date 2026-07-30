@@ -114,6 +114,44 @@ class ScrollingTestLessonGeneratorTests(unittest.TestCase):
                     path.read_text(encoding="utf-8"),
                 )
 
+    def test_first_two_cube_fixtures_include_rich_disclosure(self) -> None:
+        outputs = generator.build_expected_outputs(self.test_root)
+        rich_paths = {
+            self.test_root / "doubling-cube" / "lesson-01.qmd",
+            self.test_root / "doubling-cube" / "lesson-02.qmd",
+        }
+        included_paths = {
+            path
+            for path, content in outputs.items()
+            if generator.RICH_DISCLOSURE_INCLUDE in content
+        }
+        self.assertEqual(included_paths, rich_paths)
+        real_lesson = (
+            ROOT / "site" / "learn" / "cube" / "what-the-cube-is-asking.qmd"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "{{< include ../../includes/scrolling-position-disclosure.html >}}",
+            real_lesson,
+        )
+
+    def test_rich_disclosure_exercises_svg_ids_buttons_and_nesting(self) -> None:
+        include_path = (
+            ROOT / "site" / "includes" / "scrolling-position-disclosure.html"
+        )
+        content = include_path.read_text(encoding="utf-8")
+        self.assertEqual(content.count("<svg"), 2)
+        self.assertEqual(
+            content.count('class="bms-button-outline bms-answer-choice"'),
+            2,
+        )
+        self.assertEqual(content.count("<details"), 2)
+        self.assertIn('data-answer-panel="bms-scroll-fixture-follow-up"', content)
+        self.assertIn('id="bms-scroll-fixture-follow-up"', content)
+        self.assertIn('fill="url(#bms-scroll-fixture-board-gradient)"', content)
+        self.assertIn('clip-path="url(#bms-scroll-fixture-focus-clip)"', content)
+        self.assertIn('aria-labelledby="bms-scroll-fixture-position-title ', content)
+        self.assertIn('aria-labelledby="bms-scroll-fixture-follow-up-title ', content)
+
     def test_empty_track_receives_ten_lessons(self) -> None:
         tracks, real_lessons = generator.discover_curriculum_inputs()
         empty_track = next(
