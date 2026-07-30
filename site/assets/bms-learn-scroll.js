@@ -595,12 +595,16 @@
       typeof root.querySelectorAll === "function"
         ? Array.from(root.querySelectorAll("#TOC"))
         : [root.getElementById("TOC")].filter(Boolean);
+    function isLaidOut(element) {
+      return (
+        element &&
+        typeof element.getClientRects === "function" &&
+        element.getClientRects().length > 0
+      );
+    }
     return (
       candidates.find(function (toc) {
-        return (
-          typeof toc.getClientRects === "function" &&
-          toc.getClientRects().length > 0
-        );
+        return isLaidOut(toc) || isLaidOut(toc.parentElement);
       }) ||
       candidates.find(function (toc) {
         return (

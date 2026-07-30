@@ -110,6 +110,11 @@ assert.equal(scroll.startsNewTrack(first), false);
 const zeroWidthToc = {
   location: "zero-width",
   hidden: false,
+  parentElement: {
+    getClientRects() {
+      return [];
+    }
+  },
   getAttribute() {
     return null;
   },
@@ -120,11 +125,16 @@ const zeroWidthToc = {
 const laidOutMarginToc = {
   location: "margin",
   hidden: false,
+  parentElement: {
+    getClientRects() {
+      return [{ width: 230, height: 500 }];
+    }
+  },
   getAttribute() {
     return null;
   },
   getClientRects() {
-    return [{ width: 230, height: 240 }];
+    return [];
   }
 };
 const fallbackToc = {
@@ -145,7 +155,7 @@ const documentWithDuplicateTocs = {
 assert.equal(
   scroll.findPrimaryToc(documentWithDuplicateTocs),
   laidOutMarginToc,
-  "the laid-out TOC wins when Quarto keeps a zero-width duplicate"
+  "the TOC in the laid-out rail wins while it is still hidden"
 );
 assert.equal(
   scroll.findPrimaryToc({
