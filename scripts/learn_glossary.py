@@ -30,6 +30,7 @@ GENERATED_ENTRIES_PATH = GLOSSARY_ROOT / "_entries.html"
 GENERATED_LESSON_CATALOGUE_PATH = LEARN_ROOT / "_lesson-catalogue.html"
 GENERATED_NAVIGATION_PATH = SITE_ROOT / "_learn-navigation.yml"
 GENERATED_LOOKUP_DATA_PATH = SITE_ROOT / "assets" / "bms-glossary-lookup.json"
+GENERATED_LEARN_SEQUENCE_PATH = SITE_ROOT / "assets" / "bms-learn-sequence.json"
 LEGACY_GENERATED_ROUTES_PATH = GLOSSARY_ROOT / "_generated-routes.json"
 QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
@@ -588,6 +589,101 @@ def build_curriculum(
             )
         curriculum.append({**track, "lessons": track_lessons})
     return curriculum
+
+
+def validate_learn_sequence(sequence: dict[str, object]) -> list[dict[str, object]]:
+    if sequence.get("schema_version") != 1:
+        raise ValidationError("Learn sequence schema_version must be 1")
+    lessons = sequence.get("lessons")
+    if not isinstance(lessons, list) or not lessons:
+        raise ValidationError("Learn sequence must contain at least one lesson")
+
+    routes: list[str] = []
+    for index, lesson in enumerate(lessons):
+        if not isinstance(lesson, dict):
+            raise ValidationError(f"Learn sequence lesson {index} must be an object")
+        route = lesson.get("route")
+        if not isinstance(route, str) or not route.startswith("/") or "://" in route:
+            raise ValidationError(
+                f"Learn sequence lesson {index} has an invalid site-relative route"
+            )
+        routes.append(route)
+        if lesson.get("sequence_index") != index:
+            raise ValidationError("Learn sequence indexes must be contiguous from 0")
+
+    if len(routes) != len(set(routes)):
+        raise ValidationError("Learn sequence contains duplicate lesson routes")
+
+    for index, lesson in enumerate(lessons):
+        expected_previous = routes[index - 1] if index else None
+        expected_next = routes[index + 1] if index + 1 < len(routes) else None
+        if lesson.get("previous_route") != expected_previous:
+            raise ValidationError(
+                f"Learn sequence has a broken previous route at index {index}"
+            )
+        if lesson.get("next_route") != expected_next:
+            raise ValidationError(
+                f"Learn sequence has a broken next route at index {index}"
+            )
+        expected_boundary = bool(
+            expected_next
+            and lesson.get("track_id") != lessons[index + 1].get("track_id")
+        )
+        if lesson.get("next_starts_new_track") is not expected_boundary:
+            raise ValidationError(
+                f"Learn sequence has an invalid track boundary at index {index}"
+            )
+    return lessons
+
+
+def build_learn_sequence(
+    curriculum: list[dict[str, object]],
+) -> dict[str, object]:
+    ordered: list[tuple[dict[str, object], dict[str, object]]] = []
+    for track in curriculum:
+        track_lessons = track.get("lessons")
+        if not isinstance(track_lessons, list):
+            raise ValidationError(f"Track {track.get('id')} has invalid lessons")
+        for lesson in track_lessons:
+            if not isinstance(lesson, dict):
+                raise ValidationError(f"Track {track.get('id')} has an invalid lesson")
+            ordered.append((track, lesson))
+
+    lessons: list[dict[str, object]] = []
+    for index, (track, lesson) in enumerate(ordered):
+        previous_route = (
+            str(ordered[index - 1][1]["route"]) if index else None
+        )
+        next_route = (
+            str(ordered[index + 1][1]["route"])
+            if index + 1 < len(ordered)
+            else None
+        )
+        next_starts_new_track = bool(
+            next_route
+            and str(track["id"]) != str(ordered[index + 1][0]["id"])
+        )
+        lessons.append(
+            {
+                "lesson_order": int(lesson["order"]),
+                "next_route": next_route,
+                "next_starts_new_track": next_starts_new_track,
+                "previous_route": previous_route,
+                "route": str(lesson["route"]),
+                "sequence_index": index,
+                "title": str(lesson["title"]),
+                "track_id": str(track["id"]),
+                "track_order": int(track["order"]),
+                "track_title": str(track["title"]),
+            }
+        )
+
+    sequence: dict[str, object] = {
+        "schema_version": 1,
+        "lessons": lessons,
+    }
+    validate_learn_sequence(sequence)
+    return sequence
 
 
 def discover_cube_lessons() -> list[dict[str, object]]:
@@ -1364,6 +1460,9 @@ def generated_outputs(
         GENERATED_LOOKUP_DATA_PATH: build_lookup_data(
             entries, related_lessons
         ),
+        GENERATED_LEARN_SEQUENCE_PATH: json_text(
+            build_learn_sequence(curriculum)
+        ),
         AUTHORING_TERMS_PATH: build_authoring_terms(entries),
     }
     for track in curriculum:
@@ -1448,6 +1547,8 @@ def validate_generated() -> dict[str, int]:
         related_lessons,
         related_research,
     )
+    learn_sequence = build_learn_sequence(curriculum)
+    validate_learn_sequence(learn_sequence)
 
     missing = [path for path in expected if not path.exists()]
     changed = [
@@ -1621,6 +1722,7 @@ def validate_generated() -> dict[str, int]:
         "canonical_entries": len(entries),
         "alias_entries": sum(len(entry["aliases"]) for entry in entries),
         "lessons": len(lessons),
+        "continuous_lessons": len(learn_sequence["lessons"]),
         "cube_lessons": len(cube_lessons),
         "updates_publications": len(update_publications),
         "research_articles": len(research_articles),
@@ -1777,6 +1879,51 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     tracks = discover_tracks()
     lessons = discover_lessons()
     curriculum = build_curriculum(tracks, lessons)
+    expected_sequence = build_learn_sequence(curriculum)
+    rendered_sequence_path = output_root / "assets" / "bms-learn-sequence.json"
+    rendered_scroll_path = output_root / "assets" / "bms-learn-scroll.js"
+    if not rendered_sequence_path.is_file():
+        raise ValidationError("Rendered Learn sequence asset is missing")
+    if not rendered_scroll_path.is_file():
+        raise ValidationError("Rendered continuous Learn script is missing")
+    rendered_sequence = read_json(rendered_sequence_path)
+    validate_learn_sequence(rendered_sequence)
+    if rendered_sequence != expected_sequence:
+        raise ValidationError("Rendered Learn sequence does not match curriculum metadata")
+
+    rendered_lesson_count = 0
+    for lesson in expected_sequence["lessons"]:
+        route = str(lesson["route"])
+        relative = route.lstrip("/")
+        lesson_path = (
+            output_root / relative / "index.html"
+            if route.endswith("/")
+            else output_root / relative
+        )
+        if not lesson_path.is_file():
+            raise ValidationError(
+                f"Rendered continuous Learn lesson is missing: {route}"
+            )
+        lesson_html = lesson_path.read_text(encoding="utf-8", errors="replace")
+        if 'id="quarto-document-content"' not in lesson_html:
+            raise ValidationError(
+                f"Rendered continuous Learn lesson lacks verified content: {route}"
+            )
+        if "bms-learn-scroll.js" not in lesson_html:
+            raise ValidationError(
+                f"Rendered continuous Learn lesson lacks shared script: {route}"
+            )
+        if "bms-cube-scroll.js" in lesson_html:
+            raise ValidationError(
+                f"Rendered continuous Learn lesson loads obsolete cube script: {route}"
+            )
+        rendered_lesson_count += 1
+
+    temporary_lesson = (
+        output_root / "learn" / "cube" / "scrolling-test-lesson-three.html"
+    )
+    if temporary_lesson.exists():
+        raise ValidationError("Rendered temporary scrolling lesson remains")
     learn_index = output_root / "learn" / "index.html"
     learn_html = learn_index.read_text(encoding="utf-8", errors="replace")
     if learn_html.count("data-bms-learn-item") != len(lessons):
@@ -1998,6 +2145,7 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         "glossary_html_files": len(html_files),
         "sitemap_glossary_routes": len(glossary_locations),
         "standalone_term_pages": 0,
+        "continuous_lessons": rendered_lesson_count,
         "updates_feed_items": len(feed_items),
     }
 

@@ -62,6 +62,9 @@ class LearnGlossaryTests(unittest.TestCase):
             cls.tracks,
             cls.lessons,
         )
+        cls.learn_sequence = learn_glossary.build_learn_sequence(
+            cls.lesson_sections
+        )
         cls.related_lessons = learn_glossary.validate_lessons(
             cls.lessons,
             cls.entries,
@@ -113,11 +116,12 @@ class LearnGlossaryTests(unittest.TestCase):
                 learn_glossary.GENERATED_NAVIGATION_PATH,
                 learn_glossary.GENERATED_ENTRIES_PATH,
                 learn_glossary.GENERATED_LOOKUP_DATA_PATH,
+                learn_glossary.GENERATED_LEARN_SEQUENCE_PATH,
                 learn_glossary.AUTHORING_TERMS_PATH,
                 *track_outputs,
             }
         )
-        self.assertEqual(len(outputs), 8)
+        self.assertEqual(len(outputs), 9)
         self.assertEqual(
             outputs,
             learn_glossary.generated_outputs(
@@ -452,6 +456,136 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertNotIn("data-bms-filter-track", generated)
         self.assertIn("data-bms-filter-term", generated)
+
+    def test_continuous_learn_manifest_matches_discovered_curriculum(self) -> None:
+        manifest = json.loads(
+            learn_glossary.GENERATED_LEARN_SEQUENCE_PATH.read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(manifest, self.learn_sequence)
+        self.assertEqual(manifest["schema_version"], 1)
+        expected = [
+            lesson["route"]
+            for track in self.lesson_sections
+            for lesson in track["lessons"]
+        ]
+        actual = [lesson["route"] for lesson in manifest["lessons"]]
+        self.assertEqual(actual, expected)
+        self.assertEqual(len(actual), len(set(actual)))
+        self.assertTrue(
+            learn_glossary.GENERATED_LEARN_SEQUENCE_PATH.read_text(
+                encoding="utf-8"
+            ).endswith("\n")
+        )
+
+    def test_continuous_learn_manifest_skips_empty_tracks_and_non_lessons(
+        self,
+    ) -> None:
+        sequence_track_ids = {
+            lesson["track_id"] for lesson in self.learn_sequence["lessons"]
+        }
+        expected_non_empty_track_ids = {
+            track["id"] for track in self.lesson_sections if track["lessons"]
+        }
+        self.assertEqual(sequence_track_ids, expected_non_empty_track_ids)
+        self.assertNotIn(
+            next(
+                track["id"]
+                for track in self.lesson_sections
+                if not track["lessons"]
+            ),
+            sequence_track_ids,
+        )
+        routes = {lesson["route"] for lesson in self.learn_sequence["lessons"]}
+        excluded = {
+            "/learn/",
+            "/learn/glossary/",
+            *[str(track["route"]) for track in self.lesson_sections],
+        }
+        self.assertTrue(routes.isdisjoint(excluded))
+        self.assertFalse(
+            any("/glossary/" in route for route in routes)
+        )
+
+    def test_continuous_learn_manifest_chain_and_route_styles(self) -> None:
+        lessons = self.learn_sequence["lessons"]
+        self.assertIsNone(lessons[0]["previous_route"])
+        self.assertIsNone(lessons[-1]["next_route"])
+        for index, lesson in enumerate(lessons):
+            self.assertEqual(lesson["sequence_index"], index)
+            self.assertEqual(
+                lesson["previous_route"],
+                lessons[index - 1]["route"] if index else None,
+            )
+            self.assertEqual(
+                lesson["next_route"],
+                lessons[index + 1]["route"]
+                if index + 1 < len(lessons)
+                else None,
+            )
+            self.assertEqual(
+                lesson["next_starts_new_track"],
+                bool(
+                    index + 1 < len(lessons)
+                    and lesson["track_id"] != lessons[index + 1]["track_id"]
+                ),
+            )
+        self.assertTrue(any(lesson["route"].endswith("/") for lesson in lessons))
+        self.assertTrue(
+            any(lesson["route"].endswith(".html") for lesson in lessons)
+        )
+        self.assertTrue(any(
+            lesson["next_starts_new_track"] for lesson in lessons
+        ))
+
+    def test_continuous_learn_manifest_rejects_duplicate_and_broken_routes(
+        self,
+    ) -> None:
+        duplicate = {
+            "schema_version": 1,
+            "lessons": [
+                {
+                    "sequence_index": 0,
+                    "route": "/learn/duplicate.html",
+                    "previous_route": None,
+                    "next_route": "/learn/duplicate.html",
+                    "track_id": "one",
+                    "next_starts_new_track": False,
+                },
+                {
+                    "sequence_index": 1,
+                    "route": "/learn/duplicate.html",
+                    "previous_route": "/learn/duplicate.html",
+                    "next_route": None,
+                    "track_id": "one",
+                    "next_starts_new_track": False,
+                },
+            ],
+        }
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "duplicate lesson routes",
+        ):
+            learn_glossary.validate_learn_sequence(duplicate)
+
+        broken = json.loads(json.dumps(self.learn_sequence))
+        broken["lessons"][0]["next_route"] = "/learn/not-the-next-lesson.html"
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "broken next route",
+        ):
+            learn_glossary.validate_learn_sequence(broken)
+
+    def test_temporary_scrolling_lesson_is_removed(self) -> None:
+        temporary_source = (
+            learn_glossary.CUBE_ROOT / "scrolling-test-lesson-three.qmd"
+        )
+        self.assertFalse(temporary_source.exists())
+        self.assertNotIn(
+            "/learn/cube/scrolling-test-lesson-three.html",
+            {lesson["route"] for lesson in self.learn_sequence["lessons"]},
+        )
 
     def test_custom_404_source_contract(self) -> None:
         not_found_path = learn_glossary.SITE_ROOT / "404.qmd"
@@ -1206,7 +1340,8 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["alias_entries"], 181)
         self.assertEqual(result["canonical_anchors"], 624)
         self.assertEqual(result["standalone_term_pages"], 0)
-        self.assertEqual(result["generated_files"], 8)
+        self.assertEqual(result["generated_files"], 9)
+        self.assertEqual(result["continuous_lessons"], len(self.lessons))
         self.assertEqual(result["lesson_catalogue_sections"], 3)
         self.assertEqual(result["learn_tracks"], 3)
         self.assertEqual(result["lessons"], 4)

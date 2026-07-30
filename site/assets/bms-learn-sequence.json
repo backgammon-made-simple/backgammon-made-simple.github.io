@@ -1,0 +1,53 @@
+{
+  "lessons": [
+    {
+      "lesson_order": 1,
+      "next_route": "/learn/reading-positions-and-engines/",
+      "next_starts_new_track": false,
+      "previous_route": null,
+      "route": "/learn/game-plans/",
+      "sequence_index": 0,
+      "title": "The Main Game Plans",
+      "track_id": "start-here",
+      "track_order": 1,
+      "track_title": "Start Here"
+    },
+    {
+      "lesson_order": 2,
+      "next_route": "/learn/cube/why-is-25-percent-the-basic-take-point.html",
+      "next_starts_new_track": true,
+      "previous_route": "/learn/game-plans/",
+      "route": "/learn/reading-positions-and-engines/",
+      "sequence_index": 1,
+      "title": "Reading Positions and Engine Analysis",
+      "track_id": "start-here",
+      "track_order": 1,
+      "track_title": "Start Here"
+    },
+    {
+      "lesson_order": 1,
+      "next_route": "/learn/cube/what-the-cube-is-asking.html",
+      "next_starts_new_track": false,
+      "previous_route": "/learn/reading-positions-and-engines/",
+      "route": "/learn/cube/why-is-25-percent-the-basic-take-point.html",
+      "sequence_index": 2,
+      "title": "Why Is 25% the Basic Take Point When a Double Is Offered?",
+      "track_id": "doubling-cube",
+      "track_order": 2,
+      "track_title": "The Doubling Cube"
+    },
+    {
+      "lesson_order": 2,
+      "next_route": null,
+      "next_starts_new_track": false,
+      "previous_route": "/learn/cube/why-is-25-percent-the-basic-take-point.html",
+      "route": "/learn/cube/what-the-cube-is-asking.html",
+      "sequence_index": 3,
+      "title": "What the Cube Is Really Asking",
+      "track_id": "doubling-cube",
+      "track_order": 2,
+      "track_title": "The Doubling Cube"
+    }
+  ],
+  "schema_version": 1
+}
