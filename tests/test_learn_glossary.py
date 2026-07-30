@@ -82,9 +82,12 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(len(self.entries), 12)
         self.assertEqual(
             sum(len(entry["aliases"]) for entry in self.entries),
-            4,
+            3,
         )
-        self.assertEqual(12 + 4, 16)
+        self.assertEqual(12 + 3, 15)
+        self.assertTrue(
+            all(entry["date_added"] == "2026-07-30" for entry in self.entries)
+        )
         learn_glossary.assert_no_forbidden_keys(self.data)
         learn_glossary.assert_no_forbidden_text(
             learn_glossary.PUBLIC_DATA_PATH.read_text(encoding="utf-8"),
@@ -173,7 +176,7 @@ class LearnGlossaryTests(unittest.TestCase):
             for entry in self.entries
             for alias in entry["aliases"]
         }
-        self.assertEqual(len(alias_to_canonical), 4)
+        self.assertEqual(len(alias_to_canonical), 3)
         self.assertEqual(
             alias_to_canonical["ahead-in-the-race"],
             "ahead-in-the-count",
@@ -183,19 +186,27 @@ class LearnGlossaryTests(unittest.TestCase):
             "abt",
         )
         self.assertNotIn("ahead-in-the-race", canonical)
-        self.assertEqual(self.entries_html.count('data-bms-alias="'), 4)
+        self.assertEqual(self.entries_html.count('data-bms-alias="'), 3)
         self.assertIn(
             'data-bms-aliases="[&quot;ahead-in-the-race&quot;]"',
             self.entries_html,
         )
         self.assertNotIn('id="ahead-in-the-race"', self.entries_html)
+        self.assertNotIn("candidate only", self.entries_html.casefold())
 
     def test_full_definitions_usage_and_related_links_are_initial_html(self) -> None:
         self.assertEqual(
             self.entries_html.count('class="bms-glossary-definition"'),
             12,
         )
-        self.assertIn('class="bms-glossary-short-definition"', self.entries_html)
+        self.assertNotIn(
+            'class="bms-glossary-short-definition"',
+            self.entries_html,
+        )
+        self.assertIn(
+            "Bringing two builders down from the mid-point",
+            self.entries_html,
+        )
         self.assertNotIn('target="_blank"', self.entries_html)
         self.assertNotIn("bms-learn-card-taxonomy", self.entries_html)
         self.assertNotIn("bms-research-post-taxonomy", self.entries_html)
@@ -491,8 +502,16 @@ class LearnGlossaryTests(unittest.TestCase):
             < generated.index(str(self.cube_lessons[1]["title"]))
         )
         self.assertNotIn("data-bms-filter-track", generated)
-        self.assertNotIn("data-bms-filter-term", generated)
-        self.assertIn("No options yet", generated)
+        self.assertEqual(
+            set(
+                re.findall(
+                    r'data-bms-filter-term="([^"]+)"',
+                    generated,
+                )
+            ),
+            {"10-in-the-zone", "active-builder"},
+        )
+        self.assertNotIn("No options yet", generated)
 
     def test_custom_404_source_contract(self) -> None:
         not_found_path = learn_glossary.SITE_ROOT / "404.qmd"
@@ -873,7 +892,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(len(entries), 12)
         self.assertEqual(
             sum(len(entry["aliases"]) for entry in entries),
-            4,
+            3,
         )
         self.assertEqual(
             sum(len(entry["related_lessons"]) for entry in entries),
@@ -1111,22 +1130,43 @@ class LearnGlossaryTests(unittest.TestCase):
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
         ).read_text(encoding="utf-8")
         self.assertIn("input.focus({ preventScroll: true });", javascript)
+        self.assertIn(
+            "if (input && focusInput && desktopQuery.matches)",
+            javascript,
+        )
 
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
         ).read_text(encoding="utf-8")
         for required in (
-            "@media (min-width: 768px) and (max-width: 991.98px)",
+            "@media (max-width: 991.98px)",
             "[data-bms-site-term-toggle]:not([hidden])",
-            "top: clamp(9rem, 42vh, 20rem);",
-            ".quarto-secondary-nav",
-            "[data-bms-mobile-term-toggle]",
-            "@keyframes bms-term-lookup-slide-in",
-            "transform: translate(1.5rem, -50%);",
+            "top: 64vh;",
+            ".bms-mobile-term-toggle {\n    display: none;",
+            "color: var(--bms-text-muted);",
+            "font-size: 0.68rem;",
+            "font-weight: 500;",
             "transform: translateY(-50%);",
-            "@media (prefers-reduced-motion: reduce)",
         ):
             self.assertIn(required, css)
+        self.assertNotIn("@keyframes bms-term-lookup-slide-in", css)
+
+    def test_lookup_result_uses_short_definition(self) -> None:
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        lookup_renderer = javascript[
+            javascript.index("  function renderLookupResult(") :
+            javascript.index("  function initializeTermLookup()")
+        ]
+        self.assertIn(
+            "definition.textContent = entry.short_definition;",
+            lookup_renderer,
+        )
+        self.assertNotIn(
+            "definition.textContent = entry.definition;",
+            lookup_renderer,
+        )
 
     def test_update_toc_null_guard_contract(self) -> None:
         javascript = (
@@ -1264,7 +1304,25 @@ class LearnGlossaryTests(unittest.TestCase):
             self.assertIn(required, source)
         self.assertNotIn("../posts/", source)
         self.assertNotIn("../templates/", source)
-        self.assertEqual(self.update_publications, [])
+        self.assertEqual(len(self.update_publications), 12)
+        self.assertTrue(
+            all(
+                publication["publication_type"] == "Glossary"
+                for publication in self.update_publications
+            )
+        )
+        self.assertEqual(
+            {publication["date"] for publication in self.update_publications},
+            {"2026-07-30"},
+        )
+        self.assertIn(
+            "/learn/glossary/#10-in-the-zone",
+            {
+                publication["route"]
+                for publication in self.update_publications
+            },
+        )
+        self.assertIn("glossary definitions", source)
         generator = MODULE_PATH.read_text(encoding="utf-8")
         for guard in (
             "excluded_landings",
@@ -1357,12 +1415,11 @@ class LearnGlossaryTests(unittest.TestCase):
         for required in (
             "BMS_SKIP_SOCIAL_CARDS=1",
             'PORT="${1:-8765}"',
-            "/dev/tcp/${HOST}/${PORT}",
+            'kill -0 "${STATIC_SERVER_PID}"',
             '-m http.server "${PORT}"',
             "--directory site/_site",
             'trap cleanup EXIT',
             'quarto preview site',
-            "--render all",
             "--no-serve",
             "--no-browser",
             "--no-navigate",
@@ -1456,6 +1513,66 @@ class LearnGlossaryTests(unittest.TestCase):
             '<footer><a href="/updates/index.xml">RSS</a></footer>',
             normalized_footer,
         )
+
+    def test_post_render_adds_full_glossary_definitions_to_rss_once(self) -> None:
+        base_feed = """<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Backgammon Made Simple Updates</title>
+    <item>
+      <title>Newer lesson</title>
+      <link>https://backgammon-made-simple.github.io/learn/newer.html</link>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
+"""
+        records = bms_post_render.glossary_feed_records(self.data)
+        self.assertEqual(len(records), 12)
+        updated, changed = bms_post_render.augmented_updates_feed_text(
+            base_feed,
+            records,
+        )
+        self.assertTrue(changed)
+        updated_again, changed_again = (
+            bms_post_render.augmented_updates_feed_text(updated, records)
+        )
+        self.assertFalse(changed_again)
+        self.assertEqual(updated_again, updated)
+
+        root = bms_post_render.ElementTree.fromstring(updated)
+        items = root.findall("./channel/item")
+        self.assertEqual(len(items), 13)
+        self.assertEqual(items[0].findtext("title"), "Newer lesson")
+        glossary_items = [
+            item
+            for item in items
+            if item.findtext("category") == "Glossary"
+        ]
+        self.assertEqual(len(glossary_items), 12)
+        zone = next(
+            item
+            for item in glossary_items
+            if item.findtext("title") == "Glossary: 10 in the Zone"
+        )
+        self.assertEqual(
+            zone.findtext("link"),
+            "https://backgammon-made-simple.github.io/learn/glossary/"
+            "#10-in-the-zone",
+        )
+        self.assertIn(
+            "Bringing two builders down from the mid-point",
+            zone.findtext("description", ""),
+        )
+        self.assertEqual(
+            zone.findtext("pubDate"),
+            "Thu, 30 Jul 2026 00:00:00 GMT",
+        )
+        encoded = zone.findtext(
+            f"{{{bms_post_render.RSS_NAMESPACES['content']}}}encoded",
+            "",
+        )
+        self.assertIn("<p>The zone is your side of the board", encoded)
 
     def test_rendered_validator_distinguishes_partial_and_missing_artifacts(
         self,
@@ -1552,7 +1669,7 @@ class LearnGlossaryTests(unittest.TestCase):
         result = learn_glossary.validate_generated()
         self.assertEqual(result["source_entries"], 805)
         self.assertEqual(result["canonical_entries"], 12)
-        self.assertEqual(result["alias_entries"], 4)
+        self.assertEqual(result["alias_entries"], 3)
         self.assertEqual(result["canonical_anchors"], 12)
         self.assertEqual(result["standalone_term_pages"], 0)
         self.assertEqual(result["generated_files"], 8)
@@ -1560,7 +1677,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["learn_tracks"], 3)
         self.assertEqual(result["lessons"], 4)
         self.assertEqual(result["cube_lessons"], 2)
-        self.assertEqual(result["updates_publications"], 0)
+        self.assertEqual(result["updates_publications"], 12)
         self.assertEqual(
             result["related_lesson_links"],
             sum(len(value) for value in self.related_lessons.values()),

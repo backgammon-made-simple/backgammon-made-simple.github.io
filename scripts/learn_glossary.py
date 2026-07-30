@@ -37,7 +37,7 @@ QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
 EXPECTED_CANONICAL_ENTRIES = 12
-EXPECTED_ALIAS_ENTRIES = 4
+EXPECTED_ALIAS_ENTRIES = 3
 FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
 FULL_BUILD_MARKER_SCHEMA = 1
 RENDERED_CORE_PATHS = (
@@ -465,6 +465,7 @@ def validate_public_data(
             "aliases",
             "categories",
             "category",
+            "date_added",
             "definition",
             "definition_links",
             "learning_tracks",
@@ -481,6 +482,19 @@ def validate_public_data(
         slug = require_string(entry, "slug", f"tracked entry {index}")
         term = require_string(entry, "term", f"tracked entry {slug}")
         glossary_categories(entry, f"tracked entry {slug}")
+        if "date_added" in entry:
+            raw_date_added = require_string(
+                entry,
+                "date_added",
+                f"tracked entry {slug}",
+            )
+            try:
+                date.fromisoformat(raw_date_added)
+            except ValueError as error:
+                raise ValidationError(
+                    f"Tracked entry {slug} has invalid date_added "
+                    f"{raw_date_added!r}"
+                ) from error
         require_string(entry, "definition", f"tracked entry {slug}")
         if "short_definition" in entry:
             require_string(entry, "short_definition", f"tracked entry {slug}")
@@ -909,6 +923,32 @@ def discover_update_publications() -> list[dict[str, object]]:
                 }
             )
 
+    glossary_data = read_json(PUBLIC_DATA_PATH)
+    glossary_entries = validate_public_data(glossary_data)
+    for entry in glossary_entries:
+        slug = str(entry["slug"])
+        raw_date = entry.get("date_added")
+        if not isinstance(raw_date, str) or not raw_date:
+            raise ValidationError(
+                f"Glossary entry {slug} requires date_added for the Updates feed"
+            )
+        try:
+            publication_date = date.fromisoformat(raw_date)
+        except ValueError as error:
+            raise ValidationError(
+                f"Glossary entry {slug} has invalid date_added {raw_date!r}"
+            ) from error
+        publications.append(
+            {
+                "date": publication_date.isoformat(),
+                "description": str(entry["definition"]),
+                "path": PUBLIC_DATA_PATH,
+                "publication_type": "Glossary",
+                "route": f"/learn/glossary/#{slug}",
+                "title": f"Glossary: {entry['term']}",
+            }
+        )
+
     publications.sort(
         key=lambda publication: (
             -date.fromisoformat(str(publication["date"])).toordinal(),
@@ -1145,11 +1185,10 @@ def lesson_catalogue_item_html(
         f'data-bms-terms="{html_attr(json.dumps(terms, ensure_ascii=False))}" '
         f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
         '<div class="bms-learn-catalogue-title-row">',
-        f'<span class="bms-learn-lesson-number" aria-hidden="true">'
-        f'{int(lesson["order"])}</span>',
         '<details class="bms-learn-catalogue-description">',
         f'<summary><a class="bms-learn-catalogue-link" '
-        f'href="{html_attr(lesson["route"])}">{html.escape(title)}</a>'
+        f'href="{html_attr(lesson["route"])}">'
+        f'{int(lesson["order"])}. {html.escape(title)}</a>'
         f'<span class="bms-learn-description-arrow" '
         f'aria-label="Show description for {html_attr(title)}">&#9662;</span>'
         "</summary>",
@@ -1190,7 +1229,7 @@ def build_navigation_yaml(curriculum: list[dict[str, object]]) -> str:
                 lesson_title = str(lesson["title"]).replace('"', "'")
                 lines.extend(
                     [
-                        f'            - text: "{lesson_prefix} {lesson_title}"',
+                        f'            - text: "{lesson_prefix}. {lesson_title}"',
                         f"              href: {lesson['source_path']}",
                     ]
                 )
@@ -1243,7 +1282,8 @@ def build_lesson_catalogue_html(
         GENERATED_MARKER,
         '<details class="bms-learn-filter-panel" data-bms-learn-filters '
         f'data-bms-learn-mode="{mode}" aria-label="Search and filter lessons">',
-        '<summary class="bms-learn-filters-summary">Click for filters</summary>',
+        '<summary class="bms-learn-filters-summary">'
+        "Click to search and filter lessons</summary>",
         '<div class="bms-learn-filter-body">',
         '<div class="bms-learn-search-group">',
         '<label for="bms-learn-search">Search lessons</label>',
@@ -1433,39 +1473,124 @@ def usage_notes_html(entry: dict[str, object]) -> str:
     return "\n".join(notes)
 
 
-def linked_definition_html(entry: dict[str, object]) -> str:
-    definition = str(entry["definition"])
+def inline_definition_candidates(
+    entry: dict[str, object],
+    glossary_entries: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    candidates: dict[str, dict[str, object]] = {}
     raw_links = entry.get("definition_links")
-    if not isinstance(raw_links, list) or not raw_links:
+    if isinstance(raw_links, list):
+        for link in raw_links:
+            if not isinstance(link, dict):
+                continue
+            phrase = str(link["text"])
+            candidates[phrase.casefold()] = {
+                "phrase": phrase,
+                "priority": 0,
+                "slug": str(link["slug"]),
+            }
+
+    for target in glossary_entries:
+        slug = str(target["slug"])
+        values = [str(target["term"])] + [
+            str(alias["term"])
+            for alias in target.get("aliases", [])
+            if isinstance(alias, dict)
+        ]
+        for phrase in values:
+            candidates.setdefault(
+                phrase.casefold(),
+                {
+                    "phrase": phrase,
+                    "priority": 1,
+                    "slug": slug,
+                },
+            )
+
+    prepared: list[dict[str, object]] = []
+    for candidate in candidates.values():
+        words = re.findall(r"[A-Za-z0-9]+", str(candidate["phrase"]))
+        if not words:
+            continue
+        prepared.append({
+            **candidate,
+            "pattern": re.compile(
+                r"(?<![A-Za-z0-9-])"
+                + r"[^A-Za-z0-9]+".join(re.escape(word) for word in words)
+                + r"(?![A-Za-z0-9-])",
+                re.IGNORECASE,
+            ),
+        })
+    return sorted(
+        prepared,
+        key=lambda candidate: (
+            int(candidate["priority"]),
+            -len(str(candidate["phrase"])),
+            str(candidate["phrase"]).casefold(),
+            str(candidate["slug"]),
+        ),
+    )
+
+
+def linked_definition_html(
+    entry: dict[str, object],
+    glossary_entries: list[dict[str, object]],
+) -> str:
+    definition = str(entry["definition"])
+    candidates = inline_definition_candidates(entry, glossary_entries)
+    if not candidates:
         return html.escape(definition)
 
-    links_by_text = {
-        str(link["text"]).casefold(): str(link["slug"])
-        for link in raw_links
-        if isinstance(link, dict)
-    }
-    phrases = sorted(
-        (str(link["text"]) for link in raw_links if isinstance(link, dict)),
-        key=lambda value: (-len(value), value.casefold()),
-    )
-    pattern = re.compile(
-        "|".join(re.escape(phrase) for phrase in phrases),
-        re.IGNORECASE,
-    )
     parts: list[str] = []
     cursor = 0
-    for match in pattern.finditer(definition):
+    while cursor < len(definition):
+        matches: list[tuple[int, int, int, int, str, re.Match[str]]] = []
+        for candidate in candidates:
+            match = candidate["pattern"].search(definition, cursor)  # type: ignore[union-attr]
+            if match is None:
+                continue
+            matches.append((
+                match.start(),
+                int(candidate["priority"]),
+                -len(match.group(0)),
+                -len(str(candidate["phrase"])),
+                str(candidate["slug"]),
+                match,
+            ))
+        if not matches:
+            parts.append(html.escape(definition[cursor:]))
+            break
+        _start, _priority, _visible_length, _phrase_length, slug, match = min(
+            matches,
+            key=lambda candidate: candidate[:5],
+        )
         parts.append(html.escape(definition[cursor:match.start()]))
         visible = match.group(0)
-        slug = links_by_text[visible.casefold()]
         parts.append(
-            f'<a href="/learn/glossary/#{html_attr(slug)}" '
+            f'<a class="bms-inline-glossary" '
+            f'href="/learn/glossary/#{html_attr(slug)}" '
+            f'data-bms-glossary-slug="{html_attr(slug)}" '
             f'data-bms-definition-link="{html_attr(slug)}">'
             f"{html.escape(visible)}</a>"
         )
         cursor = match.end()
-    parts.append(html.escape(definition[cursor:]))
     return "".join(parts)
+
+
+def full_definition_html(
+    entry: dict[str, object],
+    glossary_entries: list[dict[str, object]],
+) -> str:
+    paragraphs = [
+        paragraph.strip()
+        for paragraph in re.split(
+            r"\n\s*\n",
+            linked_definition_html(entry, glossary_entries).strip(),
+        )
+        if paragraph.strip()
+    ]
+    body = "\n".join(f"<p>{paragraph}</p>" for paragraph in paragraphs)
+    return f'<div class="bms-glossary-definition">\n{body}\n</div>'
 
 
 def related_terms_html(entry: dict[str, object]) -> str:
@@ -1609,14 +1734,7 @@ def build_entries_html(
                     f'{html.escape(str(entry["term"]))}</span></summary>',
                     '<div class="bms-glossary-entry-body">',
                     alias_html(entry["aliases"]),  # type: ignore[arg-type]
-                    (
-                        '<p class="bms-glossary-short-definition">'
-                        f'{html.escape(str(entry["short_definition"]))}</p>'
-                        if "short_definition" in entry
-                        else ""
-                    ),
-                    f'<p class="bms-glossary-definition">'
-                    f"{linked_definition_html(entry)}</p>",
+                    full_definition_html(entry, entries),
                     category_html(entry, categories),
                     related_terms_html(entry),
                     usage_notes_html(entry),

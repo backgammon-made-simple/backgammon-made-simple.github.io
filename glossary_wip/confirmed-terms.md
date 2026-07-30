@@ -18,6 +18,8 @@ Categories and learning tracks are optional arrays. A term may have zero or more
 
 **Slug:** `8-9-12-doubling-rule`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - None
@@ -69,10 +71,11 @@ Replace the existing definition. Preserve the current slug and category.
 
 **Slug:** `10-in-the-zone`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - Ten in the Zone
-- 10 Checkers in the Zone, candidate only
 
 ## Short definition
 
@@ -80,7 +83,7 @@ Ten in the Zone means having ten checkers in your home board and outer board, gi
 
 ## Full definition
 
-The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two more checkers down from the mid-point increases that number to ten.
+The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two builders down from the mid-point increases that number to ten.
 
 With ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.
 
@@ -127,6 +130,8 @@ Add as a new canonical entry after the new alias and duplicate-count validation 
 **Status:** Confirmed new entry
 
 **Slug:** `25-percent-rule`
+
+**Added:** 2026-07-30
 
 ## AKA
 
@@ -181,6 +186,8 @@ Add as a new canonical entry.
 
 **Slug:** `abt`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - American Backgammon Tour
@@ -225,6 +232,8 @@ Replace the existing definition and add American Backgammon Tour as an alias, su
 **Status:** Confirmed existing entry
 
 **Slug:** `ace`
+
+**Added:** 2026-07-30
 
 ## AKA
 
@@ -272,6 +281,8 @@ Replace the existing definition. Preserve the current slug and category.
 **Status:** Confirmed existing entry
 
 **Slug:** `ace-point-game`
+
+**Added:** 2026-07-30
 
 ## AKA
 
@@ -328,6 +339,8 @@ Replace the existing definition. Preserve the current slug and category.
 **Status:** Confirmed existing entry
 
 **Slug:** `acting-captain`
+
+**Added:** 2026-07-30
 
 ## AKA
 
@@ -386,6 +399,8 @@ Replace the existing definition. Preserve the current slug and category.
 
 **Slug:** `action-play`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - None
@@ -440,6 +455,8 @@ Replace the existing definition. Preserve the current slug and category.
 
 **Slug:** `action-position`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - None
@@ -487,6 +504,8 @@ Replace the existing definition. Preserve the current slug and category.
 **Status:** Confirmed existing entry
 
 **Slug:** `active-builder`
+
+**Added:** 2026-07-30
 
 ## AKA
 
@@ -553,6 +572,8 @@ These are not yet approved canonical entries.
 
 **Slug:** `advanced-anchor`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - None
@@ -607,6 +628,8 @@ Replace the existing definition. Preserve the current slug and category.
 **Status:** Confirmed merge of two existing canonical entries
 
 **Slug:** `ahead-in-the-count`
+
+**Added:** 2026-07-30
 
 ## AKA
 

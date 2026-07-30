@@ -34,6 +34,8 @@ Production code never reads `staged-terms.md`,
 
 **Slug:** `canonical-slug`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 - Alias or lookup phrase
@@ -47,6 +49,9 @@ One required short definition.
 
 One required full definition. Multiple paragraphs and punctuation are
 preserved with LF line endings.
+
+The public glossary page displays this full definition. Compact term lookup
+results and inline lesson hover cards use the separate short definition.
 
 ## Inline terms
 
@@ -82,6 +87,7 @@ Every confirmed entry emits:
 
 - `term`;
 - `slug`;
+- stable ISO `date_added`, used for its RSS publication date;
 - `aliases` using the existing objects with `slug` and `term`;
 - `short_definition`;
 - full `definition`;
@@ -98,6 +104,13 @@ Every confirmed entry emits:
 
 The visible phrase must occur in the full definition, and its target must be a
 canonical slug in the final approved production glossary.
+
+The generated glossary also detects approved canonical terms and aliases in
+each full definition automatically. Matches receive the same keyboard-focus
+and pointer-hover treatment as highlighted lesson terms, and the hover card
+always reads the target's canonical `short_definition`. Explicit Inline terms
+remain available as higher-priority mappings when editorial wording needs a
+specific target.
 
 `related_terms` preserves authored order and spelling. When the term resolves
 through a current canonical or alias name, its canonical slug is added:
@@ -123,8 +136,9 @@ misleading fallback category is invented.
 
 The existing HTML builder conditionally:
 
-- renders short and full definitions;
-- links inline phrases to glossary fragments;
+- renders full definitions on the glossary page;
+- links explicit and automatically matched inline phrases to glossary
+  fragments;
 - preserves all categories in a data attribute and visible buttons;
 - merges author-supplied learning tracks into its track data;
 - renders resolved related terms as links and unresolved terms as text.

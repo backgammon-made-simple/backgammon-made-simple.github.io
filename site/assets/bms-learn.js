@@ -947,7 +947,7 @@
 
     const definition = document.createElement("p");
     definition.className = "bms-term-lookup-definition";
-    definition.textContent = entry.definition;
+    definition.textContent = entry.short_definition;
     container.appendChild(definition);
 
     if (
@@ -1121,7 +1121,7 @@
         .forEach(function (button) {
           button.setAttribute("aria-expanded", "true");
         });
-      if (input && focusInput) {
+      if (input && focusInput && desktopQuery.matches) {
         input.focus({ preventScroll: true });
       }
     };

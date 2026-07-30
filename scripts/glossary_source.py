@@ -9,6 +9,7 @@ import re
 import sys
 import unicodedata
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 try:
@@ -29,6 +30,7 @@ PRODUCTION_SOURCE_PATH = learn_glossary.PUBLIC_DATA_PATH
 ENTRY_HEADING = re.compile(r"^# ([^\r\n]+)$")
 SECTION_HEADING = re.compile(r"^## ([^\r\n]+)$")
 SLUG_FIELD = re.compile(r"^\*\*Slug:\*\*\s+`([^`]+)`\s*$")
+ADDED_FIELD = re.compile(r"^\*\*Added:\*\*\s+(\d{4}-\d{2}-\d{2})\s*$")
 STATUS_FIELD = re.compile(r"^\*\*Status:\*\*(?:\s+.*)?$")
 SLUG_VALUE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 INLINE_TERM = re.compile(
@@ -53,6 +55,7 @@ ValidationError = learn_glossary.ValidationError
 class ParsedEntry:
     term: str
     slug: str
+    date_added: str
     aliases: tuple[str, ...]
     short_definition: str
     full_definition: str
@@ -164,6 +167,7 @@ def parse_entry(term: str, lines: list[str]) -> ParsedEntry:
         len(lines),
     )
     slug: str | None = None
+    date_added: str | None = None
     for line in lines[:first_section]:
         stripped = line.strip()
         if (
@@ -179,12 +183,26 @@ def parse_entry(term: str, lines: list[str]) -> ParsedEntry:
                 raise ValidationError(f"{term} contains more than one Slug field")
             slug = slug_match.group(1)
             continue
+        added_match = ADDED_FIELD.fullmatch(stripped)
+        if added_match:
+            if date_added is not None:
+                raise ValidationError(f"{term} contains more than one Added field")
+            date_added = added_match.group(1)
+            try:
+                date.fromisoformat(date_added)
+            except ValueError as error:
+                raise ValidationError(
+                    f"{term} has an invalid Added date: {date_added!r}"
+                ) from error
+            continue
         raise ValidationError(f"Unexpected entry metadata under {term}: {line!r}")
 
     if slug is None:
         raise ValidationError(f"{term} requires a Slug field")
     if not SLUG_VALUE.fullmatch(slug):
         raise ValidationError(f"{term} has a malformed canonical slug: {slug!r}")
+    if date_added is None:
+        raise ValidationError(f"{term} requires an Added field")
 
     sections: dict[str, list[str]] = {}
     current_section: str | None = None
@@ -271,6 +289,7 @@ def parse_entry(term: str, lines: list[str]) -> ParsedEntry:
     return ParsedEntry(
         term=term,
         slug=slug,
+        date_added=date_added,
         aliases=aliases,
         short_definition=short_definition,
         full_definition=full_definition,
@@ -430,6 +449,7 @@ def build_public_data(
         public_entry: dict[str, object] = {
             "aliases": aliases,
             "categories": list(entry.categories),
+            "date_added": entry.date_added,
             "definition": entry.full_definition,
             "definition_links": definition_links,
             "learning_tracks": list(entry.learning_tracks),
@@ -505,6 +525,7 @@ def confirmed_entry_shell(entry: ParsedEntry) -> dict[str, object]:
     public: dict[str, object] = {
         "aliases": aliases,
         "categories": list(entry.categories),
+        "date_added": entry.date_added,
         "definition": entry.full_definition,
         "definition_links": [],
         "learning_tracks": list(entry.learning_tracks),
@@ -875,13 +896,17 @@ def validate_current_build_compatibility(
 
     entries_html = learn_glossary.build_entries_html(entries, {}, {})
     definition_link_count = entries_html.count("data-bms-definition-link=")
-    if entries_html.count('class="bms-glossary-short-definition"') != len(entries):
-        raise ValidationError("Current page generator dropped a short definition")
+    if entries_html.count('class="bms-glossary-short-definition"') != 0:
+        raise ValidationError(
+            "Current page generator exposed short definitions on the "
+            "full-definition glossary page"
+        )
     if entries_html.count('class="bms-glossary-definition"') != len(entries):
         raise ValidationError("Current page generator dropped a full definition")
-    if definition_link_count != sum(
+    authored_link_count = sum(
         len(entry.get("definition_links", [])) for entry in entries
-    ):
+    )
+    if definition_link_count < authored_link_count:
         raise ValidationError("Current page generator dropped definition links")
     expected_related_groups = sum(
         bool(entry.get("related_terms")) for entry in entries

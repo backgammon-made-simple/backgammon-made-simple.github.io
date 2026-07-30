@@ -23,6 +23,7 @@ def parsed_entry(
     return source.ParsedEntry(
         term=term,
         slug=slug,
+        date_added="2026-07-30",
         aliases=aliases,
         short_definition=f"Short definition for {term}.",
         full_definition=full_definition or f"Full definition for {term}.",
@@ -339,13 +340,13 @@ class GlossarySourceMigrationTests(unittest.TestCase):
             first,
         )
         self.assertEqual(first_report["confirmed_entries"], 12)
-        self.assertEqual(first_report["confirmed_aliases"], 4)
+        self.assertEqual(first_report["confirmed_aliases"], 3)
         self.assertEqual(first_report["retained_legacy_entries"], 0)
         self.assertEqual(first_report["retained_legacy_aliases"], 0)
         self.assertEqual(first_report["review_only_legacy_entries"], 613)
         self.assertEqual(first_report["review_only_legacy_aliases"], 181)
         self.assertEqual(first_report["final_entries"], 12)
-        self.assertEqual(first_report["final_aliases"], 4)
+        self.assertEqual(first_report["final_aliases"], 3)
         self.assertTrue(first_report["unresolved_inline_targets"])
 
     def test_manual_edit_drift_message_is_clear(self) -> None:
@@ -398,6 +399,7 @@ class GlossarySourceMigrationTests(unittest.TestCase):
             with self.subTest(slug=slug):
                 generated = by_slug[slug]
                 self.assertEqual(generated["term"], parsed.term)
+                self.assertEqual(generated["date_added"], parsed.date_added)
                 self.assertEqual(generated["short_definition"], parsed.short_definition)
                 self.assertEqual(generated["definition"], parsed.full_definition)
                 self.assertEqual(generated["categories"], list(parsed.categories))

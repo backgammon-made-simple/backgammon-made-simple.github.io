@@ -410,7 +410,7 @@ assert.equal(
     (count, item) => count + item.aliasSlugs.length,
     0
   ),
-  4,
+  3,
   "the JavaScript integration fixture uses every approved alias"
 );
 
@@ -599,7 +599,7 @@ assert.equal(
     (total, entry) => total + entry.aliases.length,
     0
   ),
-  4
+  3
 );
 assert.equal(
   learn.bestLookupEntry(lookupData.entries, "Ahead in the Race").term,

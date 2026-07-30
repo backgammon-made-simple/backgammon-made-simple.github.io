@@ -2,20 +2,23 @@
   "entries": [
     {
       "alias_slugs": [
-        "10-checkers-in-the-zone-candidate-only",
         "ten-in-the-zone"
       ],
       "aliases": [
-        "10 Checkers in the Zone, candidate only",
         "Ten in the Zone"
       ],
       "categories": [
         "checker play and tactics"
       ],
-      "definition": "The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two more checkers down from the mid-point increases that number to ten.\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.",
+      "definition": "The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two builders down from the mid-point increases that number to ten.\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.",
       "definition_links": [],
       "learning_tracks": [],
-      "related_lessons": [],
+      "related_lessons": [
+        {
+          "route": "/learn/cube/what-the-cube-is-asking.html",
+          "title": "What the Cube Is Really Asking"
+        }
+      ],
       "related_terms": [
         {
           "term": "Attack Zone"
@@ -363,7 +366,12 @@
       "definition": "An active builder is a blot or spare checker in your outer board that can help you make a new point in your home board on a future roll. It is positioned to help you build a stronger board.",
       "definition_links": [],
       "learning_tracks": [],
-      "related_lessons": [],
+      "related_lessons": [
+        {
+          "route": "/learn/cube/what-the-cube-is-asking.html",
+          "title": "What the Cube Is Really Asking"
+        }
+      ],
       "related_terms": [
         {
           "term": "Builder"

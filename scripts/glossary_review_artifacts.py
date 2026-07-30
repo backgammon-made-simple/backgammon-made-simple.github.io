@@ -20,7 +20,9 @@ except ModuleNotFoundError:  # Direct execution sets sys.path to scripts/.
 
 REVIEW_TERMS = {"ABT", "Ace", "Active Builder"}
 INLINE_LINK = re.compile(
-    r'<a href="/learn/glossary/#(?P<slug>[^"]+)" '
+    r'<a class="bms-inline-glossary" '
+    r'href="/learn/glossary/#(?P<slug>[^"]+)" '
+    r'data-bms-glossary-slug="(?P=slug)" '
     r'data-bms-definition-link="(?P=slug)">(?P<text>[^<]+)</a>'
 )
 

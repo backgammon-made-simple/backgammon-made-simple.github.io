@@ -1,6 +1,6 @@
 ---
 title: "Updates"
-description: "Dated Backgammon Made Simple lessons, Research articles, studies, and benchmark reports."
+description: "Dated Backgammon Made Simple lessons, Research articles, studies, benchmark reports, and glossary definitions."
 page-layout: article
 toc: false
 sidebar: false
@@ -19,14 +19,14 @@ listing:
   feed:
     type: full
     title: "Backgammon Made Simple Updates"
-    description: "Dated public lessons, Research articles, studies, and benchmark reports."
+    description: "Dated public lessons, Research articles, studies, benchmark reports, and glossary definitions."
 execute:
   enabled: false
 ---
 
-This feed collects dated public lessons, Research articles, studies, and benchmark reports in reverse chronological order.
+This feed collects dated public lessons, Research articles, studies, benchmark reports, and approved glossary definitions in reverse chronological order.
 
-Only publications explicitly marked `published: true` and supplied with a real publication date are eligible. Landing pages, glossary entries, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.
+Page publications must be explicitly marked `published: true` and supplied with a real publication date. Approved glossary definitions use their stable `Added` date and are inserted as individual feed items during the build. Landing pages, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.
 
 ::: {#updates}
 :::

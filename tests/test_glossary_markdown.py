@@ -51,6 +51,8 @@ def entry_block(
 
 **Slug:** `{slug}`
 
+**Added:** 2026-07-30
+
 ## AKA
 
 {alias_lines}
@@ -170,6 +172,7 @@ class GlossaryMarkdownTests(unittest.TestCase):
                 "aliases",
                 "categories",
                 "category",
+                "date_added",
                 "definition",
                 "definition_links",
                 "learning_tracks",
@@ -227,10 +230,10 @@ class GlossaryMarkdownTests(unittest.TestCase):
         )
         self.assertEqual(result["canonical_entries"], 3)
         self.assertEqual(result["alias_entries"], 1)
-        self.assertEqual(result["page_short_definitions"], 3)
+        self.assertEqual(result["page_short_definitions"], 0)
         self.assertEqual(result["page_full_definitions"], 3)
         self.assertEqual(result["page_related_term_groups"], 3)
-        self.assertEqual(result["definition_links"], 7)
+        self.assertEqual(result["definition_links"], 9)
 
         entries = data["entries"]
         html = learn_glossary.build_entries_html(entries, {}, {})
@@ -262,6 +265,88 @@ class GlossaryMarkdownTests(unittest.TestCase):
         )
         self.assertIn("short_definition", active)
         self.assertIn("definition_links", active)
+
+    def test_full_definitions_auto_link_canonical_terms_and_aliases(self) -> None:
+        data = copy.deepcopy(self.build_data())
+        ace = next(
+            entry for entry in data["entries"]
+            if entry["slug"] == "ace"
+        )
+        ace["definition"] = (
+            "An Active Builder can appear on the American Backgammon Tour."
+        )
+        ace["definition_links"] = []
+        rendered = learn_glossary.build_entries_html(data["entries"], {}, {})
+        self.assertIn(
+            '<a class="bms-inline-glossary" '
+            'href="/learn/glossary/#active-builder" '
+            'data-bms-glossary-slug="active-builder" '
+            'data-bms-definition-link="active-builder">Active Builder</a>',
+            rendered,
+        )
+        self.assertIn(
+            '<a class="bms-inline-glossary" '
+            'href="/learn/glossary/#abt" '
+            'data-bms-glossary-slug="abt" '
+            'data-bms-definition-link="abt">American Backgammon Tour</a>',
+            rendered,
+        )
+
+    def test_auto_link_matching_does_not_link_inside_hyphenated_words(self) -> None:
+        data = copy.deepcopy(self.build_data())
+        ace = next(
+            entry for entry in data["entries"]
+            if entry["slug"] == "ace"
+        )
+        ace["definition"] = "Ace is distinct from ace-point terminology."
+        ace["definition_links"] = []
+        rendered = learn_glossary.build_entries_html(data["entries"], {}, {})
+        self.assertEqual(
+            rendered.count('data-bms-glossary-slug="ace"'),
+            1,
+        )
+        self.assertNotIn(
+            'data-bms-glossary-slug="ace">ace</a>-point',
+            rendered,
+        )
+
+    def test_authored_definition_link_wins_over_longer_automatic_match(self) -> None:
+        data = copy.deepcopy(self.build_data())
+        ace = next(
+            entry for entry in data["entries"]
+            if entry["slug"] == "ace"
+        )
+        ace["definition"] = "American Backgammon Tour example."
+        ace["definition_links"] = [
+            {
+                "slug": "active-builder",
+                "text": "American Backgammon",
+            }
+        ]
+        rendered = learn_glossary.build_entries_html(data["entries"], {}, {})
+        self.assertIn(
+            'data-bms-glossary-slug="active-builder" '
+            'data-bms-definition-link="active-builder">'
+            "American Backgammon</a> Tour",
+            rendered,
+        )
+
+    def test_full_definition_paragraphs_stay_inside_the_glossary_wrapper(self) -> None:
+        ace = entry_block(
+            "Ace",
+            "ace",
+            full_definition="First full-definition paragraph.\n\nSecond paragraph.",
+            definition_links=(),
+        )
+        data = self.build_data(mvp_document(ace=ace))
+        rendered = learn_glossary.build_entries_html(data["entries"], {}, {})
+        self.assertIn(
+            '<div class="bms-glossary-definition">\n'
+            "<p>First full-definition paragraph.</p>\n"
+            "<p>Second paragraph.</p>\n"
+            "</div>",
+            rendered,
+        )
 
     def test_zero_categories_are_valid_without_legacy_category(self) -> None:
         ace = entry_block(
@@ -373,6 +458,27 @@ class GlossaryMarkdownTests(unittest.TestCase):
             mvp.parse_markdown(
                 entry_block("Ace", "ace", full_definition="")
             )
+
+    def test_missing_or_invalid_added_date_fails(self) -> None:
+        missing = entry_block("Ace", "ace").replace(
+            "**Added:** 2026-07-30\n\n",
+            "",
+        )
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "requires an Added field",
+        ):
+            mvp.parse_markdown(missing)
+
+        invalid = entry_block("Ace", "ace").replace(
+            "**Added:** 2026-07-30",
+            "**Added:** 2026-02-30",
+        )
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "invalid Added date",
+        ):
+            mvp.parse_markdown(invalid)
 
     def test_missing_malformed_invalid_and_repeated_categories_fail(self) -> None:
         with self.assertRaisesRegex(
@@ -514,7 +620,7 @@ class GlossaryMarkdownTests(unittest.TestCase):
             self.assertEqual(first_result, second_result)
             self.assertEqual(first_result["canonical_entries"], 3)
             self.assertEqual(first_result["alias_entries"], 1)
-            self.assertEqual(first_result["page_short_definitions"], 3)
+            self.assertEqual(first_result["page_short_definitions"], 0)
             self.assertEqual(first_result["page_full_definitions"], 3)
             self.assertEqual(first_result["page_related_term_groups"], 3)
             self.assertEqual(first_result["lookup_entries"], 3)
@@ -581,7 +687,7 @@ class GlossaryMarkdownTests(unittest.TestCase):
             self.assertEqual(entries_html.count("<h4>See also</h4>"), 3)
             self.assertEqual(
                 entries_html.count('class="bms-glossary-short-definition"'),
-                3,
+                0,
             )
             self.assertEqual(
                 entries_html.count('class="bms-glossary-definition"'),

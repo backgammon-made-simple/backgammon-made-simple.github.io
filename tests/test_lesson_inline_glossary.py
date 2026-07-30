@@ -285,8 +285,15 @@ highlighted-terms: [ace]
         javascript = (ROOT / "site" / "assets" / "bms-learn.js").read_text(
             encoding="utf-8"
         )
+        glossary_html = (
+            ROOT / "site" / "learn" / "glossary" / "_entries.html"
+        ).read_text(encoding="utf-8")
         self.assertIn("function canonicalShortDefinition(entries, slug)", javascript)
         self.assertIn("entry.short_definition", javascript)
+        self.assertIn(
+            '".bms-inline-glossary[data-bms-glossary-slug]"',
+            javascript,
+        )
         self.assertIn('link.addEventListener("mouseenter"', javascript)
         self.assertIn('link.addEventListener("focus"', javascript)
         self.assertIn('link.addEventListener("blur"', javascript)
@@ -295,17 +302,34 @@ highlighted-terms: [ace]
         self.assertIn('window.addEventListener("resize"', javascript)
         self.assertIn('window.addEventListener("scroll"', javascript)
         self.assertNotIn("dataset.bmsGlossarySummary", javascript)
+        self.assertIn(
+            'class="bms-inline-glossary"',
+            glossary_html,
+        )
+        self.assertIn(
+            'data-bms-glossary-slug="abt" '
+            'data-bms-definition-link="abt">American Backgammon Tour</a>',
+            glossary_html,
+        )
 
-    def test_real_lessons_do_not_highlight_unapproved_terms(self) -> None:
+    def test_real_lesson_highlights_two_approved_terms(self) -> None:
         lessons = learn_glossary.discover_lessons()
         highlighted = [
             lesson
             for lesson in lessons
             if lesson.get("highlighted_terms")
         ]
-        self.assertEqual(highlighted, [])
+        self.assertEqual(len(highlighted), 1)
+        self.assertEqual(
+            highlighted[0]["relative_path"],
+            "cube/what-the-cube-is-asking.qmd",
+        )
+        self.assertEqual(
+            highlighted[0]["highlighted_terms"],
+            ["10-in-the-zone", "active-builder"],
+        )
 
-    def test_real_lesson_has_no_unapproved_inline_glossary_links(self) -> None:
+    def test_real_lesson_has_only_approved_inline_glossary_links(self) -> None:
         source_path = (
             ROOT
             / "site"
@@ -315,7 +339,9 @@ highlighted-terms: [ace]
         )
         result = self.render(source_path.read_text(encoding="utf-8"))
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertNotIn('class="bms-inline-glossary"', result.stdout)
+        self.assertEqual(result.stdout.count('class="bms-inline-glossary"'), 2)
+        self.assertIn('data-bms-glossary-slug="10-in-the-zone"', result.stdout)
+        self.assertIn('data-bms-glossary-slug="active-builder"', result.stdout)
         self.assertIn("<code>Take point ~= risk / (risk + reward)</code>", result.stdout)
         self.assertNotIn("data-bms-glossary-summary", result.stdout)
 
@@ -329,7 +355,10 @@ highlighted-terms: [ace]
         related = learn_glossary.validate_lessons(lessons, self.entries)
         for slug in selected["terms"]:
             with self.subTest(slug=slug):
-                self.assertNotIn(selected, related.get(slug, []))
+                if slug in {"10-in-the-zone", "active-builder"}:
+                    self.assertIn(selected, related.get(slug, []))
+                else:
+                    self.assertNotIn(selected, related.get(slug, []))
 
 
 if __name__ == "__main__":
