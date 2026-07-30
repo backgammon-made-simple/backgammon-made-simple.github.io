@@ -1806,10 +1806,10 @@
       );
       toggle.textContent = active ? "\u203a" : "\u2039";
       if (active) {
-        toggle.style.left = "0.25rem";
+        toggle.style.left = "0.5rem";
       } else {
-        const sidebarWidth = sidebar.getBoundingClientRect().width;
-        toggle.style.left = Math.max(4, sidebarWidth - 12) + "px";
+        const sidebarRight = sidebar.getBoundingClientRect().right;
+        toggle.style.left = Math.max(8, sidebarRight + 6) + "px";
       }
     };
 

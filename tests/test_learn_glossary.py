@@ -1313,8 +1313,8 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertRegex(
             css,
             r"body\.bms-learn-article #quarto-margin-sidebar \{[^}]*"
-            r"width: clamp\(10rem, 16vw, 18rem\);[^}]*"
-            r"min-width: clamp\(10rem, 16vw, 18rem\);",
+            r"width: clamp\(12rem, 19vw, 20rem\);[^}]*"
+            r"min-width: clamp\(12rem, 19vw, 20rem\);",
         )
         self.assertRegex(
             css,
@@ -1417,6 +1417,8 @@ class LearnGlossaryTests(unittest.TestCase):
         for required in (
             ".bms-lesson-track-toggle {\n  display: none;",
             "body.bms-learn-article:not(.bms-learn-track-index)",
+            "width: clamp(12rem, 19vw, 20rem)",
+            "font-size: 0.86rem",
             ".bms-lesson-track-collapsed",
             ".bms-refined-right-rail.bms-toc-collapsed",
             "#TOC\n    > ul",
@@ -1430,6 +1432,10 @@ class LearnGlossaryTests(unittest.TestCase):
             "@media (min-width: 992px)",
         ):
             self.assertIn(required, css)
+        self.assertIn(
+            'toggle.style.left = Math.max(8, sidebarRight + 6) + "px"',
+            javascript,
+        )
         self.assertRegex(
             css,
             r"\.bms-term-lookup-close \{[^}]*"

@@ -1543,7 +1543,7 @@ body:is(.bms-learn-index, .bms-learn-article)
     padding: 0;
     border: 1px solid var(--bms-border);
     border-radius: 5px;
-    background: var(--bms-ivory);
+    background: var(--bms-page-background);
     color: var(--bms-text-muted);
     cursor: pointer;
     font-size: 1rem;
@@ -1556,8 +1556,8 @@ body:is(.bms-learn-index, .bms-learn-article)
   }
 
   body.bms-learn-article #quarto-margin-sidebar {
-    width: clamp(10rem, 16vw, 18rem);
-    min-width: clamp(10rem, 16vw, 18rem);
+    width: clamp(12rem, 19vw, 20rem);
+    min-width: clamp(12rem, 19vw, 20rem);
     box-sizing: border-box;
   }
 
@@ -1640,8 +1640,26 @@ body:is(.bms-learn-index, .bms-learn-article)
     .bms-lesson-track-nav {
     position: relative;
     min-height: 1.55rem;
-    padding-right: 1.75rem;
+    padding-right: 2rem;
     overflow: hidden;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
+    .bms-lesson-track-label {
+    font-size: 0.8rem;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
+    .bms-lesson-track-links {
+    gap: 0.55rem;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
+    .bms-lesson-track-links
+    a {
+    min-height: 2.15rem;
+    padding: 0.38rem 0.68rem;
+    font-size: 0.86rem;
   }
 
   body.bms-learn-article:not(.bms-learn-track-index)
