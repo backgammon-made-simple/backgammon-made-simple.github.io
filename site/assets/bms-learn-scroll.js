@@ -588,6 +588,12 @@
     return (
       candidates.find(function (toc) {
         return (
+          typeof toc.getClientRects === "function" &&
+          toc.getClientRects().length > 0
+        );
+      }) ||
+      candidates.find(function (toc) {
+        return (
           !toc.hidden &&
           toc.getAttribute("aria-hidden") !== "true"
         );

@@ -93,18 +93,24 @@ assert.deepEqual(
 assert.equal(scroll.startsNewTrack(middle), true);
 assert.equal(scroll.startsNewTrack(first), false);
 
-const visibleToc = {
-  location: "visible",
+const zeroWidthToc = {
+  location: "zero-width",
   hidden: false,
   getAttribute() {
     return null;
+  },
+  getClientRects() {
+    return [];
   }
 };
-const hiddenMarginToc = {
+const laidOutMarginToc = {
   location: "margin",
-  hidden: true,
-  getAttribute(name) {
-    return name === "aria-hidden" ? "true" : null;
+  hidden: false,
+  getAttribute() {
+    return null;
+  },
+  getClientRects() {
+    return [{ width: 230, height: 240 }];
   }
 };
 const fallbackToc = {
@@ -116,16 +122,16 @@ const fallbackToc = {
 };
 const documentWithDuplicateTocs = {
   querySelectorAll(selector) {
-    return selector === "#TOC" ? [visibleToc, hiddenMarginToc] : [];
+    return selector === "#TOC" ? [zeroWidthToc, laidOutMarginToc] : [];
   },
   getElementById(id) {
-    return id === "TOC" ? visibleToc : null;
+    return id === "TOC" ? zeroWidthToc : null;
   }
 };
 assert.equal(
   scroll.findPrimaryToc(documentWithDuplicateTocs),
-  visibleToc,
-  "the visible TOC wins when Quarto emits a hidden duplicate"
+  laidOutMarginToc,
+  "the laid-out TOC wins when Quarto keeps a zero-width duplicate"
 );
 assert.equal(
   scroll.findPrimaryToc({
