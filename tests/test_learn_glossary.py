@@ -1108,6 +1108,41 @@ class LearnGlossaryTests(unittest.TestCase):
                 self.assertIn("generate", commands[0])
                 self.assertIn("run_social_pipeline.py", " ".join(commands[1]))
 
+        with mock.patch.dict(
+            os.environ,
+            {
+                "QUARTO_PROJECT_RENDER_ALL": "1",
+                "BMS_SKIP_SOCIAL_CARDS": "1",
+            },
+            clear=True,
+        ):
+            with (
+                mock.patch.object(
+                    bms_pre_render,
+                    "invalidate_full_build_marker",
+                    return_value=False,
+                ),
+                mock.patch.object(bms_pre_render, "run") as run,
+            ):
+                self.assertEqual(bms_pre_render.main(), 0)
+                self.assertEqual(run.call_count, 1)
+                self.assertIn(
+                    "learn_glossary.py",
+                    " ".join(run.call_args_list[0].args[0]),
+                )
+
+        preview_script = (
+            learn_glossary.REPOSITORY_ROOT / "scripts" / "preview-site.sh"
+        ).read_text(encoding="utf-8")
+        for required in (
+            "BMS_SKIP_SOCIAL_CARDS=1",
+            'PORT="${1:-8765}"',
+            'quarto preview site',
+            '--port "${PORT}"',
+            "--no-browser",
+        ):
+            self.assertIn(required, preview_script)
+
         with writable_test_directory() as runtime:
             marker = runtime / ".bms-full-build.json"
             marker.write_text("stale", encoding="utf-8")

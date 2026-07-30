@@ -8,6 +8,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FULL_BUILD_MARKER = REPO_ROOT / "site" / "_site" / ".bms-full-build.json"
+SKIP_SOCIAL_ENV = "BMS_SKIP_SOCIAL_CARDS"
 
 
 def run(command: list[str]) -> None:
@@ -42,6 +43,10 @@ def main() -> int:
             "generate",
         ]
     )
+
+    if os.getenv(SKIP_SOCIAL_ENV) == "1":
+        print("Local preview: skipping social-card pipeline.")
+        return 0
 
     print("Full project render: running social-card pipeline.")
     run(
