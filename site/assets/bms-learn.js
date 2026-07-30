@@ -584,10 +584,64 @@
           return;
         }
 
+        const desktopQuery = window.matchMedia("(min-width: 992px)");
+        const lessonPage =
+          document.body.classList.contains("bms-learn-article") &&
+          !document.body.classList.contains("bms-learn-track-index");
+        let trackCollapsed = false;
+        let trackContent = null;
+        let trackToggle = null;
+
+        if (lessonPage) {
+          trackContent = document.createElement("div");
+          trackContent.className = "bms-lesson-track-content";
+          trackContent.id = "bms-lesson-track-content";
+          while (trackNav.firstChild) {
+            trackContent.appendChild(trackNav.firstChild);
+          }
+
+          trackToggle = document.createElement("button");
+          trackToggle.type = "button";
+          trackToggle.className = "bms-lesson-track-toggle";
+          trackToggle.dataset.bmsLessonTrackToggle = "";
+          trackToggle.setAttribute("aria-controls", trackContent.id);
+          trackNav.append(trackContent, trackToggle);
+        }
+
+        function updateTrackControl(desktopRailActive) {
+          if (!trackContent || !trackToggle) {
+            return;
+          }
+          const collapsed = desktopRailActive && trackCollapsed;
+          trackContent.hidden = collapsed;
+          trackNav.classList.toggle(
+            "bms-lesson-track-collapsed",
+            collapsed
+          );
+          trackToggle.hidden = !desktopRailActive;
+          trackToggle.setAttribute(
+            "aria-expanded",
+            collapsed ? "false" : "true"
+          );
+          trackToggle.setAttribute(
+            "aria-label",
+            collapsed ? "Expand lesson track" : "Collapse lesson track"
+          );
+          trackToggle.textContent = collapsed ? "\u203a" : "\u2039";
+        }
+
+        if (trackToggle) {
+          trackToggle.addEventListener("click", function () {
+            trackCollapsed = !trackCollapsed;
+            updateTrackControl(true);
+          });
+        }
+
         function place() {
-          const wide = window.matchMedia("(min-width: 992px)").matches;
+          const wide = desktopQuery.matches;
           const sidebar = document.getElementById("quarto-margin-sidebar");
           const toc = sidebar ? sidebar.querySelector("#TOC") : null;
+          const desktopRailActive = lessonPage && wide && Boolean(sidebar);
 
           if (wide && sidebar) {
             let anchor = toc;
@@ -606,12 +660,11 @@
           } else {
             taxonomy.appendChild(trackNav);
           }
+          updateTrackControl(desktopRailActive);
         }
 
         place();
-        window
-          .matchMedia("(min-width: 992px)")
-          .addEventListener("change", place);
+        desktopQuery.addEventListener("change", place);
       });
   }
 
@@ -722,6 +775,10 @@
       lookup.id = lookup.id || "bms-term-lookup-panel";
       lookup.hidden = true;
     }
+    const refinedRightRailPage =
+      (document.body.classList.contains("bms-learn-article") &&
+        !document.body.classList.contains("bms-learn-track-index")) ||
+      document.body.classList.contains("bms-research-article");
 
     const tools = document.createElement("div");
     tools.className = "bms-site-tools";
@@ -732,13 +789,15 @@
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false"><span aria-hidden="true">&larr;</span> ' +
       "Look Up a Term</button>" +
-      '<button type="button" class="bms-toc-toggle" ' +
-      'data-bms-toc-toggle aria-controls="TOC" aria-expanded="true" ' +
-      'aria-label="Collapse table of contents" hidden>Collapse TOC</button>' +
-      '<button type="button" class="bms-margin-sidebar-toggle" ' +
-      'data-bms-margin-sidebar-toggle aria-controls="quarto-margin-sidebar" ' +
-      'aria-expanded="true" aria-label="Collapse all right sidebar content" hidden>' +
-      'Collapse All <span aria-hidden="true">&uarr;</span></button>' +
+      (refinedRightRailPage
+        ? ""
+        : '<button type="button" class="bms-toc-toggle" ' +
+          'data-bms-toc-toggle aria-controls="TOC" aria-expanded="true" ' +
+          'aria-label="Collapse table of contents" hidden>Collapse TOC</button>' +
+          '<button type="button" class="bms-margin-sidebar-toggle" ' +
+          'data-bms-margin-sidebar-toggle aria-controls="quarto-margin-sidebar" ' +
+          'aria-expanded="true" aria-label="Collapse all right sidebar content" hidden>' +
+          'Collapse All <span aria-hidden="true">&uarr;</span></button>') +
       '<button type="button" class="bms-site-back-to-top" ' +
       'data-bms-site-back-to-top hidden>Back to top ' +
       '<span aria-hidden="true">&uarr;</span></button>';
@@ -766,17 +825,48 @@
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
     const toc = marginSidebar ? marginSidebar.querySelector("#TOC") : null;
+    let tocHeadingToggle = null;
     let lookupEntriesPromise = null;
     let desktopCollapsed = false;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
 
-    if (lookup && marginSidebarToggle) {
-      tools.insertBefore(lookup, marginSidebarToggle);
+    if (toc && refinedRightRailPage) {
+      const tocTitle = toc.querySelector("#toc-title");
+      const tocLinks = toc.querySelector(":scope > ul");
+      if (tocTitle && tocLinks) {
+        tocLinks.id = tocLinks.id || "bms-toc-links";
+        tocHeadingToggle = document.createElement("button");
+        tocHeadingToggle.type = "button";
+        tocHeadingToggle.className = "bms-toc-heading-toggle";
+        tocHeadingToggle.dataset.bmsTocHeadingToggle = "";
+        tocHeadingToggle.setAttribute("aria-controls", tocLinks.id);
+        tocHeadingToggle.hidden = true;
+        tocTitle.appendChild(tocHeadingToggle);
+      }
+    }
+
+    if (lookup && refinedRightRailPage) {
+      const formElement = lookup.querySelector("[data-bms-term-lookup-form]");
+      if (formElement && !lookup.querySelector(".bms-term-lookup-browse")) {
+        const browseGlossary = document.createElement("a");
+        browseGlossary.className = "bms-term-lookup-browse";
+        browseGlossary.href = "/learn/glossary/";
+        browseGlossary.textContent = "Browse the full glossary";
+        formElement.insertAdjacentElement("afterend", browseGlossary);
+      }
+    }
+
+    if (lookup) {
+      tools.insertBefore(lookup, marginSidebarToggle || backToTop);
     }
 
     const inDesktopSidebar = function () {
       return desktopQuery.matches && Boolean(marginSidebar);
+    };
+
+    const inRefinedRightRail = function () {
+      return inDesktopSidebar() && refinedRightRailPage;
     };
 
     const inEditorialDock = function () {
@@ -824,6 +914,9 @@
       if (!lookup) {
         return;
       }
+      if (inRefinedRightRail()) {
+        return;
+      }
       if (settings.rememberDesktop && inDesktopDock()) {
         desktopCollapsed = true;
       }
@@ -844,6 +937,12 @@
 
     const updateMarginSidebar = function () {
       if (!marginSidebar || !marginSidebarToggle) {
+        return;
+      }
+      if (inRefinedRightRail()) {
+        marginSidebarCollapsed = false;
+        marginSidebar.classList.remove("bms-margin-sidebar-collapsed");
+        marginSidebarToggle.hidden = true;
         return;
       }
       const collapsed = inDesktopSidebar() && marginSidebarCollapsed;
@@ -868,7 +967,34 @@
     };
 
     const updateToc = function () {
-      if (!marginSidebar || !tocToggle) {
+      if (!marginSidebar || (!tocToggle && !tocHeadingToggle)) {
+        return;
+      }
+      const refined = inRefinedRightRail() && Boolean(tocHeadingToggle);
+      marginSidebar.classList.toggle("bms-refined-right-rail", refined);
+      if (refined) {
+        marginSidebar.classList.toggle("bms-toc-collapsed", tocCollapsed);
+        if (tocToggle) {
+          tocToggle.hidden = true;
+        }
+        tocHeadingToggle.hidden = false;
+        tocHeadingToggle.setAttribute(
+          "aria-expanded",
+          tocCollapsed ? "false" : "true"
+        );
+        tocHeadingToggle.setAttribute(
+          "aria-label",
+          tocCollapsed
+            ? "Expand table of contents"
+            : "Collapse table of contents"
+        );
+        tocHeadingToggle.textContent = tocCollapsed ? "\u2304" : "\u2303";
+        return;
+      }
+      if (tocHeadingToggle) {
+        tocHeadingToggle.hidden = true;
+      }
+      if (!tocToggle) {
         return;
       }
       const available = inDesktopSidebar() && Boolean(toc);
@@ -953,8 +1079,19 @@
         updateToc();
       });
     }
+    if (tocHeadingToggle) {
+      tocHeadingToggle.addEventListener("click", function () {
+        tocCollapsed = !tocCollapsed;
+        updateToc();
+      });
+    }
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && lookup && !lookup.hidden) {
+      if (
+        event.key === "Escape" &&
+        lookup &&
+        !lookup.hidden &&
+        !inRefinedRightRail()
+      ) {
         closeLookup({ rememberDesktop: true, returnFocus: true });
       }
     });
