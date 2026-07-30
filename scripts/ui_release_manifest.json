@@ -72,8 +72,8 @@
     },
     {
       "id": "research-article",
-      "name": "Research article",
-      "route": "/research/what-we-are-building.html",
+      "name": "Research continuous article",
+      "route": "/research/sage-vs-gnu-additional-details.html",
       "kind": "research-article",
       "required_markers": ["bms-research-article"]
     },

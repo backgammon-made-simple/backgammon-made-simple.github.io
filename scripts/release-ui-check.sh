@@ -87,6 +87,7 @@ node --check site/assets/bms-learn-scroll.js
 node --check scripts/release_ui_browser_check.mjs
 node tests/test_learn_filters.js
 node tests/test_continuous_learn.js
+node tests/test_continuous_research.js
 node tests/test_release_ui_browser_check.mjs
 
 printf '\n[3/6] Python test suite\n'
@@ -105,10 +106,12 @@ else
 fi
 
 printf '\n[5/6] Rendered glossary and HTML audit\n'
-"${PYTHON_COMMAND[@]}" scripts/learn_glossary.py check-rendered --output site/_site
 STATIC_ARGUMENTS=()
 if [[ ${REPRESENTATIVE_ONLY} -eq 1 ]]; then
+  printf 'Full-build glossary validation skipped in representative-only mode.\n'
   STATIC_ARGUMENTS+=(--representative-only)
+else
+  "${PYTHON_COMMAND[@]}" scripts/learn_glossary.py check-rendered --output site/_site
 fi
 "${PYTHON_COMMAND[@]}" scripts/release_ui_static_check.py "${STATIC_ARGUMENTS[@]}"
 

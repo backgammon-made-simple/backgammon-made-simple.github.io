@@ -12,6 +12,7 @@ project:
     - assets/bms-glossary.js
     - assets/bms-glossary-lookup.json
     - assets/bms-learn-sequence.json
+    - assets/bms-research-sequence.json
     - "data/engine-benchmark/**"
     - "engine-benchmark/**/figures/**"
     - "engine-benchmark/**/tables/**"

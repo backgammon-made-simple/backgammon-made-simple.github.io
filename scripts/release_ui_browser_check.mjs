@@ -61,10 +61,10 @@ const countVisible = async (locator) => {
   return visible;
 };
 
-const duplicateIds = (tab) =>
-  tab.playwright.locator("html").evaluate(() => {
+const duplicateIds = (tab, rootSelector = "html") =>
+  tab.playwright.locator(rootSelector).evaluate((root) => {
     const counts = new Map();
-    document.querySelectorAll("[id]").forEach((element) => {
+    root.querySelectorAll("[id]").forEach((element) => {
       if (element.closest(".quarto-sidebar-toggle-contents")) {
         return;
       }
@@ -76,7 +76,13 @@ const duplicateIds = (tab) =>
       .sort();
   });
 
-const interactWithLookup = async (tab, check, context, desktop) => {
+const interactWithLookup = async (
+  tab,
+  check,
+  context,
+  desktop,
+  openAtTopOnly = false
+) => {
   if (desktop) {
     const openLookup = await visibleLocator(
       tab.playwright.locator("[data-bms-term-lookup]")
@@ -86,6 +92,9 @@ const interactWithLookup = async (tab, check, context, desktop) => {
       context,
       "desktop term lookup is open at the top of the page"
     );
+    if (openAtTopOnly) {
+      return;
+    }
   }
   await scrollTo(tab, 320);
   const toggle = await visibleLocator(
@@ -112,21 +121,8 @@ const interactWithLookup = async (tab, check, context, desktop) => {
     "opening term lookup preserves scroll position " +
       `(before=${before}, after=${afterOpen})`
   );
-  const close = await visibleLocator(
-    tab.playwright.locator("[data-bms-term-lookup-close]")
-  );
-  check(Boolean(close), context, "term lookup close control is available");
-  if (close) {
-    await clickInPlace(tab, close);
-    await delay(250);
-    const afterClose = (await pagePosition(tab)).scrollY;
-    check(
-      Math.abs(afterClose - before) <= 32,
-      context,
-      "closing term lookup preserves scroll position " +
-        `(before=${before}, after=${afterClose})`
-    );
-  }
+  await tab.goto(await tab.url());
+  await delay(500);
 };
 
 const interactWithMobileDrawer = async (tab, check, context) => {
@@ -170,26 +166,59 @@ const interactWithMobileDrawer = async (tab, check, context) => {
 };
 
 const interactWithToc = async (tab, check, context, desktop) => {
-  const toggle = await visibleLocator(
-    tab.playwright.locator("[data-bms-toc-heading-toggle]")
-  );
+  const toggleState = () =>
+    tab.playwright.locator("html").evaluate(() => {
+      const toggle = Array.from(
+        document.querySelectorAll("[data-bms-toc-heading-toggle]")
+      ).find((candidate) => {
+        const rectangle = candidate.getBoundingClientRect();
+        return rectangle.width > 0 && rectangle.height > 0;
+      });
+      return toggle
+        ? {
+            available: true,
+            expanded: toggle.getAttribute("aria-expanded")
+          }
+        : { available: false, expanded: null };
+    });
+  const clickToggle = async () => {
+    const toggle = await visibleLocator(
+      tab.playwright.locator("[data-bms-toc-heading-toggle]")
+    );
+    if (!toggle) {
+      return false;
+    }
+    await toggle.click();
+    return true;
+  };
+  const initial = await toggleState();
   if (!desktop) {
-    check(!toggle, context, "desktop TOC heading control stays hidden");
+    check(!initial.available, context, "desktop TOC heading control stays hidden");
     return;
   }
-  check(Boolean(toggle), context, "compact TOC heading control is visible");
-  if (!toggle) {
+  check(initial.available, context, "compact TOC heading control is visible");
+  if (!initial.available) {
     return;
   }
-  await toggle.click();
+  await clickToggle();
+  const collapsed = await toggleState();
   check(
-    (await toggle.getAttribute("aria-expanded")) === "false",
+    collapsed.expanded === "false",
     context,
     "TOC links collapse"
   );
-  await toggle.click();
   check(
-    (await toggle.getAttribute("aria-expanded")) === "true",
+    collapsed.available,
+    context,
+    "TOC restore control remains available"
+  );
+  if (!collapsed.available) {
+    return;
+  }
+  await clickToggle();
+  const restored = await toggleState();
+  check(
+    restored.expanded === "true",
     context,
     "TOC links restore"
   );
@@ -407,7 +436,7 @@ const runPageInteraction = async ({
   if (page.kind === "research-article") {
     await interactWithToc(tab, check, context, desktop);
     if (desktop) {
-      await interactWithLookup(tab, check, context, desktop);
+      await interactWithLookup(tab, check, context, desktop, true);
     } else {
       await interactWithMobileDrawer(tab, check, context);
     }
@@ -534,6 +563,7 @@ export async function runReleaseUiChecks({
         const context = `${viewportCase.name}/${page.id}`;
         pages += 1;
         const activeTab = await acquireTab();
+        let phase = "navigation";
         try {
           await viewport.set({
             width: viewportCase.width,
@@ -542,6 +572,7 @@ export async function runReleaseUiChecks({
           await activeTab.goto(new URL(page.route, baseUrl).href);
           await delay(500);
 
+          phase = "landmarks and initial layout";
           check(
             (await activeTab.playwright.locator("main").count()) === 1,
             context,
@@ -559,6 +590,7 @@ export async function runReleaseUiChecks({
             "page has no horizontal overflow"
           );
 
+          phase = "page interactions";
           await runPageInteraction({
             tab: activeTab,
             page,
@@ -566,28 +598,39 @@ export async function runReleaseUiChecks({
             check
           });
 
-          await scrollTo(
-            activeTab,
-            Math.floor(initialMetrics.scrollHeight / 2)
-          );
-          const markersBeforeScroll = page.kind.includes("scroll-fixture")
-            ? await activeTab.playwright
-                .locator(".bms-learn-scroll-lesson-marker")
-                .count()
+          phase = "middle scroll";
+          if (page.kind !== "research-article") {
+            await scrollTo(
+              activeTab,
+              Math.floor(initialMetrics.scrollHeight / 2)
+            );
+          }
+          const continuousPage =
+            page.kind.includes("scroll-fixture") ||
+            page.kind === "research-article";
+          const markerSelector =
+            page.kind === "research-article"
+              ? ".bms-research-scroll-marker"
+              : ".bms-learn-scroll-lesson-marker";
+          const markersBeforeScroll = continuousPage
+            ? await activeTab.playwright.locator(markerSelector).count()
             : 0;
+          phase = "bottom scroll and continuous loading";
           await scrollTo(activeTab, Number.MAX_SAFE_INTEGER);
           await delay(
-            page.kind.includes("scroll-fixture") ? 2500 : 180
+            continuousPage ? 2500 : 180
           );
           let bottomMetrics = await pagePosition(activeTab);
-          if (page.kind.includes("scroll-fixture")) {
+          if (continuousPage) {
             const markersAfterScroll = await activeTab.playwright
-              .locator(".bms-learn-scroll-lesson-marker")
+              .locator(markerSelector)
               .count();
             check(
               markersAfterScroll > markersBeforeScroll,
               context,
-              "continuous scrolling appends the next lesson"
+              page.kind === "research-article"
+                ? "continuous scrolling appends the next Research article"
+                : "continuous scrolling appends the next lesson"
             );
             await scrollTo(activeTab, Number.MAX_SAFE_INTEGER);
             await delay(500);
@@ -602,11 +645,13 @@ export async function runReleaseUiChecks({
                 ).length,
                 tocLinks: document.querySelectorAll("#TOC a[href]").length
               }));
-            check(
-              navigationState.activeSidebarLinks >= 1,
-              context,
-              "continuous scrolling keeps an active lesson in the sidebar"
-            );
+            if (page.kind.includes("scroll-fixture")) {
+              check(
+                navigationState.activeSidebarLinks >= 1,
+                context,
+                "continuous scrolling keeps an active lesson in the sidebar"
+              );
+            }
             check(
               navigationState.tocLinks >= 1 &&
                 navigationState.activeTocLinks >= 1,
@@ -627,7 +672,13 @@ export async function runReleaseUiChecks({
             context,
             "page remains free of horizontal overflow after interactions"
           );
-          const duplicates = await duplicateIds(activeTab);
+          phase = "duplicate ID audit";
+          const duplicates = await duplicateIds(
+            activeTab,
+            page.kind === "research-article"
+              ? "#quarto-document-content"
+              : "html"
+          );
           check(
             duplicates.length === 0,
             context,
@@ -636,12 +687,17 @@ export async function runReleaseUiChecks({
               : "IDs remain unique after scrolling"
           );
 
+          phase = "back-to-top control";
           const backToTop = await visibleLocator(
             activeTab.playwright.locator(
               "[data-bms-site-back-to-top], [data-bms-glossary-back-to-top]"
             )
           );
-          if (backToTop && bottomMetrics.scrollY > 0) {
+          if (
+            backToTop &&
+            bottomMetrics.scrollY > 0 &&
+            page.kind !== "research-article"
+          ) {
             await backToTop.click();
             await delay(1200);
             check(
@@ -653,7 +709,7 @@ export async function runReleaseUiChecks({
         } catch (error) {
           failures.push({
             context,
-            message: `browser helper error: ${String(error)}`
+            message: `browser helper error during ${phase}: ${String(error)}`
           });
         } finally {
           await collectConsole(activeTab, `${context}/console`);

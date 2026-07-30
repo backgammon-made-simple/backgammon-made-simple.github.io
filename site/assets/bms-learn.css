@@ -332,6 +332,56 @@
   min-height: 2.5rem;
 }
 
+.bms-research-scroll-marker {
+  grid-column: screen-start / screen-end !important;
+  display: block;
+  height: 1px;
+  scroll-margin-top: 5rem;
+}
+
+.bms-research-scroll-sentinel {
+  grid-column: body-content-start / body-content-end !important;
+  min-height: 4rem;
+  padding: 1rem 0;
+  color: var(--bms-text-muted);
+  text-align: center;
+}
+
+.bms-research-scroll-divider {
+  grid-column: body-content-start / body-content-end !important;
+  display: grid;
+  gap: 0.2rem;
+  margin: 3rem 0 1.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--bms-border);
+  border-bottom: 1px solid var(--bms-border);
+  color: var(--bms-text-muted);
+}
+
+.bms-research-scroll-divider span {
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bms-research-scroll-divider strong {
+  color: var(--bms-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.bms-research-scroll-end {
+  grid-column: body-content-start / body-content-end !important;
+  margin: 2rem 0;
+  padding: 1rem;
+  border: 1px solid var(--bms-border);
+  border-radius: 6px;
+  background: var(--bms-ivory);
+  color: var(--bms-text-muted);
+  text-align: center;
+}
+
 .bms-learn-article .bms-subscribe {
   margin-top: 1.25rem;
   padding: 1rem 0 0;

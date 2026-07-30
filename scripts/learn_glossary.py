@@ -32,6 +32,9 @@ GENERATED_LESSON_CATALOGUE_PATH = LEARN_ROOT / "_lesson-catalogue.html"
 GENERATED_NAVIGATION_PATH = SITE_ROOT / "_learn-navigation.yml"
 GENERATED_LOOKUP_DATA_PATH = SITE_ROOT / "assets" / "bms-glossary-lookup.json"
 GENERATED_LEARN_SEQUENCE_PATH = SITE_ROOT / "assets" / "bms-learn-sequence.json"
+GENERATED_RESEARCH_SEQUENCE_PATH = (
+    SITE_ROOT / "assets" / "bms-research-sequence.json"
+)
 LEGACY_GENERATED_ROUTES_PATH = GLOSSARY_ROOT / "_generated-routes.json"
 QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
@@ -1099,6 +1102,36 @@ def discover_research_articles() -> list[dict[str, object]]:
     return articles
 
 
+def build_research_sequence(
+    articles: list[dict[str, object]],
+) -> dict[str, object]:
+    ordered = sorted(
+        articles,
+        key=lambda article: (
+            str(article["title"]).casefold(),
+            str(article["route"]),
+        ),
+    )
+    sequence = []
+    for index, article in enumerate(ordered):
+        sequence.append(
+            {
+                "sequence_index": index,
+                "route": str(article["route"]),
+                "title": str(article["title"]),
+                "previous_route": (
+                    str(ordered[index - 1]["route"]) if index else None
+                ),
+                "next_route": (
+                    str(ordered[index + 1]["route"])
+                    if index + 1 < len(ordered)
+                    else None
+                ),
+            }
+        )
+    return {"schema_version": 1, "articles": sequence}
+
+
 def canonical_term_maps(
     entries: list[dict[str, object]],
 ) -> tuple[set[str], dict[str, str]]:
@@ -1933,6 +1966,7 @@ def generated_outputs(
     curriculum: list[dict[str, object]],
     related_lessons: dict[str, list[dict[str, object]]],
     related_research: dict[str, list[dict[str, object]]],
+    research_articles: list[dict[str, object]],
 ) -> dict[Path, str]:
     outputs = {
         GENERATED_LESSON_CATALOGUE_PATH: build_lesson_catalogue_html(
@@ -1947,6 +1981,9 @@ def generated_outputs(
         ),
         GENERATED_LEARN_SEQUENCE_PATH: json_text(
             build_learn_sequence(curriculum)
+        ),
+        GENERATED_RESEARCH_SEQUENCE_PATH: json_text(
+            build_research_sequence(research_articles)
         ),
         AUTHORING_TERMS_PATH: build_authoring_terms(entries),
     }
@@ -2005,6 +2042,7 @@ def generate() -> tuple[int, int, int]:
         curriculum,
         related_lessons,
         related_research,
+        research_articles,
     )
     removed = remove_standalone_term_pages()
     changed = sum(write_if_changed(path, content) for path, content in outputs.items())
@@ -2031,6 +2069,7 @@ def validate_generated() -> dict[str, int]:
         curriculum,
         related_lessons,
         related_research,
+        research_articles,
     )
     learn_sequence = build_learn_sequence(curriculum)
     validate_learn_sequence(learn_sequence)
@@ -2375,6 +2414,38 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     validate_learn_sequence(rendered_sequence)
     if rendered_sequence != expected_sequence:
         raise ValidationError("Rendered Learn sequence does not match curriculum metadata")
+
+    research_articles = discover_research_articles()
+    expected_research_sequence = build_research_sequence(research_articles)
+    rendered_research_sequence_path = (
+        output_root / "assets" / "bms-research-sequence.json"
+    )
+    rendered_research_scroll_path = (
+        output_root / "assets" / "bms-research-scroll.js"
+    )
+    if not rendered_research_sequence_path.is_file():
+        raise ValidationError("Rendered Research sequence asset is missing")
+    if not rendered_research_scroll_path.is_file():
+        raise ValidationError("Rendered continuous Research script is missing")
+    if read_json(rendered_research_sequence_path) != expected_research_sequence:
+        raise ValidationError(
+            "Rendered Research sequence does not match Research metadata"
+        )
+    for article in expected_research_sequence["articles"]:
+        route = str(article["route"])
+        article_path = output_root / route.lstrip("/")
+        if not article_path.is_file():
+            raise ValidationError(
+                f"Rendered continuous Research article is missing: {route}"
+            )
+        article_html = article_path.read_text(
+            encoding="utf-8",
+            errors="replace",
+        )
+        if "bms-research-scroll.js" not in article_html:
+            raise ValidationError(
+                f"Rendered Research article lacks shared script: {route}"
+            )
 
     rendered_lesson_count = 0
     expected_sidebar_routes = {

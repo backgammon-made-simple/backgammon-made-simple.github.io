@@ -92,6 +92,7 @@ The browser phase must:
   and responsive SVGs on the generated edge pages;
 - search and clear the glossary;
 - click from About to Learn and then to the Cube track;
+- append the next Research article and preserve unique IDs, anchors, and TOC;
 - report obvious console exceptions;
 - reset the viewport when finished.
 
@@ -130,7 +131,7 @@ Take screenshots only for an actual visual defect.
 | Learn indexes | `/learn/`, `/learn/cube/` | Narrow text, filters, wrapping |
 | Learn lesson | Cube lesson | Independent rail controls, lookup, SVG disclosure |
 | Continuous Learn | Three generated edge fixtures | Appending, rewritten IDs, active TOC, overflow |
-| Research | What We Are Building | Desktop TOC and lookup |
+| Research | Sage vs GNU details | Desktop TOC, lookup, continuous article loading |
 | Glossary | `/learn/glossary/` | Full definitions, search, clear, anchors |
 | Ordinary pages | Analyze, About, Engine Benchmark | Global layout and navigation regression |
 

@@ -1028,6 +1028,7 @@
     resolveSrcset: resolveSrcset,
     resolveUrlValue: resolveUrlValue,
     rewriteIdReferences: rewriteIdReferences,
+    rewriteResourceUrls: rewriteResourceUrls,
     sameOriginUrl: sameOriginUrl,
     selectActiveHeadingIndex: selectActiveHeadingIndex,
     selectActiveLessonIndex: selectActiveLessonIndex,
@@ -1040,6 +1041,13 @@
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = publicApi;
+  }
+
+  if (typeof window !== "undefined") {
+    window.BMSLearnScroll = Object.assign(
+      window.BMSLearnScroll || {},
+      publicApi
+    );
   }
 
   if (typeof document !== "undefined") {

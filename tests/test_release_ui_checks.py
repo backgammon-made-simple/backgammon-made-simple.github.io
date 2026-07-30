@@ -126,6 +126,7 @@ class ReleaseUiStaticCheckTests(unittest.TestCase):
             "generate_scrolling_test_lessons.py validate",
             "unittest discover",
             "release_ui_static_check.py",
+            "test_continuous_research.js",
         ):
             self.assertIn(expected, shell_runner)
 
