@@ -6,6 +6,7 @@
   const TERM_SELECTOR = "[data-bms-filter-term]";
   const LESSON_SELECTOR = "[data-bms-learn-item]";
   const GROUP_SELECTOR = "[data-bms-learn-group]";
+  let glossaryLookupEntriesPromise = null;
 
   function parseList(value) {
     if (!value) {
@@ -144,6 +145,120 @@
       .map(function (candidate) {
         return candidate.entry;
       })[0] || null;
+  }
+
+  function canonicalEntryBySlug(entries, slug) {
+    return Array.from(entries || []).find(function (entry) {
+      return String(entry.slug) === String(slug);
+    }) || null;
+  }
+
+  function canonicalShortDefinition(entries, slug) {
+    const entry = canonicalEntryBySlug(entries, slug);
+    if (!entry || typeof entry.short_definition !== "string") {
+      return null;
+    }
+    return entry.short_definition;
+  }
+
+  function loadGlossaryLookupEntries() {
+    if (!glossaryLookupEntriesPromise) {
+      glossaryLookupEntriesPromise = fetch(
+        "/assets/bms-glossary-lookup.json",
+        { credentials: "same-origin" }
+      )
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("Glossary lookup data failed to load");
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          return Array.isArray(data.entries) ? data.entries : [];
+        });
+    }
+    return glossaryLookupEntriesPromise;
+  }
+
+  function initializeInlineGlossary() {
+    const links = Array.from(
+      document.querySelectorAll(
+        ".bms-inline-glossary[data-bms-glossary-slug]"
+      )
+    );
+    if (links.length === 0) {
+      return;
+    }
+
+    const tooltip = document.createElement("aside");
+    tooltip.className = "bms-inline-glossary-tooltip";
+    tooltip.id = "bms-inline-glossary-tooltip";
+    tooltip.setAttribute("role", "tooltip");
+    tooltip.hidden = true;
+    document.body.appendChild(tooltip);
+
+    let activeLink = null;
+
+    const positionTooltip = function (link) {
+      const rectangle = link.getBoundingClientRect();
+      tooltip.style.left =
+        Math.max(12, Math.min(rectangle.left, window.innerWidth - 332)) + "px";
+      tooltip.style.top =
+        Math.min(window.innerHeight - 24, rectangle.bottom + 8) + "px";
+    };
+
+    const hideTooltip = function (link) {
+      if (activeLink !== link) {
+        return;
+      }
+      activeLink = null;
+      link.removeAttribute("aria-describedby");
+      tooltip.hidden = true;
+      tooltip.replaceChildren();
+    };
+
+    const showTooltip = function (link) {
+      activeLink = link;
+      const slug = link.dataset.bmsGlossarySlug;
+      loadGlossaryLookupEntries()
+        .then(function (entries) {
+          if (activeLink !== link) {
+            return;
+          }
+          const entry = canonicalEntryBySlug(entries, slug);
+          const summary = canonicalShortDefinition(entries, slug);
+          if (!entry || !summary) {
+            hideTooltip(link);
+            return;
+          }
+          const heading = document.createElement("strong");
+          heading.textContent = entry.term;
+          const definition = document.createElement("span");
+          definition.textContent = summary;
+          tooltip.replaceChildren(heading, definition);
+          tooltip.hidden = false;
+          link.setAttribute("aria-describedby", tooltip.id);
+          positionTooltip(link);
+        })
+        .catch(function () {
+          hideTooltip(link);
+        });
+    };
+
+    links.forEach(function (link) {
+      link.addEventListener("mouseenter", function () {
+        showTooltip(link);
+      });
+      link.addEventListener("mouseleave", function () {
+        hideTooltip(link);
+      });
+      link.addEventListener("focus", function () {
+        showTooltip(link);
+      });
+      link.addEventListener("blur", function () {
+        hideTooltip(link);
+      });
+    });
   }
 
   function setAllGroupsExpanded(groups, expanded) {
@@ -745,7 +860,6 @@
     const close = lookup
       ? lookup.querySelector("[data-bms-term-lookup-close]")
       : null;
-    let lookupEntriesPromise = null;
 
     const open = function () {
       if (glossarySearch) {
@@ -810,21 +924,7 @@
         input.value = query;
         result.hidden = false;
         result.textContent = "Looking up\u2026";
-        if (!lookupEntriesPromise) {
-          lookupEntriesPromise = fetch("/assets/bms-glossary-lookup.json", {
-            credentials: "same-origin"
-          })
-            .then(function (response) {
-              if (!response.ok) {
-                throw new Error("Glossary lookup data failed to load");
-              }
-              return response.json();
-            })
-            .then(function (data) {
-              return Array.isArray(data.entries) ? data.entries : [];
-            });
-        }
-        lookupEntriesPromise
+        loadGlossaryLookupEntries()
           .then(function (entries) {
             renderLookupResult(
               result,
@@ -994,6 +1094,8 @@
 
   const publicApi = {
     bestLookupEntry: bestLookupEntry,
+    canonicalEntryBySlug: canonicalEntryBySlug,
+    canonicalShortDefinition: canonicalShortDefinition,
     groupControlState: groupControlState,
     itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
@@ -1013,6 +1115,7 @@
     document.addEventListener("DOMContentLoaded", function () {
       initializeLearnFilters();
       initializeLearnSidebarControls();
+      initializeInlineGlossary();
       const termLookup = initializeTermLookup();
       initializeMobileLessonBar(termLookup);
       placeLessonTrackLinks();

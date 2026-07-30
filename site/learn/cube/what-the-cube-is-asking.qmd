@@ -21,6 +21,9 @@ terms:
   - match-play
   - volatility
   - equity
+highlighted-terms:
+  - doubling-cube
+  - take
 level: Foundation
 body-classes: bms-learn-article
 page-layout: article
