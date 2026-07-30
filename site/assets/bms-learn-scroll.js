@@ -640,9 +640,9 @@
 
         const tracker = createLoadedRouteTracker(current.route);
         const sidebar = document.getElementById("quarto-sidebar");
-        const globalToc = findPrimaryToc(document);
+        const initialTocElement = findPrimaryToc(document);
         const lessonRecords = [];
-        const initialToc = captureToc(globalToc);
+        const initialToc = captureToc(initialTocElement);
         const initialHeadingIds = headingIdsFromToc(initialToc);
         const initialMarker = createLessonMarker(current);
         main.insertBefore(initialMarker, main.firstChild);
@@ -662,7 +662,12 @@
         let activeUpdateScheduled = false;
         let contentResizeObserver = null;
 
+        function activeTocElement() {
+          return findPrimaryToc(document) || initialTocElement;
+        }
+
         function updateActiveTocHeading(record, readingLine) {
+          const globalToc = activeTocElement();
           if (!globalToc || !record) {
             return;
           }
@@ -701,7 +706,7 @@
 
         function synchronizeActiveLesson(record) {
           setActiveSidebar(sidebar, record.route, window.location.href);
-          replaceTocContents(globalToc, record.toc);
+          replaceTocContents(activeTocElement(), record.toc);
           updateActiveTocHeading(
             record,
             readingLineForViewport(window.innerHeight)

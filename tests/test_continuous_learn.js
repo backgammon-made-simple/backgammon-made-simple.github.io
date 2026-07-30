@@ -26,6 +26,14 @@ assert.match(
 );
 assert.match(scrollSource, /findPrimaryToc\(document\)/);
 assert.match(scrollSource, /findPrimaryToc\(nextDocument\)/);
+assert.match(
+  scrollSource,
+  /function activeTocElement\(\)[\s\S]*?findPrimaryToc\(document\)/
+);
+assert.match(
+  scrollSource,
+  /replaceTocContents\(activeTocElement\(\), record\.toc\)/
+);
 assert.match(scrollSource, /headingIdsFromToc\(initialToc\)/);
 assert.match(scrollSource, /headingIdsFromToc\(storedNextToc\)/);
 assert.doesNotMatch(
