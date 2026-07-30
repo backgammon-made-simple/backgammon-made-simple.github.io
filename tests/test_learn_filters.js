@@ -36,6 +36,36 @@ const inlineLookup = [
   }
 ];
 
+[
+  ["#section", "https://example.test/research/article.html", true],
+  [
+    "https://example.test/research/article.html#section",
+    "https://example.test/research/article.html",
+    true
+  ],
+  [
+    "https://example.test/research/article.html#section",
+    "https://example.test/research/article.html?preview=1",
+    true
+  ],
+  [
+    "https://example.test/research/other.html#section",
+    "https://example.test/research/article.html",
+    false
+  ],
+  [
+    "https://example.test/research/article.html",
+    "https://example.test/research/article.html",
+    false
+  ]
+].forEach(([href, currentHref, expected]) => {
+  assert.equal(
+    learn.isSamePageTocHref(href, currentHref),
+    expected,
+    href + " has expected same-page TOC classification"
+  );
+});
+
 assert.equal(
   learn.canonicalEntryBySlug(inlineLookup, "anchor"),
   inlineLookup[0],

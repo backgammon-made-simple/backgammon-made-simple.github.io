@@ -67,6 +67,39 @@
     return String(value || "").trim();
   }
 
+  function isSamePageTocHref(href, currentHref) {
+    const value = String(href || "").trim();
+    if (!value) {
+      return false;
+    }
+    if (value.startsWith("#")) {
+      return value.length > 1;
+    }
+    try {
+      const current = new URL(currentHref);
+      const target = new URL(value, current);
+      return (
+        Boolean(target.hash) &&
+        target.origin === current.origin &&
+        target.pathname === current.pathname
+      );
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function tocHasHashLinks(toc) {
+    if (!toc || typeof toc.querySelectorAll !== "function") {
+      return false;
+    }
+    return Array.from(toc.querySelectorAll("a[href]")).some(function (link) {
+      return isSamePageTocHref(
+        link.getAttribute("href"),
+        window.location.href
+      );
+    });
+  }
+
   function lookupMatchRank(entry, query) {
     const normalizedQuery = normalizeLearnSearch(query);
     if (!normalizedQuery) {
@@ -1050,6 +1083,22 @@
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
 
+    const preservePagePosition = function (callback) {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+      const restore = function () {
+        window.scrollTo(scrollX, scrollY);
+      };
+      callback();
+      restore();
+      window.requestAnimationFrame(function () {
+        restore();
+        window.requestAnimationFrame(restore);
+      });
+      window.setTimeout(restore, 60);
+      window.setTimeout(restore, 180);
+    };
+
     const bindTocHeadingToggle = function (toggle) {
       if (!toggle || toggle.dataset.bmsTocToggleBound === "true") {
         return;
@@ -1067,11 +1116,9 @@
       }
       const tocCandidates = Array.from(document.querySelectorAll("#TOC"));
       toc =
-        tocCandidates.find(function (candidate) {
-          return Boolean(candidate.querySelector('a[href^="#"]'));
-        }) ||
+        tocCandidates.find(tocHasHashLinks) ||
         (marginSidebar ? marginSidebar.querySelector("#TOC") : null);
-      if (!toc || !toc.querySelector('a[href^="#"]')) {
+      if (!toc || !tocHasHashLinks(toc)) {
         return false;
       }
       const existingToggle = toc.querySelector(
@@ -1335,12 +1382,16 @@
 
     if (termToggle) {
       termToggle.addEventListener("click", function () {
-        open();
+        preservePagePosition(function () {
+          open();
+        });
       });
     }
     if (close) {
       close.addEventListener("click", function () {
-        closeLookup({ rememberDesktop: true, returnFocus: true });
+        preservePagePosition(function () {
+          closeLookup({ rememberDesktop: true, returnFocus: true });
+        });
       });
     }
     if (marginSidebarToggle) {
@@ -1362,7 +1413,9 @@
         !lookup.hidden &&
         !inRefinedRightRail()
       ) {
-        closeLookup({ rememberDesktop: true, returnFocus: true });
+        preservePagePosition(function () {
+          closeLookup({ rememberDesktop: true, returnFocus: true });
+        });
       }
     });
 
@@ -1421,7 +1474,13 @@
       updateBackToTop();
     }
 
-    return { open: open };
+    return {
+      open: function () {
+        preservePagePosition(function () {
+          open();
+        });
+      }
+    };
   }
 
   function initializeMobileLessonBar(termLookup) {
@@ -1582,6 +1641,7 @@
     canonicalShortDefinition: canonicalShortDefinition,
     groupControlState: groupControlState,
     inlineGlossaryTooltipPosition: inlineGlossaryTooltipPosition,
+    isSamePageTocHref: isSamePageTocHref,
     itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
