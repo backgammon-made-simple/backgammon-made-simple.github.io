@@ -21,6 +21,11 @@ terms:
   - match-play
   - volatility
   - equity
+  - 10-in-the-zone
+  - active-builder
+highlighted-terms:
+  - 10-in-the-zone
+  - active-builder
 level: Foundation
 body-classes: bms-learn-article
 page-layout: article
@@ -85,6 +90,8 @@ This scaffold will be replaced with a verified position and engine-backed explan
 </details>
 
 ## What Changes the Answer?
+
+Getting 10 in the Zone can turn an Active Builder into an immediate attacking threat, making the position more volatile before your next chance to double.
 
 - Race lead.
 - Gammons.

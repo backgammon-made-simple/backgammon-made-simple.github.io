@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "alias_slugs": [],
+      "aliases": [],
+      "short_definition": "A single point.",
+      "slug": "one-point",
+      "term": "One Point"
+    },
+    {
+      "alias_slugs": [],
+      "aliases": [],
+      "short_definition": "A board point.",
+      "slug": "point",
+      "term": "Point"
+    }
+  ]
+}

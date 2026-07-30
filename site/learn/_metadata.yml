@@ -1,6 +1,7 @@
 filters:
   - bms-learn-taxonomy
   - bms-term-lookup
+  - bms-inline-glossary
 format:
   html:
     toc-expand: true

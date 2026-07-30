@@ -1,0 +1,33 @@
+---
+title: "Iteration 03 highlighted lesson"
+terms:
+  - ace
+  - active-builder
+  - ahead-in-the-count
+  - abt
+highlighted-terms:
+  - ace
+  - ahead-in-the-count
+---
+
+# Ace and Ahead in the Count in a heading
+
+[Ace in an existing Markdown link](https://example.com/ace) remains an existing link.
+
+`ahead in the count in inline code` remains code.
+
+```text
+Ace and Ahead in the Race in a fenced code block.
+```
+
+$\text{Ace} + \text{Ahead in the Count} = 2$
+
+<span class="fixture-raw">Ace and Ahead in the Race in raw HTML.</span>
+
+![Ace and Ahead in the Race in a caption.](fixture-board.svg)
+
+An Ace starts this safe prose occurrence. The player is Ahead in the Race, approved alias wording for the canonical Ahead in the Count entry.
+
+Ace appears again, and Ahead in the Count appears again, without repeated inline glossary markup.
+
+The broad lesson relationships also retain Active Builder and ABT even though neither is highlighted.

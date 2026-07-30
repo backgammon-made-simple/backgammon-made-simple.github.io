@@ -27,6 +27,47 @@ const lessons = [
   }
 ];
 
+const inlineLookup = [
+  {
+    slug: "anchor",
+    term: "Anchor",
+    aliases: ["Holding Point"],
+    short_definition: "The canonical anchor summary."
+  }
+];
+
+assert.equal(
+  learn.canonicalEntryBySlug(inlineLookup, "anchor"),
+  inlineLookup[0],
+  "canonical slugs resolve to the canonical generated record"
+);
+assert.equal(
+  learn.canonicalShortDefinition(inlineLookup, "anchor"),
+  "The canonical anchor summary.",
+  "inline summaries come from canonical short_definition"
+);
+assert.equal(
+  learn.bestLookupEntry(inlineLookup, "Holding Point"),
+  inlineLookup[0],
+  "aliases resolve to the same canonical record"
+);
+assert.equal(
+  learn.canonicalShortDefinition(
+    inlineLookup,
+    learn.bestLookupEntry(inlineLookup, "Holding Point").slug
+  ),
+  "The canonical anchor summary.",
+  "alias lookup uses the canonical record's short definition"
+);
+assert.equal(
+  learn.canonicalShortDefinition(
+    [{ ...inlineLookup[0], short_definition: "A changed canonical summary." }],
+    "anchor"
+  ),
+  "A changed canonical summary.",
+  "changing the canonical short definition changes the inline summary"
+);
+
 assert.equal(
   learn.itemMatchesTaxonomy(
     lessons[0],
@@ -291,35 +332,93 @@ const generatedGlossaryItems = Array.from(
   (match) => {
     const tag = match[0];
     const searchValues = JSON.parse(attributeValue(tag, "data-bms-search"));
+    const categoriesAttribute = attributeValue(tag, "data-bms-categories");
+    const primaryCategory = attributeValue(tag, "data-bms-category");
     return {
       slug: attributeValue(tag, "data-bms-slug"),
       aliasSlugs: JSON.parse(attributeValue(tag, "data-bms-aliases")),
       canonical: searchValues[0],
       aliases: searchValues.slice(1),
+      categories: categoriesAttribute
+        ? JSON.parse(categoriesAttribute)
+        : primaryCategory
+          ? [primaryCategory]
+          : [],
       searchValues,
       element: { open: false }
     };
   }
 );
+
+const multiCategoryItems = [
+  {
+    categories: ["checker play and tactics", "strategy and position types"],
+    element: { hidden: false, open: false },
+    canonical: "Active Builder",
+    aliases: [],
+    tracks: []
+  },
+  {
+    categories: ["checker play and tactics"],
+    element: { hidden: false, open: false },
+    canonical: "Ace",
+    aliases: [],
+    tracks: []
+  }
+];
+assert.equal(
+  glossary.itemMatchesGlossary(
+    multiCategoryItems[0],
+    "",
+    ["strategy and position types"],
+    []
+  ),
+  true,
+  "a secondary category matches a multi-category entry"
+);
+assert.equal(
+  glossary.expandCategoryMatches(
+    multiCategoryItems,
+    "strategy and position types"
+  )[0].canonical,
+  "Active Builder",
+  "either Active Builder category resolves to the canonical entry"
+);
+multiCategoryItems.forEach((item) => {
+  item.element.open = false;
+});
+assert.equal(
+  glossary.expandCategoryMatches(
+    multiCategoryItems,
+    "checker play and tactics"
+  ).length,
+  2,
+  "category filtering expands every matching entry"
+);
+assert.equal(
+  multiCategoryItems.every((item) => item.element.open),
+  true,
+  "all category matches are expanded"
+);
 assert.equal(
   generatedGlossaryItems.length,
-  624,
-  "the JavaScript integration fixture uses all generated canonical entries"
+  12,
+  "the JavaScript integration fixture uses all approved canonical entries"
 );
 assert.equal(
   generatedGlossaryItems.reduce(
     (count, item) => count + item.aliasSlugs.length,
     0
   ),
-  181,
-  "the JavaScript integration fixture uses every generated alias"
+  3,
+  "the JavaScript integration fixture uses every approved alias"
 );
 
 [
-  ["take point", "Take Point"],
-  ["take-point", "Take Point"],
-  ["out field", "Outfield"],
-  ["Accept a Double", "Take"]
+  ["10 in the zone", "10 in the Zone"],
+  ["Ten in the Zone", "10 in the Zone"],
+  ["American Backgammon Tour", "ABT"],
+  ["Ahead in the Race", "Ahead in the Count"]
 ].forEach(([query, expectedCanonical]) => {
   const matchingItems = generatedGlossaryItems.filter((item) =>
     glossary.itemMatchesGlossary(item, query, [], [])
@@ -338,7 +437,7 @@ assert.equal(
   );
 });
 const previouslyOpened = generatedGlossaryItems.find(
-  (item) => item.canonical === "Take"
+  (item) => item.canonical === "Ahead in the Count"
 );
 assert.equal(
   previouslyOpened.element.open,
@@ -348,9 +447,9 @@ assert.equal(
 glossary.expandBestGlossaryMatch(
   generatedGlossaryItems,
   generatedGlossaryItems.filter((item) =>
-    glossary.itemMatchesGlossary(item, "out field", [], [])
+    glossary.itemMatchesGlossary(item, "American Backgammon Tour", [], [])
   ),
-  "out field"
+  "American Backgammon Tour"
 );
 assert.equal(
   previouslyOpened.element.open,
@@ -429,6 +528,27 @@ assert.equal(
   "blank lookup submissions remain a no-op"
 );
 
+assert.deepEqual(
+  learn.inlineGlossaryTooltipPosition(
+    { left: 52, top: 780, bottom: 800 },
+    { width: 320, height: 183 },
+    390,
+    844
+  ),
+  { left: 52, top: 589 },
+  "a mobile tooltip flips above a term when it would overflow below"
+);
+assert.deepEqual(
+  learn.inlineGlossaryTooltipPosition(
+    { left: 1300, top: 100, bottom: 120 },
+    { width: 320, height: 180 },
+    1440,
+    1000
+  ),
+  { left: 1108, top: 128 },
+  "a desktop tooltip remains inside the right viewport edge"
+);
+
 const lookupCandidates = [
   {
     term: "Take Point",
@@ -473,34 +593,18 @@ const lookupData = JSON.parse(
     "utf8"
   )
 );
-const learnSequence = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, "..", "site", "assets", "bms-learn-sequence.json"),
-    "utf8"
-  )
-);
-const scrollingFixtureCount = learnSequence.lessons.filter((lesson) =>
-  lesson.route.includes("/learn/scrolling-test/")
-).length;
-assert.equal(lookupData.entries.length, 624);
+assert.equal(lookupData.entries.length, 12);
 assert.equal(
   lookupData.entries.reduce(
     (total, entry) => total + entry.aliases.length,
     0
   ),
-  181
+  3
 );
 assert.equal(
-  lookupData.entries.reduce(
-    (total, entry) => total + entry.related_lessons.length,
-    0
-  ),
-  40 + scrollingFixtureCount
-);
-assert.equal(
-  learn.bestLookupEntry(lookupData.entries, "take point").term,
-  "Take Point",
-  "generated lookup data supports canonical search"
+  learn.bestLookupEntry(lookupData.entries, "Ahead in the Race").term,
+  "Ahead in the Count",
+  "generated lookup data supports approved alias search"
 );
 
 [
