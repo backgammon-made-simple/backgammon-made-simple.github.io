@@ -1209,6 +1209,15 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertRegex(
             css,
+            r"\.bms-learn-catalogue-title-row \{[^}]*"
+            r"grid-template-columns: minmax\(0, 1fr\);",
+        )
+        self.assertNotIn(
+            "grid-template-columns: 1.4rem minmax(0, 1fr);",
+            css,
+        )
+        self.assertRegex(
+            css,
             r"body:is\(\.bms-learn-index, \.bms-learn-article\)"
             r"\s+#quarto-sidebar\s+\.sidebar-link \{[^}]*"
             r"line-height: 1\.15;",

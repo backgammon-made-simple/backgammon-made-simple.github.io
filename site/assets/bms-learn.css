@@ -738,7 +738,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 
 .bms-learn-catalogue-title-row {
   display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: baseline;
   gap: 0.35rem;
   padding-left: 0.25rem;
