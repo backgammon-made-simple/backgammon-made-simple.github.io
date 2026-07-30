@@ -1272,10 +1272,22 @@
     bar.appendChild(termButton);
   }
 
-  function initializeAnswerChoices() {
-    document.querySelectorAll(".bms-decision-prompt").forEach(function (prompt) {
+  function findIdWithinRoot(root, id) {
+    return (
+      Array.from(root.querySelectorAll("[id]")).find(function (element) {
+        return element.id === id;
+      }) || null
+    );
+  }
+
+  function initializeAnswerChoices(root) {
+    root.querySelectorAll(".bms-decision-prompt").forEach(function (prompt) {
+      if (prompt.dataset.bmsAnswerChoicesMounted === "true") {
+        return;
+      }
+      prompt.dataset.bmsAnswerChoicesMounted = "true";
       const panelId = prompt.dataset.answerPanel;
-      const panel = panelId ? document.getElementById(panelId) : null;
+      const panel = panelId ? findIdWithinRoot(root, panelId) : null;
       const buttons = Array.from(
         prompt.querySelectorAll(".bms-answer-choice")
       );
@@ -1298,7 +1310,7 @@
               ". The working answer is open below; correctness remains unverified.";
           }
 
-          if (panel instanceof HTMLDetailsElement) {
+          if (panel && panel.tagName === "DETAILS") {
             panel.open = true;
           }
         });
@@ -1306,10 +1318,14 @@
     });
   }
 
-  function initializeLazyAnalyzerFrames() {
-    document
+  function initializeLazyAnalyzerFrames(root) {
+    root
       .querySelectorAll("details.bms-analyzer-embed")
       .forEach(function (details) {
+        if (details.dataset.bmsLazyAnalyzerMounted === "true") {
+          return;
+        }
+        details.dataset.bmsLazyAnalyzerMounted = "true";
         details.addEventListener("toggle", function () {
           if (!details.open) {
             return;
@@ -1349,6 +1365,17 @@
       });
   }
 
+  function mountLesson(rootElement) {
+    if (
+      !rootElement ||
+      typeof rootElement.querySelectorAll !== "function"
+    ) {
+      return;
+    }
+    initializeAnswerChoices(rootElement);
+    initializeLazyAnalyzerFrames(rootElement);
+  }
+
   const publicApi = {
     bestLookupEntry: bestLookupEntry,
     groupControlState: groupControlState,
@@ -1358,12 +1385,17 @@
     normalizeLearnSearch: normalizeLearnSearch,
     normalizeLookupQuery: normalizeLookupQuery,
     lookupMatchRank: lookupMatchRank,
+    mountLesson: mountLesson,
     parseList: parseList,
     setAllGroupsExpanded: setAllGroupsExpanded
   };
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = publicApi;
+  }
+
+  if (typeof window !== "undefined") {
+    window.BMSLearn = Object.assign(window.BMSLearn || {}, publicApi);
   }
 
   if (typeof document !== "undefined") {
@@ -1374,8 +1406,7 @@
       initializeMobileLessonBar(termLookup);
       placeLessonTrackLinks();
       placeLessonRightRailCards();
-      initializeAnswerChoices();
-      initializeLazyAnalyzerFrames();
+      mountLesson(document);
     });
   }
 })();

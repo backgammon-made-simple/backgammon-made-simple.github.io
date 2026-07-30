@@ -15,6 +15,26 @@ website:
               href: learn/game-plans/index.qmd
             - text: "2 Reading Positions and Engine Analysis"
               href: learn/reading-positions-and-engines/index.qmd
+            - text: "3 Scrolling Test: Start Here 01"
+              href: learn/scrolling-test/start-here/lesson-01.qmd
+            - text: "4 Scrolling Test: Start Here 02"
+              href: learn/scrolling-test/start-here/lesson-02.qmd
+            - text: "5 Scrolling Test: Start Here 03"
+              href: learn/scrolling-test/start-here/lesson-03.qmd
+            - text: "6 Scrolling Test: Start Here 04"
+              href: learn/scrolling-test/start-here/lesson-04.qmd
+            - text: "7 Scrolling Test: Start Here 05"
+              href: learn/scrolling-test/start-here/lesson-05.qmd
+            - text: "8 Scrolling Test: Start Here 06"
+              href: learn/scrolling-test/start-here/lesson-06.qmd
+            - text: "9 Scrolling Test: Start Here 07"
+              href: learn/scrolling-test/start-here/lesson-07.qmd
+            - text: "10 Scrolling Test: Start Here 08"
+              href: learn/scrolling-test/start-here/lesson-08.qmd
+            - text: "11 Scrolling Test: Start Here 09"
+              href: learn/scrolling-test/start-here/lesson-09.qmd
+            - text: "12 Scrolling Test: Start Here 10"
+              href: learn/scrolling-test/start-here/lesson-10.qmd
         - section: "The Doubling Cube"
           href: learn/cube/index.qmd
           contents:
@@ -22,8 +42,48 @@ website:
               href: learn/cube/why-is-25-percent-the-basic-take-point.qmd
             - text: "2 What the Cube Is Really Asking"
               href: learn/cube/what-the-cube-is-asking.qmd
+            - text: "3 Scrolling Test: The Doubling Cube 01"
+              href: learn/scrolling-test/doubling-cube/lesson-01.qmd
+            - text: "4 Scrolling Test: The Doubling Cube 02"
+              href: learn/scrolling-test/doubling-cube/lesson-02.qmd
+            - text: "5 Scrolling Test: The Doubling Cube 03"
+              href: learn/scrolling-test/doubling-cube/lesson-03.qmd
+            - text: "6 Scrolling Test: The Doubling Cube 04"
+              href: learn/scrolling-test/doubling-cube/lesson-04.qmd
+            - text: "7 Scrolling Test: The Doubling Cube 05"
+              href: learn/scrolling-test/doubling-cube/lesson-05.qmd
+            - text: "8 Scrolling Test: The Doubling Cube 06"
+              href: learn/scrolling-test/doubling-cube/lesson-06.qmd
+            - text: "9 Scrolling Test: The Doubling Cube 07"
+              href: learn/scrolling-test/doubling-cube/lesson-07.qmd
+            - text: "10 Scrolling Test: The Doubling Cube 08"
+              href: learn/scrolling-test/doubling-cube/lesson-08.qmd
+            - text: "11 Scrolling Test: The Doubling Cube 09"
+              href: learn/scrolling-test/doubling-cube/lesson-09.qmd
+            - text: "12 Scrolling Test: The Doubling Cube 10"
+              href: learn/scrolling-test/doubling-cube/lesson-10.qmd
         - section: "Opening Play Lab"
           href: learn/opening-play/index.qmd
-          contents: []
+          contents:
+            - text: "1 Scrolling Test: Opening Play Lab 01"
+              href: learn/scrolling-test/opening-play/lesson-01.qmd
+            - text: "2 Scrolling Test: Opening Play Lab 02"
+              href: learn/scrolling-test/opening-play/lesson-02.qmd
+            - text: "3 Scrolling Test: Opening Play Lab 03"
+              href: learn/scrolling-test/opening-play/lesson-03.qmd
+            - text: "4 Scrolling Test: Opening Play Lab 04"
+              href: learn/scrolling-test/opening-play/lesson-04.qmd
+            - text: "5 Scrolling Test: Opening Play Lab 05"
+              href: learn/scrolling-test/opening-play/lesson-05.qmd
+            - text: "6 Scrolling Test: Opening Play Lab 06"
+              href: learn/scrolling-test/opening-play/lesson-06.qmd
+            - text: "7 Scrolling Test: Opening Play Lab 07"
+              href: learn/scrolling-test/opening-play/lesson-07.qmd
+            - text: "8 Scrolling Test: Opening Play Lab 08"
+              href: learn/scrolling-test/opening-play/lesson-08.qmd
+            - text: "9 Scrolling Test: Opening Play Lab 09"
+              href: learn/scrolling-test/opening-play/lesson-09.qmd
+            - text: "10 Scrolling Test: Opening Play Lab 10"
+              href: learn/scrolling-test/opening-play/lesson-10.qmd
         - text: "Backgammon Glossary"
           href: learn/glossary/index.qmd
