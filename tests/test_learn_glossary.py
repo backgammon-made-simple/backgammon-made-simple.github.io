@@ -110,6 +110,7 @@ class LearnGlossaryTests(unittest.TestCase):
             self.lesson_sections,
             self.related_lessons,
             self.related_research,
+            self.research_articles,
         )
         track_outputs = {
             track["path"].parent / "_lesson-index.html"
@@ -123,11 +124,12 @@ class LearnGlossaryTests(unittest.TestCase):
                 learn_glossary.GENERATED_ENTRIES_PATH,
                 learn_glossary.GENERATED_LOOKUP_DATA_PATH,
                 learn_glossary.GENERATED_LEARN_SEQUENCE_PATH,
+                learn_glossary.GENERATED_RESEARCH_SEQUENCE_PATH,
                 learn_glossary.AUTHORING_TERMS_PATH,
                 *track_outputs,
             }
         )
-        self.assertEqual(len(outputs), 9)
+        self.assertEqual(len(outputs), 10)
         self.assertEqual(
             outputs,
             learn_glossary.generated_outputs(
@@ -135,10 +137,37 @@ class LearnGlossaryTests(unittest.TestCase):
                 self.lesson_sections,
                 self.related_lessons,
                 self.related_research,
+                self.research_articles,
             ),
         )
         for path, expected in outputs.items():
             self.assertEqual(path.read_text(encoding="utf-8"), expected)
+
+    def test_research_sequence_is_sorted_and_linked(self) -> None:
+        sequence = learn_glossary.build_research_sequence(
+            self.research_articles
+        )
+        articles = sequence["articles"]
+        self.assertEqual(sequence["schema_version"], 1)
+        self.assertEqual(
+            [article["title"] for article in articles],
+            sorted(
+                [str(article["title"]) for article in self.research_articles],
+                key=str.casefold,
+            ),
+        )
+        for index, article in enumerate(articles):
+            self.assertEqual(article["sequence_index"], index)
+            self.assertEqual(
+                article["previous_route"],
+                articles[index - 1]["route"] if index else None,
+            )
+            self.assertEqual(
+                article["next_route"],
+                articles[index + 1]["route"]
+                if index + 1 < len(articles)
+                else None,
+            )
 
     def test_exactly_one_glossary_source_page_and_zero_term_pages(self) -> None:
         self.assertTrue((learn_glossary.GLOSSARY_ROOT / "index.qmd").exists())
@@ -1157,6 +1186,11 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertLess(research, glossary)
         self.assertLess(glossary, about)
         self.assertIn("assets/bms-glossary-lookup.json", config)
+        self.assertIn("assets/bms-research-sequence.json", config)
+        scripts_include = (
+            learn_glossary.SITE_ROOT / "includes" / "bms-scripts.html"
+        ).read_text(encoding="utf-8")
+        self.assertIn("assets/bms-research-scroll.js", scripts_include)
 
         javascript = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
@@ -1171,6 +1205,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-mobile-tools-drawer",
             "bms-mobile-tools-edge",
             "Open table of contents and term search",
+            'links.removeAttribute("id")',
             r"\u2190 Expand Lesson Index",
             r"Look Up a Term \u2192",
             "data-bms-site-back-to-top",
@@ -1970,7 +2005,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["alias_entries"], 3)
         self.assertEqual(result["canonical_anchors"], 12)
         self.assertEqual(result["standalone_term_pages"], 0)
-        self.assertEqual(result["generated_files"], 9)
+        self.assertEqual(result["generated_files"], 10)
         self.assertEqual(result["continuous_lessons"], len(self.lessons))
         self.assertEqual(result["lesson_catalogue_sections"], 3)
         self.assertEqual(result["learn_tracks"], 3)

@@ -1266,6 +1266,7 @@
       heading.className = "bms-mobile-tools-toc-title";
       heading.textContent = "On this page";
       const links = sourceLinks.cloneNode(true);
+      links.removeAttribute("id");
       links.querySelectorAll("[id]").forEach(function (element) {
         element.removeAttribute("id");
       });
