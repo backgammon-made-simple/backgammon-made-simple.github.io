@@ -11,7 +11,8 @@ usage() {
 Usage:
   bash preview-site.sh [PORT]
 
-Starts the Quarto development preview without regenerating social cards.
+Immediately serves the last rendered site while Quarto watches source files
+and writes changed pages to site/_site. Social cards are not regenerated.
 
 Examples:
   bash preview-site.sh
@@ -42,16 +43,57 @@ if ! command -v quarto >/dev/null 2>&1; then
   exit 127
 fi
 
+if command -v py >/dev/null 2>&1; then
+  PYTHON_COMMAND=(py)
+elif command -v python >/dev/null 2>&1; then
+  PYTHON_COMMAND=(python)
+else
+  printf 'ERROR: Neither py nor python was found on PATH.\n' >&2
+  exit 127
+fi
+
 cd "${REPO_ROOT}"
 export BMS_SKIP_SOCIAL_CARDS=1
 
-printf 'BMS development preview\n'
+if [[ ! -f "site/_site/index.html" ]]; then
+  printf 'ERROR: site/_site/index.html does not exist.\n' >&2
+  printf 'Run a full build once before starting the development preview.\n' >&2
+  exit 1
+fi
+
+STATIC_SERVER_PID=""
+
+cleanup() {
+  if [[ -n "${STATIC_SERVER_PID}" ]] && kill -0 "${STATIC_SERVER_PID}" 2>/dev/null; then
+    kill "${STATIC_SERVER_PID}" 2>/dev/null || true
+    wait "${STATIC_SERVER_PID}" 2>/dev/null || true
+  fi
+}
+
+trap cleanup EXIT
+
+printf 'BMS static preview + render watcher\n'
 printf 'Repository: %s\n' "${REPO_ROOT}"
 printf 'URL:        http://%s:%s/\n' "${HOST}" "${PORT}"
+printf 'Serving:    existing site/_site output\n'
+printf 'Watching:   Quarto source changes\n'
 printf 'Social:     skipped\n'
 printf 'Stop:       Ctrl-C\n\n'
 
-exec quarto preview site \
-  --host "${HOST}" \
-  --port "${PORT}" \
-  --no-browser
+"${PYTHON_COMMAND[@]}" -m http.server "${PORT}" \
+  --bind "${HOST}" \
+  --directory site/_site &
+STATIC_SERVER_PID=$!
+
+# Fail quickly if the static server could not bind (for example, if the port
+# is already in use) instead of leaving only the render watcher running.
+sleep 0.25
+if ! kill -0 "${STATIC_SERVER_PID}" 2>/dev/null; then
+  wait "${STATIC_SERVER_PID}"
+  exit 1
+fi
+
+quarto preview site \
+  --no-serve \
+  --no-browser \
+  --no-navigate

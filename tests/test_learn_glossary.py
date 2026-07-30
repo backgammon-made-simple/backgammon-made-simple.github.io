@@ -1137,9 +1137,13 @@ class LearnGlossaryTests(unittest.TestCase):
         for required in (
             "BMS_SKIP_SOCIAL_CARDS=1",
             'PORT="${1:-8765}"',
+            '-m http.server "${PORT}"',
+            "--directory site/_site",
+            'trap cleanup EXIT',
             'quarto preview site',
-            '--port "${PORT}"',
+            "--no-serve",
             "--no-browser",
+            "--no-navigate",
         ):
             self.assertIn(required, preview_script)
 
