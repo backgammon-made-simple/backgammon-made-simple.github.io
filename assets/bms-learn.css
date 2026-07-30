@@ -626,19 +626,18 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   padding-left: 0.25rem;
 }
 
-.bms-learn-lesson-number {
-  color: var(--bms-text-muted);
-  font-family: "Source Code Pro", ui-monospace, monospace;
-  font-size: 0.72rem;
-  text-align: right;
-}
-
 .bms-learn-catalogue-link {
   color: var(--bms-text);
   font-size: 0.86rem;
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.15;
   text-decoration: none;
+}
+
+body:is(.bms-learn-index, .bms-learn-article)
+  #quarto-sidebar
+  .sidebar-link {
+  line-height: 1.15;
 }
 
 .bms-learn-track-heading a:hover,
@@ -854,6 +853,14 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 .bms-glossary-related-tracks,
 .bms-glossary-canonical {
   margin: 0.65rem 0 0;
+}
+
+.bms-glossary-definition > p {
+  margin: 0.65rem 0 0;
+}
+
+.bms-glossary-definition > p:first-child {
+  margin-top: 0;
 }
 
 .bms-glossary-aliases,
@@ -1169,6 +1176,13 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 .bms-site-tools > button:focus-visible {
   border-color: var(--bms-link-hover);
   color: var(--bms-link-hover);
+}
+
+.bms-site-tools > .bms-term-lookup-reveal {
+  border-color: var(--bms-border);
+  background: color-mix(in srgb, var(--bms-surface) 88%, transparent);
+  color: var(--bms-text-muted);
+  font-weight: 500;
 }
 
 .bms-site-tools > button[hidden] {
@@ -1540,15 +1554,16 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 
   .bms-term-lookup {
     position: fixed;
-    top: 6.7rem;
+    top: 64vh;
     right: 0.75rem;
     bottom: auto;
     left: 0.75rem;
     z-index: 1050;
     width: auto;
-    max-height: calc(100vh - 8rem);
+    max-height: min(30rem, calc(100vh - 2rem));
     overflow-y: auto;
     box-shadow: 0 8px 28px rgb(17 24 47 / 18%);
+    transform: translateY(-50%);
   }
 
   .bms-site-tools--floating {
@@ -1578,8 +1593,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
     white-space: nowrap;
   }
 
-  .bms-mobile-lesson-index-label,
-  .bms-mobile-term-toggle {
+  .bms-mobile-lesson-index-label {
     display: inline;
   }
 
@@ -1589,36 +1603,9 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   }
 
   .bms-mobile-term-toggle {
-    margin-left: auto;
-    padding: 0.25rem 0.35rem;
-    border: 0;
-    background: transparent;
-    color: var(--bms-link);
-    font-size: 0.72rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-
-  body.bms-learn-article:not(.bms-learn-index):not(.bms-learn-track-index)
-    .bms-site-tools
-    [data-bms-site-term-toggle] {
     display: none;
   }
-}
 
-@keyframes bms-term-lookup-slide-in {
-  from {
-    opacity: 0;
-    transform: translate(1.5rem, -50%);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991.98px) {
   body:is(
       .bms-research-article,
       .bms-learn-article:not(.bms-learn-index):not(.bms-learn-track-index)
@@ -1626,43 +1613,19 @@ body:is(.bms-learn-index, .bms-learn-track-index)
     .bms-site-tools--floating
     [data-bms-site-term-toggle]:not([hidden]) {
     position: fixed;
-    top: clamp(9rem, 42vh, 20rem);
-    right: 0.75rem;
+    top: 64vh;
+    right: 0.5rem;
     z-index: 1060;
     display: inline-flex;
     width: auto;
     align-items: center;
+    padding: 0.2rem 0.35rem;
+    border-color: transparent;
+    background: color-mix(in srgb, var(--bms-surface) 82%, transparent);
+    color: var(--bms-text-muted);
+    font-size: 0.68rem;
+    font-weight: 500;
     white-space: nowrap;
-  }
-
-  body.bms-learn-article:not(.bms-learn-index):not(.bms-learn-track-index)
-    .quarto-secondary-nav
-    [data-bms-mobile-term-toggle] {
-    display: none;
-  }
-
-  body:is(
-      .bms-research-article,
-      .bms-learn-article:not(.bms-learn-index):not(.bms-learn-track-index)
-    )
-    .bms-term-lookup--floating {
-    top: 50%;
-    right: 1rem;
-    bottom: auto;
-    left: auto;
-    width: min(23rem, calc(100vw - 2rem));
-    animation: bms-term-lookup-slide-in 180ms ease-out;
-    transform: translateY(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body:is(
-      .bms-research-article,
-      .bms-learn-article:not(.bms-learn-index):not(.bms-learn-track-index)
-    )
-    .bms-term-lookup--floating {
-    animation: none;
   }
 }
 

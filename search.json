@@ -4,7 +4,7 @@
     "href": "updates/index.html",
     "title": "Updates",
     "section": "",
-    "text": "This feed collects dated public lessons, Research articles, studies, and benchmark reports in reverse chronological order.\nOnly publications explicitly marked published: true and supplied with a real publication date are eligible. Landing pages, glossary entries, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.\n\n\n\n\nNo matching items"
+    "text": "This feed collects dated public lessons, Research articles, studies, benchmark reports, and approved glossary definitions in reverse chronological order.\nPage publications must be explicitly marked published: true and supplied with a real publication date. Approved glossary definitions use their stable Added date and are inserted as individual feed items during the build. Landing pages, the 404 page, templates, drafts, hidden pages, planned content, and private fixtures are excluded.\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "templates/sage-vs-gnu-update.html",
@@ -242,7 +242,7 @@
     "href": "learn/start-here/index.html",
     "title": "Start Here",
     "section": "",
-    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n1\n\n\nThe Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n2\n\n\nReading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n\n\n1. The Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n\n\n2. Reading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Start Here"
@@ -253,7 +253,7 @@
     "href": "learn/opening-play/index.html",
     "title": "Opening Play Lab",
     "section": "",
-    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\nNo options yet\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\nNo options yet\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Opening Play Lab"
@@ -264,7 +264,7 @@
     "href": "learn/glossary/index.html",
     "title": "Backgammon Glossary",
     "section": "",
-    "text": "Search terms and aliases\n    \n  \n\n  \n    Glossary category\n    \n  \n\n  \n    Related learning track\n    \n      Doubling Cube\n      Checker Play\n      Opening Play\n      Match Play\n      Endgames\n      Engines and Analysis\n    \n  \n\n  \n    \n    Reset search and filters\n  \n\n\n\n\n# A\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\n#3 terms\n\n\n\n\n10 in the Zone\n\n\n\nAlso called: 10 Checkers in the Zone, candidate only, Ten in the Zone\n\n\nTen in the Zone means having ten checkers in your home board and outer board, giving you strong attacking or blitzing potential.\n\n\nThe zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two more checkers down from the mid-point increases that number to ten.\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nAttack Zone\n\n\nZone of Attack\n\n\nYour Side of the Board\n\n\nHome Board\n\n\nOuter Board\n\n\nMid-Point\n\n\nActive Builder\n\n\nBuilder\n\n\nBlitz\n\n\nAttacking Game\n\n\nHit\n\n\nCover a Blot\n\n\nClose Out\n\n\n\n\n\n\n\n25 Percent Rule\n\n\n\nThe 25 Percent Rule says that, if you ignore future recubes, you need about a 25 percent chance to take a double.\n\n\nThe 25 Percent Rule is a simplified baseline for cube decisions. In a holding game or other positions, if future cube actions are ignored, you need roughly a 25 percent winning chance to take a double. If the cube remains live and you may be able to recube later, you might correctly take with less than 25 percent.\n\n\nCategory: Cube and Scoring\n\n\n\nSee also\n\n\n\nTake Point\n\n\nRaw Take Point\n\n\nTake\n\n\nPass\n\n\nRecube\n\n\nLive Cube\n\n\nCube Ownership\n\n\nHolding Game\n\n\nDoubling Cube\n\n\n\n\n\n\n\n8-9-12 Doubling Rule\n\n\n\nThe 8-9-12 Doubling Rule is a guideline for doubling decisions in a pure race based on pip-count percentages.\n\n\nIn a pure race, the 8-9-12 Doubling Rule helps guide cube decisions. The percentage is calculated by dividing the difference between the two pip counts by the leader's pip count. The leader considers doubling at about 8 percent, the middle of the doubling window is around 9 percent, and the trailer can usually take when behind by up to about 12 percent.\nFor example, if the leader has a pip count of 60 and the trailer has 66, the difference is 6 pips. Six divided by 60 is 10 percent, placing the position within the doubling window.\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nPip Count\n\n\nPure Race\n\n\nDoubling Window\n\n\nTake Point\n\n\nDouble\n\n\nTake\n\n\n\n\n\n\n\n\n\nA9 terms\n\n\n\n\nABT\n\n\n\nAlso called: American Backgammon Tour\n\n\nABT stands for the American Backgammon Tour, a series of major backgammon tournaments in the United States.\n\n\nThe American Backgammon Tour is a series of backgammon tournaments held across the United States. Players compete in multiple events and earn points toward the overall ABT standings.\n\n\nCategory: Organizations and Community\n\n\n\nSee also\n\n\n\nTournament\n\n\nMatch Play\n\n\nChampionship Division\n\n\nRating\n\n\nStandings\n\n\n\n\n\n\n\nAce\n\n\n\nAce means one.\n\n\nIn backgammon, ace means one. It can describe rolling a one or refer to the one-point, which is also called the ace-point.\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAce-Point Game\n\n\nAcey-Deucey\n\n\nDeuce\n\n\n\n\n\n\n\nAce-Point Game\n\n\n\nAn ace-point game is a holding game in which you hold an anchor on your opponent's one-point.\n\n\nAn ace-point game is a holding game in which you hold an anchor on your opponent's one-point. While your opponent bears in, you have about a 50 percent chance of getting a shot.\nIt is stronger than a two-point or three-point holding game because those anchors give you fewer opportunities to get a shot. The ace-point anchor therefore offers more hitting chances while the opponent brings their checkers home.\n\n\nCategory: Board, Equipment, and Notation\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAnchor\n\n\nHolding Game\n\n\nBear In\n\n\nShot\n\n\nHit\n\n\nTwo-Point\n\n\nThree-Point\n\n\n\n\n\n\n\nActing Captain\n\n\n\nAn acting captain is a chouette player who temporarily takes over the checker play when the original captain's game against the box ends but another cube remains active.\n\n\nIn a chouette, every team member controls their own cube. The captain makes the checker plays against the box.\nFor example, the captain may offer a double that the box passes. If the box still holds another player's cube, that player becomes the acting captain and continues the game against the box. The acting captain takes over the checker decisions for the remaining active game.\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nChouette\n\n\nCaptain\n\n\nBox\n\n\nTeam\n\n\nDoubling Cube\n\n\nCube Ownership\n\n\nDouble\n\n\nPass\n\n\nChecker Play\n\n\n\n\n\n\n\nAction Play\n\n\n\nAn action play is a bold move made to complicate a position and create chances to turn the game around.\n\n\nAn action play is a bold move made when you want to complicate the position, often when you are behind. It increases contact or volatility to create chances to turn the game around.\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\n\n\n\n\n\nAction Position\n\n\n\nAn action position is a volatile backgammon position with multiple possible exchanges or hitting opportunities.\n\n\nAn action position is a volatile position with multiple hitting or exchange possibilities. These positions can lead to large swings in equity and require careful evaluation, especially because they may create strong doubling opportunities.\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\nEquity\n\n\nDoubling Cube\n\n\nCube Action\n\n\nHit\n\n\n\n\n\n\n\nActive Builder\n\n\n\nAn active builder is a blot or spare checker in your outer board that can help make a point in your home board.\n\n\nAn active builder is a blot or spare checker in your outer board that can help you make a new point in your home board on a future roll. It is positioned to help you build a stronger board.\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nBuilder\n\n\nBlot\n\n\nSpare Checker\n\n\nOuter Board\n\n\nHome Board\n\n\nPoint\n\n\nBuilding a Board\n\n\nBuild One's Board\n\n\nOur Board\n\n\nTheir Board\n\n\n\n\n\n\n\nAdvanced Anchor\n\n\n\nAn advanced anchor is an anchor on your opponent's four-point or five-point.\n\n\nAn advanced anchor is an anchor on your opponent's four-point or five-point. It gives you outfield control and helps your back checkers escape. It is particularly useful in holding games, and you generally try not to break it until late in the middlegame or endgame.\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nAnchor\n\n\nFour-Point\n\n\nFive-Point\n\n\nOutfield Control\n\n\nBack Checker\n\n\nEscape\n\n\nHolding Game\n\n\nMiddlegame\n\n\nEnd Game\n\n\n\n\n\n\nLearn more (1)\n\n\n\nThe Main Game Plans\n\n\n\n\n\n\n\n\nAhead in the Count\n\n\n\nAlso called: Ahead in the Race\n\n\nAhead in the Count means having a lower pip count than your opponent and therefore being ahead in the race.\n\n\nAhead in the Count means you have a lower pip count than your opponent, meaning you have fewer pips remaining to bring your checkers home and bear them off.\nA common principle is, \"When you are ahead in the race, race.\" Avoid unnecessary risk and contact, and focus on bringing your checkers home safely.\n\n\nCategory: Analysis and Probability\n\n\n\nSee also\n\n\n\nPip Count\n\n\nRace\n\n\nBear Off\n\n\nContact Position\n\n\nSafe Play\n\n\n\n\n\n\n\n\n\n  No glossary terms match this search and filter combination.\n\n\n  Back to top",
+    "text": "Search terms and aliases\n    \n  \n\n  \n    Glossary category\n    \n  \n\n  \n    Related learning track\n    \n      Doubling Cube\n      Checker Play\n      Opening Play\n      Match Play\n      Endgames\n      Engines and Analysis\n    \n  \n\n  \n    \n    Reset search and filters\n  \n\n\n\n\n# A\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\n#3 terms\n\n\n\n\n10 in the Zone\n\n\n\nAlso called: Ten in the Zone\n\n\n\nThe zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two builders down from the mid-point increases that number to ten.\n\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nAttack Zone\n\n\nZone of Attack\n\n\nYour Side of the Board\n\n\nHome Board\n\n\nOuter Board\n\n\nMid-Point\n\n\nActive Builder\n\n\nBuilder\n\n\nBlitz\n\n\nAttacking Game\n\n\nHit\n\n\nCover a Blot\n\n\nClose Out\n\n\n\n\n\n\nLearn more (1)\n\n\n\nWhat the Cube Is Really Asking\n\n\n\n\n\n\n\n\n25 Percent Rule\n\n\n\n\nThe 25 Percent Rule is a simplified baseline for cube decisions. In a holding game or other positions, if future cube actions are ignored, you need roughly a 25 percent winning chance to take a double. If the cube remains live and you may be able to recube later, you might correctly take with less than 25 percent.\n\n\n\nCategory: Cube and Scoring\n\n\n\nSee also\n\n\n\nTake Point\n\n\nRaw Take Point\n\n\nTake\n\n\nPass\n\n\nRecube\n\n\nLive Cube\n\n\nCube Ownership\n\n\nHolding Game\n\n\nDoubling Cube\n\n\n\n\n\n\n\n8-9-12 Doubling Rule\n\n\n\n\nIn a pure race, the 8-9-12 Doubling Rule helps guide cube decisions. The percentage is calculated by dividing the difference between the two pip counts by the leader's pip count. The leader considers doubling at about 8 percent, the middle of the doubling window is around 9 percent, and the trailer can usually take when behind by up to about 12 percent.\n\n\nFor example, if the leader has a pip count of 60 and the trailer has 66, the difference is 6 pips. Six divided by 60 is 10 percent, placing the position within the doubling window.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nPip Count\n\n\nPure Race\n\n\nDoubling Window\n\n\nTake Point\n\n\nDouble\n\n\nTake\n\n\n\n\n\n\n\n\n\nA9 terms\n\n\n\n\nABT\n\n\n\nAlso called: American Backgammon Tour\n\n\n\nThe American Backgammon Tour is a series of backgammon tournaments held across the United States. Players compete in multiple events and earn points toward the overall ABT standings.\n\n\n\nCategory: Organizations and Community\n\n\n\nSee also\n\n\n\nTournament\n\n\nMatch Play\n\n\nChampionship Division\n\n\nRating\n\n\nStandings\n\n\n\n\n\n\n\nAce\n\n\n\n\nIn backgammon, ace means one. It can describe rolling a one or refer to the one-point, which is also called the ace-point.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAce-Point Game\n\n\nAcey-Deucey\n\n\nDeuce\n\n\n\n\n\n\n\nAce-Point Game\n\n\n\n\nAn ace-point game is a holding game in which you hold an anchor on your opponent's one-point. While your opponent bears in, you have about a 50 percent chance of getting a shot.\n\n\nIt is stronger than a two-point or three-point holding game because those anchors give you fewer opportunities to get a shot. The ace-point anchor therefore offers more hitting chances while the opponent brings their checkers home.\n\n\n\nCategory: Board, Equipment, and Notation\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAnchor\n\n\nHolding Game\n\n\nBear In\n\n\nShot\n\n\nHit\n\n\nTwo-Point\n\n\nThree-Point\n\n\n\n\n\n\n\nActing Captain\n\n\n\n\nIn a chouette, every team member controls their own cube. The captain makes the checker plays against the box.\n\n\nFor example, the captain may offer a double that the box passes. If the box still holds another player's cube, that player becomes the acting captain and continues the game against the box. The acting captain takes over the checker decisions for the remaining active game.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nChouette\n\n\nCaptain\n\n\nBox\n\n\nTeam\n\n\nDoubling Cube\n\n\nCube Ownership\n\n\nDouble\n\n\nPass\n\n\nChecker Play\n\n\n\n\n\n\n\nAction Play\n\n\n\n\nAn action play is a bold move made when you want to complicate the position, often when you are behind. It increases contact or volatility to create chances to turn the game around.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\n\n\n\n\n\nAction Position\n\n\n\n\nAn action position is a volatile position with multiple hitting or exchange possibilities. These positions can lead to large swings in equity and require careful evaluation, especially because they may create strong doubling opportunities.\n\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\nEquity\n\n\nDoubling Cube\n\n\nCube Action\n\n\nHit\n\n\n\n\n\n\n\nActive Builder\n\n\n\n\nAn active builder is a blot or spare checker in your outer board that can help you make a new point in your home board on a future roll. It is positioned to help you build a stronger board.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nBuilder\n\n\nBlot\n\n\nSpare Checker\n\n\nOuter Board\n\n\nHome Board\n\n\nPoint\n\n\nBuilding a Board\n\n\nBuild One's Board\n\n\nOur Board\n\n\nTheir Board\n\n\n\n\n\n\nLearn more (1)\n\n\n\nWhat the Cube Is Really Asking\n\n\n\n\n\n\n\n\nAdvanced Anchor\n\n\n\n\nAn advanced anchor is an anchor on your opponent's four-point or five-point. It gives you outfield control and helps your back checkers escape. It is particularly useful in holding games, and you generally try not to break it until late in the middlegame or endgame.\n\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nAnchor\n\n\nFour-Point\n\n\nFive-Point\n\n\nOutfield Control\n\n\nBack Checker\n\n\nEscape\n\n\nHolding Game\n\n\nMiddlegame\n\n\nEnd Game\n\n\n\n\n\n\nLearn more (1)\n\n\n\nThe Main Game Plans\n\n\n\n\n\n\n\n\nAhead in the Count\n\n\n\nAlso called: Ahead in the Race\n\n\n\nAhead in the Count means you have a lower pip count than your opponent, meaning you have fewer pips remaining to bring your checkers home and bear them off.\n\n\nA common principle is, \"When you are ahead in the race, race.\" Avoid unnecessary risk and contact, and focus on bringing your checkers home safely.\n\n\n\nCategory: Analysis and Probability\n\n\n\nSee also\n\n\n\nPip Count\n\n\nRace\n\n\nBear Off\n\n\nContact Position\n\n\nSafe Play\n\n\n\n\n\n\n\n\n\n  No glossary terms match this search and filter combination.\n\n\n  Back to top",
     "crumbs": [
       "Learn",
       "Backgammon Glossary"
@@ -279,7 +279,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -291,7 +291,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -303,7 +303,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -315,7 +315,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -327,7 +327,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -339,7 +339,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -351,7 +351,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -363,7 +363,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -375,7 +375,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -387,7 +387,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
+      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
   {
@@ -395,7 +395,7 @@
     "href": "learn/cube/index.html",
     "title": "The Doubling Cube",
     "section": "",
-    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n1\n\n\nWhy Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n2\n\n\nWhat the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\n\n\n\nTerm Filter\n\n\n\n10 in the Zone×0\n\n\nActive Builder×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n\n\n1. Why Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n\n\n2. What the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "The Doubling Cube"
@@ -641,7 +641,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -653,7 +653,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -665,7 +665,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -677,7 +677,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -689,7 +689,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -697,11 +697,11 @@
     "href": "learn/cube/what-the-cube-is-asking.html#what-changes-the-answer",
     "title": "What the Cube Is Really Asking",
     "section": "What Changes the Answer?",
-    "text": "What Changes the Answer?\n\nRace lead.\nGammons.\nThreats.\nMarket losers.\nCube ownership.\nMatch score.",
+    "text": "What Changes the Answer?\nGetting 10 in the Zone can turn an Active Builder into an immediate attacking threat, making the position more volatile before your next chance to double.\n\nRace lead.\nGammons.\nThreats.\nMarket losers.\nCube ownership.\nMatch score.",
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -713,7 +713,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -725,7 +725,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -737,7 +737,7 @@
     "crumbs": [
       "Learn",
       "The Doubling Cube",
-      "2 What the Cube Is Really Asking"
+      "2. What the Cube Is Really Asking"
     ]
   },
   {
@@ -749,7 +749,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "1 The Main Game Plans"
+      "1. The Main Game Plans"
     ]
   },
   {
@@ -761,7 +761,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "1 The Main Game Plans"
+      "1. The Main Game Plans"
     ]
   },
   {
@@ -773,7 +773,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "1 The Main Game Plans"
+      "1. The Main Game Plans"
     ]
   },
   {
@@ -785,7 +785,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "1 The Main Game Plans"
+      "1. The Main Game Plans"
     ]
   },
   {
@@ -797,7 +797,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "1 The Main Game Plans"
+      "1. The Main Game Plans"
     ]
   },
   {
@@ -809,7 +809,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "1 The Main Game Plans"
+      "1. The Main Game Plans"
     ]
   },
   {
@@ -817,7 +817,7 @@
     "href": "learn/index.html",
     "title": "Learn",
     "section": "",
-    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nLearning Track Filter\n\n\n\nStart Here×0\n\n\nThe Doubling Cube×0\n\n\nOpening Play Lab×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nStart Here 2 lessons\n\n\n\n\n1\n\n\nThe Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n2\n\n\nReading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nThe Doubling Cube 2 lessons\n\n\n\n\n1\n\n\nWhy Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n2\n\n\nWhat the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nOpening Play Lab 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nLearning Track Filter\n\n\n\nStart Here×0\n\n\nThe Doubling Cube×0\n\n\nOpening Play Lab×0\n\n\n\n\n\nTerm Filter\n\n\n\n10 in the Zone×0\n\n\nActive Builder×0\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nStart Here 2 lessons\n\n\n\n\n\n\n1. The Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n\n\n2. Reading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nThe Doubling Cube 2 lessons\n\n\n\n\n\n\n1. Why Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n\n\n2. What the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nOpening Play Lab 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Learn Home"
@@ -832,7 +832,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "2 Reading Positions and Engine Analysis"
+      "2. Reading Positions and Engine Analysis"
     ]
   },
   {
@@ -844,7 +844,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "2 Reading Positions and Engine Analysis"
+      "2. Reading Positions and Engine Analysis"
     ]
   },
   {
@@ -856,7 +856,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "2 Reading Positions and Engine Analysis"
+      "2. Reading Positions and Engine Analysis"
     ]
   },
   {
@@ -868,7 +868,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "2 Reading Positions and Engine Analysis"
+      "2. Reading Positions and Engine Analysis"
     ]
   },
   {
@@ -880,7 +880,7 @@
     "crumbs": [
       "Learn",
       "Start Here",
-      "2 Reading Positions and Engine Analysis"
+      "2. Reading Positions and Engine Analysis"
     ]
   },
   {
