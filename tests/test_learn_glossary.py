@@ -834,6 +834,14 @@ class LearnGlossaryTests(unittest.TestCase):
         for lesson in self.cube_lessons:
             self.assertNotRegex(str(lesson["title"]), r"^\d+\.\s")
 
+    def test_rendered_validator_expects_unnumbered_track_headings(self) -> None:
+        validator_source = MODULE_PATH.read_text(encoding="utf-8")
+        self.assertIn('track_title = str(track["title"])', validator_source)
+        self.assertNotIn(
+            'f"{roman_number(int(track[\'order\']))} {str(track[\'title\'])}"',
+            validator_source,
+        )
+
     def test_compact_site_lookup_data_is_public_safe_and_complete(self) -> None:
         lookup = json.loads(
             learn_glossary.GENERATED_LOOKUP_DATA_PATH.read_text(

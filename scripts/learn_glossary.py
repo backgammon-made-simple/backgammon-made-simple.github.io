@@ -1829,12 +1829,16 @@ def check_rendered(output_root: Path) -> dict[str, int]:
             "Rendered Learn track sections must all begin expanded"
         )
     for track in curriculum:
-        numbered_title = (
-            f"{roman_number(int(track['order']))} {str(track['title'])}"
+        track_title = str(track["title"])
+        rendered_heading = re.compile(
+            r'<span class="bms-learn-track-heading">\s*'
+            r'<a\b[^>]*>'
+            + re.escape(html.escape(track_title))
+            + r"</a>\s*</span>"
         )
-        if html.escape(numbered_title) not in learn_html:
+        if rendered_heading.search(learn_html) is None:
             raise ValidationError(
-                f"Rendered Learn catalogue is missing track heading {numbered_title!r}"
+                f"Rendered Learn catalogue is missing track heading {track_title!r}"
             )
     obsolete_finder = output_root / "learn" / "lesson-finder" / "index.html"
     if obsolete_finder.exists():

@@ -5,8 +5,8 @@ cards:
   height: 630
   output: site/assets/social/generated/social-default.png
   title: Backgammon Made Simple
-  subtitle: Learn backgammon through clear explanations, useful tools, and honest
-    research that show why a decision is right, not just what the right decision is.
+  subtitle: Learn backgammon through clear explanations and useful tools that show
+    why a decision is correct, not just what the right decision is.
   category: ''
   visual: ''
 - slug: github-backgammon-made-simple
