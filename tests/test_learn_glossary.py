@@ -1150,6 +1150,20 @@ class LearnGlossaryTests(unittest.TestCase):
             r"box-sizing: border-box;",
         )
 
+    def test_lesson_embedded_html_is_explicitly_raw(self) -> None:
+        lesson = (
+            learn_glossary.CUBE_ROOT / "what-the-cube-is-asking.qmd"
+        ).read_text(encoding="utf-8")
+        for fragment_name in ("analyzer-form.html", "subscribe.html"):
+            include_path = f"../../includes/{fragment_name}"
+            self.assertIn(f"{{{{< include {include_path} >}}}}", lesson)
+
+            fragment = (
+                learn_glossary.SITE_ROOT / "includes" / fragment_name
+            ).read_text(encoding="utf-8")
+            self.assertTrue(fragment.startswith("```{=html}\n"))
+            self.assertTrue(fragment.rstrip().endswith("\n```"))
+
     def test_learn_home_contains_only_generated_catalogue(self) -> None:
         source = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
             encoding="utf-8"
