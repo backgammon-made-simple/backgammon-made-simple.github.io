@@ -806,6 +806,16 @@ class LearnGlossaryTests(unittest.TestCase):
             'classList.toggle("collapse"',
         ):
             self.assertNotIn(forbidden, extension)
+        for required in (
+            "initializeResearchTaxonomyToggle",
+            "bms-post-taxonomy-toggle",
+            "bms-post-taxonomy--collapsed",
+            "Hide article categories and tags",
+            "Show article categories and tags",
+            'toggle.textContent = collapsed ? "\\u2039" : "\\u203a"',
+            "window.scrollY > 32",
+        ):
+            self.assertIn(required, extension)
 
     def test_authoring_docs_describe_single_page_anchors_and_404(self) -> None:
         guide = (ROOT / "docs" / "authoring-guide.md").read_text(

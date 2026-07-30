@@ -76,9 +76,44 @@ local css = [==[
 }
 
 .bms-post-taxonomy {
+  position: relative;
   margin: 0 0 1.2rem;
-  padding: 0 0 1.1rem;
+  padding: 0 1.8rem 1.1rem 0;
   border-bottom: 1px solid var(--bms-border, #d9d3c7);
+}
+
+.bms-post-taxonomy-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  width: 1.45rem;
+  min-height: 1.45rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--bms-border, #d9d3c7);
+  border-radius: 5px;
+  background: var(--bms-ivory, #f7f3ea);
+  color: var(--bms-text-muted, #68625a);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.bms-post-taxonomy-toggle:focus-visible {
+  outline: 2px solid var(--bms-link-hover, #6d3f27);
+  outline-offset: 2px;
+}
+
+.bms-post-taxonomy--collapsed {
+  min-height: 1.55rem;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.2rem;
+}
+
+.bms-post-taxonomy--collapsed .bms-post-taxonomy-content {
+  display: none;
 }
 
 .bms-post-taxonomy-group + .bms-post-taxonomy-group {
@@ -190,7 +225,62 @@ local javascript = [==[
       }
     }
 
+    initializeResearchTaxonomyToggle(taxonomy);
     source.remove();
+  }
+
+  function initializeResearchTaxonomyToggle(taxonomy) {
+    if (!taxonomy || taxonomy.querySelector("[data-bms-research-taxonomy-toggle]")) {
+      return;
+    }
+
+    var collapsed = false;
+    var toggle = document.createElement("button");
+    var contentId = "bms-research-taxonomy-content";
+    var groups = Array.from(
+      taxonomy.querySelectorAll(".bms-post-taxonomy-group")
+    );
+    var content = document.createElement("div");
+
+    content.id = contentId;
+    content.className = "bms-post-taxonomy-content";
+    groups.forEach(function (group) {
+      content.appendChild(group);
+    });
+    taxonomy.appendChild(content);
+    toggle.type = "button";
+    toggle.className = "bms-post-taxonomy-toggle";
+    toggle.dataset.bmsResearchTaxonomyToggle = "";
+    toggle.setAttribute("aria-controls", contentId);
+
+    function update() {
+      taxonomy.classList.toggle("bms-post-taxonomy--collapsed", collapsed);
+      toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      toggle.setAttribute(
+        "aria-label",
+        collapsed
+          ? "Show article categories and tags"
+          : "Hide article categories and tags"
+      );
+      toggle.textContent = collapsed ? "\u2039" : "\u203a";
+    }
+
+    toggle.addEventListener("click", function () {
+      collapsed = !collapsed;
+      update();
+    });
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!collapsed && window.scrollY > 32) {
+          collapsed = true;
+          update();
+        }
+      },
+      { passive: true }
+    );
+    taxonomy.prepend(toggle);
+    update();
   }
 
   function matchingButton(selector, datasetKey, value) {
