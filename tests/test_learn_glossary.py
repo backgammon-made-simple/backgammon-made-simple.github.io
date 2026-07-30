@@ -828,6 +828,7 @@ class LearnGlossaryTests(unittest.TestCase):
             includes,
             [
                 "../../includes/analyzer-form.html",
+                "../../includes/scrolling-position-disclosure.html",
                 "../../includes/subscribe.html",
                 "../../includes/report-problem.html",
             ],
