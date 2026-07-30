@@ -577,6 +577,18 @@
     return container;
   }
 
+  function findPrimaryToc(root) {
+    if (!root || typeof root.getElementById !== "function") {
+      return null;
+    }
+    const marginSidebar = root.getElementById("quarto-margin-sidebar");
+    const marginToc =
+      marginSidebar && typeof marginSidebar.querySelector === "function"
+        ? marginSidebar.querySelector("#TOC")
+        : null;
+    return marginToc || root.getElementById("TOC");
+  }
+
   function initializeContinuousLearn() {
     if (
       !document.body ||
@@ -604,7 +616,7 @@
 
         const tracker = createLoadedRouteTracker(current.route);
         const sidebar = document.getElementById("quarto-sidebar");
-        const globalToc = document.getElementById("TOC");
+        const globalToc = findPrimaryToc(document);
         const lessonRecords = [];
         const initialHeadingIds = Array.from(
           main.querySelectorAll("h2[id], h3[id]")
@@ -627,6 +639,7 @@
         let lastScrollY = window.scrollY;
         let pendingDirection = 0;
         let activeUpdateScheduled = false;
+        let contentResizeObserver = null;
 
         function updateActiveTocHeading(record, readingLine) {
           if (!globalToc || !record) {
@@ -728,6 +741,19 @@
         window.addEventListener("resize", function () {
           scheduleActiveLessonUpdate(0);
         });
+        main.addEventListener(
+          "toggle",
+          function () {
+            scheduleActiveLessonUpdate(0);
+          },
+          true
+        );
+        if ("ResizeObserver" in window) {
+          contentResizeObserver = new ResizeObserver(function () {
+            scheduleActiveLessonUpdate(0);
+          });
+          contentResizeObserver.observe(main);
+        }
         synchronizeActiveLesson(lessonRecords[0]);
 
         function showEndState() {
@@ -794,7 +820,7 @@
                 const nextMain = nextDocument.getElementById(
                   "quarto-document-content"
                 );
-                const nextToc = nextDocument.getElementById("TOC");
+                const nextToc = findPrimaryToc(nextDocument);
                 if (
                   !nextMain ||
                   !nextDocument.body ||
@@ -911,6 +937,7 @@
     createLoadedRouteTracker: createLoadedRouteTracker,
     errorStateForLesson: errorStateForLesson,
     findCurrentLesson: findCurrentLesson,
+    findPrimaryToc: findPrimaryToc,
     idPrefixForRoute: idPrefixForRoute,
     isFinalLesson: isFinalLesson,
     laterLessonRoutes: laterLessonRoutes,

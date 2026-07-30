@@ -24,6 +24,13 @@ assert.match(
   scrollSource,
   /document\.body\.classList\.contains\("bms-learn-track-index"\)/
 );
+assert.match(scrollSource, /findPrimaryToc\(document\)/);
+assert.match(scrollSource, /findPrimaryToc\(nextDocument\)/);
+assert.match(scrollSource, /new ResizeObserver/);
+assert.match(
+  scrollSource,
+  /main\.addEventListener\(\s*"toggle"[\s\S]*?scheduleActiveLessonUpdate\(0\)/
+);
 
 const manifest = {
   schema_version: 1,
@@ -85,6 +92,36 @@ assert.deepEqual(
 );
 assert.equal(scroll.startsNewTrack(middle), true);
 assert.equal(scroll.startsNewTrack(first), false);
+
+const visibleMarginToc = { location: "margin" };
+const fallbackToc = { location: "fallback" };
+const documentWithDuplicateTocs = {
+  getElementById(id) {
+    if (id === "quarto-margin-sidebar") {
+      return {
+        querySelector(selector) {
+          return selector === "#TOC" ? visibleMarginToc : null;
+        }
+      };
+    }
+    return id === "TOC" ? fallbackToc : null;
+  }
+};
+assert.equal(
+  scroll.findPrimaryToc(documentWithDuplicateTocs),
+  visibleMarginToc,
+  "the visible margin TOC wins when Quarto emits duplicate TOC IDs"
+);
+assert.equal(
+  scroll.findPrimaryToc({
+    getElementById(id) {
+      return id === "TOC" ? fallbackToc : null;
+    }
+  }),
+  fallbackToc,
+  "ordinary pages keep the document-level TOC fallback"
+);
+assert.equal(scroll.findPrimaryToc(null), null);
 
 assert.equal(
   scroll.idPrefixForRoute("/learn/cube/what-the-cube-is-asking.html"),
