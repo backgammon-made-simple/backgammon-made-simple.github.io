@@ -1470,7 +1470,8 @@ body:is(.bms-learn-index, .bms-learn-article)
 .bms-mobile-term-toggle,
 .bms-mobile-tools-edge,
 .bms-mobile-tools-drawer,
-.bms-mobile-tools-backdrop {
+.bms-mobile-tools-backdrop,
+.bms-learn-left-sidebar-toggle {
   display: none;
 }
 
@@ -1480,6 +1481,30 @@ body:is(.bms-learn-index, .bms-learn-article)
 }
 
 @media (min-width: 992px) {
+  .bms-learn-left-sidebar-toggle {
+    position: fixed;
+    top: 4.85rem;
+    z-index: 1061;
+    display: inline-flex;
+    width: 1.45rem;
+    min-height: 1.45rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--bms-border);
+    border-radius: 5px;
+    background: var(--bms-ivory);
+    color: var(--bms-text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .bms-learn-left-sidebar-toggle:focus-visible {
+    outline: 2px solid var(--bms-link-hover);
+    outline-offset: 2px;
+  }
+
   body.bms-learn-article #quarto-margin-sidebar {
     width: clamp(10rem, 16vw, 18rem);
     min-width: clamp(10rem, 16vw, 18rem);

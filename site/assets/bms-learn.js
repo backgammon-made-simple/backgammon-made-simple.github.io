@@ -1774,6 +1774,53 @@
     bar.appendChild(termButton);
   }
 
+  function initializeLearnLeftSidebarToggle() {
+    const learnPage =
+      document.body.classList.contains("bms-learn-article") ||
+      document.body.classList.contains("bms-learn-index") ||
+      document.body.classList.contains("bms-learn-track-index");
+    const sidebar = document.getElementById("quarto-sidebar");
+    if (!learnPage || !sidebar) {
+      return;
+    }
+
+    const desktopQuery = window.matchMedia("(min-width: 992px)");
+    const toggle = document.createElement("button");
+    let collapsed = false;
+    toggle.type = "button";
+    toggle.className = "bms-learn-left-sidebar-toggle";
+    toggle.dataset.bmsLearnLeftSidebarToggle = "";
+    toggle.setAttribute("aria-controls", sidebar.id);
+    document.body.appendChild(toggle);
+
+    const update = function () {
+      const active = desktopQuery.matches && collapsed;
+      sidebar.hidden = active;
+      document.body.classList.toggle("bms-learn-left-sidebar-collapsed", active);
+      toggle.hidden = !desktopQuery.matches;
+      toggle.setAttribute("aria-expanded", active ? "false" : "true");
+      toggle.setAttribute(
+        "aria-label",
+        active ? "Show Learn table of contents" : "Hide Learn table of contents"
+      );
+      toggle.textContent = active ? "\u203a" : "\u2039";
+      if (active) {
+        toggle.style.left = "0.25rem";
+      } else {
+        const sidebarWidth = sidebar.getBoundingClientRect().width;
+        toggle.style.left = Math.max(4, sidebarWidth - 12) + "px";
+      }
+    };
+
+    toggle.addEventListener("click", function () {
+      collapsed = !collapsed;
+      update();
+    });
+    window.addEventListener("resize", update);
+    desktopQuery.addEventListener("change", update);
+    update();
+  }
+
   function findIdWithinRoot(root, id) {
     return (
       Array.from(root.querySelectorAll("[id]")).find(function (element) {
@@ -1912,6 +1959,7 @@
       initializeInlineGlossary();
       const termLookup = initializeTermLookup();
       initializeMobileLessonBar(termLookup);
+      initializeLearnLeftSidebarToggle();
       placeLessonTrackLinks();
       placeLessonRightRailCards();
       mountLesson(document);

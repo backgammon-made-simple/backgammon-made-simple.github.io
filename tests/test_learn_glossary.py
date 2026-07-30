@@ -1163,6 +1163,10 @@ class LearnGlossaryTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         for required in (
             "initializeMobileLessonBar",
+            "initializeLearnLeftSidebarToggle",
+            "bms-learn-left-sidebar-toggle",
+            "Hide Learn table of contents",
+            "Show Learn table of contents",
             "isMobileDrawerSwipe",
             "bms-mobile-tools-drawer",
             "bms-mobile-tools-edge",
