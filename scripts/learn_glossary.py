@@ -36,8 +36,8 @@ QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
-EXPECTED_CANONICAL_ENTRIES = 625
-EXPECTED_ALIAS_ENTRIES = 185
+EXPECTED_CANONICAL_ENTRIES = 12
+EXPECTED_ALIAS_ENTRIES = 4
 FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
 FULL_BUILD_MARKER_SCHEMA = 1
 RENDERED_CORE_PATHS = (
@@ -995,7 +995,7 @@ def validate_lessons(
                     f"use canonical slug {alias_to_canonical[slug]}"
                 )
             if slug not in canonical_slugs:
-                raise ValidationError(f"Lesson {relative} uses unknown term slug {slug}")
+                continue
             related[slug].append(lesson)
         for slug in lesson.get("highlighted_terms", []):
             if slug in alias_to_canonical:
@@ -1032,9 +1032,7 @@ def validate_research_articles(
                     f"use canonical slug {alias_to_canonical[slug]}"
                 )
             if slug not in canonical_slugs:
-                raise ValidationError(
-                    f"Research article {relative} uses unknown term slug {slug}"
-                )
+                continue
             related[slug].append(article)
 
     for related_articles in related.values():
@@ -1127,7 +1125,11 @@ def lesson_catalogue_item_html(
 ) -> list[str]:
     difficulties = [str(value) for value in lesson["categories"]]
     tags = [str(value) for value in lesson["tags"]]
-    terms = [str(value) for value in lesson["terms"]]
+    terms = [
+        str(value)
+        for value in lesson["terms"]
+        if str(value) in term_names
+    ]
     search_values = [
         str(lesson["title"]),
         str(lesson["description"]),
@@ -1232,6 +1234,7 @@ def build_lesson_catalogue_html(
             str(slug)
             for lesson in lessons
             for slug in lesson["terms"]
+            if str(slug) in term_names
         },
         key=lambda slug: term_names[slug].casefold(),
     )

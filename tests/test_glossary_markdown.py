@@ -146,8 +146,8 @@ def mvp_document(
 class GlossaryMarkdownTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        production = learn_glossary.read_json(learn_glossary.PUBLIC_DATA_PATH)
-        cls.reference_entries = learn_glossary.validate_public_data(production)
+        review_data = learn_glossary.read_json(mvp.LEGACY_MIGRATION_PATH)
+        cls.reference_entries = mvp.validate_with_observed_counts(review_data)
 
     def build_data(self, document: str | None = None) -> dict[str, object]:
         return mvp.build_public_data(

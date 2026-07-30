@@ -683,7 +683,9 @@ def merge_confirmed_and_legacy(
         confirmed_entry_shell(entry)
         for entry in confirmed_entries
     ]
-    combined = [*retained_entries, *confirmed_public]
+    # Legacy entries remain available only as migration/review input. Production
+    # publishes the entries that have completed the confirmed Markdown workflow.
+    combined = confirmed_public
     (
         canonical_by_slug,
         alias_slug_to_canonical,
@@ -692,6 +694,7 @@ def merge_confirmed_and_legacy(
 
     parsed_by_slug = {entry.slug: entry for entry in confirmed_entries}
     canonicalized_inline_targets: list[dict[str, str]] = []
+    unresolved_inline_targets: list[dict[str, str]] = []
     unresolved_related: list[dict[str, str]] = []
     for public in confirmed_public:
         slug = str(public["slug"])
@@ -702,9 +705,14 @@ def merge_confirmed_and_legacy(
             if canonical_target not in canonical_by_slug:
                 canonical_target = alias_slug_to_canonical.get(target_slug, "")
             if not canonical_target:
-                raise ValidationError(
-                    f"{parsed.term} has unresolved inline target {target_slug!r}"
+                unresolved_inline_targets.append(
+                    {
+                        "entry_slug": slug,
+                        "target_slug": target_slug,
+                        "visible": visible,
+                    }
                 )
+                continue
             if canonical_target != target_slug:
                 canonicalized_inline_targets.append(
                     {
@@ -773,11 +781,20 @@ def merge_confirmed_and_legacy(
             alias_takeovers,
             key=lambda item: item["legacy_slug"],
         ),
-        "retained_legacy_aliases": sum(
+        "retained_legacy_aliases": 0,
+        "retained_legacy_entries": 0,
+        "review_only_legacy_aliases": sum(
             len(entry["aliases"])  # type: ignore[arg-type]
             for entry in retained_entries
         ),
-        "retained_legacy_entries": len(retained_entries),
+        "review_only_legacy_entries": len(retained_entries),
+        "unresolved_inline_targets": sorted(
+            unresolved_inline_targets,
+            key=lambda item: (
+                item["entry_slug"],
+                item["visible"].casefold(),
+            ),
+        ),
         "unresolved_related_terms": sorted(
             unresolved_related,
             key=lambda item: (
@@ -914,8 +931,8 @@ def validate_current_build_compatibility(
 def generate_subset(input_path: Path, output_path: Path) -> dict[str, int]:
     if output_path.resolve() == learn_glossary.PUBLIC_DATA_PATH.resolve():
         raise ValidationError("Refusing to overwrite the production glossary JSON")
-    production_data = learn_glossary.read_json(learn_glossary.PUBLIC_DATA_PATH)
-    reference_entries = learn_glossary.validate_public_data(production_data)
+    review_data = learn_glossary.read_json(LEGACY_MIGRATION_PATH)
+    reference_entries = validate_with_observed_counts(review_data)
     parsed_entries = parse_markdown(input_path.read_text(encoding="utf-8"))
     data = build_public_data(parsed_entries, reference_entries)
     serialized = learn_glossary.json_text(data)

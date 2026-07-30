@@ -1,9 +1,9 @@
 # Glossary Markdown production source
 
-`glossary_wip/confirmed-terms.md` is the maintained editorial source for
-reviewed glossary entries. Production generation combines it with the
-temporary migration bridge in
-`glossary_wip/legacy-unconfirmed-glossary.json`.
+`glossary_wip/confirmed-terms.md` is the only production source for reviewed
+glossary entries. The temporary migration inventory in
+`glossary_wip/legacy-unconfirmed-glossary.json` is used for review and conflict
+reporting, but its unconfirmed entries are never published.
 
 Run production generation and drift checks from the repository root:
 
@@ -97,7 +97,7 @@ Every confirmed entry emits:
 ```
 
 The visible phrase must occur in the full definition, and its target must be a
-canonical slug in the final combined production glossary.
+canonical slug in the final approved production glossary.
 
 `related_terms` preserves authored order and spelling. When the term resolves
 through a current canonical or alias name, its canonical slug is added:
@@ -120,9 +120,6 @@ staged or pending term as a production target.
 When `categories` is non-empty, legacy `category` is emitted and must equal
 `categories[0]`. When `categories` is empty, `category` is omitted; no
 misleading fallback category is invented.
-
-Legacy production entries without `categories` remain valid and are treated as
-having a one-item category list. The schema version remains `1.0`.
 
 The existing HTML builder conditionally:
 
@@ -152,8 +149,10 @@ tracks, and unstable output order fail before output.
 
 ```text
 glossary_wip/confirmed-terms.md
-  + glossary_wip/legacy-unconfirmed-glossary.json
   -> site/data/glossary.json
+
+glossary_wip/legacy-unconfirmed-glossary.json
+  -> migration and conflict report only
 ```
 
 Run:
@@ -164,8 +163,8 @@ python scripts\learn_glossary.py check-source
 ```
 
 `generate-source` parses all confirmed entry blocks, validates the temporary
-legacy migration input, merges them deterministically, validates the complete
-JSON v1.0 result, and writes `site/data/glossary.json`.
+legacy migration input, compares it for migration reporting, validates the
+approved-only JSON v1.0 result, and writes `site/data/glossary.json`.
 
 `check-source` regenerates in memory and fails with a clear stale/manual-edit
 message if the tracked production JSON differs. `site/data/glossary.json` is a
@@ -176,31 +175,23 @@ generation before page, lookup, catalogue, and backlink generation. Full
 Quarto pre-render already calls that command, so the generated JSON is current
 before any consumer reads it.
 
-Confirmed entries replace legacy entries sharing their canonical slug.
-Confirmed aliases replace exact matching legacy aliases. An exact confirmed
-AKA may absorb an exact same-spelling legacy canonical: this is the explicit
-migration rule for a legacy term that has been approved as an alias. Any
-case-only, punctuation-only, whitespace-only, hyphen-only, or otherwise
-normalized near-match is ambiguous and fails instead of being silently
-merged.
+Only confirmed entries and their approved aliases are emitted. Matching legacy
+entries and aliases are recorded in the migration report. An exact confirmed
+AKA may absorb an exact same-spelling legacy canonical for compatibility
+reporting. Any case-only, punctuation-only, whitespace-only, hyphen-only, or
+otherwise normalized near-match is ambiguous and fails instead of being
+silently accepted.
 
-The temporary migration file exists only until every retained legacy term has
+The temporary migration file exists only until every review-only legacy term has
 been promoted into `confirmed-terms.md`, deliberately rejected, or recorded as
 an approved alias of a confirmed term. It is not an ongoing editorial source.
 Staged and comprehensive workflow files are never read by production
 generation.
 
-Retained legacy entries receive deliberate compatibility fields:
-
-- `short_definition` equals their canonical legacy `definition`;
-- `categories` contains the legacy `category`;
-- `definition_links`, `related_terms`, and `learning_tracks` are empty when
-  the legacy record had no richer data;
-- singular `category` remains equal to `categories[0]`.
-
 Confirmed entries use only the confirmed Markdown values. An authored inline
 target that names an existing alias slug is canonicalized to that alias's
-canonical owner. Missing inline targets fail.
+canonical owner. An inline target that has not been approved remains ordinary
+definition text and is listed in the migration report.
 
 Unresolved confirmed related-word labels follow one explicit temporary rule:
 they remain term-only, non-clickable related records and are listed in the
@@ -232,3 +223,6 @@ python scripts\glossary_review_artifacts.py `
 ```
 
 Neither review command participates in the production build.
+Review-subset validation may use the legacy migration inventory to resolve
+candidate links, but only the explicitly supplied subset is written to the
+review artifact.

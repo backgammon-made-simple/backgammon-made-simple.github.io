@@ -402,23 +402,23 @@ assert.equal(
 );
 assert.equal(
   generatedGlossaryItems.length,
-  625,
-  "the JavaScript integration fixture uses all generated canonical entries"
+  12,
+  "the JavaScript integration fixture uses all approved canonical entries"
 );
 assert.equal(
   generatedGlossaryItems.reduce(
     (count, item) => count + item.aliasSlugs.length,
     0
   ),
-  185,
-  "the JavaScript integration fixture uses every generated alias"
+  4,
+  "the JavaScript integration fixture uses every approved alias"
 );
 
 [
-  ["take point", "Take Point"],
-  ["take-point", "Take Point"],
-  ["out field", "Outfield"],
-  ["Accept a Double", "Take"]
+  ["10 in the zone", "10 in the Zone"],
+  ["Ten in the Zone", "10 in the Zone"],
+  ["American Backgammon Tour", "ABT"],
+  ["Ahead in the Race", "Ahead in the Count"]
 ].forEach(([query, expectedCanonical]) => {
   const matchingItems = generatedGlossaryItems.filter((item) =>
     glossary.itemMatchesGlossary(item, query, [], [])
@@ -437,7 +437,7 @@ assert.equal(
   );
 });
 const previouslyOpened = generatedGlossaryItems.find(
-  (item) => item.canonical === "Take"
+  (item) => item.canonical === "Ahead in the Count"
 );
 assert.equal(
   previouslyOpened.element.open,
@@ -447,9 +447,9 @@ assert.equal(
 glossary.expandBestGlossaryMatch(
   generatedGlossaryItems,
   generatedGlossaryItems.filter((item) =>
-    glossary.itemMatchesGlossary(item, "out field", [], [])
+    glossary.itemMatchesGlossary(item, "American Backgammon Tour", [], [])
   ),
-  "out field"
+  "American Backgammon Tour"
 );
 assert.equal(
   previouslyOpened.element.open,
@@ -528,6 +528,27 @@ assert.equal(
   "blank lookup submissions remain a no-op"
 );
 
+assert.deepEqual(
+  learn.inlineGlossaryTooltipPosition(
+    { left: 52, top: 780, bottom: 800 },
+    { width: 320, height: 183 },
+    390,
+    844
+  ),
+  { left: 52, top: 589 },
+  "a mobile tooltip flips above a term when it would overflow below"
+);
+assert.deepEqual(
+  learn.inlineGlossaryTooltipPosition(
+    { left: 1300, top: 100, bottom: 120 },
+    { width: 320, height: 180 },
+    1440,
+    1000
+  ),
+  { left: 1108, top: 128 },
+  "a desktop tooltip remains inside the right viewport edge"
+);
+
 const lookupCandidates = [
   {
     term: "Take Point",
@@ -572,25 +593,18 @@ const lookupData = JSON.parse(
     "utf8"
   )
 );
-assert.equal(lookupData.entries.length, 625);
+assert.equal(lookupData.entries.length, 12);
 assert.equal(
   lookupData.entries.reduce(
     (total, entry) => total + entry.aliases.length,
     0
   ),
-  185
+  4
 );
 assert.equal(
-  lookupData.entries.reduce(
-    (total, entry) => total + entry.related_lessons.length,
-    0
-  ),
-  40
-);
-assert.equal(
-  learn.bestLookupEntry(lookupData.entries, "take point").term,
-  "Take Point",
-  "generated lookup data supports canonical search"
+  learn.bestLookupEntry(lookupData.entries, "Ahead in the Race").term,
+  "Ahead in the Count",
+  "generated lookup data supports approved alias search"
 );
 
 [

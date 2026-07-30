@@ -78,13 +78,13 @@ class LearnGlossaryTests(unittest.TestCase):
         )
 
     def test_public_safe_counts_and_forbidden_guards(self) -> None:
-        self.assertEqual(len(self.data["entries"]), 625)
-        self.assertEqual(len(self.entries), 625)
+        self.assertEqual(len(self.data["entries"]), 12)
+        self.assertEqual(len(self.entries), 12)
         self.assertEqual(
             sum(len(entry["aliases"]) for entry in self.entries),
-            185,
+            4,
         )
-        self.assertEqual(625 + 185, 810)
+        self.assertEqual(12 + 4, 16)
         learn_glossary.assert_no_forbidden_keys(self.data)
         learn_glossary.assert_no_forbidden_text(
             learn_glossary.PUBLIC_DATA_PATH.read_text(encoding="utf-8"),
@@ -152,18 +152,18 @@ class LearnGlossaryTests(unittest.TestCase):
             r'<details class="bms-glossary-entry" id="([^"]+)"',
             self.entries_html,
         )
-        self.assertEqual(len(anchors), 625)
-        self.assertEqual(len(set(anchors)), 625)
+        self.assertEqual(len(anchors), 12)
+        self.assertEqual(len(set(anchors)), 12)
         self.assertEqual(set(anchors), canonical)
         self.assertEqual(
             self.entries_html.count('class="bms-glossary-entry-summary"'),
-            625,
+            12,
         )
         entry_tags = re.findall(
             r'<details class="bms-glossary-entry"[^>]*>',
             self.entries_html,
         )
-        self.assertEqual(len(entry_tags), 625)
+        self.assertEqual(len(entry_tags), 12)
         self.assertTrue(all(" open" not in tag for tag in entry_tags))
 
     def test_aliases_map_to_canonical_entries_without_visible_duplicates(self) -> None:
@@ -173,29 +173,29 @@ class LearnGlossaryTests(unittest.TestCase):
             for entry in self.entries
             for alias in entry["aliases"]
         }
-        self.assertEqual(len(alias_to_canonical), 185)
-        self.assertEqual(alias_to_canonical["accept-a-double"], "take")
-        self.assertEqual(alias_to_canonical["cube-ownership"], "own-the-cube")
-        self.assertNotIn("accept-a-double", canonical)
-        self.assertEqual(self.entries_html.count('data-bms-alias="'), 185)
+        self.assertEqual(len(alias_to_canonical), 4)
+        self.assertEqual(
+            alias_to_canonical["ahead-in-the-race"],
+            "ahead-in-the-count",
+        )
+        self.assertEqual(
+            alias_to_canonical["american-backgammon-tour"],
+            "abt",
+        )
+        self.assertNotIn("ahead-in-the-race", canonical)
+        self.assertEqual(self.entries_html.count('data-bms-alias="'), 4)
         self.assertIn(
-            'data-bms-aliases="[&quot;accept-a-double&quot;]"',
+            'data-bms-aliases="[&quot;ahead-in-the-race&quot;]"',
             self.entries_html,
         )
-        self.assertNotIn('id="accept-a-double"', self.entries_html)
+        self.assertNotIn('id="ahead-in-the-race"', self.entries_html)
 
     def test_full_definitions_usage_and_related_links_are_initial_html(self) -> None:
         self.assertEqual(
             self.entries_html.count('class="bms-glossary-definition"'),
-            625,
+            12,
         )
-        self.assertIn('class="bms-glossary-usage-note"', self.entries_html)
-        self.assertIn("Learn more (", self.entries_html)
-        self.assertIn("Research (", self.entries_html)
-        self.assertIn(
-            'href="/research/sage-vs-gnu-additional-details.html"',
-            self.entries_html,
-        )
+        self.assertIn('class="bms-glossary-short-definition"', self.entries_html)
         self.assertNotIn('target="_blank"', self.entries_html)
         self.assertNotIn("bms-learn-card-taxonomy", self.entries_html)
         self.assertNotIn("bms-research-post-taxonomy", self.entries_html)
@@ -203,11 +203,21 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("bms-glossary-anchor", self.entries_html)
         self.assertEqual(
             sum(len(value) for value in self.related_lessons.values()),
-            40,
+            sum(
+                1
+                for lesson in self.lessons
+                for slug in lesson["terms"]
+                if slug in {entry["slug"] for entry in self.entries}
+            ),
         )
         self.assertEqual(
             sum(len(value) for value in self.related_research.values()),
-            3,
+            sum(
+                1
+                for article in self.research_articles
+                for slug in article["terms"]
+                if slug in {entry["slug"] for entry in self.entries}
+            ),
         )
 
     def test_no_old_term_routes_metadata_or_navigation_remain(self) -> None:
@@ -420,8 +430,13 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("link.attributes.download =", link_policy)
         self.assertNotIn("link.target =", link_policy)
 
-    def test_learn_and_research_terms_metadata_is_canonical(self) -> None:
+    def test_only_approved_metadata_terms_create_public_relationships(self) -> None:
         canonical = {entry["slug"] for entry in self.entries}
+        aliases = {
+            alias["slug"]
+            for entry in self.entries
+            for alias in entry["aliases"]
+        }
         self.assertEqual(len(self.tracks), 3)
         self.assertEqual(len(self.lessons), 4)
         for lesson in self.lessons:
@@ -429,9 +444,13 @@ class LearnGlossaryTests(unittest.TestCase):
                 set(lesson["categories"]).issubset(learn_glossary.DIFFICULTIES)
             )
             self.assertTrue(set(lesson["tags"]).issubset(learn_glossary.TRACKS))
-            self.assertTrue(set(lesson["terms"]).issubset(canonical))
+            self.assertFalse(set(lesson["terms"]).intersection(aliases))
+            for slug in set(lesson["terms"]).intersection(canonical):
+                self.assertIn(lesson, self.related_lessons[slug])
         for article in self.research_articles:
-            self.assertTrue(set(article["terms"]).issubset(canonical))
+            self.assertFalse(set(article["terms"]).intersection(aliases))
+            for slug in set(article["terms"]).intersection(canonical):
+                self.assertIn(article, self.related_research[slug])
 
     def test_source_glossary_links_use_root_or_canonical_fragments(self) -> None:
         href_pattern = re.compile(r'href=["\'](/learn/glossary/[^"\']*)')
@@ -472,7 +491,8 @@ class LearnGlossaryTests(unittest.TestCase):
             < generated.index(str(self.cube_lessons[1]["title"]))
         )
         self.assertNotIn("data-bms-filter-track", generated)
-        self.assertIn("data-bms-filter-term", generated)
+        self.assertNotIn("data-bms-filter-term", generated)
+        self.assertIn("No options yet", generated)
 
     def test_custom_404_source_contract(self) -> None:
         not_found_path = learn_glossary.SITE_ROOT / "404.qmd"
@@ -564,7 +584,7 @@ class LearnGlossaryTests(unittest.TestCase):
         ):
             self.assertIn(required, guide)
         self.assertIn("there are no standalone term routes", terms)
-        self.assertEqual(terms.count("/learn/glossary/#"), 625)
+        self.assertEqual(terms.count("/learn/glossary/#"), 12)
 
     def test_moved_analyzer_include_and_all_cube_includes_resolve(self) -> None:
         include_copies = list(
@@ -754,7 +774,7 @@ class LearnGlossaryTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn('href="/learn/?track=', taxonomy_filter)
 
-    def test_track_landings_use_generated_difficulty_and_term_filters(self) -> None:
+    def test_track_landings_use_generated_difficulty_and_approved_term_filters(self) -> None:
         cube_index = (learn_glossary.CUBE_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
@@ -785,6 +805,7 @@ class LearnGlossaryTests(unittest.TestCase):
             str(value)
             for lesson in cube_curriculum_lessons
             for value in lesson["terms"]
+            if str(value) in {entry["slug"] for entry in self.entries}
         }
         self.assertEqual(difficulty_buttons, expected_difficulties)
         self.assertEqual(term_buttons, expected_terms)
@@ -849,14 +870,14 @@ class LearnGlossaryTests(unittest.TestCase):
             )
         )
         entries = lookup["entries"]
-        self.assertEqual(len(entries), 625)
+        self.assertEqual(len(entries), 12)
         self.assertEqual(
             sum(len(entry["aliases"]) for entry in entries),
-            185,
+            4,
         )
         self.assertEqual(
             sum(len(entry["related_lessons"]) for entry in entries),
-            40,
+            sum(len(value) for value in self.related_lessons.values()),
         )
         self.assertTrue(all(entry["definition"] for entry in entries))
         learn_glossary.assert_no_forbidden_keys(lookup)
@@ -1082,6 +1103,30 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("bms-learn-article", learn_home)
         self.assertIn("bms-learn-track-index", cube_landing)
         self.assertNotIn("bms-research-article", analyze)
+
+    def test_phone_desktop_view_lookup_stays_in_place_and_uses_side_drawer(
+        self,
+    ) -> None:
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        self.assertIn("input.focus({ preventScroll: true });", javascript)
+
+        css = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
+        ).read_text(encoding="utf-8")
+        for required in (
+            "@media (min-width: 768px) and (max-width: 991.98px)",
+            "[data-bms-site-term-toggle]:not([hidden])",
+            "top: clamp(9rem, 42vh, 20rem);",
+            ".quarto-secondary-nav",
+            "[data-bms-mobile-term-toggle]",
+            "@keyframes bms-term-lookup-slide-in",
+            "transform: translate(1.5rem, -50%);",
+            "transform: translateY(-50%);",
+            "@media (prefers-reduced-motion: reduce)",
+        ):
+            self.assertIn(required, css)
 
     def test_update_toc_null_guard_contract(self) -> None:
         javascript = (
@@ -1506,9 +1551,9 @@ class LearnGlossaryTests(unittest.TestCase):
     def test_validation_reports_single_page_counts(self) -> None:
         result = learn_glossary.validate_generated()
         self.assertEqual(result["source_entries"], 805)
-        self.assertEqual(result["canonical_entries"], 625)
-        self.assertEqual(result["alias_entries"], 185)
-        self.assertEqual(result["canonical_anchors"], 625)
+        self.assertEqual(result["canonical_entries"], 12)
+        self.assertEqual(result["alias_entries"], 4)
+        self.assertEqual(result["canonical_anchors"], 12)
         self.assertEqual(result["standalone_term_pages"], 0)
         self.assertEqual(result["generated_files"], 8)
         self.assertEqual(result["lesson_catalogue_sections"], 3)
@@ -1516,8 +1561,14 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["lessons"], 4)
         self.assertEqual(result["cube_lessons"], 2)
         self.assertEqual(result["updates_publications"], 0)
-        self.assertEqual(result["related_lesson_links"], 40)
-        self.assertEqual(result["related_research_links"], 3)
+        self.assertEqual(
+            result["related_lesson_links"],
+            sum(len(value) for value in self.related_lessons.values()),
+        )
+        self.assertEqual(
+            result["related_research_links"],
+            sum(len(value) for value in self.related_research.values()),
+        )
 
 
 if __name__ == "__main__":

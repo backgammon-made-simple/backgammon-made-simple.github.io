@@ -12,8 +12,9 @@ import unicodedata
 from pathlib import Path
 
 try:
-    from scripts import learn_glossary
+    from scripts import glossary_source, learn_glossary
 except ModuleNotFoundError:  # Direct execution sets sys.path to scripts/.
+    import glossary_source  # type: ignore[no-redef]
     import learn_glossary  # type: ignore[no-redef]
 
 
@@ -530,8 +531,8 @@ def generate_artifacts(
     ):
         raise ValidationError("Refusing to overwrite the production glossary JSON")
 
-    production = learn_glossary.read_json(learn_glossary.PUBLIC_DATA_PATH)
-    reference_entries = learn_glossary.validate_public_data(production)
+    review_data = learn_glossary.read_json(glossary_source.LEGACY_MIGRATION_PATH)
+    reference_entries = glossary_source.validate_with_observed_counts(review_data)
     data = learn_glossary.read_json(input_path)
     entries = validate_review_data(data, reference_entries)
 

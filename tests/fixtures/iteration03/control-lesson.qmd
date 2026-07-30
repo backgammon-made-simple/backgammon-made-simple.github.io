@@ -2,11 +2,11 @@
 title: "Iteration 03 control lesson"
 terms:
   - ace
-  - one-point
-  - anchor
   - active-builder
+  - ahead-in-the-count
+  - abt
 ---
 
-# Ace and Anchor control
+# Ace and Ahead in the Count control
 
-Ace and Holding Point appear in ordinary prose. The terms list remains available, but this lesson has no highlighted-terms metadata.
+Ace and Ahead in the Race appear in ordinary prose. The terms list remains available, but this lesson has no highlighted-terms metadata.

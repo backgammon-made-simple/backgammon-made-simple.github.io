@@ -180,6 +180,40 @@
     return glossaryLookupEntriesPromise;
   }
 
+  function inlineGlossaryTooltipPosition(
+    linkRectangle,
+    tooltipRectangle,
+    viewportWidth,
+    viewportHeight
+  ) {
+    const margin = 12;
+    const gap = 8;
+    const maximumLeft = Math.max(
+      margin,
+      viewportWidth - tooltipRectangle.width - margin
+    );
+    const left = Math.max(
+      margin,
+      Math.min(linkRectangle.left, maximumLeft)
+    );
+    const below = linkRectangle.bottom + gap;
+    const above = linkRectangle.top - gap - tooltipRectangle.height;
+    const maximumTop = Math.max(
+      margin,
+      viewportHeight - tooltipRectangle.height - margin
+    );
+    let top = below;
+
+    if (below + tooltipRectangle.height > viewportHeight - margin) {
+      top = above >= margin ? above : maximumTop;
+    }
+
+    return {
+      left: left,
+      top: Math.max(margin, Math.min(top, maximumTop))
+    };
+  }
+
   function initializeInlineGlossary() {
     const links = Array.from(
       document.querySelectorAll(
@@ -200,11 +234,14 @@
     let activeLink = null;
 
     const positionTooltip = function (link) {
-      const rectangle = link.getBoundingClientRect();
-      tooltip.style.left =
-        Math.max(12, Math.min(rectangle.left, window.innerWidth - 332)) + "px";
-      tooltip.style.top =
-        Math.min(window.innerHeight - 24, rectangle.bottom + 8) + "px";
+      const position = inlineGlossaryTooltipPosition(
+        link.getBoundingClientRect(),
+        tooltip.getBoundingClientRect(),
+        window.innerWidth,
+        window.innerHeight
+      );
+      tooltip.style.left = position.left + "px";
+      tooltip.style.top = position.top + "px";
     };
 
     const hideTooltip = function (link) {
@@ -258,6 +295,16 @@
       link.addEventListener("blur", function () {
         hideTooltip(link);
       });
+    });
+
+    const repositionActiveTooltip = function () {
+      if (activeLink && !tooltip.hidden) {
+        positionTooltip(activeLink);
+      }
+    };
+    window.addEventListener("resize", repositionActiveTooltip);
+    window.addEventListener("scroll", repositionActiveTooltip, {
+      passive: true
     });
   }
 
@@ -1075,7 +1122,7 @@
           button.setAttribute("aria-expanded", "true");
         });
       if (input && focusInput) {
-        input.focus();
+        input.focus({ preventScroll: true });
       }
     };
 
@@ -1454,6 +1501,7 @@
     canonicalEntryBySlug: canonicalEntryBySlug,
     canonicalShortDefinition: canonicalShortDefinition,
     groupControlState: groupControlState,
+    inlineGlossaryTooltipPosition: inlineGlossaryTooltipPosition,
     itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,

@@ -106,7 +106,7 @@ class GlossarySourceMigrationTests(unittest.TestCase):
             ),
         )
         by_slug = {entry["slug"]: entry for entry in data["entries"]}
-        self.assertEqual(set(by_slug), {"alpha", "beta"})
+        self.assertEqual(set(by_slug), {"alpha"})
         self.assertEqual(
             by_slug["alpha"]["definition"],
             "Confirmed full definition for Alpha.",
@@ -119,7 +119,8 @@ class GlossarySourceMigrationTests(unittest.TestCase):
         self.assertEqual(by_slug["alpha"]["category"], "analysis and probability")
         self.assertEqual(by_slug["alpha"]["categories"], ["analysis and probability"])
         self.assertEqual(report["confirmed_replaced_slugs"], ["alpha"])
-        self.assertEqual(report["retained_legacy_entries"], 1)
+        self.assertEqual(report["retained_legacy_entries"], 0)
+        self.assertEqual(report["review_only_legacy_entries"], 1)
 
     def test_exact_confirmed_aka_absorbs_same_spelling_legacy_canonical(self) -> None:
         confirmed = parsed_entry(
@@ -165,8 +166,10 @@ class GlossarySourceMigrationTests(unittest.TestCase):
                 ),
             ),
         )
-        beta = next(entry for entry in data["entries"] if entry["slug"] == "beta")
-        self.assertEqual(beta["aliases"], [])
+        self.assertEqual(
+            [entry["slug"] for entry in data["entries"]],
+            ["alpha"],
+        )
         self.assertEqual(len(report["legacy_aliases_removed"]), 1)
 
     def test_normalized_confirmed_canonical_vs_legacy_alias_conflict_fails(self) -> None:
@@ -237,6 +240,11 @@ class GlossarySourceMigrationTests(unittest.TestCase):
             "target-term",
             aliases=(("target-alias", "Target Alias"),),
         )
+        confirmed_target = parsed_entry(
+            "Target Term",
+            "target-term",
+            aliases=("Target Alias",),
+        )
         rich = parsed_entry(
             "Rich Term",
             "rich-term",
@@ -256,7 +264,7 @@ class GlossarySourceMigrationTests(unittest.TestCase):
             categories=(),
         )
         data, report = source.merge_confirmed_and_legacy(
-            [rich, uncategorized],
+            [rich, uncategorized, confirmed_target],
             legacy_data(target),
         )
         by_slug = {entry["slug"]: entry for entry in data["entries"]}
@@ -298,21 +306,28 @@ class GlossarySourceMigrationTests(unittest.TestCase):
             [{"entry_slug": "rich-term", "term": "Pending Related"}],
         )
 
-    def test_missing_inline_target_fails(self) -> None:
+    def test_unapproved_inline_target_remains_plain_text(self) -> None:
         confirmed = parsed_entry(
             "Alpha",
             "alpha",
             definition_links=(("Missing", "missing"),),
             full_definition="Missing is referenced.",
         )
-        with self.assertRaisesRegex(
-            learn_glossary.ValidationError,
-            "unresolved inline target",
-        ):
-            source.merge_confirmed_and_legacy(
-                [confirmed],
-                legacy_data(),
-            )
+        data, report = source.merge_confirmed_and_legacy(
+            [confirmed],
+            legacy_data(),
+        )
+        self.assertEqual(data["entries"][0]["definition_links"], [])
+        self.assertEqual(
+            report["unresolved_inline_targets"],
+            [
+                {
+                    "entry_slug": "alpha",
+                    "target_slug": "missing",
+                    "visible": "Missing",
+                }
+            ],
+        )
 
     def test_production_generation_matches_tracked_file_and_is_deterministic(self) -> None:
         first, first_report = source.build_production_source()
@@ -325,10 +340,13 @@ class GlossarySourceMigrationTests(unittest.TestCase):
         )
         self.assertEqual(first_report["confirmed_entries"], 12)
         self.assertEqual(first_report["confirmed_aliases"], 4)
-        self.assertEqual(first_report["retained_legacy_entries"], 613)
-        self.assertEqual(first_report["retained_legacy_aliases"], 181)
-        self.assertEqual(first_report["final_entries"], 625)
-        self.assertEqual(first_report["final_aliases"], 185)
+        self.assertEqual(first_report["retained_legacy_entries"], 0)
+        self.assertEqual(first_report["retained_legacy_aliases"], 0)
+        self.assertEqual(first_report["review_only_legacy_entries"], 613)
+        self.assertEqual(first_report["review_only_legacy_aliases"], 181)
+        self.assertEqual(first_report["final_entries"], 12)
+        self.assertEqual(first_report["final_aliases"], 4)
+        self.assertTrue(first_report["unresolved_inline_targets"])
 
     def test_manual_edit_drift_message_is_clear(self) -> None:
         generated, _report = source.build_production_source()
@@ -393,7 +411,7 @@ class GlossarySourceMigrationTests(unittest.TestCase):
         legacy = json.loads(source.LEGACY_MIGRATION_PATH.read_text(encoding="utf-8"))
         production = json.loads(source.PRODUCTION_SOURCE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(len(legacy["entries"]), 624)
-        self.assertEqual(len(production["entries"]), 625)
+        self.assertEqual(len(production["entries"]), 12)
         self.assertNotEqual(legacy, production)
         self.assertFalse(
             source.CONFIRMED_SOURCE_PATH.samefile(
