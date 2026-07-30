@@ -6,7 +6,9 @@ Use only these canonical slugs in Learn and Research `terms` metadata. Every ter
 
 | Term | Canonical slug | Stable glossary anchor |
 |---|---|---|
+| 10 in the Zone | `10-in-the-zone` | `/learn/glossary/#10-in-the-zone` |
 | 10-Percent Doubling Rule | `10-percent-doubling-rule` | `/learn/glossary/#10-percent-doubling-rule` |
+| 25 Percent Rule | `25-percent-rule` | `/learn/glossary/#25-percent-rule` |
 | 8-9-12 Doubling Rule | `8-9-12-doubling-rule` | `/learn/glossary/#8-9-12-doubling-rule` |
 | ABT | `abt` | `/learn/glossary/#abt` |
 | Ace | `ace` | `/learn/glossary/#ace` |
@@ -19,7 +21,6 @@ Use only these canonical slugs in Learn and Research `terms` metadata. Every ter
 | Advanced Anchor | `advanced-anchor` | `/learn/glossary/#advanced-anchor` |
 | Advanced Level | `advanced-level` | `/learn/glossary/#advanced-level` |
 | Ahead in the Count | `ahead-in-the-count` | `/learn/glossary/#ahead-in-the-count` |
-| Ahead in the Race | `ahead-in-the-race` | `/learn/glossary/#ahead-in-the-race` |
 | Ammunition | `ammunition` | `/learn/glossary/#ammunition` |
 | Analog Clock | `analog-clock` | `/learn/glossary/#analog-clock` |
 | Anchor | `anchor` | `/learn/glossary/#anchor` |

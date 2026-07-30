@@ -124,6 +124,13 @@
     });
   }
 
+  function glossaryCategories(item) {
+    if (Array.isArray(item.categories)) {
+      return item.categories.map(String);
+    }
+    return item.category ? [String(item.category)] : [];
+  }
+
   function allGroupsExpanded(groups) {
     return groups.length > 0 && groups.every(function (group) {
       return Boolean(group.open);
@@ -153,9 +160,22 @@
     const searchMatch = Number.isFinite(glossaryMatchRank(item, query));
     return (
       searchMatch &&
-      matchesAny([item.category], categories) &&
+      matchesAny(glossaryCategories(item), categories) &&
       matchesAny(item.tracks, tracks)
     );
+  }
+
+  function expandCategoryMatches(items, category) {
+    const matching = items.filter(function (item) {
+      return (
+        !item.element.hidden &&
+        glossaryCategories(item).includes(category)
+      );
+    });
+    matching.forEach(function (item) {
+      item.element.open = true;
+    });
+    return matching;
   }
 
   function displayCategory(value) {
@@ -312,6 +332,12 @@
         aliasSlugs: parseList(element.dataset.bmsAliases),
         letter: element.dataset.bmsLetter || "",
         category: element.dataset.bmsCategory || "",
+        categories:
+          parseList(element.dataset.bmsCategories).length > 0
+            ? parseList(element.dataset.bmsCategories)
+            : element.dataset.bmsCategory
+              ? [element.dataset.bmsCategory]
+              : [],
         tracks: parseList(element.dataset.bmsTracks),
         searchValues: searchValues,
         canonical: searchValues[0] || "",
@@ -355,8 +381,8 @@
     groupContainer.prepend(rankedResults);
 
     const categories = Array.from(
-      new Set(items.map(function (item) {
-        return item.category;
+      new Set(items.flatMap(function (item) {
+        return glossaryCategories(item);
       }))
     ).sort(function (left, right) {
       return left.localeCompare(right);
@@ -583,6 +609,11 @@
         "bmsGlossaryFilterCategory"
       );
       setPressed(
+        Array.from(groupContainer.querySelectorAll("[data-bms-card-category]")),
+        selectedCategories,
+        "bmsCardCategory"
+      );
+      setPressed(
         trackButtons,
         selectedTracks,
         "bmsGlossaryFilterTrack"
@@ -769,6 +800,10 @@
         categoryDisclosure.open = true;
       }
       applyFilters();
+      expandCategoryMatches(
+        items,
+        categoryButton.dataset.bmsCardCategory || ""
+      );
       panel.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
@@ -857,6 +892,7 @@
     bestGlossaryMatch: bestGlossaryMatch,
     canonicalSlugForFragment: canonicalSlugForFragment,
     closeTermEntries: closeTermEntries,
+    expandCategoryMatches: expandCategoryMatches,
     expandBestGlossaryMatch: expandBestGlossaryMatch,
     fragmentSlug: fragmentSlug,
     glossaryMatchRank: glossaryMatchRank,
