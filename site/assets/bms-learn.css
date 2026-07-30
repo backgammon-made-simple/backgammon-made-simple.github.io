@@ -161,6 +161,14 @@
   color: var(--bms-text-muted);
 }
 
+.bms-learn-scroll-lesson-marker {
+  grid-column: screen-start / screen-end !important;
+  min-height: 1px;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
 .bms-learn-scroll-sentinel.is-loading {
   min-height: 2rem;
   padding: 0.5rem 0;

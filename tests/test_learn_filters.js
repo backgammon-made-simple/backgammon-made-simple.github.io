@@ -473,6 +473,15 @@ const lookupData = JSON.parse(
     "utf8"
   )
 );
+const learnSequence = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "site", "assets", "bms-learn-sequence.json"),
+    "utf8"
+  )
+);
+const scrollingFixtureCount = learnSequence.lessons.filter((lesson) =>
+  lesson.route.includes("/learn/scrolling-test/")
+).length;
 assert.equal(lookupData.entries.length, 624);
 assert.equal(
   lookupData.entries.reduce(
@@ -486,7 +495,7 @@ assert.equal(
     (total, entry) => total + entry.related_lessons.length,
     0
   ),
-  40
+  40 + scrollingFixtureCount
 );
 assert.equal(
   learn.bestLookupEntry(lookupData.entries, "take point").term,

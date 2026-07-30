@@ -498,13 +498,19 @@ def discover_tracks() -> list[dict[str, object]]:
     return tracks
 
 
-def discover_lessons() -> list[dict[str, object]]:
+def discover_lessons(
+    *, include_scrolling_tests: bool = True
+) -> list[dict[str, object]]:
     lessons: list[dict[str, object]] = []
     for path in sorted(LEARN_ROOT.rglob("*.qmd")):
         relative = path.relative_to(LEARN_ROOT)
         if (
             relative == Path("index.qmd")
             or relative.parts[0] == "glossary"
+            or (
+                not include_scrolling_tests
+                and relative.parts[0] == "scrolling-test"
+            )
         ):
             continue
         complete_metadata = parse_complete_front_matter(path)
@@ -688,7 +694,7 @@ def build_learn_sequence(
 
 def discover_cube_lessons() -> list[dict[str, object]]:
     tracks = discover_tracks()
-    lessons = discover_lessons()
+    lessons = discover_lessons(include_scrolling_tests=False)
     curriculum = build_curriculum(tracks, lessons)
     for track in curriculum:
         if track["id"] != "doubling-cube":
@@ -1892,6 +1898,10 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         raise ValidationError("Rendered Learn sequence does not match curriculum metadata")
 
     rendered_lesson_count = 0
+    expected_sidebar_routes = {
+        str(lesson["route"]) for lesson in expected_sequence["lessons"]
+    }
+    rendered_scrolling_test_count = 0
     for lesson in expected_sequence["lessons"]:
         route = str(lesson["route"])
         relative = route.lstrip("/")
@@ -1917,6 +1927,42 @@ def check_rendered(output_root: Path) -> dict[str, int]:
             raise ValidationError(
                 f"Rendered continuous Learn lesson loads obsolete cube script: {route}"
             )
+        sidebar_routes = set()
+        sidebar_tags = re.findall(
+            r'<a\b[^>]*class="[^"]*\bsidebar-link\b[^"]*"[^>]*>',
+            lesson_html,
+        )
+        for tag in sidebar_tags:
+            href_match = re.search(r'href="([^"]+)"', tag)
+            if not href_match:
+                continue
+            resolved = urljoin(route, html.unescape(href_match.group(1)))
+            resolved = resolved.split("#", 1)[0].split("?", 1)[0]
+            if resolved.endswith("/index.html"):
+                resolved = resolved.removesuffix("index.html")
+            sidebar_routes.add(resolved)
+        missing_sidebar_routes = expected_sidebar_routes - sidebar_routes
+        if missing_sidebar_routes:
+            raise ValidationError(
+                f"Rendered Learn sidebar is missing lesson routes on {route}: "
+                + ", ".join(sorted(missing_sidebar_routes)[:5])
+            )
+
+        if "/learn/scrolling-test/" in route:
+            rendered_scrolling_test_count += 1
+            for required in (
+                'id="TOC"',
+                'id="overview"',
+                'id="example"',
+                'id="details"',
+                'id="summary"',
+                "Temporary scrolling test content. "
+                "This page is not part of the finished curriculum.",
+            ):
+                if required not in lesson_html:
+                    raise ValidationError(
+                        f"Rendered scrolling fixture {route} is missing {required!r}"
+                    )
         rendered_lesson_count += 1
 
     temporary_lesson = (
@@ -2146,6 +2192,7 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         "sitemap_glossary_routes": len(glossary_locations),
         "standalone_term_pages": 0,
         "continuous_lessons": rendered_lesson_count,
+        "scrolling_test_lessons": rendered_scrolling_test_count,
         "updates_feed_items": len(feed_items),
     }
 

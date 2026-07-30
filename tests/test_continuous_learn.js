@@ -67,11 +67,34 @@ assert.equal(scroll.startsNewTrack(first), false);
 
 assert.equal(
   scroll.idPrefixForRoute("/learn/cube/what-the-cube-is-asking.html"),
-  "bms-learn-scroll-what-the-cube-is-asking-"
+  "bms-learn-scroll-cube-what-the-cube-is-asking-"
 );
 assert.equal(
   scroll.idPrefixForRoute("/learn/game-plans/"),
   "bms-learn-scroll-game-plans-"
+);
+assert.notEqual(
+  scroll.idPrefixForRoute(
+    "/learn/scrolling-test/start-here/lesson-01.html"
+  ),
+  scroll.idPrefixForRoute(
+    "/learn/scrolling-test/doubling-cube/lesson-01.html"
+  ),
+  "the full route keeps repeated generated filenames collision-free"
+);
+const generatedPrefixes = ["start-here", "doubling-cube", "opening-play"]
+  .flatMap((track) =>
+    Array.from({ length: 10 }, (_, index) =>
+      scroll.idPrefixForRoute(
+        `/learn/scrolling-test/${track}/lesson-${String(index + 1).padStart(2, "0")}.html`
+      )
+    )
+  );
+assert.equal(new Set(generatedPrefixes).size, 30);
+assert.equal(
+  new Set(generatedPrefixes.map((prefixValue) => prefixValue + "overview")).size,
+  30,
+  "repeated heading IDs remain unique across the long fixture sequence"
 );
 
 class FakeElement {
@@ -230,6 +253,271 @@ assert.deepEqual(scroll.errorStateForLesson(middle), {
   message: "The next lesson could not be loaded.",
   route: "/learn/middle.html"
 });
+
+assert.equal(scroll.readingLineForViewport(1000), 140);
+assert.equal(scroll.readingLineForViewport(390), 72);
+assert.equal(
+  scroll.selectActiveLessonIndex([0, 80, 500], 100, 0, 1, 28),
+  0,
+  "downward hysteresis retains the current lesson near a boundary"
+);
+assert.equal(
+  scroll.selectActiveLessonIndex([0, 70, 500], 100, 0, 1, 28),
+  1,
+  "scrolling downward selects a lesson after it clears the stable band"
+);
+assert.equal(
+  scroll.selectActiveLessonIndex([-500, 120, 500], 100, 1, -1, 28),
+  1,
+  "upward hysteresis avoids boundary flicker"
+);
+assert.equal(
+  scroll.selectActiveLessonIndex([-500, 130, 500], 100, 1, -1, 28),
+  0,
+  "scrolling upward restores the preceding loaded lesson"
+);
+assert.equal(
+  scroll.selectActiveLessonIndex([-1000, -500, 20], 100, 0, 1, 28),
+  2,
+  "large downward jumps remain deterministic"
+);
+assert.equal(scroll.selectActiveHeadingIndex([20, 90, 180], 100), 1);
+assert.equal(scroll.selectActiveHeadingIndex([], 100), -1);
+
+assert.equal(
+  scroll.sidebarRouteMatches(
+    "../../learn/first/index.html",
+    "/learn/first/",
+    "https://example.test/learn/deep/current.html"
+  ),
+  true
+);
+assert.equal(
+  scroll.sidebarRouteMatches(
+    "../../learn/first/index.html",
+    "/learn/middle.html",
+    "https://example.test/learn/deep/current.html"
+  ),
+  false
+);
+assert.equal(scroll.shouldExpandTrack(false, true), true);
+assert.equal(scroll.shouldExpandTrack(true, true), false);
+assert.equal(scroll.shouldExpandTrack(false, false), false);
+
+function fakeClassList(initial = []) {
+  const values = new Set(initial);
+  return {
+    add(value) {
+      values.add(value);
+    },
+    remove(value) {
+      values.delete(value);
+    },
+    contains(value) {
+      return values.has(value);
+    }
+  };
+}
+
+const sidebarToggle = {
+  attributes: new Map([["aria-expanded", "false"]]),
+  clickCount: 0,
+  getAttribute(name) {
+    return this.attributes.get(name) || null;
+  },
+  click() {
+    this.clickCount += 1;
+    this.attributes.set("aria-expanded", "true");
+  }
+};
+const sidebarSection = {
+  querySelector() {
+    return sidebarToggle;
+  }
+};
+const sidebarSectionList = {
+  closest() {
+    return sidebarSection;
+  }
+};
+function fakeSidebarLink(href, classes, top) {
+  return {
+    attributes: new Map([["href", href], ["aria-current", "page"]]),
+    classList: fakeClassList(classes),
+    getAttribute(name) {
+      return this.attributes.has(name) ? this.attributes.get(name) : null;
+    },
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    },
+    closest(selector) {
+      return selector === ".sidebar-section" ? sidebarSectionList : null;
+    },
+    getBoundingClientRect() {
+      return { top, bottom: top + 30 };
+    }
+  };
+}
+const oldSidebarLink = fakeSidebarLink(
+  "../../learn/first/index.html",
+  ["sidebar-link", "active"],
+  20
+);
+const newSidebarLink = fakeSidebarLink(
+  "../../learn/middle.html",
+  ["sidebar-link"],
+  240
+);
+newSidebarLink.removeAttribute("aria-current");
+const fakeSidebar = {
+  scrollTop: 0,
+  querySelectorAll() {
+    return [oldSidebarLink, newSidebarLink];
+  },
+  getBoundingClientRect() {
+    return { top: 0, bottom: 200 };
+  }
+};
+assert.equal(
+  scroll.setActiveSidebar(
+    fakeSidebar,
+    "/learn/middle.html",
+    "https://example.test/learn/deep/current.html"
+  ),
+  newSidebarLink
+);
+assert.equal(oldSidebarLink.classList.contains("active"), false);
+assert.equal(oldSidebarLink.getAttribute("aria-current"), null);
+assert.equal(newSidebarLink.classList.contains("active"), true);
+assert.equal(newSidebarLink.getAttribute("aria-current"), "page");
+assert.equal(sidebarToggle.clickCount, 1);
+assert.equal(fakeSidebar.scrollTop, 78);
+
+const tocHeadingMap = new Map([
+  ["overview", "bms-learn-scroll-test-overview"]
+]);
+const tocLinkElement = new FakeElement({
+  id: "toc-overview",
+  href: "#overview",
+  "data-scroll-target": "#overview"
+});
+scroll.rewriteIdReferences(
+  new FakeRoot([tocLinkElement]),
+  "bms-learn-scroll-test-",
+  tocHeadingMap
+);
+assert.equal(
+  tocLinkElement.getAttribute("href"),
+  "#bms-learn-scroll-test-overview"
+);
+assert.equal(
+  tocLinkElement.getAttribute("data-scroll-target"),
+  "#bms-learn-scroll-test-overview"
+);
+assert.equal(
+  tocLinkElement.id,
+  "bms-learn-scroll-test-toc-overview"
+);
+
+function fakeTocLink(href, active) {
+  return {
+    href,
+    classList: fakeClassList(active ? ["active"] : []),
+    getAttribute(name) {
+      return name === "href" ? this.href : null;
+    },
+    cloneNode() {
+      return fakeTocLink(this.href, this.classList.contains("active"));
+    }
+  };
+}
+function fakeToc(links) {
+  return {
+    links,
+    childNodes: links,
+    hidden: false,
+    attributes: new Map(),
+    querySelector(selector) {
+      return selector === 'a[href^="#"]' ? this.links[0] || null : null;
+    },
+    querySelectorAll(selector) {
+      if (selector === 'a[href^="#"]') {
+        return this.links;
+      }
+      if (selector === ".active") {
+        return this.links.filter((link) => link.classList.contains("active"));
+      }
+      return [];
+    },
+    cloneNode() {
+      return fakeToc(this.links.map((link) => link.cloneNode(true)));
+    },
+    replaceChildren(...children) {
+      this.childNodes = children;
+      this.links = children;
+    },
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    }
+  };
+}
+const sourceToc = fakeToc([
+  fakeTocLink("#overview", true),
+  fakeTocLink("#details", false)
+]);
+const storedToc = scroll.captureToc(sourceToc);
+assert.deepEqual(scroll.tocHashTargets(storedToc), [
+  "#overview",
+  "#details"
+]);
+assert.equal(storedToc.links[0].classList.contains("active"), false);
+const globalToc = fakeToc([]);
+assert.equal(scroll.replaceTocContents(globalToc, storedToc), true);
+assert.equal(globalToc.hidden, false);
+assert.deepEqual(
+  globalToc.links.map((link) => link.getAttribute("href")),
+  ["#overview", "#details"]
+);
+assert.equal(scroll.replaceTocContents(globalToc, null), false);
+assert.equal(globalToc.hidden, true);
+assert.equal(globalToc.attributes.get("aria-hidden"), "true");
+
+const lessonRecord = scroll.createLessonRecord(
+  {
+    route: "/learn/middle.html",
+    title: "Middle",
+    track_id: "one",
+    track_title: "Track One",
+    sequence_index: 1
+  },
+  { marker: true },
+  ["overview", "details"],
+  storedToc
+);
+assert.deepEqual(
+  {
+    route: lessonRecord.route,
+    title: lessonRecord.title,
+    trackId: lessonRecord.trackId,
+    trackTitle: lessonRecord.trackTitle,
+    headingIds: lessonRecord.headingIds,
+    sequencePosition: lessonRecord.sequencePosition
+  },
+  {
+    route: "/learn/middle.html",
+    title: "Middle",
+    trackId: "one",
+    trackTitle: "Track One",
+    headingIds: ["overview", "details"],
+    sequencePosition: 1
+  }
+);
 
 const mountedButton = {
   listenerCount: 0,

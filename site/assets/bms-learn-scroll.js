@@ -103,8 +103,10 @@
 
   function idPrefixForRoute(route) {
     const parts = normalizeRoute(route).split("/").filter(Boolean);
-    const filename = parts.pop() || "lesson";
-    const slug = filename
+    if (parts[0] === "learn") {
+      parts.shift();
+    }
+    const slug = (parts.join("-") || "lesson")
       .replace(/\.html$/i, "")
       .toLocaleLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
@@ -112,8 +114,8 @@
     return "bms-learn-scroll-" + (slug || "lesson") + "-";
   }
 
-  function rewriteIdReferences(root, prefix) {
-    const idMap = new Map();
+  function rewriteIdReferences(root, prefix, existingIdMap) {
+    const idMap = existingIdMap || new Map();
     root.querySelectorAll("[id]").forEach(function (element) {
       const oldId = element.id;
       const newId = prefix + oldId;
@@ -290,6 +292,203 @@
     };
   }
 
+  function readingLineForViewport(viewportHeight) {
+    const height = Number(viewportHeight) || 0;
+    return Math.max(72, Math.min(140, height * 0.18));
+  }
+
+  function selectActiveLessonIndex(
+    markerTops,
+    readingLine,
+    previousIndex,
+    direction,
+    hysteresis
+  ) {
+    if (!Array.isArray(markerTops) || markerTops.length === 0) {
+      return -1;
+    }
+    const lastIndex = markerTops.length - 1;
+    const band = Number.isFinite(hysteresis) ? hysteresis : 28;
+    let index = Number.isInteger(previousIndex)
+      ? Math.max(0, Math.min(previousIndex, lastIndex))
+      : 0;
+
+    if (!direction) {
+      index = 0;
+      while (
+        index < lastIndex &&
+        markerTops[index + 1] <= readingLine
+      ) {
+        index += 1;
+      }
+      return index;
+    }
+
+    if (direction > 0) {
+      while (
+        index < lastIndex &&
+        markerTops[index + 1] <= readingLine - band
+      ) {
+        index += 1;
+      }
+      return index;
+    }
+
+    while (
+      index > 0 &&
+      markerTops[index] > readingLine + band
+    ) {
+      index -= 1;
+    }
+    return index;
+  }
+
+  function sidebarRouteMatches(href, route, baseUrl) {
+    try {
+      return (
+        normalizeRoute(new URL(href, baseUrl).pathname) ===
+        normalizeRoute(route)
+      );
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function shouldExpandTrack(isExpanded, containsActiveLesson) {
+    return Boolean(containsActiveLesson && !isExpanded);
+  }
+
+  function selectActiveHeadingIndex(headingTops, readingLine) {
+    if (!Array.isArray(headingTops) || headingTops.length === 0) {
+      return -1;
+    }
+    let index = 0;
+    while (
+      index + 1 < headingTops.length &&
+      headingTops[index + 1] <= readingLine
+    ) {
+      index += 1;
+    }
+    return index;
+  }
+
+  function setActiveSidebar(sidebar, route, baseUrl) {
+    if (!sidebar) {
+      return null;
+    }
+    const links = Array.from(
+      sidebar.querySelectorAll("a.sidebar-link[href]")
+    );
+    const activeLink =
+      links.find(function (link) {
+        return sidebarRouteMatches(
+          link.getAttribute("href"),
+          route,
+          baseUrl
+        );
+      }) || null;
+    if (!activeLink) {
+      return null;
+    }
+
+    links.forEach(function (link) {
+      link.classList.remove("active");
+      link.removeAttribute("aria-current");
+    });
+    activeLink.classList.add("active");
+    activeLink.setAttribute("aria-current", "page");
+
+    const sectionList = activeLink.closest(".sidebar-section");
+    const section = sectionList
+      ? sectionList.closest(".sidebar-item-section")
+      : null;
+    const toggle = section
+      ? section.querySelector(
+          ":scope > .sidebar-item-container .sidebar-item-toggle"
+        )
+      : null;
+    if (
+      toggle &&
+      shouldExpandTrack(
+        toggle.getAttribute("aria-expanded") === "true",
+        true
+      )
+    ) {
+      toggle.click();
+    }
+
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+    if (linkRect.top < sidebarRect.top) {
+      sidebar.scrollTop -= sidebarRect.top - linkRect.top + 8;
+    } else if (linkRect.bottom > sidebarRect.bottom) {
+      sidebar.scrollTop += linkRect.bottom - sidebarRect.bottom + 8;
+    }
+    return activeLink;
+  }
+
+  function captureToc(toc) {
+    if (!toc || !toc.querySelector('a[href^="#"]')) {
+      return null;
+    }
+    const clone = toc.cloneNode(true);
+    clone.querySelectorAll(".active").forEach(function (element) {
+      element.classList.remove("active");
+    });
+    return clone;
+  }
+
+  function tocHashTargets(toc) {
+    if (!toc) {
+      return [];
+    }
+    return Array.from(toc.querySelectorAll('a[href^="#"]')).map(
+      function (link) {
+        return link.getAttribute("href");
+      }
+    );
+  }
+
+  function replaceTocContents(globalToc, storedToc) {
+    if (!globalToc) {
+      return false;
+    }
+    if (!storedToc || !storedToc.querySelector('a[href^="#"]')) {
+      globalToc.replaceChildren();
+      globalToc.hidden = true;
+      globalToc.setAttribute("aria-hidden", "true");
+      return false;
+    }
+    const children = Array.from(storedToc.childNodes).map(function (node) {
+      return node.cloneNode(true);
+    });
+    globalToc.replaceChildren.apply(globalToc, children);
+    globalToc.hidden = false;
+    globalToc.removeAttribute("aria-hidden");
+    return true;
+  }
+
+  function createLessonMarker(lesson) {
+    const marker = document.createElement("section");
+    marker.className = "bms-learn-scroll-lesson-marker";
+    marker.dataset.bmsLearnScrollLessonRoute = lesson.route;
+    marker.setAttribute("aria-hidden", "true");
+    return marker;
+  }
+
+  function createLessonRecord(lesson, sectionElement, headingIds, toc) {
+    return {
+      route: normalizeRoute(lesson.route),
+      title: String(lesson.title || ""),
+      trackId: String(lesson.track_id || ""),
+      trackTitle: String(lesson.track_title || ""),
+      sectionElement: sectionElement,
+      headingIds: Array.from(headingIds || []),
+      toc: toc,
+      sequencePosition: Number(lesson.sequence_index)
+    };
+  }
+
   function startsNewTrack(lesson) {
     return Boolean(lesson && lesson.next_starts_new_track);
   }
@@ -382,7 +581,132 @@
         }
 
         const tracker = createLoadedRouteTracker(current.route);
+        const sidebar = document.getElementById("quarto-sidebar");
+        const globalToc = document.getElementById("TOC");
+        const lessonRecords = [];
+        const initialHeadingIds = Array.from(
+          main.querySelectorAll("h2[id], h3[id]")
+        ).map(function (heading) {
+          return heading.id;
+        });
+        const initialMarker = createLessonMarker(current);
+        main.insertBefore(initialMarker, main.firstChild);
+        lessonRecords.push(
+          createLessonRecord(
+            current,
+            initialMarker,
+            initialHeadingIds,
+            captureToc(globalToc)
+          )
+        );
+
         let observer = null;
+        let activeLessonIndex = 0;
+        let lastScrollY = window.scrollY;
+        let pendingDirection = 0;
+        let activeUpdateScheduled = false;
+
+        function updateActiveTocHeading(record, readingLine) {
+          if (!globalToc || !record) {
+            return;
+          }
+          const headings = record.headingIds
+            .map(function (id) {
+              return document.getElementById(id);
+            })
+            .filter(Boolean);
+          const headingIndex = selectActiveHeadingIndex(
+            headings.map(function (heading) {
+              return heading.getBoundingClientRect().top;
+            }),
+            readingLine
+          );
+          globalToc.querySelectorAll("a.nav-link.active").forEach(
+            function (link) {
+              link.classList.remove("active");
+            }
+          );
+          if (headingIndex < 0) {
+            return;
+          }
+          const target = "#" + headings[headingIndex].id;
+          const matchingLink = Array.from(
+            globalToc.querySelectorAll('a[href^="#"]')
+          ).find(function (link) {
+            return (
+              link.getAttribute("href") === target ||
+              link.getAttribute("data-scroll-target") === target
+            );
+          });
+          if (matchingLink) {
+            matchingLink.classList.add("active");
+          }
+        }
+
+        function synchronizeActiveLesson(record) {
+          setActiveSidebar(sidebar, record.route, window.location.href);
+          replaceTocContents(globalToc, record.toc);
+          updateActiveTocHeading(
+            record,
+            readingLineForViewport(window.innerHeight)
+          );
+        }
+
+        function updateActiveLesson(direction) {
+          const readingLine = readingLineForViewport(window.innerHeight);
+          const nextIndex = selectActiveLessonIndex(
+            lessonRecords.map(function (record) {
+              return record.sectionElement.getBoundingClientRect().top;
+            }),
+            readingLine,
+            activeLessonIndex,
+            direction,
+            28
+          );
+          if (nextIndex >= 0 && nextIndex !== activeLessonIndex) {
+            activeLessonIndex = nextIndex;
+            synchronizeActiveLesson(lessonRecords[activeLessonIndex]);
+          } else {
+            updateActiveTocHeading(
+              lessonRecords[activeLessonIndex],
+              readingLine
+            );
+          }
+        }
+
+        function scheduleActiveLessonUpdate(direction) {
+          pendingDirection = direction || pendingDirection;
+          if (activeUpdateScheduled) {
+            return;
+          }
+          activeUpdateScheduled = true;
+          window.requestAnimationFrame(function () {
+            activeUpdateScheduled = false;
+            const directionToApply = pendingDirection;
+            pendingDirection = 0;
+            updateActiveLesson(directionToApply);
+          });
+        }
+
+        window.addEventListener(
+          "scroll",
+          function () {
+            const nextScrollY = window.scrollY;
+            const direction =
+              nextScrollY > lastScrollY + 1
+                ? 1
+                : nextScrollY < lastScrollY - 1
+                  ? -1
+                  : 0;
+            lastScrollY = nextScrollY;
+            scheduleActiveLessonUpdate(direction);
+          },
+          { passive: true }
+        );
+        window.addEventListener("resize", function () {
+          scheduleActiveLessonUpdate(0);
+        });
+        synchronizeActiveLesson(lessonRecords[0]);
 
         function showEndState() {
           if (!main.querySelector("[data-bms-learn-scroll-end]")) {
@@ -448,6 +772,7 @@
                 const nextMain = nextDocument.getElementById(
                   "quarto-document-content"
                 );
+                const nextToc = nextDocument.getElementById("TOC");
                 if (
                   !nextMain ||
                   !nextDocument.body ||
@@ -478,14 +803,24 @@
                 );
 
                 const prefix = idPrefixForRoute(followingLesson.route);
-                rewriteIdReferences(nextMain, prefix);
+                const headingIdMap = rewriteIdReferences(nextMain, prefix);
+                if (nextToc) {
+                  rewriteIdReferences(nextToc, prefix, headingIdMap);
+                }
                 rewriteResourceUrls(nextMain, result.finalUrl.href);
+                const headingIds = Array.from(
+                  nextMain.querySelectorAll("h2[id], h3[id]")
+                ).map(function (lessonHeading) {
+                  return lessonHeading.id;
+                });
                 const header = nextMain.querySelector(".quarto-title-block");
                 if (header) {
                   header.dataset.bmsLearnScrollLesson = followingLesson.route;
                 }
 
+                const marker = createLessonMarker(followingLesson);
                 const fragment = document.createDocumentFragment();
+                fragment.appendChild(marker);
                 fragment.appendChild(
                   createDivider(
                     followingLesson,
@@ -503,8 +838,19 @@
                   window.BMSLearn.mountLesson(fragment);
                 }
                 sentinel.replaceWith(fragment);
+                lessonRecords.push(
+                  createLessonRecord(
+                    Object.assign({}, followingLesson, {
+                      title: fetchedTitle
+                    }),
+                    marker,
+                    headingIds,
+                    captureToc(nextToc)
+                  )
+                );
                 tracker.complete(followingLesson.route);
                 addSentinel(followingLesson);
+                scheduleActiveLessonUpdate(1);
               })
               .catch(function () {
                 tracker.fail(followingLesson.route);
@@ -538,6 +884,8 @@
   }
 
   const publicApi = {
+    captureToc: captureToc,
+    createLessonRecord: createLessonRecord,
     createLoadedRouteTracker: createLoadedRouteTracker,
     errorStateForLesson: errorStateForLesson,
     findCurrentLesson: findCurrentLesson,
@@ -546,10 +894,18 @@
     laterLessonRoutes: laterLessonRoutes,
     nextLesson: nextLesson,
     normalizeRoute: normalizeRoute,
+    readingLineForViewport: readingLineForViewport,
+    replaceTocContents: replaceTocContents,
     resolveSrcset: resolveSrcset,
     resolveUrlValue: resolveUrlValue,
     rewriteIdReferences: rewriteIdReferences,
     sameOriginUrl: sameOriginUrl,
+    selectActiveHeadingIndex: selectActiveHeadingIndex,
+    selectActiveLessonIndex: selectActiveLessonIndex,
+    setActiveSidebar: setActiveSidebar,
+    shouldExpandTrack: shouldExpandTrack,
+    sidebarRouteMatches: sidebarRouteMatches,
+    tocHashTargets: tocHashTargets,
     startsNewTrack: startsNewTrack
   };
 

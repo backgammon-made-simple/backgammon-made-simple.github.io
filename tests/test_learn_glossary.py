@@ -58,6 +58,9 @@ class LearnGlossaryTests(unittest.TestCase):
         cls.entries = learn_glossary.validate_public_data(cls.data)
         cls.tracks = learn_glossary.discover_tracks()
         cls.lessons = learn_glossary.discover_lessons()
+        cls.real_lessons = learn_glossary.discover_lessons(
+            include_scrolling_tests=False
+        )
         cls.lesson_sections = learn_glossary.build_curriculum(
             cls.tracks,
             cls.lessons,
@@ -207,7 +210,10 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("bms-glossary-anchor", self.entries_html)
         self.assertEqual(
             sum(len(value) for value in self.related_lessons.values()),
-            40,
+            sum(
+                len(lesson["terms"])
+                for lesson in self.lessons
+            ),
         )
         self.assertEqual(
             sum(len(value) for value in self.related_research.values()),
@@ -406,7 +412,10 @@ class LearnGlossaryTests(unittest.TestCase):
     def test_learn_and_research_terms_metadata_is_canonical(self) -> None:
         canonical = {entry["slug"] for entry in self.entries}
         self.assertEqual(len(self.tracks), 3)
-        self.assertEqual(len(self.lessons), 4)
+        self.assertEqual(
+            len(self.lessons),
+            len(self.real_lessons) + 10 * len(self.tracks),
+        )
         for lesson in self.lessons:
             self.assertTrue(
                 set(lesson["categories"]).issubset(learn_glossary.DIFFICULTIES)
@@ -489,13 +498,24 @@ class LearnGlossaryTests(unittest.TestCase):
             track["id"] for track in self.lesson_sections if track["lessons"]
         }
         self.assertEqual(sequence_track_ids, expected_non_empty_track_ids)
+        synthetic = [
+            {
+                **track,
+                "lessons": (
+                    []
+                    if index == len(self.lesson_sections) - 1
+                    else track["lessons"]
+                ),
+            }
+            for index, track in enumerate(self.lesson_sections)
+        ]
+        synthetic_sequence = learn_glossary.build_learn_sequence(synthetic)
         self.assertNotIn(
-            next(
-                track["id"]
-                for track in self.lesson_sections
-                if not track["lessons"]
-            ),
-            sequence_track_ids,
+            self.lesson_sections[-1]["id"],
+            {
+                lesson["track_id"]
+                for lesson in synthetic_sequence["lessons"]
+            },
         )
         routes = {lesson["route"] for lesson in self.learn_sequence["lessons"]}
         excluded = {
@@ -586,6 +606,63 @@ class LearnGlossaryTests(unittest.TestCase):
             "/learn/cube/scrolling-test-lesson-three.html",
             {lesson["route"] for lesson in self.learn_sequence["lessons"]},
         )
+
+    def test_generated_scrolling_lessons_are_in_the_one_sequence(self) -> None:
+        sequence_lessons = self.learn_sequence["lessons"]
+        sequence_routes = [lesson["route"] for lesson in sequence_lessons]
+        self.assertEqual(len(sequence_routes), len(set(sequence_routes)))
+
+        for track in self.lesson_sections:
+            track_id = str(track["id"])
+            track_lessons = [
+                lesson
+                for lesson in sequence_lessons
+                if lesson["track_id"] == track_id
+            ]
+            generated = [
+                lesson
+                for lesson in track_lessons
+                if str(lesson["route"]).startswith(
+                    f"/learn/scrolling-test/{track_id}/"
+                )
+            ]
+            real = [
+                lesson
+                for lesson in track_lessons
+                if lesson not in generated
+            ]
+            self.assertEqual(len(generated), 10)
+            self.assertEqual(
+                [lesson["route"] for lesson in generated],
+                [
+                    f"/learn/scrolling-test/{track_id}/lesson-{index:02d}.html"
+                    for index in range(1, 11)
+                ],
+            )
+            if real:
+                self.assertLess(
+                    max(lesson["sequence_index"] for lesson in real),
+                    min(lesson["sequence_index"] for lesson in generated),
+                )
+
+        non_empty_tracks = [
+            track for track in self.lesson_sections if track["lessons"]
+        ]
+        for index, track in enumerate(non_empty_tracks[:-1]):
+            last = [
+                lesson
+                for lesson in sequence_lessons
+                if lesson["track_id"] == track["id"]
+            ][-1]
+            next_track = non_empty_tracks[index + 1]
+            first_next = next(
+                lesson
+                for lesson in sequence_lessons
+                if lesson["track_id"] == next_track["id"]
+            )
+            self.assertEqual(last["next_route"], first_next["route"])
+            self.assertTrue(last["next_starts_new_track"])
+        self.assertIsNone(sequence_lessons[-1]["next_route"])
 
     def test_custom_404_source_contract(self) -> None:
         not_found_path = learn_glossary.SITE_ROOT / "404.qmd"
@@ -787,7 +864,11 @@ class LearnGlossaryTests(unittest.TestCase):
                 r'<span class="bms-learn-lesson-number"[^>]*>([^<]+)</span>',
                 catalogue,
             ),
-            ["1", "2", "1", "2"],
+            [
+                str(index)
+                for section in self.lesson_sections
+                for index in range(1, len(section["lessons"]) + 1)
+            ],
         )
         self.assertNotIn("bms-learn-catalogue-tag", catalogue)
         self.assertNotIn(">Description<", catalogue)
@@ -871,16 +952,16 @@ class LearnGlossaryTests(unittest.TestCase):
         term_buttons = set(
             re.findall(r'data-bms-filter-term="([^"]+)"', generated)
         )
-        expected_difficulties = {
-            str(value)
-            for lesson in self.cube_lessons
-            for value in lesson["categories"]
-        }
         cube_curriculum_lessons = [
             lesson
             for lesson in self.lessons
             if lesson["track_id"] == "doubling-cube"
         ]
+        expected_difficulties = {
+            str(value)
+            for lesson in cube_curriculum_lessons
+            for value in lesson["categories"]
+        }
         expected_terms = {
             str(value)
             for lesson in cube_curriculum_lessons
@@ -946,7 +1027,10 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(len(entry["related_lessons"]) for entry in entries),
-            40,
+            sum(
+                len(lesson["terms"])
+                for lesson in self.lessons
+            ),
         )
         self.assertTrue(all(entry["definition"] for entry in entries))
         learn_glossary.assert_no_forbidden_keys(lookup)
@@ -1344,10 +1428,13 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertEqual(result["continuous_lessons"], len(self.lessons))
         self.assertEqual(result["lesson_catalogue_sections"], 3)
         self.assertEqual(result["learn_tracks"], 3)
-        self.assertEqual(result["lessons"], 4)
+        self.assertEqual(result["lessons"], len(self.lessons))
         self.assertEqual(result["cube_lessons"], 2)
         self.assertEqual(result["updates_publications"], 0)
-        self.assertEqual(result["related_lesson_links"], 40)
+        self.assertEqual(
+            result["related_lesson_links"],
+            sum(len(lessons) for lessons in self.related_lessons.values()),
+        )
         self.assertEqual(result["related_research_links"], 3)
 
 
