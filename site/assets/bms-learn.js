@@ -1043,13 +1043,45 @@
       : null;
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
-    const toc = marginSidebar ? marginSidebar.querySelector("#TOC") : null;
+    let toc = null;
     let tocHeadingToggle = null;
+    let tocObserver = null;
     let desktopCollapsed = true;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
 
-    if (toc && refinedRightRailPage) {
+    const bindTocHeadingToggle = function (toggle) {
+      if (!toggle || toggle.dataset.bmsTocToggleBound === "true") {
+        return;
+      }
+      toggle.dataset.bmsTocToggleBound = "true";
+      toggle.addEventListener("click", function () {
+        tocCollapsed = !tocCollapsed;
+        updateToc();
+      });
+    };
+
+    const mountTocHeadingToggle = function () {
+      if (!refinedRightRailPage) {
+        return false;
+      }
+      const tocCandidates = Array.from(document.querySelectorAll("#TOC"));
+      toc =
+        tocCandidates.find(function (candidate) {
+          return Boolean(candidate.querySelector('a[href^="#"]'));
+        }) ||
+        (marginSidebar ? marginSidebar.querySelector("#TOC") : null);
+      if (!toc || !toc.querySelector('a[href^="#"]')) {
+        return false;
+      }
+      const existingToggle = toc.querySelector(
+        "[data-bms-toc-heading-toggle]"
+      );
+      if (existingToggle) {
+        tocHeadingToggle = existingToggle;
+        bindTocHeadingToggle(tocHeadingToggle);
+        return true;
+      }
       const tocTitle = toc.querySelector("#toc-title");
       const tocLinks = toc.querySelector(":scope > ul");
       if (tocTitle && tocLinks) {
@@ -1060,9 +1092,13 @@
         tocHeadingToggle.dataset.bmsTocHeadingToggle = "";
         tocHeadingToggle.setAttribute("aria-controls", tocLinks.id);
         tocHeadingToggle.hidden = true;
+        bindTocHeadingToggle(tocHeadingToggle);
         tocTitle.appendChild(tocHeadingToggle);
+        return true;
       }
-    }
+      return false;
+    };
+    mountTocHeadingToggle();
 
     if (lookup && refinedRightRailPage) {
       const formElement = lookup.querySelector("[data-bms-term-lookup-form]");
@@ -1278,6 +1314,25 @@
       updateMarginSidebar();
     };
 
+    if (
+      refinedRightRailPage &&
+      !tocHeadingToggle &&
+      marginSidebar &&
+      "MutationObserver" in window
+    ) {
+      tocObserver = new MutationObserver(function () {
+        if (mountTocHeadingToggle()) {
+          tocObserver.disconnect();
+          tocObserver = null;
+          updateToc();
+        }
+      });
+      tocObserver.observe(marginSidebar, {
+        childList: true,
+        subtree: true
+      });
+    }
+
     if (termToggle) {
       termToggle.addEventListener("click", function () {
         open();
@@ -1296,12 +1351,6 @@
     }
     if (tocToggle) {
       tocToggle.addEventListener("click", function () {
-        tocCollapsed = !tocCollapsed;
-        updateToc();
-      });
-    }
-    if (tocHeadingToggle) {
-      tocHeadingToggle.addEventListener("click", function () {
         tocCollapsed = !tocCollapsed;
         updateToc();
       });

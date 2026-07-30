@@ -2,6 +2,7 @@
   "use strict";
 
   const MANIFEST_ROUTE = "/assets/bms-learn-sequence.json";
+  let bootstrapToc = null;
   const ID_TOKEN_ATTRIBUTES = [
     "for",
     "aria-activedescendant",
@@ -595,6 +596,15 @@
       typeof root.querySelectorAll === "function"
         ? Array.from(root.querySelectorAll("#TOC"))
         : [root.getElementById("TOC")].filter(Boolean);
+    const populatedCandidates = candidates.filter(function (toc) {
+      return (
+        toc &&
+        typeof toc.querySelector === "function" &&
+        Boolean(toc.querySelector('a[href^="#"]'))
+      );
+    });
+    const preferredCandidates =
+      populatedCandidates.length > 0 ? populatedCandidates : candidates;
     function isLaidOut(element) {
       return (
         element &&
@@ -603,18 +613,42 @@
       );
     }
     return (
-      candidates.find(function (toc) {
+      preferredCandidates.find(function (toc) {
         return isLaidOut(toc) || isLaidOut(toc.parentElement);
       }) ||
-      candidates.find(function (toc) {
+      preferredCandidates.find(function (toc) {
         return (
           !toc.hidden &&
           toc.getAttribute("aria-hidden") !== "true"
         );
       }) ||
-      candidates[0] ||
+      preferredCandidates[0] ||
       null
     );
+  }
+
+  function waitForPrimaryToc(root, attempts) {
+    const remainingAttempts =
+      Number.isFinite(attempts) ? Math.max(0, attempts) : 24;
+    return new Promise(function (resolve) {
+      function check(remaining) {
+        const toc = findPrimaryToc(root);
+        if (
+          (toc &&
+            typeof toc.querySelector === "function" &&
+            toc.querySelector('a[href^="#"]')) ||
+          remaining <= 0 ||
+          typeof window.requestAnimationFrame !== "function"
+        ) {
+          resolve(toc);
+          return;
+        }
+        window.requestAnimationFrame(function () {
+          check(remaining - 1);
+        });
+      }
+      check(remainingAttempts);
+    });
   }
 
   function initializeContinuousLearn() {
@@ -636,6 +670,21 @@
         return response.json();
       })
       .then(function (manifest) {
+        if (bootstrapToc) {
+          return {
+            initialTocElement: findPrimaryToc(document),
+            manifest: manifest
+          };
+        }
+        return waitForPrimaryToc(document).then(function (initialTocElement) {
+          return {
+            initialTocElement: initialTocElement,
+            manifest: manifest
+          };
+        });
+      })
+      .then(function (initialState) {
+        const manifest = initialState.manifest;
         const main = document.getElementById("quarto-document-content");
         const current = findCurrentLesson(manifest, window.location.pathname);
         if (!main || !current) {
@@ -644,9 +693,12 @@
 
         const tracker = createLoadedRouteTracker(current.route);
         const sidebar = document.getElementById("quarto-sidebar");
-        const initialTocElement = findPrimaryToc(document);
+        const initialTocElement =
+          initialState.initialTocElement || findPrimaryToc(document);
         const lessonRecords = [];
-        const initialToc = captureToc(initialTocElement);
+        const initialToc =
+          captureToc(initialTocElement) ||
+          (bootstrapToc ? bootstrapToc.cloneNode(true) : null);
         const initialHeadingIds = headingIdsFromToc(initialToc);
         const initialMarker = createLessonMarker(current);
         main.insertBefore(initialMarker, main.firstChild);
@@ -973,6 +1025,7 @@
     normalizeRoute: normalizeRoute,
     readingLineForViewport: readingLineForViewport,
     replaceTocContents: replaceTocContents,
+    waitForPrimaryToc: waitForPrimaryToc,
     resolveSrcset: resolveSrcset,
     resolveUrlValue: resolveUrlValue,
     rewriteIdReferences: rewriteIdReferences,
@@ -991,6 +1044,7 @@
   }
 
   if (typeof document !== "undefined") {
+    bootstrapToc = captureToc(findPrimaryToc(document));
     document.addEventListener("DOMContentLoaded", initializeContinuousLearn);
   }
 })();

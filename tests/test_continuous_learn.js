@@ -26,6 +26,16 @@ assert.match(
 );
 assert.match(scrollSource, /findPrimaryToc\(document\)/);
 assert.match(scrollSource, /findPrimaryToc\(nextDocument\)/);
+assert.match(scrollSource, /waitForPrimaryToc\(document\)/);
+assert.match(scrollSource, /window\.requestAnimationFrame/);
+assert.match(
+  scrollSource,
+  /bootstrapToc = captureToc\(findPrimaryToc\(document\)\)/
+);
+assert.match(
+  scrollSource,
+  /captureToc\(initialTocElement\)[\s\S]*?bootstrapToc\.cloneNode\(true\)/
+);
 assert.match(
   scrollSource,
   /function activeTocElement\(\)[\s\S]*?findPrimaryToc\(document\)/
@@ -118,6 +128,9 @@ const zeroWidthToc = {
   getAttribute() {
     return null;
   },
+  querySelector() {
+    return null;
+  },
   getClientRects() {
     return [];
   }
@@ -133,6 +146,9 @@ const laidOutMarginToc = {
   getAttribute() {
     return null;
   },
+  querySelector() {
+    return { href: "#section" };
+  },
   getClientRects() {
     return [];
   }
@@ -141,6 +157,9 @@ const fallbackToc = {
   location: "fallback",
   hidden: false,
   getAttribute() {
+    return null;
+  },
+  querySelector() {
     return null;
   }
 };
@@ -156,6 +175,38 @@ assert.equal(
   scroll.findPrimaryToc(documentWithDuplicateTocs),
   laidOutMarginToc,
   "the TOC in the laid-out rail wins while it is still hidden"
+);
+const emptyLaidOutToc = {
+  ...laidOutMarginToc,
+  location: "empty laid-out margin",
+  querySelector() {
+    return null;
+  }
+};
+const populatedHiddenToc = {
+  ...zeroWidthToc,
+  location: "populated hidden",
+  hidden: true,
+  getAttribute(name) {
+    return name === "aria-hidden" ? "true" : null;
+  },
+  querySelector() {
+    return { href: "#section" };
+  }
+};
+assert.equal(
+  scroll.findPrimaryToc({
+    querySelectorAll(selector) {
+      return selector === "#TOC"
+        ? [emptyLaidOutToc, populatedHiddenToc]
+        : [];
+    },
+    getElementById(id) {
+      return id === "TOC" ? emptyLaidOutToc : null;
+    }
+  }),
+  populatedHiddenToc,
+  "a populated hidden TOC wins over an empty laid-out placeholder"
 );
 assert.equal(
   scroll.findPrimaryToc({
