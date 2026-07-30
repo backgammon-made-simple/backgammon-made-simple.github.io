@@ -841,7 +841,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-post-taxonomy--collapsed",
             "Hide article categories and tags",
             "Show article categories and tags",
-            'toggle.textContent = collapsed ? "\\u2039" : "\\u203a"',
+            'toggle.textContent = collapsed ? "\\u2304" : "\\u2303"',
             "window.scrollY > 32",
         ):
             self.assertIn(required, extension)
@@ -1216,7 +1216,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-site-tools--floating",
             'aria-controls="bms-term-lookup-panel"',
             'aria-controls="quarto-margin-sidebar"',
-            "Collapse term lookup to the right",
+            "Collapse term lookup",
             "Collapse TOC",
             "Expand TOC",
             "Collapse all right sidebar content",
@@ -1326,7 +1326,7 @@ class LearnGlossaryTests(unittest.TestCase):
             css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
             r"width: auto;[^}]*"
-            r"background: var\(--bms-ivory\);[^}]*"
+            r"background: var\(--bms-page-background\);[^}]*"
             r"color: var\(--bms-text-muted\);[^}]*"
             r"white-space: nowrap;",
         )
@@ -1398,10 +1398,11 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-lesson-track-content",
             "bms-lesson-track-toggle",
             'aria-label",\n            collapsed ? "Expand lesson track"',
-            'trackToggle.textContent = collapsed ? "\\u2039" : "\\u203a"',
+            'trackToggle.textContent = collapsed ? "\\u2304" : "\\u2303"',
+            '"bms:toc-collapse-change"',
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
-            'tocHeadingToggle.textContent = tocCollapsed ? "\\u2193" : "\\u2191"',
+            'tocHeadingToggle.textContent = tocCollapsed ? "\\u2304" : "\\u2303"',
             "toc.appendChild(tocHeadingToggle)",
             "updateLookupForScroll",
             "window.scrollY <= 32",
@@ -1427,7 +1428,7 @@ class LearnGlossaryTests(unittest.TestCase):
             ":is(.bms-toc-toggle, .bms-margin-sidebar-toggle)",
             ".bms-term-lookup-close",
             ".bms-term-lookup-browse",
-            "background: var(--bms-ivory)",
+            "background: var(--bms-page-background)",
             "outline: 2px solid var(--bms-link-hover)",
             "@media (min-width: 992px)",
         ):

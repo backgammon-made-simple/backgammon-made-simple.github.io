@@ -832,7 +832,7 @@
             "aria-label",
             collapsed ? "Expand lesson track" : "Collapse lesson track"
           );
-          trackToggle.textContent = collapsed ? "\u2039" : "\u203a";
+          trackToggle.textContent = collapsed ? "\u2304" : "\u2303";
         }
 
         if (trackToggle) {
@@ -840,6 +840,15 @@
             trackCollapsed = !trackCollapsed;
             updateTrackControl(true);
           });
+          document.addEventListener(
+            "bms:toc-collapse-change",
+            function (event) {
+              trackCollapsed = Boolean(
+                event.detail && event.detail.collapsed
+              );
+              updateTrackControl(desktopQuery.matches);
+            }
+          );
         }
 
         function place() {
@@ -945,8 +954,8 @@
       "<strong>Look Up a Term</strong>" +
       '<button type="button" class="bms-term-lookup-close" ' +
       'data-bms-term-lookup-close aria-controls="bms-term-lookup-panel" ' +
-      'aria-expanded="true" aria-label="Collapse term lookup to the right">' +
-      '<span aria-hidden="true">&rarr;</span></button>' +
+      'aria-expanded="true" aria-label="Collapse term lookup">' +
+      '<span aria-hidden="true">\u2303</span></button>' +
       "</div>" +
       '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
@@ -1050,7 +1059,7 @@
       '<button type="button" class="bms-term-lookup-reveal" ' +
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false" aria-label="Open term lookup">' +
-      '<span aria-hidden="true">&larr;</span> Term Search</button>' +
+      '<span aria-hidden="true">\u2304</span> Term Search</button>' +
       (refinedRightRailPage
         ? ""
         : '<button type="button" class="bms-toc-toggle" ' +
@@ -1062,7 +1071,7 @@
           'Collapse All <span aria-hidden="true">&uarr;</span></button>') +
       '<button type="button" class="bms-site-back-to-top" ' +
       'data-bms-site-back-to-top hidden>Back to top ' +
-      '<span aria-hidden="true">&uarr;</span></button>';
+      '<span aria-hidden="true">\u2303</span></button>';
 
     const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
     const tocToggle = tools.querySelector("[data-bms-toc-toggle]");
@@ -1171,6 +1180,11 @@
       toggle.addEventListener("click", function () {
         tocCollapsed = !tocCollapsed;
         updateToc();
+        document.dispatchEvent(
+          new CustomEvent("bms:toc-collapse-change", {
+            detail: { collapsed: tocCollapsed }
+          })
+        );
       });
     };
 
@@ -1480,7 +1494,7 @@
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = tocCollapsed ? "\u2193" : "\u2191";
+        tocHeadingToggle.textContent = tocCollapsed ? "\u2304" : "\u2303";
         return;
       }
       if (tocHeadingToggle) {
@@ -1804,7 +1818,7 @@
         "aria-label",
         active ? "Show Learn table of contents" : "Hide Learn table of contents"
       );
-      toggle.textContent = active ? "\u203a" : "\u2039";
+      toggle.textContent = active ? "\u2304" : "\u2303";
       if (active) {
         toggle.style.left = "0.5rem";
       } else {

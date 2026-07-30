@@ -94,7 +94,7 @@ local css = [==[
   padding: 0;
   border: 1px solid var(--bms-border, #d9d3c7);
   border-radius: 5px;
-  background: var(--bms-ivory, #f7f3ea);
+  background: var(--bms-page-background, #faf7f2);
   color: var(--bms-text-muted, #68625a);
   cursor: pointer;
   font-size: 1rem;
@@ -262,7 +262,7 @@ local javascript = [==[
           ? "Show article categories and tags"
           : "Hide article categories and tags"
       );
-      toggle.textContent = collapsed ? "\u2039" : "\u203a";
+      toggle.textContent = collapsed ? "\u2304" : "\u2303";
     }
 
     toggle.addEventListener("click", function () {
