@@ -581,12 +581,20 @@
     if (!root || typeof root.getElementById !== "function") {
       return null;
     }
-    const marginSidebar = root.getElementById("quarto-margin-sidebar");
-    const marginToc =
-      marginSidebar && typeof marginSidebar.querySelector === "function"
-        ? marginSidebar.querySelector("#TOC")
-        : null;
-    return marginToc || root.getElementById("TOC");
+    const candidates =
+      typeof root.querySelectorAll === "function"
+        ? Array.from(root.querySelectorAll("#TOC"))
+        : [root.getElementById("TOC")].filter(Boolean);
+    return (
+      candidates.find(function (toc) {
+        return (
+          !toc.hidden &&
+          toc.getAttribute("aria-hidden") !== "true"
+        );
+      }) ||
+      candidates[0] ||
+      null
+    );
   }
 
   function initializeContinuousLearn() {

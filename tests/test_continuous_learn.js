@@ -93,24 +93,39 @@ assert.deepEqual(
 assert.equal(scroll.startsNewTrack(middle), true);
 assert.equal(scroll.startsNewTrack(first), false);
 
-const visibleMarginToc = { location: "margin" };
-const fallbackToc = { location: "fallback" };
+const visibleToc = {
+  location: "visible",
+  hidden: false,
+  getAttribute() {
+    return null;
+  }
+};
+const hiddenMarginToc = {
+  location: "margin",
+  hidden: true,
+  getAttribute(name) {
+    return name === "aria-hidden" ? "true" : null;
+  }
+};
+const fallbackToc = {
+  location: "fallback",
+  hidden: false,
+  getAttribute() {
+    return null;
+  }
+};
 const documentWithDuplicateTocs = {
+  querySelectorAll(selector) {
+    return selector === "#TOC" ? [visibleToc, hiddenMarginToc] : [];
+  },
   getElementById(id) {
-    if (id === "quarto-margin-sidebar") {
-      return {
-        querySelector(selector) {
-          return selector === "#TOC" ? visibleMarginToc : null;
-        }
-      };
-    }
-    return id === "TOC" ? fallbackToc : null;
+    return id === "TOC" ? visibleToc : null;
   }
 };
 assert.equal(
   scroll.findPrimaryToc(documentWithDuplicateTocs),
-  visibleMarginToc,
-  "the visible margin TOC wins when Quarto emits duplicate TOC IDs"
+  visibleToc,
+  "the visible TOC wins when Quarto emits a hidden duplicate"
 );
 assert.equal(
   scroll.findPrimaryToc({
