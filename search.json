@@ -193,7 +193,7 @@
     "href": "research/index.html",
     "title": "Research",
     "section": "",
-    "text": "Research is where we publish the methods, supporting analysis, project notes, and reproducibility details behind Backgammon Made Simple.\n\n\n\n  \n    Select a category or tag to filter the articles. Select an active filter again to clear it.\n  \n\n  \n    Categories\n    \n      \n        Learn×0\n      \n      \n        Position Analyzer×0\n      \n      \n        Match Predictor×0\n      \n      \n        Engine Benchmark×0\n      \n      \n        Research×0\n      \n    \n  \n\n  \n    Tags\n    \n  \n\n  \n    \n    \n      Clear filters\n    \n  \n\n\n\n\n\n  \n\n    \n      \n        \n          Sage vs GNU: Additional Details\n        \n        \n          How Stage 1 was run, checked, and interpreted\n        \n      \n\n      \n        21 min read\n      \n    \n\n    \n      Methods, results, and evidence for the Sage versus GNU Stage 1 backgammon engine benchmark.\n\n    \n\n    \n\n    \n      Read article\n    \n  \n\n  \n\n    \n      \n        \n          What We Are Building\n        \n        \n          Backgammon Made Simple project update\n        \n      \n\n      \n        4 min read\n      \n    \n\n    \n      How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.\n\n    \n\n    \n      \n        \n          \n            \n              \n                Learn\n              \n            \n              \n                Position Analyzer\n              \n            \n              \n                Match Predictor\n              \n            \n              \n                Engine Benchmark\n              \n            \n              \n                Research\n              \n            \n          \n        \n\n        \n          \n            \n              \n                Project Updates\n              \n            \n              \n                Open-source Tools\n              \n            \n              \n                Site Development\n              \n            \n          \n        \n      \n    \n\n    \n      Read article\n    \n  \n\n\nNo matching items\n\n\n  No articles match the selected category and tag."
+    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\n    \n  \n  \n\n\n\n\nResearch is where we publish the methods, supporting analysis, project notes, and reproducibility details behind Backgammon Made Simple.\n\n\n\n  \n    Select a category or tag to filter the articles. Select an active filter again to clear it.\n  \n\n  \n    Categories\n    \n      \n        Learn×0\n      \n      \n        Position Analyzer×0\n      \n      \n        Match Predictor×0\n      \n      \n        Engine Benchmark×0\n      \n      \n        Research×0\n      \n    \n  \n\n  \n    Tags\n    \n  \n\n  \n    \n    \n      Clear filters\n    \n  \n\n\n\n\n\n  \n\n    \n      \n        \n          Sage vs GNU: Additional Details\n        \n        \n          How Stage 1 was run, checked, and interpreted\n        \n      \n\n      \n        21 min read\n      \n    \n\n    \n      Methods, results, and evidence for the Sage versus GNU Stage 1 backgammon engine benchmark.\n\n    \n\n    \n\n    \n      Read article\n    \n  \n\n  \n\n    \n      \n        \n          What We Are Building\n        \n        \n          Backgammon Made Simple project update\n        \n      \n\n      \n        4 min read\n      \n    \n\n    \n      How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.\n\n    \n\n    \n      \n        \n          \n            \n              \n                Learn\n              \n            \n              \n                Position Analyzer\n              \n            \n              \n                Match Predictor\n              \n            \n              \n                Engine Benchmark\n              \n            \n              \n                Research\n              \n            \n          \n        \n\n        \n          \n            \n              \n                Project Updates\n              \n            \n              \n                Open-source Tools\n              \n            \n              \n                Site Development\n              \n            \n          \n        \n      \n    \n\n    \n      Read article\n    \n  \n\n\nNo matching items\n\n\n  No articles match the selected category and tag."
   },
   {
     "objectID": "posts/2026-07-sage-vs-gnu-update.html",
@@ -242,10 +242,10 @@
     "href": "learn/start-here/index.html",
     "title": "Start Here",
     "section": "",
-    "text": "Search lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\nBack Game×0\n\n\nBackgammon×0\n\n\nBlitz×0\n\n\nEquity×0\n\n\nError Rate×0\n\n\nGame Winning Chances×0\n\n\nGammon×0\n\n\nHolding Game×0\n\n\nMarket Loser×0\n\n\nMatch Play×0\n\n\nOwn the Cube×0\n\n\nPrime×0\n\n\nRace×0\n\n\nRollout×0\n\n\nTiming×0\n\n\nWastage×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n1\n\n\nThe Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n2\n\n\nReading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\nBack Game×0\n\n\nBackgammon×0\n\n\nBlitz×0\n\n\nEquity×0\n\n\nError Rate×0\n\n\nGame Winning Chances×0\n\n\nGammon×0\n\n\nHolding Game×0\n\n\nMarket Loser×0\n\n\nMatch Play×0\n\n\nOwn the Cube×0\n\n\nPrime×0\n\n\nRace×0\n\n\nRollout×0\n\n\nTiming×0\n\n\nWastage×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n1\n\n\nThe Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n2\n\n\nReading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
-      "I Start Here"
+      "Start Here"
     ]
   },
   {
@@ -253,10 +253,10 @@
     "href": "learn/opening-play/index.html",
     "title": "Opening Play Lab",
     "section": "",
-    "text": "Search lessons \n\n\n\nDifficulty Filter\n\n\nNo options yet\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\nNo options yet\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
-      "III Opening Play Lab"
+      "Opening Play Lab"
     ]
   },
   {
@@ -278,7 +278,7 @@
     "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -290,7 +290,7 @@
     "text": "This lesson also answers\n\n\nWhy should I take when I am more likely to lose?\nWhy is losing two points sometimes better than passing for one?\nIs exactly 25% a take or a pass?\nWhy is 25% only a simplified take point?\nWhat assumptions are hidden inside the 25% rule?\n\n\n\n\nThe opponent has doubled the cube from 1 to 2.\nWhy raise the stakes if losing is still the most likely result.\nThis lesson compares taking with passing and explains why the simplified boundary is 25%.\nTODO: revise this working preamble after the position and evidence are verified.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -302,7 +302,7 @@
     "text": "The position\n\n\nXGID: TBD\nTODO: Render the verified XGID using the established backgammonboard plotting workflow.\n\n\n\nPlayer deciding: TODO\nCube state: Offered from 1 to 2\nContext: Money play\nDecision: Take or Pass\nWhy this position: TODO: select a position that isolates the simplified comparison.\n\n\n\n\n\nWhy this position?\n\nMoney play.\nCube offered from 1 to 2.\nMinimal gammon and backgammon complications.\nNo useful future redouble in the simplified model.\nVERIFY: confirm all assumptions after selecting the position.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -314,7 +314,7 @@
     "text": "What would you do?\n\nThe opponent has doubled. Would you take or pass?\n\n\nTake\n\n\nPass\n\n\n\nChoose an action to open the working answer.\n\n\n\n\nShow the working answer\n\n\n\nAnswer\n\n\nTODO: Add the verified answer after the position is selected.\n\n\nWhy\n\n\n\nTODO: Compare taking with passing for the verified position.\n\n\nVERIFY: Confirm that the position supports the simplified assumptions.\n\n\nSOURCE NEEDED: Accepted project documentation for the calculation.\n\n\n\nThe buttons record the reader’s choice only. Neither choice is labelled correct while the answer remains unverified.\n\n\n\n\n\nExplore this position in the analyzer\n\n\n\nXGID: TBD\n\n\nTODO: Add the verified lesson XGID before creating the lazy-loaded iframe and position-specific direct link.\n\n\n\nOpen the analyzer and enter an XGID",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -326,7 +326,7 @@
     "text": "The short answer\n\nPassing loses the current one-point stake.\nTaking means continuing the game at a cube value of 2.\nUnder the simplified assumptions, taking and passing have equal value at the 25% boundary.\nTaking is correct above the boundary and passing is correct below it.\nTaking is not the same as predicting a win.\nVERIFY: decide how the exact boundary should be described after notation is accepted.\n\n\n\nKey idea\n\nA take is not a prediction that you will win. It is a comparison between continuing at the doubled stake and surrendering the current stake.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -338,7 +338,7 @@
     "text": "Why 25% appears\n\nPassing\n\nPassing ends the game immediately.\nThe player loses the current one-point stake.\nThis is the result that taking must be compared with.\n\n\n\nTaking and winning\n\nThe game continues with the cube at 2.\nA win gains two points in the simplified comparison.\nThe larger reward is why taking can be worthwhile even when winning is less likely.\n\n\n\nTaking and losing\n\nThe game continues with the cube at 2.\nA loss costs two points in the simplified comparison.\nThe player accepts this larger risk instead of surrendering one point immediately.\n\n\n\nThe decision boundary\n\nAt the boundary, taking and passing have the same value.\nAbove the boundary, continuing is worth more than passing.\nBelow the boundary, passing is worth more than continuing.\nTODO: add the accepted risk-versus-reward calculation.\nVERIFY: notation against backgammoncalculator.\nSOURCE NEEDED: accepted project documentation.\nExplain the logic in words before displaying the final formula.\n\n\n\n\nDecision boundary\nThe point where the two available choices have equal value. The technical term take point becomes useful after this comparison is understood.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -350,7 +350,7 @@
     "text": "What the simplified model leaves out\n\n\nGammons and backgammons.\nOwnership of the cube after taking.\nFuture redoubles.\nMatch score.\nPosition-specific volatility.\nPositions with the same winning chance but different outcome distributions.\n\n\nEach omitted feature matters because it can change what winning, losing, or owning the next cube decision is worth.\n\n\n\n\nRelated planned lesson\nWhy Is the Take Point Not Always 25%?\nThe route will be added after the second reference lesson exists.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -362,7 +362,7 @@
     "text": "What to remember\n\nTwenty-five percent is the basic take point only under simplified assumptions.\nTaking compares playing on with passing, not winning with losing.\nA correct take can still be expected to lose most of the time.\nGammons, future redoubles, cube ownership, and match score can move the real take point.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -374,7 +374,7 @@
     "text": "Further reading\n\nPlanned: Why Is the Take Point Not Always 25%?\nPlanned: What Does Taking a Double Give Me in Backgammon?\nPlanned: What Does Equity Mean?",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -386,7 +386,7 @@
     "text": "Continue\nBack to The Doubling Cube\nNext planned lesson: Why Is the Take Point Not Always 25%?",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "1 Why Is 25% the Basic Take Point When a Double Is Offered?"
     ]
   },
@@ -395,10 +395,10 @@
     "href": "learn/cube/index.html",
     "title": "The Doubling Cube",
     "section": "",
-    "text": "Search lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\n\n\n\nTerm Filter\n\n\n\nBackgammon×0\n\n\nDoubling Cube×0\n\n\nEquity×0\n\n\nGammon×0\n\n\nMatch Play×0\n\n\nOwn the Cube×0\n\n\nPass×0\n\n\nRedouble×0\n\n\nTake×0\n\n\nTake Point×0\n\n\nVolatility×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n1\n\n\nWhy Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n2\n\n\nWhat the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\n\n\n\nTerm Filter\n\n\n\nBackgammon×0\n\n\nDoubling Cube×0\n\n\nEquity×0\n\n\nGammon×0\n\n\nMatch Play×0\n\n\nOwn the Cube×0\n\n\nPass×0\n\n\nRedouble×0\n\n\nTake×0\n\n\nTake Point×0\n\n\nVolatility×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n1\n\n\nWhy Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n2\n\n\nWhat the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube"
+      "The Doubling Cube"
     ]
   },
   {
@@ -640,7 +640,7 @@
     "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -652,7 +652,7 @@
     "text": "The Decision\nYou are not only asking whether you are ahead. You are asking whether the game is valuable enough, volatile enough, and urgent enough to change the stakes now.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -664,7 +664,7 @@
     "text": "The Simple Answer\nThe cube turns a position into a decision about risk, reward, and timing.\n\n\nKey idea\n\nA strong cube decision is not just about who is winning. It is about what can happen before you get another chance to double.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -676,7 +676,7 @@
     "text": "A Clean Model\nStart with a simplified money-game model: no gammons and no future recube. In that model, a take begins around 25%.\nTake point ~= risk / (risk + reward)",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -688,7 +688,7 @@
     "text": "Worked Position\n\nVerified board position placeholder\n\n\nWhat would you do?\nDouble Wait\n\n\n\nShow answer and explanation\n\nThis scaffold will be replaced with a verified position and engine-backed explanation.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -700,7 +700,7 @@
     "text": "What Changes the Answer?\n\nRace lead.\nGammons.\nThreats.\nMarket losers.\nCube ownership.\nMatch score.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -712,7 +712,7 @@
     "text": "Engine Evidence\n\n\nEngine settings\n\nEngine evidence will identify engine, version, analysis level, rollout/search settings, and practical caveats.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -721,10 +721,10 @@
     "href": "learn/cube/what-the-cube-is-asking.html#practical-checklist",
     "title": "What the Cube Is Really Asking",
     "section": "Practical Checklist",
-    "text": "Practical Checklist\n\nAm I ahead enough?\nCan I lose my market?\nHow many gammons are in the position?\nWhat does the receiver own after taking?\nDoes match score change the value of gammons or cube ownership?\n\n\n\n&lt;h2&gt;Enjoyed this explanation?&lt;/h2&gt;\n&lt;p&gt;Get new lessons, position breakdowns, and analyzer updates.&lt;/p&gt;\n\n\n\nFound an error, unclear explanation, have feedback or you disagree? Please let me know by filing a github issue. I am doing my best to bring the best content I can, and I need your help to improve.",
+    "text": "Practical Checklist\n\nAm I ahead enough?\nCan I lose my market?\nHow many gammons are in the position?\nWhat does the receiver own after taking?\nDoes match score change the value of gammons or cube ownership?\n\n\n  \n    Enjoyed this explanation?\n    Get new lessons, position breakdowns, and analyzer updates.\n  \n\n\nFound an error, unclear explanation, have feedback or you disagree? Please let me know by filing a github issue. I am doing my best to bring the best content I can, and I need your help to improve.",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -736,7 +736,7 @@
     "text": "Continue\nBack to the cube overview",
     "crumbs": [
       "Learn",
-      "II The Doubling Cube",
+      "The Doubling Cube",
       "2 What the Cube Is Really Asking"
     ]
   },
@@ -748,7 +748,7 @@
     "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\nThis refresher is a bridge into the cube curriculum, not a complete beginner unit.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "1 The Main Game Plans"
     ]
   },
@@ -760,7 +760,7 @@
     "text": "Race\nThe race is about efficient checkers, wastage, and timing. Cube decisions often become clearer because contact threats are reduced.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "1 The Main Game Plans"
     ]
   },
@@ -772,7 +772,7 @@
     "text": "Holding Game\nA holding game preserves contact from an advanced anchor. Cube timing depends on racing lead, shot equity, and the strength of the anchor.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "1 The Main Game Plans"
     ]
   },
@@ -784,7 +784,7 @@
     "text": "Prime\nA prime tries to trap opposing checkers behind connected points. Gammons and market losers can appear quickly when the trapped checkers cannot escape.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "1 The Main Game Plans"
     ]
   },
@@ -796,7 +796,7 @@
     "text": "Blitz\nA blitz attacks loose checkers and aims to close points while the opponent is on the bar. Cube timing can become volatile because gammons matter.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "1 The Main Game Plans"
     ]
   },
@@ -808,7 +808,7 @@
     "text": "Backgame\nA backgame keeps deep anchors and waits for late shots. Cube action depends heavily on timing, containment, and whether the defender still has a real game.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "1 The Main Game Plans"
     ]
   },
@@ -817,7 +817,7 @@
     "href": "learn/index.html",
     "title": "Learn",
     "section": "",
-    "text": "Search lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nLearning Track Filter\n\n\n\nStart Here×0\n\n\nThe Doubling Cube×0\n\n\nOpening Play Lab×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\nBack Game×0\n\n\nBackgammon×0\n\n\nBlitz×0\n\n\nDoubling Cube×0\n\n\nEquity×0\n\n\nError Rate×0\n\n\nGame Winning Chances×0\n\n\nGammon×0\n\n\nHolding Game×0\n\n\nMarket Loser×0\n\n\nMatch Play×0\n\n\nOwn the Cube×0\n\n\nPass×0\n\n\nPrime×0\n\n\nRace×0\n\n\nRedouble×0\n\n\nRollout×0\n\n\nTake×0\n\n\nTake Point×0\n\n\nTiming×0\n\n\nVolatility×0\n\n\nWastage×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nIStart Here 2 lessons\n\n\n\n\n1\n\n\nThe Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n2\n\n\nReading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nIIThe Doubling Cube 2 lessons\n\n\n\n\n1\n\n\nWhy Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n2\n\n\nWhat the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nIIIOpening Play Lab 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click for filters\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nLearning Track Filter\n\n\n\nStart Here×0\n\n\nThe Doubling Cube×0\n\n\nOpening Play Lab×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\nBack Game×0\n\n\nBackgammon×0\n\n\nBlitz×0\n\n\nDoubling Cube×0\n\n\nEquity×0\n\n\nError Rate×0\n\n\nGame Winning Chances×0\n\n\nGammon×0\n\n\nHolding Game×0\n\n\nMarket Loser×0\n\n\nMatch Play×0\n\n\nOwn the Cube×0\n\n\nPass×0\n\n\nPrime×0\n\n\nRace×0\n\n\nRedouble×0\n\n\nRollout×0\n\n\nTake×0\n\n\nTake Point×0\n\n\nTiming×0\n\n\nVolatility×0\n\n\nWastage×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nStart Here 2 lessons\n\n\n\n\n1\n\n\nThe Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n2\n\n\nReading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nThe Doubling Cube 2 lessons\n\n\n\n\n1\n\n\nWhy Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n2\n\n\nWhat the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nOpening Play Lab 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Learn Home"
@@ -831,7 +831,7 @@
     "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\nEngine analysis is useful when it helps you understand a decision, not when it becomes a substitute for reading the position.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "2 Reading Positions and Engine Analysis"
     ]
   },
@@ -843,7 +843,7 @@
     "text": "Position Context\nBefore looking for an answer, identify the player on roll, score, cube value and ownership, game type, race shape, contact, anchors, primes, threats, and gammon chances.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "2 Reading Positions and Engine Analysis"
     ]
   },
@@ -855,7 +855,7 @@
     "text": "Engine Output\nTreat the top play as the beginning of the explanation. Record the engine, version, analysis depth, rollout settings where available, equity, winning chances, gammons, backgammons, and the margin between close choices.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "2 Reading Positions and Engine Analysis"
     ]
   },
@@ -867,7 +867,7 @@
     "text": "Close Decisions\nClose results deserve humility. A tiny equity difference may be a practical tie, a rollout may have sampling error, and a position can teach more through its alternatives than through a single label.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "2 Reading Positions and Engine Analysis"
     ]
   },
@@ -879,7 +879,7 @@
     "text": "Practical Use\nUse the analyzer to test one changed feature at a time. Ask what moved the decision: race, timing, threats, cube ownership, gammons, or match score.\n\n\nTeaching rule\n\nEngine evidence should explain transferable ideas. It should not present every numerical output as a permanent truth.",
     "crumbs": [
       "Learn",
-      "I Start Here",
+      "Start Here",
       "2 Reading Positions and Engine Analysis"
     ]
   },
