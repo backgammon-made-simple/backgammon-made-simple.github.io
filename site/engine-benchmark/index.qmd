@@ -85,7 +85,7 @@ Ply depth tells us how many decision layers an engine looks ahead. Different eng
 
 The goal is not to make the engines internally identical. That is impossible. The goal is to avoid an obvious mismatch in ply depth while keeping the live matches practical to run.
 
-[Read the more details of ply settings for the Pilot](../research/sage-vs-gnu-additional-details.qmd#why-these-engine-settings-were-chosen){.bms-button-outline}
+[Read the more details of ply settings for the Pilot](../research/sage-vs-gnu-additional-details.qmd#why-these-ply-depths-were-chosen){.bms-button-outline}
 
 ## How are the results judged?
 

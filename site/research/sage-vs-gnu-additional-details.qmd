@@ -56,7 +56,7 @@ These results are shown separately. They are not combined into one final engine-
 
 The pilot ran 20 individual seven-point matches.  We generated the dice files before the matches were run.
 
-We did not take note of the exact model versions, and all of the settings in a reliable way.  That's why we built [engine benchmark](../enginebenchmark/) so for future runs anyone can rerun the analysis.
+We did not take note of the exact model versions, and all of the settings in a reliable way.  That's why we built [engine benchmark](../engine-benchmark/) so for future runs anyone can rerun the analysis.
 
 <details>
 <summary>Study identifiers and analysis unit</summary>
