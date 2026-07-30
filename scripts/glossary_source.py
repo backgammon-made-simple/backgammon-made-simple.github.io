@@ -904,7 +904,10 @@ def validate_current_build_compatibility(
     if entries_html.count('class="bms-glossary-definition"') != len(entries):
         raise ValidationError("Current page generator dropped a full definition")
     authored_link_count = sum(
-        len(entry.get("definition_links", [])) for entry in entries
+        1
+        for entry in entries
+        for link in entry.get("definition_links", [])
+        if str(link["slug"]) != str(entry["slug"])
     )
     if definition_link_count < authored_link_count:
         raise ValidationError("Current page generator dropped definition links")

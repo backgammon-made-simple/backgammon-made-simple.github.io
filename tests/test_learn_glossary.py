@@ -210,8 +210,17 @@ class LearnGlossaryTests(unittest.TestCase):
             'class="bms-glossary-short-definition"',
             self.entries_html,
         )
+        zone = next(
+            entry for entry in self.entries
+            if entry["slug"] == "10-in-the-zone"
+        )
         self.assertIn(
-            "Bringing two builders down from the mid-point",
+            "Bringing two active builders down from the mid-point",
+            zone["definition"],
+        )
+        self.assertIn(
+            'data-bms-glossary-slug="active-builder" '
+            'data-bms-definition-link="active-builder">active builders</a>',
             self.entries_html,
         )
         self.assertNotIn('target="_blank"', self.entries_html)
@@ -1812,7 +1821,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "#10-in-the-zone",
         )
         self.assertIn(
-            "Bringing two builders down from the mid-point",
+            "Bringing two active builders down from the mid-point",
             zone.findtext("description", ""),
         )
         self.assertEqual(

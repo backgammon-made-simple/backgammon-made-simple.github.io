@@ -306,9 +306,14 @@ highlighted-terms: [ace]
             'class="bms-inline-glossary"',
             glossary_html,
         )
-        self.assertIn(
+        self.assertNotIn(
             'data-bms-glossary-slug="abt" '
             'data-bms-definition-link="abt">American Backgammon Tour</a>',
+            glossary_html,
+        )
+        self.assertIn(
+            'data-bms-glossary-slug="active-builder" '
+            'data-bms-definition-link="active-builder">active builders</a>',
             glossary_html,
         )
 

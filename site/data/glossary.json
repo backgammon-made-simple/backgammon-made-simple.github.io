@@ -12,8 +12,13 @@
       ],
       "category": "checker play and tactics",
       "date_added": "2026-07-30",
-      "definition": "The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two builders down from the mid-point increases that number to ten.\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.",
-      "definition_links": [],
+      "definition": "The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two active builders down from the mid-point increases that number to ten.\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.",
+      "definition_links": [
+        {
+          "slug": "active-builder",
+          "text": "active builders"
+        }
+      ],
       "learning_tracks": [],
       "related_terms": [
         {

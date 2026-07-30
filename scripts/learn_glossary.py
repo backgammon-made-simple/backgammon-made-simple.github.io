@@ -1580,10 +1580,13 @@ def inline_definition_candidates(
     glossary_entries: list[dict[str, object]],
 ) -> list[dict[str, object]]:
     candidates: dict[str, dict[str, object]] = {}
+    entry_slug = str(entry["slug"])
     raw_links = entry.get("definition_links")
     if isinstance(raw_links, list):
         for link in raw_links:
             if not isinstance(link, dict):
+                continue
+            if str(link["slug"]) == entry_slug:
                 continue
             phrase = str(link["text"])
             candidates[phrase.casefold()] = {
@@ -1594,6 +1597,8 @@ def inline_definition_candidates(
 
     for target in glossary_entries:
         slug = str(target["slug"])
+        if slug == entry_slug:
+            continue
         values = [str(target["term"])] + [
             str(alias["term"])
             for alias in target.get("aliases", [])

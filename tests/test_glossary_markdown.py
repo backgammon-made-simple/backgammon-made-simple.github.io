@@ -233,7 +233,7 @@ class GlossaryMarkdownTests(unittest.TestCase):
         self.assertEqual(result["page_short_definitions"], 0)
         self.assertEqual(result["page_full_definitions"], 3)
         self.assertEqual(result["page_related_term_groups"], 3)
-        self.assertEqual(result["definition_links"], 9)
+        self.assertEqual(result["definition_links"], 7)
 
         entries = data["entries"]
         html = learn_glossary.build_entries_html(entries, {}, {})
@@ -292,6 +292,36 @@ class GlossaryMarkdownTests(unittest.TestCase):
             rendered,
         )
 
+    def test_full_definition_does_not_link_its_own_term_or_alias(self) -> None:
+        data = copy.deepcopy(self.build_data())
+        ace = next(
+            entry for entry in data["entries"]
+            if entry["slug"] == "ace"
+        )
+        ace["aliases"] = [{"term": "Ace Alias", "slug": "ace-alias"}]
+        ace["definition"] = (
+            "Ace and Ace Alias can be discussed beside an Active Builder."
+        )
+        ace["definition_links"] = [
+            {"slug": "ace", "text": "Ace Alias"},
+        ]
+        rendered = learn_glossary.build_entries_html(data["entries"], {}, {})
+        ace_entry = rendered.index('id="ace"')
+        definition_start = rendered.index(
+            '<div class="bms-glossary-definition">',
+            ace_entry,
+        )
+        definition = rendered[
+            definition_start :
+            rendered.index("</div>", definition_start)
+        ]
+        self.assertNotIn('data-bms-glossary-slug="ace"', definition)
+        self.assertIn(
+            'data-bms-glossary-slug="active-builder" '
+            'data-bms-definition-link="active-builder">Active Builder</a>',
+            definition,
+        )
+
     def test_auto_link_matching_does_not_link_inside_hyphenated_words(self) -> None:
         data = copy.deepcopy(self.build_data())
         ace = next(
@@ -303,7 +333,7 @@ class GlossaryMarkdownTests(unittest.TestCase):
         rendered = learn_glossary.build_entries_html(data["entries"], {}, {})
         self.assertEqual(
             rendered.count('data-bms-glossary-slug="ace"'),
-            1,
+            0,
         )
         self.assertNotIn(
             'data-bms-glossary-slug="ace">ace</a>-point',

@@ -83,7 +83,7 @@ Ten in the Zone means having ten checkers in your home board and outer board, gi
 
 ## Full definition
 
-The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two builders down from the mid-point increases that number to ten.
+The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two active builders down from the mid-point increases that number to ten.
 
 With ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.
 
@@ -92,6 +92,7 @@ With ten checkers in the zone, you have strong blitzing potential. Nine checkers
 - "home board" -> `home-board`
 - "outer board" -> `outer-board`
 - "mid-point" -> `mid-point`
+- "active builders" -> `active-builder`
 - "blitz" -> `blitz`
 
 ## Related words
