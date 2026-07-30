@@ -139,6 +139,8 @@ class ScrollingTestLessonGeneratorTests(unittest.TestCase):
             ROOT / "site" / "includes" / "scrolling-position-disclosure.html"
         )
         content = include_path.read_text(encoding="utf-8")
+        self.assertTrue(content.startswith("```{=html}\n"))
+        self.assertTrue(content.endswith("</details>\n```\n"))
         self.assertEqual(content.count("<svg"), 2)
         self.assertEqual(
             content.count('class="bms-button-outline bms-answer-choice"'),
