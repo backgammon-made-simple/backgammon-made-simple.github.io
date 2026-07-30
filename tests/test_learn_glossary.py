@@ -1198,7 +1198,9 @@ class LearnGlossaryTests(unittest.TestCase):
         for required in (
             "initializeMobileLessonBar",
             "initializeLearnLeftSidebarToggle",
+            "initializeDistractionFreeMode",
             "bms-learn-left-sidebar-toggle",
+            "bms-distraction-free-toggle",
             "Hide Learn table of contents",
             "Show Learn table of contents",
             "isMobileDrawerSwipe",
@@ -1343,6 +1345,12 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertRegex(
             css,
+            r"\.bms-site-tools--sidebar \.bms-site-back-to-top \{[^}]*"
+            r"align-self: flex-end;[^}]*width: auto;[^}]*"
+            r"min-width: 6\.75rem;",
+        )
+        self.assertRegex(
+            css,
             r"body\.bms-analyze-page \.bms-site-tools--floating,[^}]*"
             r"left: calc\(50% \+ 26\.625rem\);",
         )
@@ -1363,6 +1371,8 @@ class LearnGlossaryTests(unittest.TestCase):
             ".bms-site-tools--sidebar .bms-toc-toggle",
             ".bms-site-tools--sidebar .bms-margin-sidebar-toggle",
             ".bms-site-tools--sidebar .bms-site-back-to-top",
+            ".bms-distraction-free-toggle",
+            "body.bms-distraction-free #quarto-sidebar",
             "#quarto-margin-sidebar.bms-margin-sidebar-collapsed",
             "#quarto-margin-sidebar.bms-toc-collapsed:not(.bms-refined-right-rail) #TOC",
             "> :not(.bms-margin-sidebar-toggle)",
@@ -1399,7 +1409,8 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-lesson-track-toggle",
             'aria-label",\n            collapsed ? "Expand lesson track"',
             'trackToggle.textContent = collapsed ? "\\u2304" : "\\u2303"',
-            '"bms:toc-collapse-change"',
+            'querySelectorAll("[data-bms-lesson-track-toggle]")',
+            "trackCollapsed !== tocCollapsed",
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
             'tocHeadingToggle.textContent = tocCollapsed ? "\\u2304" : "\\u2303"',

@@ -840,15 +840,6 @@
             trackCollapsed = !trackCollapsed;
             updateTrackControl(true);
           });
-          document.addEventListener(
-            "bms:toc-collapse-change",
-            function (event) {
-              trackCollapsed = Boolean(
-                event.detail && event.detail.collapsed
-              );
-              updateTrackControl(desktopQuery.matches);
-            }
-          );
         }
 
         function place() {
@@ -1180,11 +1171,15 @@
       toggle.addEventListener("click", function () {
         tocCollapsed = !tocCollapsed;
         updateToc();
-        document.dispatchEvent(
-          new CustomEvent("bms:toc-collapse-change", {
-            detail: { collapsed: tocCollapsed }
-          })
-        );
+        document
+          .querySelectorAll("[data-bms-lesson-track-toggle]")
+          .forEach(function (trackButton) {
+            const trackCollapsed =
+              trackButton.getAttribute("aria-expanded") === "false";
+            if (trackCollapsed !== tocCollapsed) {
+              trackButton.click();
+            }
+          });
       });
     };
 
@@ -1836,6 +1831,69 @@
     update();
   }
 
+  function initializeDistractionFreeMode() {
+    const lessonPage =
+      document.body.classList.contains("bms-learn-article") &&
+      !document.body.classList.contains("bms-learn-track-index");
+    const marginSidebar = document.getElementById("quarto-margin-sidebar");
+    const trackToggle = document.querySelector(
+      "[data-bms-lesson-track-toggle]"
+    );
+    if (!lessonPage || !marginSidebar || !trackToggle) {
+      return;
+    }
+
+    const desktopQuery = window.matchMedia("(min-width: 992px)");
+    const toggle = document.createElement("button");
+    let active = false;
+    toggle.type = "button";
+    toggle.className = "bms-distraction-free-toggle";
+    toggle.dataset.bmsDistractionFreeToggle = "";
+    toggle.setAttribute(
+      "aria-controls",
+      "quarto-sidebar quarto-margin-sidebar"
+    );
+    document.body.appendChild(toggle);
+
+    const position = function () {
+      if (!desktopQuery.matches || active) {
+        return;
+      }
+      const trackRect = trackToggle.getBoundingClientRect();
+      const sidebarRect = marginSidebar.getBoundingClientRect();
+      toggle.style.top = Math.max(77, trackRect.bottom + 6) + "px";
+      toggle.style.right =
+        Math.max(8, window.innerWidth - sidebarRect.right) + "px";
+    };
+
+    const update = function () {
+      if (!desktopQuery.matches) {
+        active = false;
+      }
+      document.body.classList.toggle("bms-distraction-free", active);
+      toggle.hidden = !desktopQuery.matches;
+      toggle.setAttribute("aria-expanded", active ? "false" : "true");
+      toggle.setAttribute(
+        "aria-label",
+        active
+          ? "Exit distraction-free mode"
+          : "Collapse sidebars for distraction-free mode"
+      );
+      toggle.innerHTML = active
+        ? '<span aria-hidden="true">\u2304</span> Exit distraction-free mode'
+        : '<span aria-hidden="true">\u2303</span> Distraction-free mode';
+      position();
+    };
+
+    toggle.addEventListener("click", function () {
+      active = !active;
+      update();
+    });
+    window.addEventListener("resize", position);
+    desktopQuery.addEventListener("change", update);
+    update();
+  }
+
   function findIdWithinRoot(root, id) {
     return (
       Array.from(root.querySelectorAll("[id]")).find(function (element) {
@@ -1976,6 +2034,7 @@
       initializeMobileLessonBar(termLookup);
       initializeLearnLeftSidebarToggle();
       placeLessonTrackLinks();
+      initializeDistractionFreeMode();
       placeLessonRightRailCards();
       mountLesson(document);
     });
