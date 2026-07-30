@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "name": "Homepage",
+      "route": "/",
+      "kind": "home",
+      "required_markers": ["Backgammon Made Simple"],
+      "forbidden_markers": ["data-bms-ui-edge-fixture"]
+    },
+    {
+      "id": "learn-index",
+      "name": "Learn index",
+      "route": "/learn/",
+      "kind": "learn-index",
+      "required_markers": ["data-bms-learn-filters", "data-bms-learn-list"]
+    },
+    {
+      "id": "cube-index",
+      "name": "Cube track index",
+      "route": "/learn/cube/",
+      "kind": "learn-index",
+      "required_markers": ["data-bms-learn-filters", "data-bms-learn-list"]
+    },
+    {
+      "id": "cube-lesson",
+      "name": "Cube lesson",
+      "route": "/learn/cube/what-the-cube-is-asking.html",
+      "kind": "learn-lesson",
+      "required_markers": ["bms-scroll-fixture-disclosure"]
+    },
+    {
+      "id": "rich-scroll-fixture",
+      "name": "Rich scrolling fixture",
+      "route": "/learn/scrolling-test/doubling-cube/lesson-01.html",
+      "kind": "rich-scroll-fixture",
+      "required_markers": ["bms-scroll-fixture-disclosure"]
+    },
+    {
+      "id": "start-edge-fixture",
+      "name": "Start Here edge fixture",
+      "route": "/learn/scrolling-test/start-here/lesson-01.html",
+      "kind": "edge-scroll-fixture",
+      "required_markers": ["data-bms-ui-edge-fixture"]
+    },
+    {
+      "id": "cube-edge-fixture",
+      "name": "Cube edge fixture",
+      "route": "/learn/scrolling-test/doubling-cube/lesson-03.html",
+      "kind": "edge-scroll-fixture",
+      "required_markers": ["data-bms-ui-edge-fixture"]
+    },
+    {
+      "id": "opening-edge-fixture",
+      "name": "Opening edge fixture",
+      "route": "/learn/scrolling-test/opening-play/lesson-01.html",
+      "kind": "edge-scroll-fixture",
+      "required_markers": ["data-bms-ui-edge-fixture"]
+    },
+    {
+      "id": "research-article",
+      "name": "Research article",
+      "route": "/research/what-we-are-building.html",
+      "kind": "research-article",
+      "required_markers": ["bms-research-article"]
+    },
+    {
+      "id": "glossary",
+      "name": "Glossary",
+      "route": "/learn/glossary/",
+      "kind": "glossary",
+      "required_markers": ["data-bms-glossary-filters", "data-bms-glossary-entry"]
+    },
+    {
+      "id": "analyze",
+      "name": "Analyzer landing page",
+      "route": "/analyze/",
+      "kind": "ordinary",
+      "required_markers": ["Paste an XGID"]
+    },
+    {
+      "id": "about",
+      "name": "About page",
+      "route": "/about.html",
+      "kind": "ordinary",
+      "required_markers": ["About"]
+    },
+    {
+      "id": "engine-benchmark",
+      "name": "Engine benchmark landing page",
+      "route": "/engine-benchmark/",
+      "kind": "ordinary",
+      "required_markers": ["Engine Benchmark"]
+    }
+  ]
+}
