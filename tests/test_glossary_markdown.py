@@ -143,7 +143,7 @@ def mvp_document(
     )
 
 
-class GlossaryMarkdownMvpTests(unittest.TestCase):
+class GlossaryMarkdownTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         production = learn_glossary.read_json(learn_glossary.PUBLIC_DATA_PATH)
