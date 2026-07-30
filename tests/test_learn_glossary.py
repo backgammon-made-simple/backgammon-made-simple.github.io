@@ -1238,6 +1238,7 @@ class LearnGlossaryTests(unittest.TestCase):
             css,
             r"\.bms-learn-catalogue-link \{[^}]*"
             r"color: var\(--bms-text\);[^}]*"
+            r"font-size: 1rem;[^}]*"
             r"font-weight: 400;[^}]*"
             r"line-height: 1\.15;",
         )

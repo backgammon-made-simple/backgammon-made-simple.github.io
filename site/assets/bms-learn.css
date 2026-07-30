@@ -805,7 +805,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 
 .bms-learn-catalogue-link {
   color: var(--bms-text);
-  font-size: 0.86rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.15;
   text-decoration: none;
