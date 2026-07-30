@@ -22,7 +22,7 @@ format:
     toc-location: right
     toc-depth: 2
     title-block-style: plain
-    body-classes: "bms-editorial-page bms-title-eyebrow"
+    body-classes: "bms-editorial-page bms-title-eyebrow bms-research-article"
 execute:
   enabled: false
 ---

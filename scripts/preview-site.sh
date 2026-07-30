@@ -12,7 +12,8 @@ Usage:
   bash preview-site.sh [PORT]
 
 Immediately serves the last rendered site while Quarto watches source files
-and writes changed pages to site/_site. Social cards are not regenerated.
+and writes changed pages to site/_site. A background-safe initial refresh keeps
+shared navigation current. Social cards are not regenerated.
 
 Examples:
   bash preview-site.sh
@@ -41,6 +42,15 @@ fi
 if ! command -v quarto >/dev/null 2>&1; then
   printf 'ERROR: quarto was not found on PATH.\n' >&2
   exit 127
+fi
+
+# Python's development server can reuse an occupied port on Windows, which can
+# leave multiple servers returning different builds. Refuse to start if
+# anything is already answering on the requested port.
+if (exec 3<>/dev/tcp/${HOST}/${PORT}) 2>/dev/null; then
+  printf 'ERROR: http://%s:%s/ is already in use.\n' "${HOST}" "${PORT}" >&2
+  printf 'Stop the older preview or choose another port.\n' >&2
+  exit 1
 fi
 
 if command -v py >/dev/null 2>&1; then
@@ -76,7 +86,8 @@ printf 'BMS static preview + render watcher\n'
 printf 'Repository: %s\n' "${REPO_ROOT}"
 printf 'URL:        http://%s:%s/\n' "${HOST}" "${PORT}"
 printf 'Serving:    existing site/_site output\n'
-printf 'Watching:   Quarto source changes\n'
+printf 'Refreshing: all pages once, without social cards\n'
+printf 'Watching:   subsequent Quarto source changes\n'
 printf 'Social:     skipped\n'
 printf 'Stop:       Ctrl-C\n\n'
 
@@ -94,6 +105,7 @@ if ! kill -0 "${STATIC_SERVER_PID}" 2>/dev/null; then
 fi
 
 quarto preview site \
+  --render all \
   --no-serve \
   --no-browser \
   --no-navigate

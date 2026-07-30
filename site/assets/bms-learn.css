@@ -283,6 +283,10 @@
   text-decoration: underline;
 }
 
+.bms-lesson-track-toggle {
+  display: none;
+}
+
 .bms-learn-filter-panel,
 .bms-glossary-filter-panel {
   margin: 1rem 0 1.6rem;
@@ -611,30 +615,34 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 }
 
 .bms-learn-catalogue-item {
-  padding: 0.1rem 0.15rem;
+  padding: 0.04rem 0.15rem;
 }
 
 .bms-learn-catalogue-title-row {
-  display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1fr);
-  align-items: baseline;
-  gap: 0.35rem;
   padding-left: 0.25rem;
-}
-
-.bms-learn-lesson-number {
-  color: var(--bms-text-muted);
-  font-family: "Source Code Pro", ui-monospace, monospace;
-  font-size: 0.72rem;
-  text-align: right;
 }
 
 .bms-learn-catalogue-link {
   color: var(--bms-text);
   font-size: 0.86rem;
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.15;
   text-decoration: none;
+}
+
+body:is(.bms-learn-index, .bms-learn-article)
+  #quarto-sidebar
+  .sidebar-link {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  line-height: 1.15;
+}
+
+body:is(.bms-learn-index, .bms-learn-article)
+  #quarto-sidebar
+  .sidebar-section {
+  margin-top: 0.05rem;
+  margin-bottom: 0.1rem;
 }
 
 .bms-learn-track-heading a:hover,
@@ -1082,6 +1090,10 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   text-decoration: none;
 }
 
+.bms-term-lookup-browse {
+  display: none;
+}
+
 .bms-site-tools {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1263,7 +1275,17 @@ body:is(.bms-learn-index, .bms-learn-track-index)
     overflow: visible;
   }
 
-  #quarto-margin-sidebar.bms-toc-collapsed #TOC {
+  #quarto-margin-sidebar.bms-toc-collapsed:not(.bms-refined-right-rail) #TOC {
+    display: none !important;
+  }
+
+  #quarto-margin-sidebar.bms-refined-right-rail.bms-toc-collapsed #TOC {
+    display: block !important;
+  }
+
+  #quarto-margin-sidebar.bms-refined-right-rail.bms-toc-collapsed
+    #TOC
+    > ul {
     display: none !important;
   }
 
@@ -1280,6 +1302,177 @@ body:is(.bms-learn-index, .bms-learn-track-index)
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
+    .bms-lesson-track-nav {
+    position: relative;
+    min-height: 1.55rem;
+    padding-right: 1.75rem;
+    overflow: hidden;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
+    .bms-lesson-track-nav.bms-lesson-track-collapsed {
+    margin-bottom: 0.35rem;
+    padding-bottom: 0.15rem;
+  }
+
+  body.bms-learn-article:not(.bms-learn-track-index)
+    .bms-lesson-track-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    width: 1.45rem;
+    min-height: 1.45rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--bms-border-strong);
+    border-radius: 5px;
+    background: var(--bms-ivory);
+    color: var(--bms-link);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    #quarto-margin-sidebar
+    #toc-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-toc-heading-toggle {
+    display: inline-flex;
+    width: 1.45rem;
+    min-height: 1.45rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--bms-border-strong);
+    border-radius: 5px;
+    background: var(--bms-ivory);
+    color: var(--bms-link);
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar
+    :is(.bms-toc-toggle, .bms-margin-sidebar-toggle) {
+    display: none !important;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar {
+    align-items: center;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar
+    .bms-term-lookup {
+    width: calc(100% - 0.5rem);
+    margin-inline: auto;
+    border-color: var(--bms-border);
+    background: var(--bms-ivory);
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-term-lookup-heading {
+    justify-content: center;
+    text-align: center;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-term-lookup-close {
+    display: none !important;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-term-lookup-controls {
+    grid-template-columns: minmax(0, 1fr) minmax(4.25rem, auto);
+    gap: 0.35rem;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-term-lookup-controls
+    button {
+    width: 100%;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-term-lookup-browse {
+    display: block;
+    width: fit-content;
+    margin: 0.55rem auto 0;
+    color: var(--bms-link);
+    font-size: 0.72rem;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-term-lookup-full {
+    display: flex;
+    width: fit-content;
+    min-height: auto;
+    margin-inline: auto;
+    padding: 0.2rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--bms-link);
+    font-weight: 400;
+    text-decoration: underline;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    :is(.bms-lesson-track-toggle, .bms-toc-heading-toggle):focus-visible {
+    outline: 2px solid var(--bms-link-hover);
+    outline-offset: 2px;
   }
 }
 

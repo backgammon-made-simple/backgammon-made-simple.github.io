@@ -77,6 +77,19 @@ TRACKS = (
     "Endgames",
     "Engines and Analysis",
 )
+GLOSSARY_CATEGORIES = (
+    "analysis and probability",
+    "board, equipment, and notation",
+    "checker play and tactics",
+    "cube and scoring",
+    "language, rules, and culture",
+    "match and tournament play",
+    "organizations and community",
+    "race and bearoff",
+    "software and online play",
+    "strategy and position types",
+    "variants and history",
+)
 
 FORBIDDEN_KEYS = {
     "source_ids",
@@ -295,7 +308,44 @@ def import_public_safe(input_path: Path) -> dict[str, object]:
     return public_data
 
 
-def validate_public_data(data: object) -> list[dict[str, object]]:
+def glossary_categories(
+    entry: dict[str, object],
+    label: str,
+) -> list[str]:
+    """Return ordered categories while preserving the legacy primary category."""
+    primary = require_string(entry, "category", label)
+    raw_categories = entry.get("categories")
+    if raw_categories is None:
+        categories = [primary]
+    elif not isinstance(raw_categories, list) or not raw_categories:
+        raise ValidationError(f"{label} categories must be a non-empty list")
+    else:
+        categories = []
+        for index, value in enumerate(raw_categories):
+            if not isinstance(value, str) or not value.strip():
+                raise ValidationError(
+                    f"{label} categories[{index}] must be a non-empty string"
+                )
+            categories.append(value.strip())
+
+    if categories[0] != primary:
+        raise ValidationError(
+            f"{label} category must equal the first categories value"
+        )
+    if len(categories) != len(set(categories)):
+        raise ValidationError(f"{label} categories must not repeat values")
+    invalid = [value for value in categories if value not in GLOSSARY_CATEGORIES]
+    if invalid:
+        raise ValidationError(f"{label} has invalid categories: {invalid}")
+    return categories
+
+
+def validate_public_data(
+    data: object,
+    *,
+    expected_canonical_entries: int = EXPECTED_CANONICAL_ENTRIES,
+    expected_alias_entries: int = EXPECTED_ALIAS_ENTRIES,
+) -> list[dict[str, object]]:
     if not isinstance(data, dict):
         raise ValidationError("Tracked glossary data must be a JSON object")
     assert_no_forbidden_keys(data)
@@ -305,12 +355,13 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
         raise ValidationError("Unsupported tracked glossary schema version")
 
     entries = data.get("entries")
-    if not isinstance(entries, list) or len(entries) != EXPECTED_CANONICAL_ENTRIES:
+    if not isinstance(entries, list) or len(entries) != expected_canonical_entries:
         raise ValidationError(
-            f"Tracked glossary data must contain {EXPECTED_CANONICAL_ENTRIES} entries"
+            f"Tracked glossary data must contain {expected_canonical_entries} entries"
         )
 
     canonical_slugs: set[str] = set()
+    canonical_terms: set[str] = set()
     alias_slugs: set[str] = set()
     alias_count = 0
     for index, entry in enumerate(entries):
@@ -318,6 +369,7 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
             raise ValidationError(f"Tracked glossary entry {index} must be an object")
         unexpected = set(entry) - {
             "aliases",
+            "categories",
             "category",
             "definition",
             "slug",
@@ -329,13 +381,17 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
                 f"Tracked glossary entry {index} has unexpected fields: {sorted(unexpected)}"
             )
         slug = require_string(entry, "slug", f"tracked entry {index}")
-        require_string(entry, "term", f"tracked entry {slug}")
-        require_string(entry, "category", f"tracked entry {slug}")
+        term = require_string(entry, "term", f"tracked entry {slug}")
+        glossary_categories(entry, f"tracked entry {slug}")
         require_string(entry, "definition", f"tracked entry {slug}")
         optional_string(entry, "usage_note")
         if slug in canonical_slugs:
             raise ValidationError(f"Duplicate canonical term slug: {slug}")
+        normalized_term = " ".join(term.casefold().split())
+        if normalized_term in canonical_terms:
+            raise ValidationError(f"Duplicate canonical term: {term}")
         canonical_slugs.add(slug)
+        canonical_terms.add(normalized_term)
 
         aliases = entry.get("aliases")
         if not isinstance(aliases, list):
@@ -359,9 +415,18 @@ def validate_public_data(data: object) -> list[dict[str, object]]:
     overlap = canonical_slugs.intersection(alias_slugs)
     if overlap:
         raise ValidationError(f"Canonical and alias slugs overlap: {sorted(overlap)}")
-    if alias_count != EXPECTED_ALIAS_ENTRIES:
+    expected_order = sorted(
+        entries,
+        key=lambda item: (
+            str(item["term"]).casefold(),
+            str(item["slug"]),
+        ),
+    )
+    if entries != expected_order:
+        raise ValidationError("Tracked glossary entries have unstable output ordering")
+    if alias_count != expected_alias_entries:
         raise ValidationError(
-            f"Tracked glossary data must contain {EXPECTED_ALIAS_ENTRIES} aliases"
+            f"Tracked glossary data must contain {expected_alias_entries} aliases"
         )
     return entries
 
@@ -905,11 +970,10 @@ def lesson_catalogue_item_html(
         f'data-bms-terms="{html_attr(json.dumps(terms, ensure_ascii=False))}" '
         f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
         '<div class="bms-learn-catalogue-title-row">',
-        f'<span class="bms-learn-lesson-number" aria-hidden="true">'
-        f'{int(lesson["order"])}</span>',
         '<details class="bms-learn-catalogue-description">',
         f'<summary><a class="bms-learn-catalogue-link" '
-        f'href="{html_attr(lesson["route"])}">{html.escape(title)}</a>'
+        f'href="{html_attr(lesson["route"])}">'
+        f'{int(lesson["order"])}. {html.escape(title)}</a>'
         f'<span class="bms-learn-description-arrow" '
         f'aria-label="Show description for {html_attr(title)}">&#9662;</span>'
         "</summary>",
@@ -950,7 +1014,7 @@ def build_navigation_yaml(curriculum: list[dict[str, object]]) -> str:
                 lesson_title = str(lesson["title"]).replace('"', "'")
                 lines.extend(
                     [
-                        f'            - text: "{lesson_prefix} {lesson_title}"',
+                        f'            - text: "{lesson_prefix}. {lesson_title}"',
                         f"              href: {lesson['source_path']}",
                     ]
                 )
@@ -1002,7 +1066,8 @@ def build_lesson_catalogue_html(
         GENERATED_MARKER,
         '<details class="bms-learn-filter-panel" data-bms-learn-filters '
         f'data-bms-learn-mode="{mode}" aria-label="Search and filter lessons">',
-        '<summary class="bms-learn-filters-summary">Click for filters</summary>',
+        '<summary class="bms-learn-filters-summary">'
+        "Click to search and filter lessons</summary>",
         '<div class="bms-learn-filter-body">',
         '<div class="bms-learn-search-group">',
         '<label for="bms-learn-search">Search lessons</label>',
