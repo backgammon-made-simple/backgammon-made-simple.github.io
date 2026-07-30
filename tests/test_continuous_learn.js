@@ -26,6 +26,12 @@ assert.match(
 );
 assert.match(scrollSource, /findPrimaryToc\(document\)/);
 assert.match(scrollSource, /findPrimaryToc\(nextDocument\)/);
+assert.match(scrollSource, /headingIdsFromToc\(initialToc\)/);
+assert.match(scrollSource, /headingIdsFromToc\(storedNextToc\)/);
+assert.doesNotMatch(
+  scrollSource,
+  /querySelectorAll\(\s*"h2\[id\], h3\[id\]"\s*\)/
+);
 assert.match(scrollSource, /new ResizeObserver/);
 assert.match(
   scrollSource,
@@ -576,6 +582,10 @@ const storedToc = scroll.captureToc(sourceToc);
 assert.deepEqual(scroll.tocHashTargets(storedToc), [
   "#overview",
   "#details"
+]);
+assert.deepEqual(scroll.headingIdsFromToc(storedToc), [
+  "overview",
+  "details"
 ]);
 assert.equal(storedToc.links[0].classList.contains("active"), false);
 const globalToc = fakeToc([]);

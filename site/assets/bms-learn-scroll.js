@@ -454,6 +454,16 @@
     );
   }
 
+  function headingIdsFromToc(toc) {
+    return tocHashTargets(toc)
+      .filter(function (target) {
+        return target.length > 1;
+      })
+      .map(function (target) {
+        return target.slice(1);
+      });
+  }
+
   function replaceTocContents(globalToc, storedToc) {
     if (!globalToc) {
       return false;
@@ -632,11 +642,8 @@
         const sidebar = document.getElementById("quarto-sidebar");
         const globalToc = findPrimaryToc(document);
         const lessonRecords = [];
-        const initialHeadingIds = Array.from(
-          main.querySelectorAll("h2[id], h3[id]")
-        ).map(function (heading) {
-          return heading.id;
-        });
+        const initialToc = captureToc(globalToc);
+        const initialHeadingIds = headingIdsFromToc(initialToc);
         const initialMarker = createLessonMarker(current);
         main.insertBefore(initialMarker, main.firstChild);
         lessonRecords.push(
@@ -644,7 +651,7 @@
             current,
             initialMarker,
             initialHeadingIds,
-            captureToc(globalToc)
+            initialToc
           )
         );
 
@@ -870,11 +877,8 @@
                   rewriteIdReferences(nextToc, prefix, headingIdMap);
                 }
                 rewriteResourceUrls(nextMain, result.finalUrl.href);
-                const headingIds = Array.from(
-                  nextMain.querySelectorAll("h2[id], h3[id]")
-                ).map(function (lessonHeading) {
-                  return lessonHeading.id;
-                });
+                const storedNextToc = captureToc(nextToc);
+                const headingIds = headingIdsFromToc(storedNextToc);
                 const header = nextMain.querySelector(".quarto-title-block");
                 if (header) {
                   header.dataset.bmsLearnScrollLesson = followingLesson.route;
@@ -907,7 +911,7 @@
                     }),
                     marker,
                     headingIds,
-                    captureToc(nextToc)
+                    storedNextToc
                   )
                 );
                 tracker.complete(followingLesson.route);
@@ -952,6 +956,7 @@
     errorStateForLesson: errorStateForLesson,
     findCurrentLesson: findCurrentLesson,
     findPrimaryToc: findPrimaryToc,
+    headingIdsFromToc: headingIdsFromToc,
     idPrefixForRoute: idPrefixForRoute,
     isFinalLesson: isFinalLesson,
     laterLessonRoutes: laterLessonRoutes,
