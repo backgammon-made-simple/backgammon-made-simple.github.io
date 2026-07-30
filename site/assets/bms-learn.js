@@ -901,8 +901,9 @@
       '<div class="bms-term-lookup-heading">' +
       "<strong>Look Up a Term</strong>" +
       '<button type="button" class="bms-term-lookup-close" ' +
-      'data-bms-term-lookup-close aria-label="Collapse term lookup to the right">' +
-      'Collapse <span aria-hidden="true">&rarr;</span></button>' +
+      'data-bms-term-lookup-close aria-controls="bms-term-lookup-panel" ' +
+      'aria-expanded="true" aria-label="Collapse term lookup to the right">' +
+      '<span aria-hidden="true">&rarr;</span></button>' +
       "</div>" +
       '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
@@ -1005,8 +1006,8 @@
     tools.innerHTML =
       '<button type="button" class="bms-term-lookup-reveal" ' +
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
-      'aria-expanded="false"><span aria-hidden="true">&larr;</span> ' +
-      "Look Up a Term</button>" +
+      'aria-expanded="false" aria-label="Open term lookup">' +
+      '<span aria-hidden="true">&larr;</span></button>' +
       (refinedRightRailPage
         ? ""
         : '<button type="button" class="bms-toc-toggle" ' +
@@ -1044,7 +1045,7 @@
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
     const toc = marginSidebar ? marginSidebar.querySelector("#TOC") : null;
     let tocHeadingToggle = null;
-    let desktopCollapsed = false;
+    let desktopCollapsed = true;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
 
@@ -1115,6 +1116,9 @@
       if (termToggle) {
         termToggle.hidden = true;
       }
+      if (close) {
+        close.setAttribute("aria-expanded", "true");
+      }
       document.body.classList.add("bms-term-lookup-open");
       document
         .querySelectorAll("[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]")
@@ -1131,15 +1135,15 @@
       if (!lookup) {
         return;
       }
-      if (inRefinedRightRail()) {
-        return;
-      }
       if (settings.rememberDesktop && inDesktopDock()) {
         desktopCollapsed = true;
       }
       lookup.hidden = true;
       if (termToggle) {
         termToggle.hidden = false;
+      }
+      if (close) {
+        close.setAttribute("aria-expanded", "false");
       }
       document.body.classList.remove("bms-term-lookup-open");
       document

@@ -354,6 +354,14 @@ class LearnGlossaryTests(unittest.TestCase):
             r"data-bms-term-lookup-form",
         )
         self.assertRegex(term_lookup, r'<input[^>]*name="q"')
+        self.assertIn(
+            'aria-controls="bms-term-lookup-panel" aria-expanded="true"',
+            term_lookup,
+        )
+        self.assertNotIn(
+            ">Collapse <span aria-hidden",
+            term_lookup,
+        )
         self.assertNotIn("target=", term_lookup)
         self.assertNotRegex(term_lookup, r"(?i)opens? in (?:a )?new tab")
 
@@ -1165,10 +1173,18 @@ class LearnGlossaryTests(unittest.TestCase):
             r"Full Glossary Lookup \u2192",
             "isMainSiteIndex",
             "lookupDisabled",
+            "let desktopCollapsed = true;",
             "window.scrollY <= window.innerHeight",
             'window.addEventListener("resize", updateBackToTop)',
         ):
             self.assertIn(required, javascript)
+        close_lookup = javascript[
+            javascript.index("    const closeLookup = function") :
+            javascript.index("    const updateMarginSidebar = function")
+        ]
+        self.assertNotIn("if (inRefinedRightRail())", close_lookup)
+        self.assertNotIn("Collapse <span aria-hidden", javascript)
+        self.assertIn('aria-label="Open term lookup"', javascript)
 
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
@@ -1237,7 +1253,14 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
+            r"width: 1\.45rem;[^}]*"
             r"white-space: nowrap;",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools > \.bms-term-lookup-reveal \{[^}]*"
+            r"width: 1\.45rem;[^}]*min-height: 1\.45rem;[^}]*"
+            r"padding: 0;",
         )
         self.assertRegex(
             css,
@@ -1324,13 +1347,19 @@ class LearnGlossaryTests(unittest.TestCase):
             ".bms-toc-heading-toggle",
             ":is(.bms-toc-toggle, .bms-margin-sidebar-toggle)",
             ".bms-term-lookup-close",
-            "display: none !important",
             ".bms-term-lookup-browse",
             "background: var(--bms-ivory)",
             "outline: 2px solid var(--bms-link-hover)",
             "@media (min-width: 992px)",
         ):
             self.assertIn(required, css)
+        self.assertRegex(
+            css,
+            r"\.bms-term-lookup-close \{[^}]*"
+            r"display: inline-flex;[^}]*"
+            r"width: 1\.35rem;[^}]*"
+            r"padding: 0;",
+        )
 
         learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
             encoding="utf-8"
@@ -1363,7 +1392,7 @@ class LearnGlossaryTests(unittest.TestCase):
         for required in (
             "@media (max-width: 991.98px)",
             "[data-bms-site-term-toggle]:not([hidden])",
-            "top: 64vh;",
+            "top: 56vh;",
             ".bms-mobile-term-toggle {\n    display: none;",
             "color: var(--bms-text-muted);",
             "font-size: 0.68rem;",
