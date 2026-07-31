@@ -264,23 +264,6 @@ const interactWithToc = async (
   }
 };
 
-const interactWithLessonTrack = async (tab, check, context, desktop) => {
-  const toggle = await visibleLocator(
-    tab.playwright.locator("[data-bms-lesson-track-toggle]")
-  );
-  if (!desktop) {
-    check(!toggle, context, "desktop lesson-track control stays hidden");
-    return;
-  }
-  check(!toggle, context, "separate lesson-track control is absent");
-  const track = tab.playwright.locator(".bms-lesson-track-content");
-  check(
-    Boolean(await visibleLocator(track)),
-    context,
-    "lesson track starts visible"
-  );
-};
-
 const interactWithLearnIndex = async (tab, check, context) => {
   const filters = tab.playwright.locator("[data-bms-learn-filters]");
   check((await filters.count()) === 1, context, "lesson filters exist");

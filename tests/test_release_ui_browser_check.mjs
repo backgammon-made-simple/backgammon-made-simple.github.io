@@ -67,10 +67,10 @@ assert.ok(
 assert.ok(!helperSource.includes("[data-bms-lesson-track-toggle]"));
 assert.match(
   helperSource,
-  /await scrollTo\(tab, 420\);\s+await scrollTo\(tab, 280\);/
+  /await scrollTo\(tab, 1400\);[\s\S]*await scrollTo\(tab, 900\);/
 );
 assert.ok(
-  helperSource.includes("term lookup closes without reloading the page")
+  helperSource.includes('tab.playwright.locator(".bms-term-lookup-close")')
 );
 
 console.log("UI release browser helper tests passed");
