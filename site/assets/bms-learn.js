@@ -1889,6 +1889,9 @@
       if (!lookup || !inRefinedRightRail()) {
         return;
       }
+      if (suppressRightRailAutoCollapse) {
+        return;
+      }
       if (window.scrollY <= 32) {
         if (lookup.hidden) {
           open({ focusInput: false });
@@ -1960,6 +1963,13 @@
       if (!slug || !lookup || !result) {
         return;
       }
+      suppressRightRailAutoCollapse = true;
+      rightRailScrollCollapsed = false;
+      if (marginSidebar) {
+        marginSidebar.classList.remove(
+          "bms-refined-right-rail-scroll-collapsed"
+        );
+      }
       if (!desktopQuery.matches && mobileDrawer) {
         setMobileDrawerOpen(true);
       } else {
@@ -1987,6 +1997,10 @@
           window.location.href =
             "/learn/glossary/#" + encodeURIComponent(slug);
         });
+      window.setTimeout(function () {
+        lastRightRailScrollY = window.scrollY;
+        suppressRightRailAutoCollapse = false;
+      }, 220);
     });
 
     const legacyBackToTop = document.querySelector(
@@ -2312,6 +2326,10 @@
 
   if (typeof document !== "undefined") {
     document.addEventListener("DOMContentLoaded", function () {
+      if (document.documentElement.dataset.bmsLearnInitialized === "true") {
+        return;
+      }
+      document.documentElement.dataset.bmsLearnInitialized = "true";
       initializeLearnFilters();
       initializeLearnSidebarControls();
       initializeInlineGlossary();

@@ -1704,6 +1704,46 @@ private code phrase
         )
         self.assertIn("detail: { slug: slug, focusResult: true }", javascript)
         self.assertIn('heading.focus({ preventScroll: true });', javascript)
+        self.assertIn(
+            "if (suppressRightRailAutoCollapse) {\n        return;\n      }",
+            javascript,
+        )
+        open_by_slug = javascript[
+            javascript.index(
+                'document.addEventListener("bms:open-glossary-term"'
+            ) :
+            javascript.index(
+                'const legacyBackToTop = document.querySelector('
+            )
+        ]
+        self.assertIn("suppressRightRailAutoCollapse = true;", open_by_slug)
+        self.assertIn("rightRailScrollCollapsed = false;", open_by_slug)
+        self.assertIn("suppressRightRailAutoCollapse = false;", open_by_slug)
+
+    def test_learn_client_initialization_is_idempotent(self) -> None:
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        initializer = javascript[
+            javascript.index(
+                'document.addEventListener("DOMContentLoaded", function () {'
+            ) :
+            javascript.index("      initializeLearnFilters();")
+        ]
+        self.assertIn(
+            'document.documentElement.dataset.bmsLearnInitialized === "true"',
+            initializer,
+        )
+        self.assertIn(
+            'document.documentElement.dataset.bmsLearnInitialized = "true";',
+            initializer,
+        )
+        self.assertEqual(
+            javascript.count(
+                'document.documentElement.dataset.bmsLearnInitialized = "true";'
+            ),
+            1,
+        )
 
     def test_update_toc_null_guard_contract(self) -> None:
         javascript = (
