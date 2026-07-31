@@ -1162,7 +1162,7 @@
       });
     };
 
-    const placeTocHeadingToggleBelowDivider = function (toggle) {
+    const placeTocHeadingToggleBeforeLinks = function (toggle) {
       if (!toc || !toggle) {
         return;
       }
@@ -1174,8 +1174,13 @@
         toggle.replaceWith(divider);
         divider.appendChild(toggle);
       }
-      if (divider.parentElement !== toc) {
-        toc.appendChild(divider);
+      const tocLinks = toc.querySelector(":scope > ul");
+      if (
+        tocLinks &&
+        (divider.parentElement !== toc ||
+          divider.nextElementSibling !== tocLinks)
+      ) {
+        toc.insertBefore(divider, tocLinks);
       }
     };
 
@@ -1196,7 +1201,7 @@
       if (existingToggle) {
         tocHeadingToggle = existingToggle;
         bindTocHeadingToggle(tocHeadingToggle);
-        placeTocHeadingToggleBelowDivider(tocHeadingToggle);
+        placeTocHeadingToggleBeforeLinks(tocHeadingToggle);
         return true;
       }
       const tocLinks = toc.querySelector(":scope > ul");
@@ -1213,7 +1218,7 @@
         divider.className = "bms-toc-toggle-divider";
         divider.dataset.bmsTocToggleDivider = "";
         divider.appendChild(tocHeadingToggle);
-        toc.appendChild(divider);
+        toc.insertBefore(divider, tocLinks);
         return true;
       }
       return false;

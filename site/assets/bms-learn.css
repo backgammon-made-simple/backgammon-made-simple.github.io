@@ -1635,9 +1635,7 @@ body:is(.bms-learn-index, .bms-learn-article)
   }
 
   #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed
-    > :not(.bms-site-tools),
-  #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed
-    .bms-term-lookup {
+    > :not(.bms-site-tools) {
     display: none !important;
   }
 
@@ -1764,10 +1762,30 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar
     .bms-term-lookup {
-    width: calc(100% - 0.5rem);
-    margin-inline: auto;
+    position: fixed;
+    top: 50%;
+    right: 0.75rem;
+    z-index: 1050;
+    width: clamp(10rem, 16vw, 18rem);
+    max-height: calc(100vh - 6rem);
+    margin: 0;
+    overflow-y: auto;
+    transform: translateY(-50%);
     border-color: var(--bms-border);
     background: var(--bms-page-background);
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar
+    .bms-term-lookup-reveal {
+    position: fixed;
+    top: 50%;
+    right: 0.75rem;
+    z-index: 1050;
+    transform: translateY(-50%);
   }
 
   body:is(

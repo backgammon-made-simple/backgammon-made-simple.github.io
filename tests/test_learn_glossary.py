@@ -1410,7 +1410,8 @@ class LearnGlossaryTests(unittest.TestCase):
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
             '"Contents \\u25be"',
             "bms-toc-toggle-divider",
-            "toc.appendChild(divider)",
+            "placeTocHeadingToggleBeforeLinks",
+            "toc.insertBefore(divider, tocLinks)",
             "updateLookupForScroll",
             "window.scrollY <= 32",
             "updateRightRailForScroll",
@@ -1470,7 +1471,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "    > :not(.bms-site-tools)",
             css,
         )
-        self.assertIn(
+        self.assertNotIn(
             ".bms-refined-right-rail-scroll-collapsed\n"
             "    .bms-term-lookup",
             css,
@@ -1492,6 +1493,14 @@ class LearnGlossaryTests(unittest.TestCase):
             r"display: inline-flex;[^}]*"
             r"width: 1\.35rem;[^}]*"
             r"padding: 0;",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools--sidebar\s+"
+            r"\.bms-term-lookup-reveal \{[^}]*"
+            r"position: fixed;[^}]*"
+            r"top: 50%;[^}]*"
+            r"right: 0\.75rem;",
         )
 
         learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
