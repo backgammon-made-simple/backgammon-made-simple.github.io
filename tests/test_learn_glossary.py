@@ -1477,7 +1477,7 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertIn(
             ".bms-refined-right-rail-scroll-collapsed\n"
-            "    > :not(.bms-site-tools)",
+            "    > *",
             css,
         )
         self.assertNotIn(
@@ -1531,7 +1531,7 @@ class LearnGlossaryTests(unittest.TestCase):
             r"button\.bms-refined-back-to-top \{[^}]*"
             r"position: fixed;[^}]*"
             r"right: var\(--bms-refined-tools-right, 0\.75rem\);[^}]*"
-            r"bottom: 10vh;",
+            r"bottom: 1rem;",
         )
 
         learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
