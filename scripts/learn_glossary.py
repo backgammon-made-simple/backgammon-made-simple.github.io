@@ -710,6 +710,8 @@ def lesson_body_search_text(path: Path) -> str:
             text = "\n".join(lines[closing + 1 :])
     text = re.sub(r"<!--.*?-->", " ", text, flags=re.DOTALL)
     text = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)
+    text = re.sub(r"(?m)^:::+(?:\s+\{[^}\n]*\})?\s*$", " ", text)
+    text = re.sub(r"\{\{<.*?>\}\}", " ", text)
     text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r" \1 ", text)
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r" \1 ", text)
     text = re.sub(r"<[^>]+>", " ", text)

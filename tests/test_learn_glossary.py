@@ -181,6 +181,7 @@ private code phrase
         self.assertIn("Visible HTML words", body)
         self.assertNotIn("Metadata title", body)
         self.assertNotIn("private code phrase", body)
+        self.assertNotIn(":::", body)
 
         lesson = next(
             lesson
@@ -199,6 +200,8 @@ private code phrase
         self.assertIn(str(lesson["description"]), markup)
         self.assertIn("Doubling Cube", markup)
         self.assertIn("worked position", markup.casefold())
+        self.assertNotIn(":::", markup)
+        self.assertNotIn("{ }", markup)
         self.assertNotIn("data-bms-search=", markup)
 
     def test_research_sequence_is_sorted_and_linked(self) -> None:
