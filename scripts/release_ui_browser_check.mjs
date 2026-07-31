@@ -96,7 +96,9 @@ const interactWithLookup = async (
       return;
     }
   }
-  await scrollTo(tab, 320);
+  await scrollTo(tab, 420);
+  await scrollTo(tab, 280);
+  await delay(180);
   const toggle = await visibleLocator(
     tab.playwright.locator(
       "[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]"
@@ -121,8 +123,27 @@ const interactWithLookup = async (
     "opening term lookup preserves scroll position " +
       `(before=${before}, after=${afterOpen})`
   );
-  await tab.goto(await tab.url());
-  await delay(500);
+  await scrollTo(tab, before + 120);
+  await scrollTo(tab, before);
+  await delay(180);
+  const closeToggle = await visibleLocator(
+    tab.playwright.locator(
+      "[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]"
+    )
+  );
+  check(Boolean(closeToggle), context, "open term lookup keeps a close control");
+  if (!closeToggle) {
+    return;
+  }
+  if ((await closeToggle.getAttribute("aria-expanded")) === "true") {
+    await closeToggle.click();
+    await delay(180);
+  }
+  check(
+    (await closeToggle.getAttribute("aria-expanded")) === "false",
+    context,
+    "term lookup closes without reloading the page"
+  );
 };
 
 const interactWithMobileDrawer = async (tab, check, context) => {
@@ -165,7 +186,13 @@ const interactWithMobileDrawer = async (tab, check, context) => {
   );
 };
 
-const interactWithToc = async (tab, check, context, desktop) => {
+const interactWithToc = async (
+  tab,
+  check,
+  context,
+  desktop,
+  collapseLessonTrack = false
+) => {
   const toggleState = () =>
     tab.playwright.locator("html").evaluate(() => {
       const toggle = Array.from(
@@ -200,6 +227,18 @@ const interactWithToc = async (tab, check, context, desktop) => {
   if (!initial.available) {
     return;
   }
+  const lessonTrack = collapseLessonTrack
+    ? await visibleLocator(
+        tab.playwright.locator(".bms-lesson-track-content")
+      )
+    : null;
+  if (collapseLessonTrack) {
+    check(
+      Boolean(lessonTrack),
+      context,
+      "lesson track is visible before collapsing the TOC rail"
+    );
+  }
   await clickToggle();
   const collapsed = await toggleState();
   check(
@@ -212,6 +251,13 @@ const interactWithToc = async (tab, check, context, desktop) => {
     context,
     "TOC restore control remains available"
   );
+  if (lessonTrack) {
+    check(
+      !(await lessonTrack.isVisible()),
+      context,
+      "TOC rail collapse also hides the lesson track"
+    );
+  }
   if (!collapsed.available) {
     return;
   }
@@ -222,36 +268,13 @@ const interactWithToc = async (tab, check, context, desktop) => {
     context,
     "TOC links restore"
   );
-};
-
-const interactWithLessonTrack = async (tab, check, context, desktop) => {
-  const toggle = await visibleLocator(
-    tab.playwright.locator("[data-bms-lesson-track-toggle]")
-  );
-  if (!desktop) {
-    check(!toggle, context, "desktop lesson-track control stays hidden");
-    return;
+  if (lessonTrack) {
+    check(
+      await lessonTrack.isVisible(),
+      context,
+      "restoring the TOC rail also restores the lesson track"
+    );
   }
-  check(Boolean(toggle), context, "lesson-track sideways control is visible");
-  if (!toggle) {
-    return;
-  }
-  const initiallyExpanded =
-    (await toggle.getAttribute("aria-expanded")) === "true";
-  await toggle.click();
-  check(
-    (await toggle.getAttribute("aria-expanded")) !==
-      String(initiallyExpanded),
-    context,
-    "lesson track changes state"
-  );
-  await toggle.click();
-  check(
-    (await toggle.getAttribute("aria-expanded")) ===
-      String(initiallyExpanded),
-    context,
-    "lesson track restores independently"
-  );
 };
 
 const interactWithLearnIndex = async (tab, check, context) => {
@@ -418,8 +441,7 @@ const runPageInteraction = async ({
     await interactWithLearnIndex(tab, check, context);
   }
   if (page.kind === "learn-lesson") {
-    await interactWithLessonTrack(tab, check, context, desktop);
-    await interactWithToc(tab, check, context, desktop);
+    await interactWithToc(tab, check, context, desktop, true);
     if (desktop) {
       await interactWithLookup(tab, check, context, desktop);
     } else {

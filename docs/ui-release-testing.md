@@ -85,7 +85,8 @@ The browser phase must:
 - detect duplicate IDs after continuous loading;
 - expand, collapse, and restore Learn filters;
 - search and clear the Learn catalogue;
-- independently toggle the desktop lesson track and TOC;
+- toggle the desktop TOC rail and confirm its lesson track collapses and
+  restores with it;
 - open and close Look Up a Term without moving the reading position;
 - open both SVG worked-position disclosures and use the Take choice;
 - exercise long text, long button labels, wide tables, anchors, nested details,
@@ -114,7 +115,7 @@ Use only enough manual clicking to confirm what automation can miss:
 
 1. On desktop, open the cube lesson, scroll through the worked position, and
    watch the active TOC state as another lesson loads.
-2. Collapse and restore the lesson track and TOC independently.
+2. Collapse and restore the TOC rail and confirm the lesson track follows it.
 3. Open and close Look Up a Term at mid-page and confirm the page does not jump.
 4. On mobile, repeat the worked-position and edge-fixture interactions and
    swipe the wide comparison table horizontally.
