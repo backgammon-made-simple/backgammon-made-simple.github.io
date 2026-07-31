@@ -1750,9 +1750,16 @@ body:is(.bms-learn-index, .bms-learn-article)
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-site-tools--sidebar {
+    position: fixed;
+    top: 50%;
+    right: 0.75rem;
+    left: var(--bms-refined-tools-left, auto);
+    z-index: 1050;
+    width: clamp(10rem, 16vw, 18rem);
     align-items: center;
     margin-top: 0;
     padding-top: 0.15rem;
+    transform: translateY(-50%);
     border-top: 0;
   }
 
@@ -1762,15 +1769,11 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar
     .bms-term-lookup {
-    position: fixed;
-    top: 50%;
-    right: 0.75rem;
-    z-index: 1050;
-    width: clamp(10rem, 16vw, 18rem);
+    position: static;
+    width: 100%;
     max-height: calc(100vh - 6rem);
     margin: 0;
     overflow-y: auto;
-    transform: translateY(-50%);
     border-color: var(--bms-border);
     background: var(--bms-page-background);
   }
@@ -1781,11 +1784,17 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar
     .bms-term-lookup-reveal {
-    position: fixed;
-    top: 50%;
-    right: 0.75rem;
-    z-index: 1050;
-    transform: translateY(-50%);
+    position: static;
+    align-self: flex-start;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar
+    .bms-site-back-to-top {
+    align-self: flex-start;
   }
 
   body:is(

@@ -1417,6 +1417,9 @@ class LearnGlossaryTests(unittest.TestCase):
             "updateRightRailForScroll",
             "rightRailScrollCollapsed = currentScrollY > lastRightRailScrollY",
             '"bms-refined-right-rail-scroll-collapsed"',
+            "positionRefinedRightTools",
+            '"--bms-refined-tools-left"',
+            "marginSidebar.getBoundingClientRect().left",
             "Browse the full glossary",
             "marginSidebarToggle || backToTop",
             "inRefinedRightRail",
@@ -1496,11 +1499,25 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertRegex(
             css,
-            r"\.bms-site-tools--sidebar\s+"
-            r"\.bms-term-lookup-reveal \{[^}]*"
+            r"\.bms-site-tools--sidebar \{[^}]*"
             r"position: fixed;[^}]*"
             r"top: 50%;[^}]*"
-            r"right: 0\.75rem;",
+            r"right: 0\.75rem;[^}]*"
+            r"left: var\(--bms-refined-tools-left, auto\);[^}]*"
+            r"width: clamp\(10rem, 16vw, 18rem\);",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools--sidebar\s+"
+            r"\.bms-term-lookup \{[^}]*"
+            r"position: static;[^}]*"
+            r"width: 100%;",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools--sidebar\s+"
+            r"\.bms-site-back-to-top \{[^}]*"
+            r"align-self: flex-start;",
         )
 
         learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(

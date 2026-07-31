@@ -1521,6 +1521,18 @@
       tocToggle.textContent = collapsed ? "Expand TOC" : "Collapse TOC";
     };
 
+    const positionRefinedRightTools = function () {
+      if (!inRefinedRightRail()) {
+        tools.style.removeProperty("--bms-refined-tools-left");
+        return;
+      }
+      const sidebarLeft = marginSidebar.getBoundingClientRect().left;
+      tools.style.setProperty(
+        "--bms-refined-tools-left",
+        Math.max(8, sidebarLeft) + "px"
+      );
+    };
+
     const updateRightRailForScroll = function () {
       if (!marginSidebar || !inRefinedRightRail()) {
         rightRailScrollCollapsed = false;
@@ -1617,6 +1629,7 @@
       }
       updateToc();
       updateMarginSidebar();
+      positionRefinedRightTools();
       updateRightRailForScroll();
     };
 
@@ -1687,6 +1700,9 @@
 
     placeTools();
     desktopQuery.addEventListener("change", placeTools);
+    window.addEventListener("resize", positionRefinedRightTools, {
+      passive: true
+    });
 
     const updateLookupForScroll = function () {
       if (!lookup || !inRefinedRightRail()) {
