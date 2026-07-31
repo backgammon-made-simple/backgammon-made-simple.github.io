@@ -43,6 +43,16 @@
       .toLocaleLowerCase();
   }
 
+  function isMobileDrawerSwipe(startX, startY, endX, endY) {
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+    return (
+      startX <= 56 &&
+      Math.abs(deltaX) >= 24 &&
+      Math.abs(deltaX) > Math.abs(deltaY) * 1.25
+    );
+  }
+
   function itemMatchesLesson(item, query, difficulties, terms) {
     const normalizedQuery = normalizeLearnSearch(query);
     const matchesSearch =
@@ -65,6 +75,39 @@
 
   function normalizeLookupQuery(value) {
     return String(value || "").trim();
+  }
+
+  function isSamePageTocHref(href, currentHref) {
+    const value = String(href || "").trim();
+    if (!value) {
+      return false;
+    }
+    if (value.startsWith("#")) {
+      return value.length > 1;
+    }
+    try {
+      const current = new URL(currentHref);
+      const target = new URL(value, current);
+      return (
+        Boolean(target.hash) &&
+        target.origin === current.origin &&
+        target.pathname === current.pathname
+      );
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function tocHasHashLinks(toc) {
+    if (!toc || typeof toc.querySelectorAll !== "function") {
+      return false;
+    }
+    return Array.from(toc.querySelectorAll("a[href]")).some(function (link) {
+      return isSamePageTocHref(
+        link.getAttribute("href"),
+        window.location.href
+      );
+    });
   }
 
   function lookupMatchRank(entry, query) {
@@ -750,9 +793,7 @@
         const lessonPage =
           document.body.classList.contains("bms-learn-article") &&
           !document.body.classList.contains("bms-learn-track-index");
-        let trackCollapsed = false;
         let trackContent = null;
-        let trackToggle = null;
 
         if (lessonPage) {
           trackContent = document.createElement("div");
@@ -761,42 +802,7 @@
           while (trackNav.firstChild) {
             trackContent.appendChild(trackNav.firstChild);
           }
-
-          trackToggle = document.createElement("button");
-          trackToggle.type = "button";
-          trackToggle.className = "bms-lesson-track-toggle";
-          trackToggle.dataset.bmsLessonTrackToggle = "";
-          trackToggle.setAttribute("aria-controls", trackContent.id);
-          trackNav.append(trackContent, trackToggle);
-        }
-
-        function updateTrackControl(desktopRailActive) {
-          if (!trackContent || !trackToggle) {
-            return;
-          }
-          const collapsed = desktopRailActive && trackCollapsed;
-          trackContent.hidden = collapsed;
-          trackNav.classList.toggle(
-            "bms-lesson-track-collapsed",
-            collapsed
-          );
-          trackToggle.hidden = !desktopRailActive;
-          trackToggle.setAttribute(
-            "aria-expanded",
-            collapsed ? "false" : "true"
-          );
-          trackToggle.setAttribute(
-            "aria-label",
-            collapsed ? "Expand lesson track" : "Collapse lesson track"
-          );
-          trackToggle.textContent = collapsed ? "\u203a" : "\u2039";
-        }
-
-        if (trackToggle) {
-          trackToggle.addEventListener("click", function () {
-            trackCollapsed = !trackCollapsed;
-            updateTrackControl(true);
-          });
+          trackNav.appendChild(trackContent);
         }
 
         function place() {
@@ -822,7 +828,16 @@
           } else {
             taxonomy.appendChild(trackNav);
           }
-          updateTrackControl(desktopRailActive);
+          if (trackContent) {
+            const collapsed =
+              desktopRailActive &&
+              sidebar.classList.contains("bms-toc-collapsed");
+            trackContent.hidden = collapsed;
+            trackNav.classList.toggle(
+              "bms-lesson-track-collapsed",
+              collapsed
+            );
+          }
         }
 
         place();
@@ -901,8 +916,9 @@
       '<div class="bms-term-lookup-heading">' +
       "<strong>Look Up a Term</strong>" +
       '<button type="button" class="bms-term-lookup-close" ' +
-      'data-bms-term-lookup-close aria-label="Collapse term lookup to the right">' +
-      'Collapse <span aria-hidden="true">&rarr;</span></button>' +
+      'data-bms-term-lookup-close aria-controls="bms-term-lookup-panel" ' +
+      'aria-expanded="true" aria-label="Collapse term lookup">' +
+      '<span aria-hidden="true">&rarr;</span></button>' +
       "</div>" +
       '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
@@ -947,7 +963,7 @@
 
     const definition = document.createElement("p");
     definition.className = "bms-term-lookup-definition";
-    definition.textContent = entry.short_definition;
+    definition.textContent = entry.definition;
     container.appendChild(definition);
 
     if (
@@ -1005,8 +1021,8 @@
     tools.innerHTML =
       '<button type="button" class="bms-term-lookup-reveal" ' +
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
-      'aria-expanded="false"><span aria-hidden="true">&larr;</span> ' +
-      "Look Up a Term</button>" +
+      'aria-expanded="false" aria-label="Open term lookup">' +
+      '<span aria-hidden="true">&larr;</span> Term Search</button>' +
       (refinedRightRailPage
         ? ""
         : '<button type="button" class="bms-toc-toggle" ' +
@@ -1015,10 +1031,10 @@
           '<button type="button" class="bms-margin-sidebar-toggle" ' +
           'data-bms-margin-sidebar-toggle aria-controls="quarto-margin-sidebar" ' +
           'aria-expanded="true" aria-label="Collapse all right sidebar content" hidden>' +
-          'Collapse All <span aria-hidden="true">&uarr;</span></button>') +
+          'Collapse All <span aria-hidden="true">&#9652;</span></button>') +
       '<button type="button" class="bms-site-back-to-top" ' +
       'data-bms-site-back-to-top hidden>Back to top ' +
-      '<span aria-hidden="true">&uarr;</span></button>';
+      '<span aria-hidden="true">\u25b4</span></button>';
 
     const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
     const tocToggle = tools.querySelector("[data-bms-toc-toggle]");
@@ -1042,16 +1058,168 @@
       : null;
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
-    const toc = marginSidebar ? marginSidebar.querySelector("#TOC") : null;
+    let toc = null;
     let tocHeadingToggle = null;
-    let desktopCollapsed = false;
+    let tocObserver = null;
+    let desktopCollapsed = !refinedRightRailPage;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
+    let rightRailScrollCollapsed = false;
+    let lastRightRailScrollY = window.scrollY;
+    let suppressRightRailAutoCollapse = false;
+    let mobileDrawerOpen = false;
+    let mobileTouchStart = null;
+    let mobileDrawer = null;
+    let mobileDrawerEdge = null;
+    let mobileDrawerBackdrop = null;
+    let mobileDrawerToc = null;
+    let mobileDrawerLookup = null;
 
-    if (toc && refinedRightRailPage) {
-      const tocTitle = toc.querySelector("#toc-title");
+    if (refinedRightRailPage) {
+      mobileDrawerEdge = document.createElement("button");
+      mobileDrawerEdge.type = "button";
+      mobileDrawerEdge.className = "bms-mobile-tools-edge";
+      mobileDrawerEdge.dataset.bmsMobileToolsEdge = "";
+      mobileDrawerEdge.setAttribute("aria-controls", "bms-mobile-tools-drawer");
+      mobileDrawerEdge.setAttribute("aria-expanded", "false");
+      mobileDrawerEdge.setAttribute(
+        "aria-label",
+        "Open table of contents and term search"
+      );
+
+      mobileDrawer = document.createElement("aside");
+      mobileDrawer.id = "bms-mobile-tools-drawer";
+      mobileDrawer.className = "bms-mobile-tools-drawer";
+      mobileDrawer.dataset.bmsMobileToolsDrawer = "";
+      mobileDrawer.setAttribute("aria-label", "Page contents and term search");
+      mobileDrawer.setAttribute("aria-hidden", "true");
+      mobileDrawer.innerHTML =
+        '<div class="bms-mobile-tools-heading">' +
+        "<strong>Page tools</strong>" +
+        '<button type="button" data-bms-mobile-tools-close>Close</button>' +
+        "</div>" +
+        '<nav class="bms-mobile-tools-toc" aria-label="On this page" ' +
+        "data-bms-mobile-tools-toc></nav>" +
+        '<div class="bms-mobile-tools-lookup" ' +
+        "data-bms-mobile-tools-lookup></div>";
+      mobileDrawerToc = mobileDrawer.querySelector(
+        "[data-bms-mobile-tools-toc]"
+      );
+      mobileDrawerLookup = mobileDrawer.querySelector(
+        "[data-bms-mobile-tools-lookup]"
+      );
+
+      mobileDrawerBackdrop = document.createElement("button");
+      mobileDrawerBackdrop.type = "button";
+      mobileDrawerBackdrop.className = "bms-mobile-tools-backdrop";
+      mobileDrawerBackdrop.dataset.bmsMobileToolsBackdrop = "";
+      mobileDrawerBackdrop.setAttribute("aria-label", "Close page tools");
+      mobileDrawerBackdrop.hidden = true;
+      document.body.append(
+        mobileDrawerBackdrop,
+        mobileDrawer,
+        mobileDrawerEdge
+      );
+    }
+
+    const preservePagePosition = function (callback) {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+      const restore = function () {
+        window.scrollTo(scrollX, scrollY);
+      };
+      callback();
+      restore();
+      window.requestAnimationFrame(function () {
+        restore();
+        window.requestAnimationFrame(restore);
+      });
+      window.setTimeout(restore, 60);
+      window.setTimeout(restore, 180);
+    };
+
+    const bindTocHeadingToggle = function (toggle) {
+      if (!toggle || toggle.dataset.bmsTocToggleBound === "true") {
+        return;
+      }
+      toggle.dataset.bmsTocToggleBound = "true";
+      toggle.addEventListener("click", function () {
+        suppressRightRailAutoCollapse = true;
+        rightRailScrollCollapsed = false;
+        if (marginSidebar) {
+          marginSidebar.classList.remove(
+            "bms-refined-right-rail-scroll-collapsed"
+          );
+        }
+        preservePagePosition(function () {
+          tocCollapsed = !tocCollapsed;
+          updateToc();
+          document
+            .querySelectorAll("[data-bms-lesson-track-nav]")
+            .forEach(function (trackNav) {
+              const trackContent = trackNav.querySelector(
+                ".bms-lesson-track-content"
+              );
+              if (trackContent) {
+                trackContent.hidden = tocCollapsed;
+                trackNav.classList.toggle(
+                  "bms-lesson-track-collapsed",
+                  tocCollapsed
+                );
+              }
+            });
+        });
+        window.setTimeout(function () {
+          lastRightRailScrollY = window.scrollY;
+          suppressRightRailAutoCollapse = false;
+        }, 220);
+      });
+    };
+
+    const placeTocHeadingToggleBeforeLinks = function (toggle) {
+      if (!toc || !toggle) {
+        return;
+      }
+      let divider = toggle.closest(".bms-toc-toggle-divider");
+      if (!divider) {
+        divider = document.createElement("div");
+        divider.className = "bms-toc-toggle-divider";
+        divider.dataset.bmsTocToggleDivider = "";
+        toggle.replaceWith(divider);
+        divider.appendChild(toggle);
+      }
       const tocLinks = toc.querySelector(":scope > ul");
-      if (tocTitle && tocLinks) {
+      if (
+        tocLinks &&
+        (divider.parentElement !== toc ||
+          divider.nextElementSibling !== tocLinks)
+      ) {
+        toc.insertBefore(divider, tocLinks);
+      }
+    };
+
+    const mountTocHeadingToggle = function () {
+      if (!refinedRightRailPage) {
+        return false;
+      }
+      const tocCandidates = Array.from(document.querySelectorAll("#TOC"));
+      toc =
+        tocCandidates.find(tocHasHashLinks) ||
+        (marginSidebar ? marginSidebar.querySelector("#TOC") : null);
+      if (!toc || !tocHasHashLinks(toc)) {
+        return false;
+      }
+      const existingToggle = toc.querySelector(
+        "[data-bms-toc-heading-toggle]"
+      );
+      if (existingToggle) {
+        tocHeadingToggle = existingToggle;
+        bindTocHeadingToggle(tocHeadingToggle);
+        placeTocHeadingToggleBeforeLinks(tocHeadingToggle);
+        return true;
+      }
+      const tocLinks = toc.querySelector(":scope > ul");
+      if (tocLinks) {
         tocLinks.id = tocLinks.id || "bms-toc-links";
         tocHeadingToggle = document.createElement("button");
         tocHeadingToggle.type = "button";
@@ -1059,9 +1227,17 @@
         tocHeadingToggle.dataset.bmsTocHeadingToggle = "";
         tocHeadingToggle.setAttribute("aria-controls", tocLinks.id);
         tocHeadingToggle.hidden = true;
-        tocTitle.appendChild(tocHeadingToggle);
+        bindTocHeadingToggle(tocHeadingToggle);
+        const divider = document.createElement("div");
+        divider.className = "bms-toc-toggle-divider";
+        divider.dataset.bmsTocToggleDivider = "";
+        divider.appendChild(tocHeadingToggle);
+        toc.insertBefore(divider, tocLinks);
+        return true;
       }
-    }
+      return false;
+    };
+    mountTocHeadingToggle();
 
     if (lookup && refinedRightRailPage) {
       const formElement = lookup.querySelector("[data-bms-term-lookup-form]");
@@ -1098,6 +1274,131 @@
       return inDesktopSidebar() || inEditorialDock();
     };
 
+    const refreshMobileDrawerToc = function () {
+      if (!mobileDrawerToc) {
+        return;
+      }
+      const sourceToc = Array.from(document.querySelectorAll("#TOC")).find(
+        tocHasHashLinks
+      );
+      mobileDrawerToc.replaceChildren();
+      if (!sourceToc) {
+        mobileDrawerToc.hidden = true;
+        return;
+      }
+      const sourceLinks = sourceToc.querySelector(":scope > ul");
+      if (!sourceLinks) {
+        mobileDrawerToc.hidden = true;
+        return;
+      }
+      const heading = document.createElement("strong");
+      heading.className = "bms-mobile-tools-toc-title";
+      heading.textContent = "On this page";
+      const links = sourceLinks.cloneNode(true);
+      links.removeAttribute("id");
+      links.querySelectorAll("[id]").forEach(function (element) {
+        element.removeAttribute("id");
+      });
+      links.querySelectorAll("[aria-controls]").forEach(function (element) {
+        element.removeAttribute("aria-controls");
+      });
+      mobileDrawerToc.append(heading, links);
+      mobileDrawerToc.hidden = false;
+    };
+
+    const setMobileDrawerOpen = function (expanded, options) {
+      if (!mobileDrawer || !mobileDrawerEdge || !mobileDrawerBackdrop) {
+        return;
+      }
+      mobileDrawerOpen = expanded;
+      if (expanded) {
+        refreshMobileDrawerToc();
+      }
+      mobileDrawer.classList.toggle("bms-mobile-tools-drawer--open", expanded);
+      mobileDrawer.setAttribute("aria-hidden", expanded ? "false" : "true");
+      mobileDrawerEdge.setAttribute(
+        "aria-expanded",
+        expanded ? "true" : "false"
+      );
+      mobileDrawerBackdrop.hidden = !expanded;
+      document.body.classList.toggle("bms-mobile-tools-open", expanded);
+      if (expanded && (!options || options.focus !== false)) {
+        const firstLink = mobileDrawer.querySelector("a[href]");
+        const target = firstLink || input;
+        if (target) {
+          target.focus({ preventScroll: true });
+        }
+      }
+    };
+
+    if (mobileDrawerEdge && mobileDrawer && mobileDrawerBackdrop) {
+      mobileDrawerEdge.addEventListener("click", function () {
+        setMobileDrawerOpen(true);
+      });
+      mobileDrawerBackdrop.addEventListener("click", function () {
+        setMobileDrawerOpen(false);
+      });
+      const drawerClose = mobileDrawer.querySelector(
+        "[data-bms-mobile-tools-close]"
+      );
+      if (drawerClose) {
+        drawerClose.addEventListener("click", function () {
+          setMobileDrawerOpen(false);
+          mobileDrawerEdge.focus();
+        });
+      }
+      mobileDrawer.addEventListener("click", function (event) {
+        if (event.target.closest("a[href^='#']")) {
+          setMobileDrawerOpen(false);
+        }
+      });
+      document.addEventListener(
+        "touchstart",
+        function (event) {
+          if (
+            desktopQuery.matches ||
+            mobileDrawerOpen ||
+            event.touches.length !== 1
+          ) {
+            mobileTouchStart = null;
+            return;
+          }
+          const touch = event.touches[0];
+          mobileTouchStart =
+            touch.clientX <= 56
+              ? { x: touch.clientX, y: touch.clientY }
+              : null;
+        },
+        { passive: true }
+      );
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          if (
+            !mobileTouchStart ||
+            desktopQuery.matches ||
+            event.changedTouches.length !== 1
+          ) {
+            mobileTouchStart = null;
+            return;
+          }
+          const touch = event.changedTouches[0];
+          if (
+            isMobileDrawerSwipe(
+              mobileTouchStart.x,
+              mobileTouchStart.y,
+              touch.clientX,
+              touch.clientY
+            )
+          ) {
+            setMobileDrawerOpen(true);
+          }
+          mobileTouchStart = null;
+        },
+        { passive: true }
+      );
+    }
+
     const open = function (options) {
       const focusInput = !options || options.focusInput !== false;
       if (glossarySearch) {
@@ -1115,6 +1416,9 @@
       if (termToggle) {
         termToggle.hidden = true;
       }
+      if (close) {
+        close.setAttribute("aria-expanded", "true");
+      }
       document.body.classList.add("bms-term-lookup-open");
       document
         .querySelectorAll("[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]")
@@ -1131,15 +1435,15 @@
       if (!lookup) {
         return;
       }
-      if (inRefinedRightRail()) {
-        return;
-      }
       if (settings.rememberDesktop && inDesktopDock()) {
         desktopCollapsed = true;
       }
       lookup.hidden = true;
       if (termToggle) {
         termToggle.hidden = false;
+      }
+      if (close) {
+        close.setAttribute("aria-expanded", "false");
       }
       document.body.classList.remove("bms-term-lookup-open");
       document
@@ -1179,8 +1483,8 @@
           : "Collapse all right sidebar content"
       );
       marginSidebarToggle.innerHTML = collapsed
-        ? 'Expand All <span aria-hidden="true">&darr;</span>'
-        : 'Collapse All <span aria-hidden="true">&uarr;</span>';
+        ? 'Expand All <span aria-hidden="true">&#9662;</span>'
+        : 'Collapse All <span aria-hidden="true">&#9652;</span>';
     };
 
     const updateToc = function () {
@@ -1205,7 +1509,9 @@
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = tocCollapsed ? "\u2304" : "\u2303";
+        tocHeadingToggle.textContent = tocCollapsed
+          ? "Contents \u25be"
+          : "\u25b4";
         return;
       }
       if (tocHeadingToggle) {
@@ -1229,8 +1535,87 @@
       tocToggle.textContent = collapsed ? "Expand TOC" : "Collapse TOC";
     };
 
+    const positionRefinedRightTools = function () {
+      if (!inRefinedRightRail()) {
+        tools.style.removeProperty("--bms-refined-tools-left");
+        tools.style.removeProperty("--bms-refined-tools-width");
+        if (backToTop) {
+          backToTop.style.removeProperty("--bms-refined-tools-right");
+        }
+        return;
+      }
+      const sidebarBounds = marginSidebar.getBoundingClientRect();
+      tools.style.setProperty(
+        "--bms-refined-tools-left",
+        Math.max(8, sidebarBounds.left) + "px"
+      );
+      tools.style.setProperty(
+        "--bms-refined-tools-width",
+        sidebarBounds.width + "px"
+      );
+      if (backToTop) {
+        const viewportWidth = document.documentElement.clientWidth;
+        backToTop.style.setProperty(
+          "--bms-refined-tools-right",
+          Math.max(8, viewportWidth - sidebarBounds.right) + "px"
+        );
+      }
+    };
+
+    const placeRefinedBackToTop = function () {
+      if (!backToTop) {
+        return;
+      }
+      const refined = inRefinedRightRail();
+      backToTop.classList.toggle("bms-refined-back-to-top", refined);
+      if (refined) {
+        document.body.appendChild(backToTop);
+      } else if (backToTop.parentElement !== tools) {
+        tools.appendChild(backToTop);
+      }
+    };
+
+    const updateRightRailForScroll = function () {
+      if (!marginSidebar || !inRefinedRightRail()) {
+        rightRailScrollCollapsed = false;
+        if (marginSidebar) {
+          marginSidebar.classList.remove(
+            "bms-refined-right-rail-scroll-collapsed"
+          );
+        }
+        lastRightRailScrollY = window.scrollY;
+        return;
+      }
+
+      const currentScrollY = window.scrollY;
+      if (suppressRightRailAutoCollapse) {
+        rightRailScrollCollapsed = false;
+        marginSidebar.classList.remove(
+          "bms-refined-right-rail-scroll-collapsed"
+        );
+        lastRightRailScrollY = currentScrollY;
+        return;
+      }
+      if (currentScrollY <= 32) {
+        rightRailScrollCollapsed = false;
+      } else if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
+        rightRailScrollCollapsed = currentScrollY > lastRightRailScrollY;
+      }
+      marginSidebar.classList.toggle(
+        "bms-refined-right-rail-scroll-collapsed",
+        rightRailScrollCollapsed
+      );
+      if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
+        lastRightRailScrollY = currentScrollY;
+      }
+    };
+
     const placeTools = function () {
       if (inDesktopSidebar()) {
+        setMobileDrawerOpen(false, { focus: false });
+        if (lookup && lookup.parentElement !== tools) {
+          tools.insertBefore(lookup, marginSidebarToggle || backToTop);
+        }
         tools.classList.add("bms-site-tools--sidebar");
         tools.classList.remove("bms-site-tools--editorial-dock");
         tools.classList.remove("bms-site-tools--floating");
@@ -1244,6 +1629,10 @@
           closeLookup();
         }
       } else if (inEditorialDock()) {
+        setMobileDrawerOpen(false, { focus: false });
+        if (lookup && lookup.parentElement !== tools) {
+          tools.insertBefore(lookup, marginSidebarToggle || backToTop);
+        }
         tools.classList.add(
           "bms-site-tools--sidebar",
           "bms-site-tools--editorial-dock"
@@ -1258,6 +1647,24 @@
         } else if (lookup) {
           closeLookup();
         }
+      } else if (
+        refinedRightRailPage &&
+        mobileDrawer &&
+        mobileDrawerLookup
+      ) {
+        tools.classList.remove("bms-site-tools--sidebar");
+        tools.classList.remove("bms-site-tools--editorial-dock");
+        tools.classList.add("bms-site-tools--floating");
+        document.body.appendChild(tools);
+        if (lookup) {
+          lookup.classList.remove("bms-term-lookup--floating");
+          mobileDrawerLookup.appendChild(lookup);
+          lookup.hidden = false;
+        }
+        if (termToggle) {
+          termToggle.hidden = true;
+        }
+        refreshMobileDrawerToc();
       } else {
         tools.classList.remove("bms-site-tools--sidebar");
         tools.classList.remove("bms-site-tools--editorial-dock");
@@ -1272,16 +1679,42 @@
       }
       updateToc();
       updateMarginSidebar();
+      placeRefinedBackToTop();
+      positionRefinedRightTools();
+      updateRightRailForScroll();
     };
+
+    if (
+      refinedRightRailPage &&
+      !tocHeadingToggle &&
+      marginSidebar &&
+      "MutationObserver" in window
+    ) {
+      tocObserver = new MutationObserver(function () {
+        if (mountTocHeadingToggle()) {
+          tocObserver.disconnect();
+          tocObserver = null;
+          updateToc();
+        }
+      });
+      tocObserver.observe(marginSidebar, {
+        childList: true,
+        subtree: true
+      });
+    }
 
     if (termToggle) {
       termToggle.addEventListener("click", function () {
-        open();
+        preservePagePosition(function () {
+          open();
+        });
       });
     }
     if (close) {
       close.addEventListener("click", function () {
-        closeLookup({ rememberDesktop: true, returnFocus: true });
+        preservePagePosition(function () {
+          closeLookup({ rememberDesktop: true, returnFocus: true });
+        });
       });
     }
     if (marginSidebarToggle) {
@@ -1296,25 +1729,53 @@
         updateToc();
       });
     }
-    if (tocHeadingToggle) {
-      tocHeadingToggle.addEventListener("click", function () {
-        tocCollapsed = !tocCollapsed;
-        updateToc();
-      });
-    }
     document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && mobileDrawerOpen) {
+        setMobileDrawerOpen(false);
+        if (mobileDrawerEdge) {
+          mobileDrawerEdge.focus();
+        }
+        return;
+      }
       if (
         event.key === "Escape" &&
         lookup &&
         !lookup.hidden &&
         !inRefinedRightRail()
       ) {
-        closeLookup({ rememberDesktop: true, returnFocus: true });
+        preservePagePosition(function () {
+          closeLookup({ rememberDesktop: true, returnFocus: true });
+        });
       }
     });
 
     placeTools();
     desktopQuery.addEventListener("change", placeTools);
+    window.addEventListener("resize", positionRefinedRightTools, {
+      passive: true
+    });
+
+    const updateLookupForScroll = function () {
+      if (!lookup || !inRefinedRightRail()) {
+        return;
+      }
+      if (window.scrollY <= 32) {
+        if (lookup.hidden) {
+          open({ focusInput: false });
+        }
+      } else if (!lookup.hidden) {
+        closeLookup({ rememberDesktop: true });
+      }
+    };
+    if (refinedRightRailPage) {
+      window.addEventListener("scroll", updateLookupForScroll, {
+        passive: true
+      });
+      window.addEventListener("scroll", updateRightRailForScroll, {
+        passive: true
+      });
+      updateLookupForScroll();
+    }
 
     if (form && input && result) {
       form.addEventListener("submit", function (event) {
@@ -1368,7 +1829,17 @@
       updateBackToTop();
     }
 
-    return { open: open };
+    return {
+      open: function () {
+        if (!desktopQuery.matches && mobileDrawer) {
+          setMobileDrawerOpen(true);
+          return;
+        }
+        preservePagePosition(function () {
+          open();
+        });
+      }
+    };
   }
 
   function initializeMobileLessonBar(termLookup) {
@@ -1419,10 +1890,122 @@
     bar.appendChild(termButton);
   }
 
-  function initializeAnswerChoices() {
-    document.querySelectorAll(".bms-decision-prompt").forEach(function (prompt) {
+  function initializeLearnLeftSidebarToggle() {
+    const learnPage =
+      document.body.classList.contains("bms-learn-article") ||
+      document.body.classList.contains("bms-learn-index") ||
+      document.body.classList.contains("bms-learn-track-index");
+    const sidebar = document.getElementById("quarto-sidebar");
+    if (!learnPage || !sidebar) {
+      return;
+    }
+
+    const desktopQuery = window.matchMedia("(min-width: 992px)");
+    const sidebarScroller =
+      sidebar.querySelector(".sidebar-menu-container") || sidebar;
+    const toggle = document.createElement("button");
+    let collapsed = false;
+    let lastScrollY = window.scrollY;
+    let lastSidebarScrollTop = sidebarScroller.scrollTop;
+    let scrollingDown = false;
+    let autoCollapsePending = window.scrollY <= 32;
+    toggle.type = "button";
+    toggle.className = "bms-learn-left-sidebar-toggle";
+    toggle.dataset.bmsLearnLeftSidebarToggle = "";
+    toggle.setAttribute("aria-controls", sidebar.id);
+    document.body.appendChild(toggle);
+
+    const updateVisibility = function () {
+      toggle.hidden =
+        !desktopQuery.matches ||
+        (scrollingDown &&
+          (window.scrollY > 32 || sidebarScroller.scrollTop > 4));
+    };
+
+    const update = function () {
+      const active = desktopQuery.matches && collapsed;
+      sidebar.hidden = active;
+      document.body.classList.toggle("bms-learn-left-sidebar-collapsed", active);
+      updateVisibility();
+      toggle.setAttribute("aria-expanded", active ? "false" : "true");
+      toggle.setAttribute(
+        "aria-label",
+        active ? "Show Learn table of contents" : "Hide Learn table of contents"
+      );
+      toggle.textContent = active ? "\u2192 Show Lessons" : "\u2190 Hide";
+      if (active) {
+        toggle.style.left = "0.5rem";
+      } else {
+        const sidebarRight = sidebar.getBoundingClientRect().right;
+        toggle.style.left =
+          Math.max(8, sidebarRight - toggle.offsetWidth - 14) + "px";
+      }
+    };
+
+    toggle.addEventListener("click", function () {
+      collapsed = !collapsed;
+      update();
+    });
+    window.addEventListener("resize", update);
+    window.addEventListener(
+      "scroll",
+      function () {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY <= 32) {
+          autoCollapsePending = true;
+        }
+        if (Math.abs(currentScrollY - lastScrollY) > 4) {
+          scrollingDown = currentScrollY > lastScrollY;
+          lastScrollY = currentScrollY;
+          if (
+            autoCollapsePending &&
+            scrollingDown &&
+            currentScrollY > 32
+          ) {
+            autoCollapsePending = false;
+            if (!collapsed) {
+              collapsed = true;
+              update();
+              return;
+            }
+          }
+          updateVisibility();
+        }
+      },
+      { passive: true }
+    );
+    sidebarScroller.addEventListener(
+      "scroll",
+      function () {
+        const currentScrollTop = sidebarScroller.scrollTop;
+        if (Math.abs(currentScrollTop - lastSidebarScrollTop) > 4) {
+          scrollingDown = currentScrollTop > lastSidebarScrollTop;
+          lastSidebarScrollTop = currentScrollTop;
+          updateVisibility();
+        }
+      },
+      { passive: true }
+    );
+    desktopQuery.addEventListener("change", update);
+    update();
+  }
+
+  function findIdWithinRoot(root, id) {
+    return (
+      Array.from(root.querySelectorAll("[id]")).find(function (element) {
+        return element.id === id;
+      }) || null
+    );
+  }
+
+  function initializeAnswerChoices(root) {
+    root.querySelectorAll(".bms-decision-prompt").forEach(function (prompt) {
+      if (prompt.dataset.bmsAnswerChoicesMounted === "true") {
+        return;
+      }
+      prompt.dataset.bmsAnswerChoicesMounted = "true";
       const panelId = prompt.dataset.answerPanel;
-      const panel = panelId ? document.getElementById(panelId) : null;
+      const panel = panelId ? findIdWithinRoot(root, panelId) : null;
       const buttons = Array.from(
         prompt.querySelectorAll(".bms-answer-choice")
       );
@@ -1445,7 +2028,7 @@
               ". The working answer is open below; correctness remains unverified.";
           }
 
-          if (panel instanceof HTMLDetailsElement) {
+          if (panel && panel.tagName === "DETAILS") {
             panel.open = true;
           }
         });
@@ -1453,10 +2036,14 @@
     });
   }
 
-  function initializeLazyAnalyzerFrames() {
-    document
+  function initializeLazyAnalyzerFrames(root) {
+    root
       .querySelectorAll("details.bms-analyzer-embed")
       .forEach(function (details) {
+        if (details.dataset.bmsLazyAnalyzerMounted === "true") {
+          return;
+        }
+        details.dataset.bmsLazyAnalyzerMounted = "true";
         details.addEventListener("toggle", function () {
           if (!details.open) {
             return;
@@ -1496,24 +2083,42 @@
       });
   }
 
+  function mountLesson(rootElement) {
+    if (
+      !rootElement ||
+      typeof rootElement.querySelectorAll !== "function"
+    ) {
+      return;
+    }
+    initializeAnswerChoices(rootElement);
+    initializeLazyAnalyzerFrames(rootElement);
+  }
+
   const publicApi = {
     bestLookupEntry: bestLookupEntry,
     canonicalEntryBySlug: canonicalEntryBySlug,
     canonicalShortDefinition: canonicalShortDefinition,
     groupControlState: groupControlState,
     inlineGlossaryTooltipPosition: inlineGlossaryTooltipPosition,
+    isMobileDrawerSwipe: isMobileDrawerSwipe,
+    isSamePageTocHref: isSamePageTocHref,
     itemMatchesLesson: itemMatchesLesson,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
     normalizeLearnSearch: normalizeLearnSearch,
     normalizeLookupQuery: normalizeLookupQuery,
     lookupMatchRank: lookupMatchRank,
+    mountLesson: mountLesson,
     parseList: parseList,
     setAllGroupsExpanded: setAllGroupsExpanded
   };
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = publicApi;
+  }
+
+  if (typeof window !== "undefined") {
+    window.BMSLearn = Object.assign(window.BMSLearn || {}, publicApi);
   }
 
   if (typeof document !== "undefined") {
@@ -1523,10 +2128,10 @@
       initializeInlineGlossary();
       const termLookup = initializeTermLookup();
       initializeMobileLessonBar(termLookup);
+      initializeLearnLeftSidebarToggle();
       placeLessonTrackLinks();
       placeLessonRightRailCards();
-      initializeAnswerChoices();
-      initializeLazyAnalyzerFrames();
+      mountLesson(document);
     });
   }
 })();

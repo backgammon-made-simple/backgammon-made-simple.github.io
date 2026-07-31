@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://backgammon-made-simple.github.io/updates/index.html</loc>
-    <lastmod>2026-07-30T16:50:16.425Z</lastmod>
+    <lastmod>2026-07-30T17:00:57.811Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/templates/sage-vs-gnu-update.html</loc>
@@ -45,12 +45,72 @@
     <lastmod>2026-07-28T15:05:14.669Z</lastmod>
   </url>
   <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-09.html</loc>
+    <lastmod>2026-07-31T02:58:43.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-07.html</loc>
+    <lastmod>2026-07-31T02:58:43.276Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-05.html</loc>
+    <lastmod>2026-07-31T02:58:43.275Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-03.html</loc>
+    <lastmod>2026-07-31T02:58:43.274Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-01.html</loc>
+    <lastmod>2026-07-31T02:58:43.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-09.html</loc>
+    <lastmod>2026-07-31T02:58:43.271Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-07.html</loc>
+    <lastmod>2026-07-31T02:58:43.270Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-05.html</loc>
+    <lastmod>2026-07-31T02:58:43.269Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-03.html</loc>
+    <lastmod>2026-07-31T02:58:43.267Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-01.html</loc>
+    <lastmod>2026-07-31T02:58:43.266Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-09.html</loc>
+    <lastmod>2026-07-31T02:58:43.264Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-07.html</loc>
+    <lastmod>2026-07-31T02:58:43.263Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-05.html</loc>
+    <lastmod>2026-07-31T02:58:43.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-03.html</loc>
+    <lastmod>2026-07-31T02:58:43.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-01.html</loc>
+    <lastmod>2026-07-31T02:58:43.260Z</lastmod>
+  </url>
+  <url>
     <loc>https://backgammon-made-simple.github.io/learn/opening-play/index.html</loc>
     <lastmod>2026-07-28T15:05:14.667Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/learn/glossary/</loc>
-    <lastmod>2026-07-28T12:38:03.876Z</lastmod>
+    <lastmod>2026-07-31T02:58:43.258Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/learn/cube/why-is-25-percent-the-basic-take-point.html</loc>
@@ -62,7 +122,7 @@
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/engine-benchmark/sage-vs-gnu-stage1/index.html</loc>
-    <lastmod>2026-07-28T12:38:03.860Z</lastmod>
+    <lastmod>2026-07-31T02:58:43.253Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/analyze/index.html</loc>
@@ -74,7 +134,7 @@
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/engine-benchmark/index.html</loc>
-    <lastmod>2026-07-30T12:28:38.221Z</lastmod>
+    <lastmod>2026-07-31T02:58:43.252Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/index.html</loc>
@@ -82,7 +142,7 @@
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/learn/cube/what-the-cube-is-asking.html</loc>
-    <lastmod>2026-07-30T16:50:16.422Z</lastmod>
+    <lastmod>2026-07-31T02:58:43.257Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/learn/game-plans/index.html</loc>
@@ -95,6 +155,66 @@
   <url>
     <loc>https://backgammon-made-simple.github.io/learn/reading-positions-and-engines/index.html</loc>
     <lastmod>2026-07-28T15:05:14.668Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-02.html</loc>
+    <lastmod>2026-07-31T02:58:43.260Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-04.html</loc>
+    <lastmod>2026-07-31T02:58:43.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-06.html</loc>
+    <lastmod>2026-07-31T02:58:43.263Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-08.html</loc>
+    <lastmod>2026-07-31T02:58:43.264Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/doubling-cube/lesson-10.html</loc>
+    <lastmod>2026-07-31T02:58:43.265Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-02.html</loc>
+    <lastmod>2026-07-31T02:58:43.266Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-04.html</loc>
+    <lastmod>2026-07-31T02:58:43.268Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-06.html</loc>
+    <lastmod>2026-07-31T02:58:43.269Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-08.html</loc>
+    <lastmod>2026-07-31T02:58:43.270Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/opening-play/lesson-10.html</loc>
+    <lastmod>2026-07-31T02:58:43.271Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-02.html</loc>
+    <lastmod>2026-07-31T02:58:43.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-04.html</loc>
+    <lastmod>2026-07-31T02:58:43.274Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-06.html</loc>
+    <lastmod>2026-07-31T02:58:43.276Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-08.html</loc>
+    <lastmod>2026-07-31T02:58:43.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://backgammon-made-simple.github.io/learn/scrolling-test/start-here/lesson-10.html</loc>
+    <lastmod>2026-07-31T02:58:43.278Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/licensing.html</loc>
@@ -114,7 +234,7 @@
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/research/sage-vs-gnu-additional-details.html</loc>
-    <lastmod>2026-07-30T12:28:38.227Z</lastmod>
+    <lastmod>2026-07-31T02:58:43.279Z</lastmod>
   </url>
   <url>
     <loc>https://backgammon-made-simple.github.io/templates/about-section.html</loc>

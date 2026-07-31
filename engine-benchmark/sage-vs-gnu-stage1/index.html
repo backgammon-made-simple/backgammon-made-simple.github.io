@@ -251,7 +251,7 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="skeptical-of-our-approach-or-results">Skeptical of our approach or results?</h4>
 <p>As you read, you may think it was unfair or unscientific, we have a dedicated page for our research method with details. This article summarizes the findings and briefly talks about the methods.</p>
 <div class="bms-button-row">
-<p><a href="../research/sage-vs-gnu-additional-details.qmd" class="bms-button-primary">Read research method details</a></p>
+<p><a href="../../research/sage-vs-gnu-additional-details.html" class="bms-button-primary">Read research method details</a></p>
 </div>
 </section>
 <section id="at-a-glance" class="level2">
@@ -278,7 +278,7 @@ What do you mean statistically insignificant? What test did you run?
 <p>If the engines were equal we would expect a 50% or 10 to 10 result. To judge the statistical significance, we asked a simple question:</p>
 <p>If the engines had an equal chance of winning each match, given random chance, how often would we see a 13 to 7 result or better?</p>
 <p>Using a two sided binomial test, the answer is about 26% of the time. Statisticians would say the study results show a <strong>p-value of 0.263</strong>. For the result to be significant, we would expect 5% or a p-value of 0.05. Therefore the 13-7 result is statistically insignificant. This does not mean there is a 26% chance that luck caused the result. It means the score, by itself, is not unusual enough to rule out an even matchup.</p>
-<p>The TODO <a href="../../research/sage-vs-gnu-additional-details.html#two-sided-binomial-test">research page</a> explains the test and shows the full distribution. You can also use this <a href="https://www.socscistatistics.com/tests/binomial/calculator/">binomial-test calculator</a> or watch this <a href="https://youtu.be/J8jNoF-K8E8">introduction to the binomial test</a> if you are interested.</p>
+<p>The TODO <a href="../../research/sage-vs-gnu-additional-details.html#how-strong-was-the-13-7-result">research page</a> explains the test and shows the full distribution. You can also use this <a href="https://www.socscistatistics.com/tests/binomial/calculator/">binomial-test calculator</a> or watch this <a href="https://youtu.be/J8jNoF-K8E8">introduction to the binomial test</a> if you are interested.</p>
 </details>
 <div class="bms-figure-slot" role="group" aria-label="Match score and twenty-match tile strip placeholder">
 <p><span class="bms-figure-slot-label">PENDING VALIDATED FIGURE :: MATCH SCORE AND 20-MATCH TILE STRIP</span></p>
@@ -329,12 +329,13 @@ How is that fair? Isn’t it biased? What about rollouts?
 <section id="want-to-run-your-own-analysis" class="level4 bms-status-panel">
 <h4 class="anchored" data-anchor-id="want-to-run-your-own-analysis">Want to run your own analysis?</h4>
 <p>Here are the match files, reviewed analysis and data we parsed used for the figures.</p>
-<p>TODO ::: {.bms-button-row}</p>
-<p><a href="../research/sage-vs-gnu-additional-details.qmd" class="bms-button-primary">Read research method details</a></p>
-<p><a href="sage-vs-gnu-stage1/index.qmd" class="bms-button-outline">Read about Engine Benchmark</a></p>
+<p>TODO</p>
+<div class="bms-button-row">
+<p><a href="../../research/sage-vs-gnu-additional-details.html" class="bms-button-primary">Read research method details</a></p>
+<p><a href="../../engine-benchmark/index.html" class="bms-button-outline">Read about Engine Benchmark</a></p>
 <p><a href="https://github.com/backgammon-made-simple/backgammon-engine-kit" class="bms-button-outline">Read Github Repo</a></p>
+</div>
 </section>
-<p>:::</p>
 <section id="how-did-the-review-rate-the-decisions" class="level2">
 <h2 class="anchored" data-anchor-id="how-did-the-review-rate-the-decisions">How did the review rate the decisions?</h2>
 <p>GNU had a lower ER. The difference in checker play was smaller, but Sage’s ER is much higher for Cube decisions.</p>
@@ -505,7 +506,7 @@ GNU: 2-ply
 Sage: 3-ply</code></pre>
 <p>For checker play, these were the closest practical fixed-ply depths available in both engines.</p>
 <p>For cube decisions, GNU 2-ply and Sage 3-ply both look ahead by both the player on roll and the reply by the opponent. If you use an odd number ply such as 3 ply for GNU, it only considers the player move and not the reply. To simplify, it makes a cube decisions where “riskier” moves are considered better because it isn’t looking for the reply of the opponent.</p>
-<p>If that’s confusing, we explain it in detail in our <a href="../../research/sage-vs-gnu-additional-details.html#why-these-engine-settings-were-chosen">research article</a></p>
+<p>If that’s confusing, we explain it in detail in our <a href="../../research/sage-vs-gnu-additional-details.html#why-these-ply-depths-were-chosen">research article</a></p>
 <p>Matching the amount of lookahead makes the comparison fairer, but it does not make the engines identical. They still use different neural networks, cube models, move filters, and internal methods.</p>
 </section>
 <section id="how-long-did-it-take-to-run" class="level2">
@@ -537,6 +538,10 @@ Sage: 3-ply</code></pre>
 
 </main> <!-- /main -->
 <script src="../../assets/bms-learn.js" defer=""></script>
+
+<script src="../../assets/bms-learn-scroll.js" defer=""></script>
+
+<script src="../../assets/bms-research-scroll.js" defer=""></script>
 
 <script src="../../assets/bms-glossary.js" defer=""></script>
 

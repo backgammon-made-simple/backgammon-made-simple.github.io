@@ -151,7 +151,7 @@
     "href": "research/what-we-are-building.html",
     "title": "What We Are Building",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\nEach part of the site has a different job, but they all support the same goal: make strong backgammon ideas easier to understand and use."
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nEach part of the site has a different job, but they all support the same goal: make strong backgammon ideas easier to understand and use."
   },
   {
     "objectID": "research/what-we-are-building.html#the-learning-and-analysis-tools",
@@ -193,7 +193,7 @@
     "href": "research/index.html",
     "title": "Research",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\n    \n  \n  \n\n\n\n\nResearch is where we publish the methods, supporting analysis, project notes, and reproducibility details behind Backgammon Made Simple.\n\n\n\n  \n    Select a category or tag to filter the articles. Select an active filter again to clear it.\n  \n\n  \n    Categories\n    \n      \n        Learn×0\n      \n      \n        Position Analyzer×0\n      \n      \n        Match Predictor×0\n      \n      \n        Engine Benchmark×0\n      \n      \n        Research×0\n      \n    \n  \n\n  \n    Tags\n    \n  \n\n  \n    \n    \n      Clear filters\n    \n  \n\n\n\n\n\n  \n\n    \n      \n        \n          Sage vs GNU: Additional Details\n        \n        \n          How Stage 1 was run, checked, and interpreted\n        \n      \n\n      \n        21 min read\n      \n    \n\n    \n      Methods, results, and evidence for the Sage versus GNU Stage 1 backgammon engine benchmark.\n\n    \n\n    \n\n    \n      Read article\n    \n  \n\n  \n\n    \n      \n        \n          What We Are Building\n        \n        \n          Backgammon Made Simple project update\n        \n      \n\n      \n        4 min read\n      \n    \n\n    \n      How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.\n\n    \n\n    \n      \n        \n          \n            \n              \n                Learn\n              \n            \n              \n                Position Analyzer\n              \n            \n              \n                Match Predictor\n              \n            \n              \n                Engine Benchmark\n              \n            \n              \n                Research\n              \n            \n          \n        \n\n        \n          \n            \n              \n                Project Updates\n              \n            \n              \n                Open-source Tools\n              \n            \n              \n                Site Development\n              \n            \n          \n        \n      \n    \n\n    \n      Read article\n    \n  \n\n\nNo matching items\n\n\n  No articles match the selected category and tag."
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\n    \n  \n  \n\n\n\n\nResearch is where we publish the methods, supporting analysis, project notes, and reproducibility details behind Backgammon Made Simple.\n\n\n\n  \n    Select a category or tag to filter the articles. Select an active filter again to clear it.\n  \n\n  \n    Categories\n    \n      \n        Learn×0\n      \n      \n        Position Analyzer×0\n      \n      \n        Match Predictor×0\n      \n      \n        Engine Benchmark×0\n      \n      \n        Research×0\n      \n    \n  \n\n  \n    Tags\n    \n  \n\n  \n    \n    \n      Clear filters\n    \n  \n\n\n\n\n\n  \n\n    \n      \n        \n          Sage vs GNU: Additional Details\n        \n        \n          How Stage 1 was run, checked, and interpreted\n        \n      \n\n      \n        21 min read\n      \n    \n\n    \n      Methods, results, and evidence for the Sage versus GNU Stage 1 backgammon engine benchmark.\n\n    \n\n    \n\n    \n      Read article\n    \n  \n\n  \n\n    \n      \n        \n          What We Are Building\n        \n        \n          Backgammon Made Simple project update\n        \n      \n\n      \n        4 min read\n      \n    \n\n    \n      How Backgammon Made Simple connects lessons, position analysis, match prediction, engine comparisons, research, and open-source tools.\n\n    \n\n    \n      \n        \n          \n            \n              \n                Learn\n              \n            \n              \n                Position Analyzer\n              \n            \n              \n                Match Predictor\n              \n            \n              \n                Engine Benchmark\n              \n            \n              \n                Research\n              \n            \n          \n        \n\n        \n          \n            \n              \n                Project Updates\n              \n            \n              \n                Open-source Tools\n              \n            \n              \n                Site Development\n              \n            \n          \n        \n      \n    \n\n    \n      Read article\n    \n  \n\n\nNo matching items\n\n\n  No articles match the selected category and tag."
   },
   {
     "objectID": "posts/2026-07-sage-vs-gnu-update.html",
@@ -242,10 +242,910 @@
     "href": "learn/start-here/index.html",
     "title": "Start Here",
     "section": "",
-    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n\n\n1. The Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n\n\n2. Reading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 12 lessons\n\n\n\n\n\n\n1. The Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n\n\n2. Reading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\n3. Scrolling Test: Start Here 01▾\n\n\nDeterministic continuous-scrolling fixture 01 for Start Here.\n\n\n\n\n\n\n\n\n4. Scrolling Test: Start Here 02▾\n\n\nDeterministic continuous-scrolling fixture 02 for Start Here.\n\n\n\n\n\n\n\n\n5. Scrolling Test: Start Here 03▾\n\n\nDeterministic continuous-scrolling fixture 03 for Start Here.\n\n\n\n\n\n\n\n\n6. Scrolling Test: Start Here 04▾\n\n\nDeterministic continuous-scrolling fixture 04 for Start Here.\n\n\n\n\n\n\n\n\n7. Scrolling Test: Start Here 05▾\n\n\nDeterministic continuous-scrolling fixture 05 for Start Here.\n\n\n\n\n\n\n\n\n8. Scrolling Test: Start Here 06▾\n\n\nDeterministic continuous-scrolling fixture 06 for Start Here.\n\n\n\n\n\n\n\n\n9. Scrolling Test: Start Here 07▾\n\n\nDeterministic continuous-scrolling fixture 07 for Start Here.\n\n\n\n\n\n\n\n\n10. Scrolling Test: Start Here 08▾\n\n\nDeterministic continuous-scrolling fixture 08 for Start Here.\n\n\n\n\n\n\n\n\n11. Scrolling Test: Start Here 09▾\n\n\nDeterministic continuous-scrolling fixture 09 for Start Here.\n\n\n\n\n\n\n\n\n12. Scrolling Test: Start Here 10▾\n\n\nDeterministic continuous-scrolling fixture 10 for Start Here.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Start Here"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-09.html",
+    "href": "learn/scrolling-test/start-here/lesson-09.html",
+    "title": "Scrolling Test: Start Here 09",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "11. Scrolling Test: Start Here 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-09.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-09.html#overview",
+    "title": "Scrolling Test: Start Here 09",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 09.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "11. Scrolling Test: Start Here 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-09.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-09.html#example",
+    "title": "Scrolling Test: Start Here 09",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "11. Scrolling Test: Start Here 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-09.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-09.html#details",
+    "title": "Scrolling Test: Start Here 09",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "11. Scrolling Test: Start Here 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-09.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-09.html#summary",
+    "title": "Scrolling Test: Start Here 09",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "11. Scrolling Test: Start Here 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-07.html",
+    "href": "learn/scrolling-test/start-here/lesson-07.html",
+    "title": "Scrolling Test: Start Here 07",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "9. Scrolling Test: Start Here 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-07.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-07.html#overview",
+    "title": "Scrolling Test: Start Here 07",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 07.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "9. Scrolling Test: Start Here 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-07.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-07.html#example",
+    "title": "Scrolling Test: Start Here 07",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "9. Scrolling Test: Start Here 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-07.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-07.html#details",
+    "title": "Scrolling Test: Start Here 07",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "9. Scrolling Test: Start Here 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-07.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-07.html#summary",
+    "title": "Scrolling Test: Start Here 07",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "9. Scrolling Test: Start Here 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-05.html",
+    "href": "learn/scrolling-test/start-here/lesson-05.html",
+    "title": "Scrolling Test: Start Here 05",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "7. Scrolling Test: Start Here 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-05.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-05.html#overview",
+    "title": "Scrolling Test: Start Here 05",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 05.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "7. Scrolling Test: Start Here 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-05.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-05.html#example",
+    "title": "Scrolling Test: Start Here 05",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "7. Scrolling Test: Start Here 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-05.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-05.html#details",
+    "title": "Scrolling Test: Start Here 05",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "7. Scrolling Test: Start Here 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-05.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-05.html#summary",
+    "title": "Scrolling Test: Start Here 05",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "7. Scrolling Test: Start Here 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-03.html",
+    "href": "learn/scrolling-test/start-here/lesson-03.html",
+    "title": "Scrolling Test: Start Here 03",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "5. Scrolling Test: Start Here 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-03.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-03.html#overview",
+    "title": "Scrolling Test: Start Here 03",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 03.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "5. Scrolling Test: Start Here 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-03.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-03.html#example",
+    "title": "Scrolling Test: Start Here 03",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "5. Scrolling Test: Start Here 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-03.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-03.html#details",
+    "title": "Scrolling Test: Start Here 03",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "5. Scrolling Test: Start Here 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-03.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-03.html#summary",
+    "title": "Scrolling Test: Start Here 03",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "5. Scrolling Test: Start Here 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-01.html",
+    "href": "learn/scrolling-test/start-here/lesson-01.html",
+    "title": "Scrolling Test: Start Here 01",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "3. Scrolling Test: Start Here 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-01.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-01.html#overview",
+    "title": "Scrolling Test: Start Here 01",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 01.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "3. Scrolling Test: Start Here 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-01.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-01.html#example",
+    "title": "Scrolling Test: Start Here 01",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\n  Responsive UI edge cases\n\n  \n    This deliberately long sentence contains an\n    internal anchor with a descriptive label that must wrap cleanly on a narrow screen\n    and the unbroken token\n    cube-decision-fixture-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789-abcdefghijklmnopqrstuvwxyz.\n  \n\n  \n    Choose an edge-case response.\n    \n      Keep playing with this unusually long choice label\n      Stop\n      Cube → 4\n    \n    Choose a response to open the layout stress panel.\n  \n\n  \n    Open the layout stress panel\n    \n      \n        The panel combines content that wraps, content that scrolls, and a compact graphic so resizing and continuous loading can be checked together.\n      \n\n      \n        \n\n\n\nDecision\nEquity\nVolatility\nMarket losers\nGammons\nCube ownership\n\n\n\n\nDouble\n+0.412\nHigh\nMany\n18%\nOffered\n\n\nWait\n+0.398\nMedium\nSome\n16%\nCentered\n\n\n\n\n      \n\n      XGID=-abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789:0:0:1:00:0:0:0:0:10\n\n      \n        Wide responsive position strip\n        A wide decorative strip used to verify responsive SVG sizing and rewritten identifiers.\n        \n          \n            \n            \n          \n        \n        \n        \n          \n          \n          \n          \n        \n      \n    \n  \n\n  Edge-case anchor target\n  The internal link above should reach this heading without changing pages.\n\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "3. Scrolling Test: Start Here 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-01.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-01.html#details",
+    "title": "Scrolling Test: Start Here 01",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "3. Scrolling Test: Start Here 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-01.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-01.html#summary",
+    "title": "Scrolling Test: Start Here 01",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "3. Scrolling Test: Start Here 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-09.html",
+    "href": "learn/scrolling-test/opening-play/lesson-09.html",
+    "title": "Scrolling Test: Opening Play Lab 09",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "9. Scrolling Test: Opening Play Lab 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-09.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-09.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 09",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 09.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "9. Scrolling Test: Opening Play Lab 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-09.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-09.html#example",
+    "title": "Scrolling Test: Opening Play Lab 09",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "9. Scrolling Test: Opening Play Lab 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-09.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-09.html#details",
+    "title": "Scrolling Test: Opening Play Lab 09",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "9. Scrolling Test: Opening Play Lab 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-09.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-09.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 09",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "9. Scrolling Test: Opening Play Lab 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-07.html",
+    "href": "learn/scrolling-test/opening-play/lesson-07.html",
+    "title": "Scrolling Test: Opening Play Lab 07",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "7. Scrolling Test: Opening Play Lab 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-07.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-07.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 07",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 07.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "7. Scrolling Test: Opening Play Lab 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-07.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-07.html#example",
+    "title": "Scrolling Test: Opening Play Lab 07",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "7. Scrolling Test: Opening Play Lab 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-07.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-07.html#details",
+    "title": "Scrolling Test: Opening Play Lab 07",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "7. Scrolling Test: Opening Play Lab 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-07.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-07.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 07",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "7. Scrolling Test: Opening Play Lab 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-05.html",
+    "href": "learn/scrolling-test/opening-play/lesson-05.html",
+    "title": "Scrolling Test: Opening Play Lab 05",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "5. Scrolling Test: Opening Play Lab 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-05.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-05.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 05",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 05.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "5. Scrolling Test: Opening Play Lab 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-05.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-05.html#example",
+    "title": "Scrolling Test: Opening Play Lab 05",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "5. Scrolling Test: Opening Play Lab 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-05.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-05.html#details",
+    "title": "Scrolling Test: Opening Play Lab 05",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "5. Scrolling Test: Opening Play Lab 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-05.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-05.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 05",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "5. Scrolling Test: Opening Play Lab 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-03.html",
+    "href": "learn/scrolling-test/opening-play/lesson-03.html",
+    "title": "Scrolling Test: Opening Play Lab 03",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "3. Scrolling Test: Opening Play Lab 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-03.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-03.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 03",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 03.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "3. Scrolling Test: Opening Play Lab 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-03.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-03.html#example",
+    "title": "Scrolling Test: Opening Play Lab 03",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "3. Scrolling Test: Opening Play Lab 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-03.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-03.html#details",
+    "title": "Scrolling Test: Opening Play Lab 03",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "3. Scrolling Test: Opening Play Lab 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-03.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-03.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 03",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "3. Scrolling Test: Opening Play Lab 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-01.html",
+    "href": "learn/scrolling-test/opening-play/lesson-01.html",
+    "title": "Scrolling Test: Opening Play Lab 01",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "1. Scrolling Test: Opening Play Lab 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-01.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-01.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 01",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 01.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "1. Scrolling Test: Opening Play Lab 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-01.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-01.html#example",
+    "title": "Scrolling Test: Opening Play Lab 01",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\n  Responsive UI edge cases\n\n  \n    This deliberately long sentence contains an\n    internal anchor with a descriptive label that must wrap cleanly on a narrow screen\n    and the unbroken token\n    cube-decision-fixture-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789-abcdefghijklmnopqrstuvwxyz.\n  \n\n  \n    Choose an edge-case response.\n    \n      Keep playing with this unusually long choice label\n      Stop\n      Cube → 4\n    \n    Choose a response to open the layout stress panel.\n  \n\n  \n    Open the layout stress panel\n    \n      \n        The panel combines content that wraps, content that scrolls, and a compact graphic so resizing and continuous loading can be checked together.\n      \n\n      \n        \n\n\n\nDecision\nEquity\nVolatility\nMarket losers\nGammons\nCube ownership\n\n\n\n\nDouble\n+0.412\nHigh\nMany\n18%\nOffered\n\n\nWait\n+0.398\nMedium\nSome\n16%\nCentered\n\n\n\n\n      \n\n      XGID=-abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789:0:0:1:00:0:0:0:0:10\n\n      \n        Wide responsive position strip\n        A wide decorative strip used to verify responsive SVG sizing and rewritten identifiers.\n        \n          \n            \n            \n          \n        \n        \n        \n          \n          \n          \n          \n        \n      \n    \n  \n\n  Edge-case anchor target\n  The internal link above should reach this heading without changing pages.\n\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "1. Scrolling Test: Opening Play Lab 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-01.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-01.html#details",
+    "title": "Scrolling Test: Opening Play Lab 01",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "1. Scrolling Test: Opening Play Lab 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-01.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-01.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 01",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "1. Scrolling Test: Opening Play Lab 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-09.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-09.html",
+    "title": "Scrolling Test: The Doubling Cube 09",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "11. Scrolling Test: The Doubling Cube 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-09.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-09.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 09",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 09.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "11. Scrolling Test: The Doubling Cube 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-09.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-09.html#example",
+    "title": "Scrolling Test: The Doubling Cube 09",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "11. Scrolling Test: The Doubling Cube 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-09.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-09.html#details",
+    "title": "Scrolling Test: The Doubling Cube 09",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "11. Scrolling Test: The Doubling Cube 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-09.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-09.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 09",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "11. Scrolling Test: The Doubling Cube 09"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-07.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-07.html",
+    "title": "Scrolling Test: The Doubling Cube 07",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "9. Scrolling Test: The Doubling Cube 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-07.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-07.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 07",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 07.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "9. Scrolling Test: The Doubling Cube 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-07.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-07.html#example",
+    "title": "Scrolling Test: The Doubling Cube 07",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "9. Scrolling Test: The Doubling Cube 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-07.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-07.html#details",
+    "title": "Scrolling Test: The Doubling Cube 07",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "9. Scrolling Test: The Doubling Cube 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-07.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-07.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 07",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "9. Scrolling Test: The Doubling Cube 07"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-05.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-05.html",
+    "title": "Scrolling Test: The Doubling Cube 05",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "7. Scrolling Test: The Doubling Cube 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-05.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-05.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 05",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 05.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "7. Scrolling Test: The Doubling Cube 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-05.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-05.html#example",
+    "title": "Scrolling Test: The Doubling Cube 05",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "7. Scrolling Test: The Doubling Cube 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-05.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-05.html#details",
+    "title": "Scrolling Test: The Doubling Cube 05",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "7. Scrolling Test: The Doubling Cube 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-05.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-05.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 05",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "7. Scrolling Test: The Doubling Cube 05"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-03.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-03.html",
+    "title": "Scrolling Test: The Doubling Cube 03",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "5. Scrolling Test: The Doubling Cube 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-03.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-03.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 03",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 03.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "5. Scrolling Test: The Doubling Cube 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-03.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-03.html#example",
+    "title": "Scrolling Test: The Doubling Cube 03",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\n  Responsive UI edge cases\n\n  \n    This deliberately long sentence contains an\n    internal anchor with a descriptive label that must wrap cleanly on a narrow screen\n    and the unbroken token\n    cube-decision-fixture-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789-abcdefghijklmnopqrstuvwxyz.\n  \n\n  \n    Choose an edge-case response.\n    \n      Keep playing with this unusually long choice label\n      Stop\n      Cube → 4\n    \n    Choose a response to open the layout stress panel.\n  \n\n  \n    Open the layout stress panel\n    \n      \n        The panel combines content that wraps, content that scrolls, and a compact graphic so resizing and continuous loading can be checked together.\n      \n\n      \n        \n\n\n\nDecision\nEquity\nVolatility\nMarket losers\nGammons\nCube ownership\n\n\n\n\nDouble\n+0.412\nHigh\nMany\n18%\nOffered\n\n\nWait\n+0.398\nMedium\nSome\n16%\nCentered\n\n\n\n\n      \n\n      XGID=-abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789:0:0:1:00:0:0:0:0:10\n\n      \n        Wide responsive position strip\n        A wide decorative strip used to verify responsive SVG sizing and rewritten identifiers.\n        \n          \n            \n            \n          \n        \n        \n        \n          \n          \n          \n          \n        \n      \n    \n  \n\n  Edge-case anchor target\n  The internal link above should reach this heading without changing pages.\n\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "5. Scrolling Test: The Doubling Cube 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-03.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-03.html#details",
+    "title": "Scrolling Test: The Doubling Cube 03",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "5. Scrolling Test: The Doubling Cube 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-03.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-03.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 03",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "5. Scrolling Test: The Doubling Cube 03"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-01.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-01.html",
+    "title": "Scrolling Test: The Doubling Cube 01",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "3. Scrolling Test: The Doubling Cube 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-01.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-01.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 01",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 01.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "3. Scrolling Test: The Doubling Cube 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-01.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-01.html#example",
+    "title": "Scrolling Test: The Doubling Cube 01",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nOpen the position and choose an action\n\n  \n    Cube decision test position\n    A simplified backgammon board used to test responsive scrolling content.\n    \n      \n        \n        \n      \n    \n    \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n    2\n  \n\n  The second view highlights how the position can change after the first cube decision.\n\n  \n    Follow-up market-loser view\n    A second simplified board showing the attacking zone after the first decision.\n    \n      \n        \n      \n    \n    \n      \n      \n      \n      \n        \n        \n        \n        \n        \n      \n      \n        \n        \n        \n      \n    \n  \n\n  \n    What would you do?\n    \n      Double\n      Wait\n      Take\n      Pass\n    \n    Choose an action to open the explanation.\n  \n\n  \n    Open the explanation\n    \n      Taking keeps the game alive at the doubled stake, while passing ends it immediately.\n      This nested explanation deliberately changes the lesson height so scrolling and table-of-contents tracking can be verified.\n    \n  \n\n\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "3. Scrolling Test: The Doubling Cube 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-01.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-01.html#details",
+    "title": "Scrolling Test: The Doubling Cube 01",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "3. Scrolling Test: The Doubling Cube 01"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-01.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-01.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 01",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "3. Scrolling Test: The Doubling Cube 01"
     ]
   },
   {
@@ -253,7 +1153,7 @@
     "href": "learn/opening-play/index.html",
     "title": "Opening Play Lab",
     "section": "",
-    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\nNo options yet\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\nNo options yet\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 10 lessons\n\n\n\n\n\n\n1. Scrolling Test: Opening Play Lab 01▾\n\n\nDeterministic continuous-scrolling fixture 01 for Opening Play Lab.\n\n\n\n\n\n\n\n\n2. Scrolling Test: Opening Play Lab 02▾\n\n\nDeterministic continuous-scrolling fixture 02 for Opening Play Lab.\n\n\n\n\n\n\n\n\n3. Scrolling Test: Opening Play Lab 03▾\n\n\nDeterministic continuous-scrolling fixture 03 for Opening Play Lab.\n\n\n\n\n\n\n\n\n4. Scrolling Test: Opening Play Lab 04▾\n\n\nDeterministic continuous-scrolling fixture 04 for Opening Play Lab.\n\n\n\n\n\n\n\n\n5. Scrolling Test: Opening Play Lab 05▾\n\n\nDeterministic continuous-scrolling fixture 05 for Opening Play Lab.\n\n\n\n\n\n\n\n\n6. Scrolling Test: Opening Play Lab 06▾\n\n\nDeterministic continuous-scrolling fixture 06 for Opening Play Lab.\n\n\n\n\n\n\n\n\n7. Scrolling Test: Opening Play Lab 07▾\n\n\nDeterministic continuous-scrolling fixture 07 for Opening Play Lab.\n\n\n\n\n\n\n\n\n8. Scrolling Test: Opening Play Lab 08▾\n\n\nDeterministic continuous-scrolling fixture 08 for Opening Play Lab.\n\n\n\n\n\n\n\n\n9. Scrolling Test: Opening Play Lab 09▾\n\n\nDeterministic continuous-scrolling fixture 09 for Opening Play Lab.\n\n\n\n\n\n\n\n\n10. Scrolling Test: Opening Play Lab 10▾\n\n\nDeterministic continuous-scrolling fixture 10 for Opening Play Lab.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Opening Play Lab"
@@ -264,7 +1164,7 @@
     "href": "learn/glossary/index.html",
     "title": "Backgammon Glossary",
     "section": "",
-    "text": "Search terms and aliases\n    \n  \n\n  \n    Glossary category\n    \n  \n\n  \n    Related learning track\n    \n      Doubling Cube\n      Checker Play\n      Opening Play\n      Match Play\n      Endgames\n      Engines and Analysis\n    \n  \n\n  \n    \n    Reset search and filters\n  \n\n\n\n\n# A\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\n#3 terms\n\n\n\n\n10 in the Zone\n\n\n\nAlso called: Ten in the Zone\n\n\n\nThe zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two builders down from the mid-point increases that number to ten.\n\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nAttack Zone\n\n\nZone of Attack\n\n\nYour Side of the Board\n\n\nHome Board\n\n\nOuter Board\n\n\nMid-Point\n\n\nActive Builder\n\n\nBuilder\n\n\nBlitz\n\n\nAttacking Game\n\n\nHit\n\n\nCover a Blot\n\n\nClose Out\n\n\n\n\n\n\nLearn more (1)\n\n\n\nWhat the Cube Is Really Asking\n\n\n\n\n\n\n\n\n25 Percent Rule\n\n\n\n\nThe 25 Percent Rule is a simplified baseline for cube decisions. In a holding game or other positions, if future cube actions are ignored, you need roughly a 25 percent winning chance to take a double. If the cube remains live and you may be able to recube later, you might correctly take with less than 25 percent.\n\n\n\nCategory: Cube and Scoring\n\n\n\nSee also\n\n\n\nTake Point\n\n\nRaw Take Point\n\n\nTake\n\n\nPass\n\n\nRecube\n\n\nLive Cube\n\n\nCube Ownership\n\n\nHolding Game\n\n\nDoubling Cube\n\n\n\n\n\n\n\n8-9-12 Doubling Rule\n\n\n\n\nIn a pure race, the 8-9-12 Doubling Rule helps guide cube decisions. The percentage is calculated by dividing the difference between the two pip counts by the leader's pip count. The leader considers doubling at about 8 percent, the middle of the doubling window is around 9 percent, and the trailer can usually take when behind by up to about 12 percent.\n\n\nFor example, if the leader has a pip count of 60 and the trailer has 66, the difference is 6 pips. Six divided by 60 is 10 percent, placing the position within the doubling window.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nPip Count\n\n\nPure Race\n\n\nDoubling Window\n\n\nTake Point\n\n\nDouble\n\n\nTake\n\n\n\n\n\n\n\n\n\nA9 terms\n\n\n\n\nABT\n\n\n\nAlso called: American Backgammon Tour\n\n\n\nThe American Backgammon Tour is a series of backgammon tournaments held across the United States. Players compete in multiple events and earn points toward the overall ABT standings.\n\n\n\nCategory: Organizations and Community\n\n\n\nSee also\n\n\n\nTournament\n\n\nMatch Play\n\n\nChampionship Division\n\n\nRating\n\n\nStandings\n\n\n\n\n\n\n\nAce\n\n\n\n\nIn backgammon, ace means one. It can describe rolling a one or refer to the one-point, which is also called the ace-point.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAce-Point Game\n\n\nAcey-Deucey\n\n\nDeuce\n\n\n\n\n\n\n\nAce-Point Game\n\n\n\n\nAn ace-point game is a holding game in which you hold an anchor on your opponent's one-point. While your opponent bears in, you have about a 50 percent chance of getting a shot.\n\n\nIt is stronger than a two-point or three-point holding game because those anchors give you fewer opportunities to get a shot. The ace-point anchor therefore offers more hitting chances while the opponent brings their checkers home.\n\n\n\nCategory: Board, Equipment, and Notation\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAnchor\n\n\nHolding Game\n\n\nBear In\n\n\nShot\n\n\nHit\n\n\nTwo-Point\n\n\nThree-Point\n\n\n\n\n\n\n\nActing Captain\n\n\n\n\nIn a chouette, every team member controls their own cube. The captain makes the checker plays against the box.\n\n\nFor example, the captain may offer a double that the box passes. If the box still holds another player's cube, that player becomes the acting captain and continues the game against the box. The acting captain takes over the checker decisions for the remaining active game.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nChouette\n\n\nCaptain\n\n\nBox\n\n\nTeam\n\n\nDoubling Cube\n\n\nCube Ownership\n\n\nDouble\n\n\nPass\n\n\nChecker Play\n\n\n\n\n\n\n\nAction Play\n\n\n\n\nAn action play is a bold move made when you want to complicate the position, often when you are behind. It increases contact or volatility to create chances to turn the game around.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\n\n\n\n\n\nAction Position\n\n\n\n\nAn action position is a volatile position with multiple hitting or exchange possibilities. These positions can lead to large swings in equity and require careful evaluation, especially because they may create strong doubling opportunities.\n\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\nEquity\n\n\nDoubling Cube\n\n\nCube Action\n\n\nHit\n\n\n\n\n\n\n\nActive Builder\n\n\n\n\nAn active builder is a blot or spare checker in your outer board that can help you make a new point in your home board on a future roll. It is positioned to help you build a stronger board.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nBuilder\n\n\nBlot\n\n\nSpare Checker\n\n\nOuter Board\n\n\nHome Board\n\n\nPoint\n\n\nBuilding a Board\n\n\nBuild One's Board\n\n\nOur Board\n\n\nTheir Board\n\n\n\n\n\n\nLearn more (1)\n\n\n\nWhat the Cube Is Really Asking\n\n\n\n\n\n\n\n\nAdvanced Anchor\n\n\n\n\nAn advanced anchor is an anchor on your opponent's four-point or five-point. It gives you outfield control and helps your back checkers escape. It is particularly useful in holding games, and you generally try not to break it until late in the middlegame or endgame.\n\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nAnchor\n\n\nFour-Point\n\n\nFive-Point\n\n\nOutfield Control\n\n\nBack Checker\n\n\nEscape\n\n\nHolding Game\n\n\nMiddlegame\n\n\nEnd Game\n\n\n\n\n\n\nLearn more (1)\n\n\n\nThe Main Game Plans\n\n\n\n\n\n\n\n\nAhead in the Count\n\n\n\nAlso called: Ahead in the Race\n\n\n\nAhead in the Count means you have a lower pip count than your opponent, meaning you have fewer pips remaining to bring your checkers home and bear them off.\n\n\nA common principle is, \"When you are ahead in the race, race.\" Avoid unnecessary risk and contact, and focus on bringing your checkers home safely.\n\n\n\nCategory: Analysis and Probability\n\n\n\nSee also\n\n\n\nPip Count\n\n\nRace\n\n\nBear Off\n\n\nContact Position\n\n\nSafe Play\n\n\n\n\n\n\n\n\n\n  No glossary terms match this search and filter combination.\n\n\n  Back to top",
+    "text": "Search terms and aliases\n    \n  \n\n  \n    Glossary category\n    \n  \n\n  \n    Related learning track\n    \n      Doubling Cube\n      Checker Play\n      Opening Play\n      Match Play\n      Endgames\n      Engines and Analysis\n    \n  \n\n  \n    \n    Reset search and filters\n  \n\n\n\n\n# A\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\n#3 terms\n\n\n\n\n10 in the Zone\n\n\n\nAlso called: Ten in the Zone\n\n\n\nThe zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two active builders down from the mid-point increases that number to ten.\n\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nAttack Zone\n\n\nZone of Attack\n\n\nYour Side of the Board\n\n\nHome Board\n\n\nOuter Board\n\n\nMid-Point\n\n\nActive Builder\n\n\nBuilder\n\n\nBlitz\n\n\nAttacking Game\n\n\nHit\n\n\nCover a Blot\n\n\nClose Out\n\n\n\n\n\n\nLearn more (1)\n\n\n\nWhat the Cube Is Really Asking\n\n\n\n\n\n\n\n\n25 Percent Rule\n\n\n\n\nThe 25 Percent Rule is a simplified baseline for cube decisions. In a holding game or other positions, if future cube actions are ignored, you need roughly a 25 percent winning chance to take a double. If the cube remains live and you may be able to recube later, you might correctly take with less than 25 percent.\n\n\n\nCategory: Cube and Scoring\n\n\n\nSee also\n\n\n\nTake Point\n\n\nRaw Take Point\n\n\nTake\n\n\nPass\n\n\nRecube\n\n\nLive Cube\n\n\nCube Ownership\n\n\nHolding Game\n\n\nDoubling Cube\n\n\n\n\n\n\n\n8-9-12 Doubling Rule\n\n\n\n\nIn a pure race, the 8-9-12 Doubling Rule helps guide cube decisions. The percentage is calculated by dividing the difference between the two pip counts by the leader's pip count. The leader considers doubling at about 8 percent, the middle of the doubling window is around 9 percent, and the trailer can usually take when behind by up to about 12 percent.\n\n\nFor example, if the leader has a pip count of 60 and the trailer has 66, the difference is 6 pips. Six divided by 60 is 10 percent, placing the position within the doubling window.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nPip Count\n\n\nPure Race\n\n\nDoubling Window\n\n\nTake Point\n\n\nDouble\n\n\nTake\n\n\n\n\n\n\n\n\n\nA9 terms\n\n\n\n\nABT\n\n\n\nAlso called: American Backgammon Tour\n\n\n\nThe American Backgammon Tour is a series of backgammon tournaments held across the United States. Players compete in multiple events and earn points toward the overall ABT standings.\n\n\n\nCategory: Organizations and Community\n\n\n\nSee also\n\n\n\nTournament\n\n\nMatch Play\n\n\nChampionship Division\n\n\nRating\n\n\nStandings\n\n\n\n\n\n\n\nAce\n\n\n\n\nIn backgammon, ace means one. It can describe rolling a one or refer to the one-point, which is also called the ace-point.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAce-Point Game\n\n\nAcey-Deucey\n\n\nDeuce\n\n\n\n\n\n\n\nAce-Point Game\n\n\n\n\nAn ace-point game is a holding game in which you hold an anchor on your opponent's one-point. While your opponent bears in, you have about a 50 percent chance of getting a shot.\n\n\nIt is stronger than a two-point or three-point holding game because those anchors give you fewer opportunities to get a shot. The ace-point anchor therefore offers more hitting chances while the opponent brings their checkers home.\n\n\n\nCategory: Board, Equipment, and Notation\n\n\n\nSee also\n\n\n\nOne-Point\n\n\nAce-Point\n\n\nAce-Point Anchor\n\n\nAnchor\n\n\nHolding Game\n\n\nBear In\n\n\nShot\n\n\nHit\n\n\nTwo-Point\n\n\nThree-Point\n\n\n\n\n\n\n\nActing Captain\n\n\n\n\nIn a chouette, every team member controls their own cube. The captain makes the checker plays against the box.\n\n\nFor example, the captain may offer a double that the box passes. If the box still holds another player's cube, that player becomes the acting captain and continues the game against the box. The acting captain takes over the checker decisions for the remaining active game.\n\n\n\nCategory: Language, Rules, and Culture\n\n\n\nSee also\n\n\n\nChouette\n\n\nCaptain\n\n\nBox\n\n\nTeam\n\n\nDoubling Cube\n\n\nCube Ownership\n\n\nDouble\n\n\nPass\n\n\nChecker Play\n\n\n\n\n\n\n\nAction Play\n\n\n\n\nAn action play is a bold move made when you want to complicate the position, often when you are behind. It increases contact or volatility to create chances to turn the game around.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\n\n\n\n\n\nAction Position\n\n\n\n\nAn action position is a volatile position with multiple hitting or exchange possibilities. These positions can lead to large swings in equity and require careful evaluation, especially because they may create strong doubling opportunities.\n\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nContact Position\n\n\nVolatility\n\n\nEquity\n\n\nDoubling Cube\n\n\nCube Action\n\n\nHit\n\n\n\n\n\n\n\nActive Builder\n\n\n\n\nAn active builder is a blot or spare checker in your outer board that can help you make a new point in your home board on a future roll. It is positioned to help you build a stronger board.\n\n\n\nCategory: Checker Play and Tactics\n\n\n\nSee also\n\n\n\nBuilder\n\n\nBlot\n\n\nSpare Checker\n\n\nOuter Board\n\n\nHome Board\n\n\nPoint\n\n\nBuilding a Board\n\n\nBuild One's Board\n\n\nOur Board\n\n\nTheir Board\n\n\n\n\n\n\nLearn more (1)\n\n\n\nWhat the Cube Is Really Asking\n\n\n\n\n\n\n\n\nAdvanced Anchor\n\n\n\n\nAn advanced anchor is an anchor on your opponent's four-point or five-point. It gives you outfield control and helps your back checkers escape. It is particularly useful in holding games, and you generally try not to break it until late in the middlegame or endgame.\n\n\n\nCategory: Strategy and Position Types\n\n\n\nSee also\n\n\n\nAnchor\n\n\nFour-Point\n\n\nFive-Point\n\n\nOutfield Control\n\n\nBack Checker\n\n\nEscape\n\n\nHolding Game\n\n\nMiddlegame\n\n\nEnd Game\n\n\n\n\n\n\nLearn more (1)\n\n\n\nThe Main Game Plans\n\n\n\n\n\n\n\n\nAhead in the Count\n\n\n\nAlso called: Ahead in the Race\n\n\n\nAhead in the Count means you have a lower pip count than your opponent, meaning you have fewer pips remaining to bring your checkers home and bear them off.\n\n\nA common principle is, \"When you are ahead in the race, race.\" Avoid unnecessary risk and contact, and focus on bringing your checkers home safely.\n\n\n\nCategory: Analysis and Probability\n\n\n\nSee also\n\n\n\nPip Count\n\n\nRace\n\n\nBear Off\n\n\nContact Position\n\n\nSafe Play\n\n\n\n\n\n\n\n\n\n  No glossary terms match this search and filter combination.\n\n\n  Back to top",
     "crumbs": [
       "Learn",
       "Backgammon Glossary"
@@ -275,7 +1175,7 @@
     "href": "learn/cube/why-is-25-percent-the-basic-take-point.html",
     "title": "Why Is 25% the Basic Take Point When a Double Is Offered?",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search",
     "crumbs": [
       "Learn",
       "The Doubling Cube",
@@ -395,7 +1295,7 @@
     "href": "learn/cube/index.html",
     "title": "The Doubling Cube",
     "section": "",
-    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\n\n\n\nTerm Filter\n\n\n\n10 in the Zone×0\n\n\nActive Builder×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 2 lessons\n\n\n\n\n\n\n1. Why Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n\n\n2. What the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nTerm Filter\n\n\n\n10 in the Zone×0\n\n\nActive Builder×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nLessons 12 lessons\n\n\n\n\n\n\n1. Why Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n\n\n2. What the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\n3. Scrolling Test: The Doubling Cube 01▾\n\n\nDeterministic continuous-scrolling fixture 01 for The Doubling Cube.\n\n\n\n\n\n\n\n\n4. Scrolling Test: The Doubling Cube 02▾\n\n\nDeterministic continuous-scrolling fixture 02 for The Doubling Cube.\n\n\n\n\n\n\n\n\n5. Scrolling Test: The Doubling Cube 03▾\n\n\nDeterministic continuous-scrolling fixture 03 for The Doubling Cube.\n\n\n\n\n\n\n\n\n6. Scrolling Test: The Doubling Cube 04▾\n\n\nDeterministic continuous-scrolling fixture 04 for The Doubling Cube.\n\n\n\n\n\n\n\n\n7. Scrolling Test: The Doubling Cube 05▾\n\n\nDeterministic continuous-scrolling fixture 05 for The Doubling Cube.\n\n\n\n\n\n\n\n\n8. Scrolling Test: The Doubling Cube 06▾\n\n\nDeterministic continuous-scrolling fixture 06 for The Doubling Cube.\n\n\n\n\n\n\n\n\n9. Scrolling Test: The Doubling Cube 07▾\n\n\nDeterministic continuous-scrolling fixture 07 for The Doubling Cube.\n\n\n\n\n\n\n\n\n10. Scrolling Test: The Doubling Cube 08▾\n\n\nDeterministic continuous-scrolling fixture 08 for The Doubling Cube.\n\n\n\n\n\n\n\n\n11. Scrolling Test: The Doubling Cube 09▾\n\n\nDeterministic continuous-scrolling fixture 09 for The Doubling Cube.\n\n\n\n\n\n\n\n\n12. Scrolling Test: The Doubling Cube 10▾\n\n\nDeterministic continuous-scrolling fixture 10 for The Doubling Cube.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "The Doubling Cube"
@@ -637,7 +1537,7 @@
     "href": "learn/cube/what-the-cube-is-asking.html",
     "title": "What the Cube Is Really Asking",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search",
     "crumbs": [
       "Learn",
       "The Doubling Cube",
@@ -685,7 +1585,7 @@
     "href": "learn/cube/what-the-cube-is-asking.html#worked-position",
     "title": "What the Cube Is Really Asking",
     "section": "Worked Position",
-    "text": "Worked Position\n\nVerified board position placeholder\n\n\nWhat would you do?\nDouble Wait\n\n\n\nShow answer and explanation\n\nThis scaffold will be replaced with a verified position and engine-backed explanation.",
+    "text": "Worked Position\n\nOpen the position and choose an action\n\n  \n    Cube decision test position\n    A simplified backgammon board used to test responsive scrolling content.\n    \n      \n        \n        \n      \n    \n    \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n    2\n  \n\n  The second view highlights how the position can change after the first cube decision.\n\n  \n    Follow-up market-loser view\n    A second simplified board showing the attacking zone after the first decision.\n    \n      \n        \n      \n    \n    \n      \n      \n      \n      \n        \n        \n        \n        \n        \n      \n      \n        \n        \n        \n      \n    \n  \n\n  \n    What would you do?\n    \n      Double\n      Wait\n      Take\n      Pass\n    \n    Choose an action to open the explanation.\n  \n\n  \n    Open the explanation\n    \n      Taking keeps the game alive at the doubled stake, while passing ends it immediately.\n      This nested explanation deliberately changes the lesson height so scrolling and table-of-contents tracking can be verified.",
     "crumbs": [
       "Learn",
       "The Doubling Cube",
@@ -745,7 +1645,7 @@
     "href": "learn/game-plans/index.html",
     "title": "The Main Game Plans",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\nThis refresher is a bridge into the cube curriculum, not a complete beginner unit.",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nThis refresher is a bridge into the cube curriculum, not a complete beginner unit.",
     "crumbs": [
       "Learn",
       "Start Here",
@@ -817,7 +1717,7 @@
     "href": "learn/index.html",
     "title": "Learn",
     "section": "",
-    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nLearning Track Filter\n\n\n\nStart Here×0\n\n\nThe Doubling Cube×0\n\n\nOpening Play Lab×0\n\n\n\n\n\nTerm Filter\n\n\n\n10 in the Zone×0\n\n\nActive Builder×0\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nStart Here 2 lessons\n\n\n\n\n\n\n1. The Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n\n\n2. Reading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\nThe Doubling Cube 2 lessons\n\n\n\n\n\n\n1. Why Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n\n\n2. What the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\nOpening Play Lab 0 lessons\n\n\n\nNo lessons published yet.\n\n\n\n\n\nNo lessons match this search and filter combination.",
+    "text": "Click to search and filter lessons\n\n\n\nSearch lessons \n\n\n\nDifficulty Filter\n\n\n\nBeginner×0\n\n\nIntermediate×0\n\n\nAdvanced×0\n\n\n\n\n\nLearning Track Filter\n\n\n\nStart Here×0\n\n\nThe Doubling Cube×0\n\n\nOpening Play Lab×0\n\n\n\n\n\nTerm Filter\n\n\n\n10 in the Zone×0\n\n\nActive Builder×0\n\n\nAdvanced Anchor×0\n\n\n\n\n\n\n\nClear search and filters\n\n\n\n\n\n\nCollapse all\n\n\nExpand all\n\n\n\n\n\nStart Here 12 lessons\n\n\n\n\n\n\n1. The Main Game Plans▾\n\n\nA compact refresher on race, holding game, prime, blitz, and backgame plans.\n\n\n\n\n\n\n\n\n2. Reading Positions and Engine Analysis▾\n\n\nHow to read position context, engine output, and uncertainty before turning an answer into a lesson.\n\n\n\n\n\n\n\n\n3. Scrolling Test: Start Here 01▾\n\n\nDeterministic continuous-scrolling fixture 01 for Start Here.\n\n\n\n\n\n\n\n\n4. Scrolling Test: Start Here 02▾\n\n\nDeterministic continuous-scrolling fixture 02 for Start Here.\n\n\n\n\n\n\n\n\n5. Scrolling Test: Start Here 03▾\n\n\nDeterministic continuous-scrolling fixture 03 for Start Here.\n\n\n\n\n\n\n\n\n6. Scrolling Test: Start Here 04▾\n\n\nDeterministic continuous-scrolling fixture 04 for Start Here.\n\n\n\n\n\n\n\n\n7. Scrolling Test: Start Here 05▾\n\n\nDeterministic continuous-scrolling fixture 05 for Start Here.\n\n\n\n\n\n\n\n\n8. Scrolling Test: Start Here 06▾\n\n\nDeterministic continuous-scrolling fixture 06 for Start Here.\n\n\n\n\n\n\n\n\n9. Scrolling Test: Start Here 07▾\n\n\nDeterministic continuous-scrolling fixture 07 for Start Here.\n\n\n\n\n\n\n\n\n10. Scrolling Test: Start Here 08▾\n\n\nDeterministic continuous-scrolling fixture 08 for Start Here.\n\n\n\n\n\n\n\n\n11. Scrolling Test: Start Here 09▾\n\n\nDeterministic continuous-scrolling fixture 09 for Start Here.\n\n\n\n\n\n\n\n\n12. Scrolling Test: Start Here 10▾\n\n\nDeterministic continuous-scrolling fixture 10 for Start Here.\n\n\n\n\n\n\n\n\nThe Doubling Cube 12 lessons\n\n\n\n\n\n\n1. Why Is 25% the Basic Take Point When a Double Is Offered?▾\n\n\nLearn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.\n\n\n\n\n\n\n\n\n2. What the Cube Is Really Asking▾\n\n\nA first lesson scaffold for understanding the doubling cube.\n\n\n\n\n\n\n\n\n3. Scrolling Test: The Doubling Cube 01▾\n\n\nDeterministic continuous-scrolling fixture 01 for The Doubling Cube.\n\n\n\n\n\n\n\n\n4. Scrolling Test: The Doubling Cube 02▾\n\n\nDeterministic continuous-scrolling fixture 02 for The Doubling Cube.\n\n\n\n\n\n\n\n\n5. Scrolling Test: The Doubling Cube 03▾\n\n\nDeterministic continuous-scrolling fixture 03 for The Doubling Cube.\n\n\n\n\n\n\n\n\n6. Scrolling Test: The Doubling Cube 04▾\n\n\nDeterministic continuous-scrolling fixture 04 for The Doubling Cube.\n\n\n\n\n\n\n\n\n7. Scrolling Test: The Doubling Cube 05▾\n\n\nDeterministic continuous-scrolling fixture 05 for The Doubling Cube.\n\n\n\n\n\n\n\n\n8. Scrolling Test: The Doubling Cube 06▾\n\n\nDeterministic continuous-scrolling fixture 06 for The Doubling Cube.\n\n\n\n\n\n\n\n\n9. Scrolling Test: The Doubling Cube 07▾\n\n\nDeterministic continuous-scrolling fixture 07 for The Doubling Cube.\n\n\n\n\n\n\n\n\n10. Scrolling Test: The Doubling Cube 08▾\n\n\nDeterministic continuous-scrolling fixture 08 for The Doubling Cube.\n\n\n\n\n\n\n\n\n11. Scrolling Test: The Doubling Cube 09▾\n\n\nDeterministic continuous-scrolling fixture 09 for The Doubling Cube.\n\n\n\n\n\n\n\n\n12. Scrolling Test: The Doubling Cube 10▾\n\n\nDeterministic continuous-scrolling fixture 10 for The Doubling Cube.\n\n\n\n\n\n\n\n\nOpening Play Lab 10 lessons\n\n\n\n\n\n\n1. Scrolling Test: Opening Play Lab 01▾\n\n\nDeterministic continuous-scrolling fixture 01 for Opening Play Lab.\n\n\n\n\n\n\n\n\n2. Scrolling Test: Opening Play Lab 02▾\n\n\nDeterministic continuous-scrolling fixture 02 for Opening Play Lab.\n\n\n\n\n\n\n\n\n3. Scrolling Test: Opening Play Lab 03▾\n\n\nDeterministic continuous-scrolling fixture 03 for Opening Play Lab.\n\n\n\n\n\n\n\n\n4. Scrolling Test: Opening Play Lab 04▾\n\n\nDeterministic continuous-scrolling fixture 04 for Opening Play Lab.\n\n\n\n\n\n\n\n\n5. Scrolling Test: Opening Play Lab 05▾\n\n\nDeterministic continuous-scrolling fixture 05 for Opening Play Lab.\n\n\n\n\n\n\n\n\n6. Scrolling Test: Opening Play Lab 06▾\n\n\nDeterministic continuous-scrolling fixture 06 for Opening Play Lab.\n\n\n\n\n\n\n\n\n7. Scrolling Test: Opening Play Lab 07▾\n\n\nDeterministic continuous-scrolling fixture 07 for Opening Play Lab.\n\n\n\n\n\n\n\n\n8. Scrolling Test: Opening Play Lab 08▾\n\n\nDeterministic continuous-scrolling fixture 08 for Opening Play Lab.\n\n\n\n\n\n\n\n\n9. Scrolling Test: Opening Play Lab 09▾\n\n\nDeterministic continuous-scrolling fixture 09 for Opening Play Lab.\n\n\n\n\n\n\n\n\n10. Scrolling Test: Opening Play Lab 10▾\n\n\nDeterministic continuous-scrolling fixture 10 for Opening Play Lab.\n\n\n\n\n\n\n\n\nNo lessons match this search and filter combination.",
     "crumbs": [
       "Learn",
       "Learn Home"
@@ -828,7 +1728,7 @@
     "href": "learn/reading-positions-and-engines/index.html",
     "title": "Reading Positions and Engine Analysis",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search\nEngine analysis is useful when it helps you understand a decision, not when it becomes a substitute for reading the position.",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nEngine analysis is useful when it helps you understand a decision, not when it becomes a substitute for reading the position.",
     "crumbs": [
       "Learn",
       "Start Here",
@@ -881,6 +1781,906 @@
       "Learn",
       "Start Here",
       "2. Reading Positions and Engine Analysis"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-02.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-02.html",
+    "title": "Scrolling Test: The Doubling Cube 02",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "4. Scrolling Test: The Doubling Cube 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-02.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-02.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 02",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 02.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "4. Scrolling Test: The Doubling Cube 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-02.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-02.html#example",
+    "title": "Scrolling Test: The Doubling Cube 02",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nOpen the position and choose an action\n\n  \n    Cube decision test position\n    A simplified backgammon board used to test responsive scrolling content.\n    \n      \n        \n        \n      \n    \n    \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n    2\n  \n\n  The second view highlights how the position can change after the first cube decision.\n\n  \n    Follow-up market-loser view\n    A second simplified board showing the attacking zone after the first decision.\n    \n      \n        \n      \n    \n    \n      \n      \n      \n      \n        \n        \n        \n        \n        \n      \n      \n        \n        \n        \n      \n    \n  \n\n  \n    What would you do?\n    \n      Double\n      Wait\n      Take\n      Pass\n    \n    Choose an action to open the explanation.\n  \n\n  \n    Open the explanation\n    \n      Taking keeps the game alive at the doubled stake, while passing ends it immediately.\n      This nested explanation deliberately changes the lesson height so scrolling and table-of-contents tracking can be verified.\n    \n  \n\n\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "4. Scrolling Test: The Doubling Cube 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-02.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-02.html#details",
+    "title": "Scrolling Test: The Doubling Cube 02",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "4. Scrolling Test: The Doubling Cube 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-02.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-02.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 02",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "4. Scrolling Test: The Doubling Cube 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-04.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-04.html",
+    "title": "Scrolling Test: The Doubling Cube 04",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "6. Scrolling Test: The Doubling Cube 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-04.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-04.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 04",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 04.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "6. Scrolling Test: The Doubling Cube 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-04.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-04.html#example",
+    "title": "Scrolling Test: The Doubling Cube 04",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "6. Scrolling Test: The Doubling Cube 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-04.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-04.html#details",
+    "title": "Scrolling Test: The Doubling Cube 04",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "6. Scrolling Test: The Doubling Cube 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-04.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-04.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 04",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "6. Scrolling Test: The Doubling Cube 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-06.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-06.html",
+    "title": "Scrolling Test: The Doubling Cube 06",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "8. Scrolling Test: The Doubling Cube 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-06.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-06.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 06",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 06.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "8. Scrolling Test: The Doubling Cube 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-06.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-06.html#example",
+    "title": "Scrolling Test: The Doubling Cube 06",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "8. Scrolling Test: The Doubling Cube 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-06.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-06.html#details",
+    "title": "Scrolling Test: The Doubling Cube 06",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "8. Scrolling Test: The Doubling Cube 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-06.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-06.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 06",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "8. Scrolling Test: The Doubling Cube 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-08.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-08.html",
+    "title": "Scrolling Test: The Doubling Cube 08",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "10. Scrolling Test: The Doubling Cube 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-08.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-08.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 08",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 08.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "10. Scrolling Test: The Doubling Cube 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-08.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-08.html#example",
+    "title": "Scrolling Test: The Doubling Cube 08",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "10. Scrolling Test: The Doubling Cube 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-08.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-08.html#details",
+    "title": "Scrolling Test: The Doubling Cube 08",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "10. Scrolling Test: The Doubling Cube 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-08.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-08.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 08",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "10. Scrolling Test: The Doubling Cube 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-10.html",
+    "href": "learn/scrolling-test/doubling-cube/lesson-10.html",
+    "title": "Scrolling Test: The Doubling Cube 10",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "12. Scrolling Test: The Doubling Cube 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-10.html#overview",
+    "href": "learn/scrolling-test/doubling-cube/lesson-10.html#overview",
+    "title": "Scrolling Test: The Doubling Cube 10",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for The Doubling Cube lesson 10.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "12. Scrolling Test: The Doubling Cube 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-10.html#example",
+    "href": "learn/scrolling-test/doubling-cube/lesson-10.html#example",
+    "title": "Scrolling Test: The Doubling Cube 10",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "12. Scrolling Test: The Doubling Cube 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-10.html#details",
+    "href": "learn/scrolling-test/doubling-cube/lesson-10.html#details",
+    "title": "Scrolling Test: The Doubling Cube 10",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "12. Scrolling Test: The Doubling Cube 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/doubling-cube/lesson-10.html#summary",
+    "href": "learn/scrolling-test/doubling-cube/lesson-10.html#summary",
+    "title": "Scrolling Test: The Doubling Cube 10",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "The Doubling Cube",
+      "12. Scrolling Test: The Doubling Cube 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-02.html",
+    "href": "learn/scrolling-test/opening-play/lesson-02.html",
+    "title": "Scrolling Test: Opening Play Lab 02",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "2. Scrolling Test: Opening Play Lab 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-02.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-02.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 02",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 02.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "2. Scrolling Test: Opening Play Lab 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-02.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-02.html#example",
+    "title": "Scrolling Test: Opening Play Lab 02",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "2. Scrolling Test: Opening Play Lab 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-02.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-02.html#details",
+    "title": "Scrolling Test: Opening Play Lab 02",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "2. Scrolling Test: Opening Play Lab 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-02.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-02.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 02",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "2. Scrolling Test: Opening Play Lab 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-04.html",
+    "href": "learn/scrolling-test/opening-play/lesson-04.html",
+    "title": "Scrolling Test: Opening Play Lab 04",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "4. Scrolling Test: Opening Play Lab 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-04.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-04.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 04",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 04.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "4. Scrolling Test: Opening Play Lab 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-04.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-04.html#example",
+    "title": "Scrolling Test: Opening Play Lab 04",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "4. Scrolling Test: Opening Play Lab 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-04.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-04.html#details",
+    "title": "Scrolling Test: Opening Play Lab 04",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "4. Scrolling Test: Opening Play Lab 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-04.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-04.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 04",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "4. Scrolling Test: Opening Play Lab 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-06.html",
+    "href": "learn/scrolling-test/opening-play/lesson-06.html",
+    "title": "Scrolling Test: Opening Play Lab 06",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "6. Scrolling Test: Opening Play Lab 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-06.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-06.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 06",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 06.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "6. Scrolling Test: Opening Play Lab 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-06.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-06.html#example",
+    "title": "Scrolling Test: Opening Play Lab 06",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "6. Scrolling Test: Opening Play Lab 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-06.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-06.html#details",
+    "title": "Scrolling Test: Opening Play Lab 06",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "6. Scrolling Test: Opening Play Lab 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-06.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-06.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 06",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "6. Scrolling Test: Opening Play Lab 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-08.html",
+    "href": "learn/scrolling-test/opening-play/lesson-08.html",
+    "title": "Scrolling Test: Opening Play Lab 08",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "8. Scrolling Test: Opening Play Lab 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-08.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-08.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 08",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 08.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "8. Scrolling Test: Opening Play Lab 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-08.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-08.html#example",
+    "title": "Scrolling Test: Opening Play Lab 08",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "8. Scrolling Test: Opening Play Lab 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-08.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-08.html#details",
+    "title": "Scrolling Test: Opening Play Lab 08",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "8. Scrolling Test: Opening Play Lab 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-08.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-08.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 08",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "8. Scrolling Test: Opening Play Lab 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-10.html",
+    "href": "learn/scrolling-test/opening-play/lesson-10.html",
+    "title": "Scrolling Test: Opening Play Lab 10",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "10. Scrolling Test: Opening Play Lab 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-10.html#overview",
+    "href": "learn/scrolling-test/opening-play/lesson-10.html#overview",
+    "title": "Scrolling Test: Opening Play Lab 10",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Opening Play Lab lesson 10.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "10. Scrolling Test: Opening Play Lab 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-10.html#example",
+    "href": "learn/scrolling-test/opening-play/lesson-10.html#example",
+    "title": "Scrolling Test: Opening Play Lab 10",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "10. Scrolling Test: Opening Play Lab 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-10.html#details",
+    "href": "learn/scrolling-test/opening-play/lesson-10.html#details",
+    "title": "Scrolling Test: Opening Play Lab 10",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "10. Scrolling Test: Opening Play Lab 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/opening-play/lesson-10.html#summary",
+    "href": "learn/scrolling-test/opening-play/lesson-10.html#summary",
+    "title": "Scrolling Test: Opening Play Lab 10",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.",
+    "crumbs": [
+      "Learn",
+      "Opening Play Lab",
+      "10. Scrolling Test: Opening Play Lab 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-02.html",
+    "href": "learn/scrolling-test/start-here/lesson-02.html",
+    "title": "Scrolling Test: Start Here 02",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "4. Scrolling Test: Start Here 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-02.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-02.html#overview",
+    "title": "Scrolling Test: Start Here 02",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 02.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "4. Scrolling Test: Start Here 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-02.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-02.html#example",
+    "title": "Scrolling Test: Start Here 02",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "4. Scrolling Test: Start Here 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-02.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-02.html#details",
+    "title": "Scrolling Test: Start Here 02",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "4. Scrolling Test: Start Here 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-02.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-02.html#summary",
+    "title": "Scrolling Test: Start Here 02",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "4. Scrolling Test: Start Here 02"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-04.html",
+    "href": "learn/scrolling-test/start-here/lesson-04.html",
+    "title": "Scrolling Test: Start Here 04",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "6. Scrolling Test: Start Here 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-04.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-04.html#overview",
+    "title": "Scrolling Test: Start Here 04",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 04.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "6. Scrolling Test: Start Here 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-04.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-04.html#example",
+    "title": "Scrolling Test: Start Here 04",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "6. Scrolling Test: Start Here 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-04.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-04.html#details",
+    "title": "Scrolling Test: Start Here 04",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "6. Scrolling Test: Start Here 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-04.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-04.html#summary",
+    "title": "Scrolling Test: Start Here 04",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "6. Scrolling Test: Start Here 04"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-06.html",
+    "href": "learn/scrolling-test/start-here/lesson-06.html",
+    "title": "Scrolling Test: Start Here 06",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "8. Scrolling Test: Start Here 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-06.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-06.html#overview",
+    "title": "Scrolling Test: Start Here 06",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 06.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "8. Scrolling Test: Start Here 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-06.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-06.html#example",
+    "title": "Scrolling Test: Start Here 06",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "8. Scrolling Test: Start Here 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-06.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-06.html#details",
+    "title": "Scrolling Test: Start Here 06",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "8. Scrolling Test: Start Here 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-06.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-06.html#summary",
+    "title": "Scrolling Test: Start Here 06",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "8. Scrolling Test: Start Here 06"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-08.html",
+    "href": "learn/scrolling-test/start-here/lesson-08.html",
+    "title": "Scrolling Test: Start Here 08",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "10. Scrolling Test: Start Here 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-08.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-08.html#overview",
+    "title": "Scrolling Test: Start Here 08",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 08.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "10. Scrolling Test: Start Here 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-08.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-08.html#example",
+    "title": "Scrolling Test: Start Here 08",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "10. Scrolling Test: Start Here 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-08.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-08.html#details",
+    "title": "Scrolling Test: Start Here 08",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "10. Scrolling Test: Start Here 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-08.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-08.html#summary",
+    "title": "Scrolling Test: Start Here 08",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "10. Scrolling Test: Start Here 08"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-10.html",
+    "href": "learn/scrolling-test/start-here/lesson-10.html",
+    "title": "Scrolling Test: Start Here 10",
+    "section": "",
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search\nTemporary scrolling test content. This page is not part of the finished curriculum.\nJump to Example.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "12. Scrolling Test: Start Here 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-10.html#overview",
+    "href": "learn/scrolling-test/start-here/lesson-10.html#overview",
+    "title": "Scrolling Test: Start Here 10",
+    "section": "Overview",
+    "text": "Overview\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui, et malesuada magna mollis euismod.\n\n\nTemporary margin note for Start Here lesson 10.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "12. Scrolling Test: Start Here 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-10.html#example",
+    "href": "learn/scrolling-test/start-here/lesson-10.html#example",
+    "title": "Scrolling Test: Start Here 10",
+    "section": "Example",
+    "text": "Example\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum, et posuere consectetur est at lobortis.\nVestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum.\n\nScenario\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.\nNullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor.\n\n\n\n\n\n\nNote\n\n\n\nThis deterministic callout exists to exercise appended lesson layout.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "12. Scrolling Test: Start Here 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-10.html#details",
+    "href": "learn/scrolling-test/start-here/lesson-10.html#details",
+    "title": "Scrolling Test: Start Here 10",
+    "section": "Details",
+    "text": "Details\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod.\nMorbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.\n\nNotes\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n\nTemporary details\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. This native disclosure tests appended interactions.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "12. Scrolling Test: Start Here 10"
+    ]
+  },
+  {
+    "objectID": "learn/scrolling-test/start-here/lesson-10.html#summary",
+    "href": "learn/scrolling-test/start-here/lesson-10.html#summary",
+    "title": "Scrolling Test: Start Here 10",
+    "section": "Summary",
+    "text": "Summary\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.\nDonec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes.\nOpen another test lesson in this track.\nContinue to the next test track.",
+    "crumbs": [
+      "Learn",
+      "Start Here",
+      "12. Scrolling Test: Start Here 10"
     ]
   },
   {
@@ -972,7 +2772,7 @@
     "href": "research/sage-vs-gnu-additional-details.html",
     "title": "Sage vs GNU: Additional Details",
     "section": "",
-    "text": "Look Up a Term\n    Collapse →\n  \n  \n    Term or alias\n    \n      \n      Search"
+    "text": "Look Up a Term\n    →\n  \n  \n    Term or alias\n    \n      \n      Search"
   },
   {
     "objectID": "research/sage-vs-gnu-additional-details.html#how-the-study-was-set-up",

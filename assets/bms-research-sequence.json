@@ -1,0 +1,19 @@
+{
+  "articles": [
+    {
+      "next_route": "/research/what-we-are-building.html",
+      "previous_route": null,
+      "route": "/research/sage-vs-gnu-additional-details.html",
+      "sequence_index": 0,
+      "title": "Sage vs GNU: Additional Details"
+    },
+    {
+      "next_route": null,
+      "previous_route": "/research/sage-vs-gnu-additional-details.html",
+      "route": "/research/what-we-are-building.html",
+      "sequence_index": 1,
+      "title": "What We Are Building"
+    }
+  ],
+  "schema_version": 1
+}
