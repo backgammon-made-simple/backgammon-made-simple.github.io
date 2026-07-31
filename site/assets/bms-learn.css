@@ -1499,11 +1499,17 @@ body:is(.bms-learn-index, .bms-learn-article)
 .bms-site-tools--sidebar .bms-site-back-to-top {
   align-self: flex-end;
   width: auto;
-  min-width: 6.75rem;
+  min-width: 0;
+  min-height: 1.45rem;
   margin-top: 0.15rem;
-  padding-inline: 0.6rem;
+  padding: 0 0.45rem;
+  border-color: var(--bms-border);
   background: var(--bms-page-background);
   color: var(--bms-text-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .bms-site-tools--editorial-dock {

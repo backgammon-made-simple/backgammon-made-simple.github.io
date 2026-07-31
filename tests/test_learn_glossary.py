@@ -1347,7 +1347,9 @@ class LearnGlossaryTests(unittest.TestCase):
             css,
             r"\.bms-site-tools--sidebar \.bms-site-back-to-top \{[^}]*"
             r"align-self: flex-end;[^}]*width: auto;[^}]*"
-            r"min-width: 6\.75rem;",
+            r"min-width: 0;[^}]*min-height: 1\.45rem;[^}]*"
+            r"color: var\(--bms-text-muted\);[^}]*"
+            r"font-size: 0\.72rem;[^}]*font-weight: 500;",
         )
         self.assertRegex(
             css,
@@ -1424,6 +1426,9 @@ class LearnGlossaryTests(unittest.TestCase):
             '<span aria-hidden="true">&larr;</span> Term Search',
             'toggle.textContent = active ? "\\u2192 Show" : "\\u2190 Hide"',
             "(scrollingDown && window.scrollY > 32)",
+            'sidebar.querySelector(".sidebar-menu-container") || sidebar',
+            "const updateVisibility = function",
+            "sidebarScroller.addEventListener",
             '? \'<span aria-hidden="true">\\u25be</span>\'',
             'toggle.classList.toggle("is-active", active)',
         ):

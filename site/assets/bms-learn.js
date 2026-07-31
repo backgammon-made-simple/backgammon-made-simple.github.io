@@ -1772,9 +1772,12 @@
     }
 
     const desktopQuery = window.matchMedia("(min-width: 992px)");
+    const sidebarScroller =
+      sidebar.querySelector(".sidebar-menu-container") || sidebar;
     const toggle = document.createElement("button");
     let collapsed = false;
     let lastScrollY = window.scrollY;
+    let lastSidebarScrollTop = sidebarScroller.scrollTop;
     let scrollingDown = false;
     toggle.type = "button";
     toggle.className = "bms-learn-left-sidebar-toggle";
@@ -1782,13 +1785,18 @@
     toggle.setAttribute("aria-controls", sidebar.id);
     document.body.appendChild(toggle);
 
+    const updateVisibility = function () {
+      toggle.hidden =
+        !desktopQuery.matches ||
+        (scrollingDown &&
+          (window.scrollY > 32 || sidebarScroller.scrollTop > 4));
+    };
+
     const update = function () {
       const active = desktopQuery.matches && collapsed;
       sidebar.hidden = active;
       document.body.classList.toggle("bms-learn-left-sidebar-collapsed", active);
-      toggle.hidden =
-        !desktopQuery.matches ||
-        (active && scrollingDown && window.scrollY > 32);
+      updateVisibility();
       toggle.setAttribute("aria-expanded", active ? "false" : "true");
       toggle.setAttribute(
         "aria-label",
@@ -1816,7 +1824,19 @@
         if (Math.abs(currentScrollY - lastScrollY) > 4) {
           scrollingDown = currentScrollY > lastScrollY;
           lastScrollY = currentScrollY;
-          update();
+          updateVisibility();
+        }
+      },
+      { passive: true }
+    );
+    sidebarScroller.addEventListener(
+      "scroll",
+      function () {
+        const currentScrollTop = sidebarScroller.scrollTop;
+        if (Math.abs(currentScrollTop - lastSidebarScrollTop) > 4) {
+          scrollingDown = currentScrollTop > lastSidebarScrollTop;
+          lastSidebarScrollTop = currentScrollTop;
+          updateVisibility();
         }
       },
       { passive: true }
