@@ -89,6 +89,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../assets/bms-shared.css">
 <link rel="stylesheet" href="../../assets/bms-components.css">
 <link rel="stylesheet" href="../../assets/bms-learn.css">
+<link rel="stylesheet" href="../../assets/bms-lesson-analysis.css">
 <meta property="og:title" content="Why Is 25% the Basic Take Point When a Double Is Offered? – Backgammon Made Simple">
 <meta property="og:description" content="Learn why a backgammon player can correctly take a double with only a 25% chance to win in a simplified money game, how taking compares with passing, and why gammons, cube ownership, future redoubles, and match score can move the real take point away from 25%.">
 <meta property="og:image" content="https://backgammon-made-simple.github.io/assets/social/generated/social-default.png">
@@ -436,7 +437,6 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#this-lesson-also-answers" id="toc-this-lesson-also-answers" class="nav-link active" data-scroll-target="#this-lesson-also-answers">This lesson also answers</a></li>
   <li><a href="#the-position" id="toc-the-position" class="nav-link" data-scroll-target="#the-position">The position</a></li>
-  <li><a href="#what-would-you-do" id="toc-what-would-you-do" class="nav-link" data-scroll-target="#what-would-you-do">What would you do?</a></li>
   <li><a href="#the-short-answer" id="toc-the-short-answer" class="nav-link" data-scroll-target="#the-short-answer">The short answer</a></li>
   <li><a href="#why-25-appears" id="toc-why-25-appears" class="nav-link" data-scroll-target="#why-25-appears">Why 25% appears</a></li>
   <li><a href="#what-the-simplified-model-leaves-out" id="toc-what-the-simplified-model-leaves-out" class="nav-link" data-scroll-target="#what-the-simplified-model-leaves-out">What the simplified model leaves out</a></li>
@@ -528,91 +528,12 @@ Prerequisite: Basic doubling-cube rules</p>
 </ul>
 </div>
 </section>
-<section id="the-position" class="level2 page-columns page-full">
+<section id="the-position" class="level2">
 <h2 class="anchored" data-anchor-id="the-position">The position</h2>
-<!--
-XGID: TBD
+<p>The checker interaction below is fixture-only UI work. It deliberately reuses the same starting SVG as the cube lesson so shared asset paths can be tested from two lessons in this track.</p>
+<div class="bms-lesson-analysis-host" data-bms-checker-decision="" data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json" data-bms-fixture-id="checker-three-candidates">
 
-Position requirements:
-- money play;
-- cube offered from 1 to 2;
-- receiver deciding Take or Pass;
-- minimal gammon and backgammon complications;
-- no useful future redouble in the simplified model;
-- suitable for explaining the basic 25% calculation.
--->
-<div class="bms-board" role="img" aria-label="Board position placeholder. A verified position has not yet been selected.">
-<p><strong>XGID: TBD</strong></p>
-<p>TODO: Render the verified XGID using the established backgammonboard plotting workflow.</p>
 </div>
-<div class="bms-position-context">
-<ul>
-<li><strong>Player deciding:</strong> TODO</li>
-<li><strong>Cube state:</strong> Offered from 1 to 2</li>
-<li><strong>Context:</strong> Money play</li>
-<li><strong>Decision:</strong> Take or Pass</li>
-<li><strong>Why this position:</strong> TODO: select a position that isolates the simplified comparison.</li>
-</ul>
-</div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="bms-margin-note">
-<p><strong>Why this position?</strong></p>
-<ul>
-<li>Money play.</li>
-<li>Cube offered from 1 to 2.</li>
-<li>Minimal gammon and backgammon complications.</li>
-<li>No useful future redouble in the simplified model.</li>
-<li>VERIFY: confirm all assumptions after selecting the position.</li>
-</ul>
-</div>
-</div></div></section>
-<section id="what-would-you-do" class="level2">
-<h2 class="anchored" data-anchor-id="what-would-you-do">What would you do?</h2>
-<div class="bms-decision-prompt" data-answer-panel="bms-take-point-answer">
-<p>The opponent has doubled. Would you take or pass?</p>
-<div class="bms-answer-choice-row" role="group" aria-label="Choose Take or Pass">
-<button type="button" class="bms-button-outline bms-answer-choice" data-answer="take" aria-pressed="false">
-Take
-</button>
-<button type="button" class="bms-button-outline bms-answer-choice" data-answer="pass" aria-pressed="false">
-Pass
-</button>
-</div>
-<p class="bms-choice-status" aria-live="polite">
-Choose an action to open the working answer.
-</p>
-</div>
-<details class="bms-answer-panel" id="bms-take-point-answer">
-<summary>
-Show the working answer
-</summary>
-<div class="bms-answer-panel-content">
-<h3 class="anchored">
-Answer
-</h3>
-<p>
-<strong>TODO:</strong> Add the verified answer after the position is selected.
-</p>
-<h3 class="anchored">
-Why
-</h3>
-<ul>
-<li>
-<strong>TODO:</strong> Compare taking with passing for the verified position.
-</li>
-<li>
-<strong>VERIFY:</strong> Confirm that the position supports the simplified assumptions.
-</li>
-<li>
-<strong>SOURCE NEEDED:</strong> Accepted project documentation for the calculation.
-</li>
-</ul>
-<p>
-The buttons record the reader’s choice only. Neither choice is labelled correct while the answer remains unverified.
-</p>
-</div>
-</details>
 <details class="bms-analyzer-embed">
 <summary>
 Explore this position in the analyzer
@@ -757,6 +678,8 @@ FIGURE IDEA:
 
 </main> <!-- /main -->
 <script src="../../assets/bms-learn.js" defer=""></script>
+
+<script src="../../assets/bms-lesson-analysis.js" defer=""></script>
 
 <script src="../../assets/bms-learn-scroll.js" defer=""></script>
 

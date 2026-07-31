@@ -1,0 +1,280 @@
+{
+  "schema_version": "bms-lesson-analysis-fixture-v1",
+  "fixture_status": {
+    "kind": "fixture-only",
+    "label": "Fixture analysis",
+    "message": "The positions and analysis values on these prototypes are test fixtures. They are not verified engine output."
+  },
+  "asset_root": "/assets/positions/lesson-analysis-svg-mvp/opening-fixture/",
+  "cube_cases": {
+    "cube-double-take": {
+      "title": "Cube decision fixture: Double, then Take",
+      "prompt": "Double or Roll?",
+      "initial": {
+        "image": "starting.svg",
+        "alt": "Fixture backgammon position shown from the initial decision maker's perspective."
+      },
+      "correct_first_action": "double",
+      "actions": {
+        "roll": {
+          "summary": "Rolling is not the fixture answer.",
+          "analysis": {
+            "recommendation": "Double",
+            "equities": {
+              "roll": 0.082,
+              "double_take": 0.146
+            },
+            "winning_probabilities": {
+              "win": 0.63,
+              "win_gammon": 0.14,
+              "lose_gammon": 0.07
+            },
+            "explanation": "Fixture explanation: the position is marked as strong and volatile enough to offer the cube now."
+          }
+        },
+        "double": {
+          "summary": "Doubling is the fixture answer.",
+          "analysis": {
+            "recommendation": "Double",
+            "equities": {
+              "roll": 0.082,
+              "double_take": 0.146
+            },
+            "winning_probabilities": {
+              "win": 0.63,
+              "win_gammon": 0.14,
+              "lose_gammon": 0.07
+            },
+            "explanation": "Fixture explanation: offering the cube is the supplied first decision."
+          },
+          "responder": {
+            "prompt": "Pass or Take?",
+            "image": "responder-flipped.svg",
+            "alt": "The same fixture position shown from the responder's retained rotated perspective.",
+            "correct_response": "take",
+            "responses": {
+              "pass": {
+                "summary": "Passing is not the fixture response.",
+                "analysis": {
+                  "recommendation": "Take",
+                  "equities": {
+                    "pass": -1.0,
+                    "take": -0.71
+                  },
+                  "winning_probabilities": {
+                    "win": 0.29,
+                    "win_gammon": 0.04,
+                    "lose_gammon": 0.16
+                  },
+                  "explanation": "Fixture explanation: the supplied take equity is less costly than passing for one point."
+                }
+              },
+              "take": {
+                "summary": "Taking is the fixture response.",
+                "analysis": {
+                  "recommendation": "Take",
+                  "equities": {
+                    "pass": -1.0,
+                    "take": -0.71
+                  },
+                  "winning_probabilities": {
+                    "win": 0.29,
+                    "win_gammon": 0.04,
+                    "lose_gammon": 0.16
+                  },
+                  "explanation": "Fixture explanation: the responder retains enough winning chances to continue at the doubled stake."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "cube-roll": {
+      "title": "Cube decision fixture: Roll",
+      "prompt": "Double or Roll?",
+      "initial": {
+        "image": "starting.svg",
+        "alt": "Fixture backgammon position for a Roll answer-path test."
+      },
+      "correct_first_action": "roll",
+      "actions": {
+        "roll": {
+          "summary": "Rolling is the fixture answer.",
+          "analysis": {
+            "recommendation": "Roll",
+            "equities": {
+              "roll": 0.091,
+              "double_take": 0.052
+            },
+            "winning_probabilities": {
+              "win": 0.57,
+              "win_gammon": null,
+              "lose_gammon": null
+            },
+            "explanation": "Fixture explanation: the position is not yet marked as volatile enough to double."
+          }
+        },
+        "double": {
+          "summary": "Doubling is not the fixture answer.",
+          "analysis": {
+            "recommendation": "Roll",
+            "equities": {
+              "roll": 0.091,
+              "double_take": 0.052
+            },
+            "winning_probabilities": {
+              "win": 0.57,
+              "win_gammon": null,
+              "lose_gammon": null
+            },
+            "explanation": "Fixture explanation: retain the cube and roll."
+          }
+        }
+      }
+    },
+    "cube-double-pass": {
+      "title": "Cube decision fixture: Double, then Pass",
+      "prompt": "Double or Roll?",
+      "initial": {
+        "image": "starting.svg",
+        "alt": "Fixture backgammon position for a Pass response-path test."
+      },
+      "correct_first_action": "double",
+      "actions": {
+        "roll": {
+          "summary": "Rolling is not the fixture answer.",
+          "analysis": {
+            "recommendation": "Double",
+            "equities": {
+              "roll": 0.44,
+              "double_pass": 1.0
+            },
+            "winning_probabilities": {
+              "win": 0.78,
+              "win_gammon": 0.22,
+              "lose_gammon": 0.03
+            },
+            "explanation": "Fixture explanation: doubling is marked as the stronger action."
+          }
+        },
+        "double": {
+          "summary": "Doubling is the fixture answer.",
+          "analysis": {
+            "recommendation": "Double",
+            "equities": {
+              "roll": 0.44,
+              "double_pass": 1.0
+            },
+            "winning_probabilities": {
+              "win": 0.78,
+              "win_gammon": 0.22,
+              "lose_gammon": 0.03
+            },
+            "explanation": "Fixture explanation: offering the cube is the supplied first decision."
+          },
+          "responder": {
+            "prompt": "Pass or Take?",
+            "image": "responder-flipped.svg",
+            "alt": "The fixture position shown from the responder's retained rotated perspective.",
+            "correct_response": "pass",
+            "responses": {
+              "pass": {
+                "summary": "Passing is the fixture response.",
+                "analysis": {
+                  "recommendation": "Pass",
+                  "equities": {
+                    "pass": -1.0,
+                    "take": -1.18
+                  },
+                  "winning_probabilities": {
+                    "win": 0.21,
+                    "win_gammon": 0.02,
+                    "lose_gammon": 0.24
+                  },
+                  "explanation": "Fixture explanation: taking is marked as more costly than passing."
+                }
+              },
+              "take": {
+                "summary": "Taking is not the fixture response.",
+                "analysis": {
+                  "recommendation": "Pass",
+                  "equities": {
+                    "pass": -1.0,
+                    "take": -1.18
+                  },
+                  "winning_probabilities": {
+                    "win": 0.21,
+                    "win_gammon": 0.02,
+                    "lose_gammon": 0.24
+                  },
+                  "explanation": "Fixture explanation: the response is below the supplied take threshold."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "checker_cases": {
+    "checker-three-candidates": {
+      "title": "Checker-play fixture: compare three candidates",
+      "prompt": "Which supplied candidate would you play?",
+      "initial": {
+        "image": "starting.svg",
+        "alt": "Shared starting fixture position before a checker candidate is selected."
+      },
+      "recommendation": "Candidate 2",
+      "candidates": [
+        {
+          "id": "candidate-1",
+          "label": "Candidate 1",
+          "image": "candidate-1.svg",
+          "image_alt": "Fixture result supplied for Candidate 1.",
+          "equity": 0.041,
+          "equity_loss": 0.052,
+          "winning_probabilities": {
+            "win": 0.54,
+            "win_gammon": 0.08,
+            "lose_gammon": 0.06
+          },
+          "explanation": "Fixture explanation: this candidate leaves a checker exposed and ranks below the supplied best move."
+        },
+        {
+          "id": "candidate-2",
+          "label": "Candidate 2",
+          "image": "candidate-2.svg",
+          "image_alt": "Fixture result supplied for Candidate 2.",
+          "equity": 0.093,
+          "equity_loss": 0.0,
+          "winning_probabilities": {
+            "win": 0.58,
+            "win_gammon": 0.11,
+            "lose_gammon": 0.05
+          },
+          "explanation": "Fixture explanation: this is the supplied best candidate and preserves the strongest balance of safety and activity."
+        },
+        {
+          "id": "candidate-3",
+          "label": "Candidate 3",
+          "image": "candidate-3.svg",
+          "image_alt": "Fixture result supplied for Candidate 3.",
+          "equity": 0.067,
+          "equity_loss": 0.026,
+          "winning_probabilities": {
+            "win": 0.56,
+            "win_gammon": null,
+            "lose_gammon": null
+          },
+          "explanation": "Fixture explanation: optional gammon probabilities were deliberately omitted to test a partial analysis record."
+        }
+      ],
+      "analysis": {
+        "engine": "Fixture only",
+        "setting": "No engine was run",
+        "explanation": "Candidate values are placeholder UI data. Replace them only with retained, verified Engine Kit-normalized analysis."
+      }
+    }
+  }
+}

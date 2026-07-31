@@ -1199,19 +1199,7 @@
     "href": "learn/cube/why-is-25-percent-the-basic-take-point.html#the-position",
     "title": "Why Is 25% the Basic Take Point When a Double Is Offered?",
     "section": "The position",
-    "text": "The position\n\n\nXGID: TBD\nTODO: Render the verified XGID using the established backgammonboard plotting workflow.\n\n\n\nPlayer deciding: TODO\nCube state: Offered from 1 to 2\nContext: Money play\nDecision: Take or Pass\nWhy this position: TODO: select a position that isolates the simplified comparison.\n\n\n\n\n\nWhy this position?\n\nMoney play.\nCube offered from 1 to 2.\nMinimal gammon and backgammon complications.\nNo useful future redouble in the simplified model.\nVERIFY: confirm all assumptions after selecting the position.",
-    "crumbs": [
-      "Learn",
-      "The Doubling Cube",
-      "1. Why Is 25% the Basic Take Point When a Double Is Offered?"
-    ]
-  },
-  {
-    "objectID": "learn/cube/why-is-25-percent-the-basic-take-point.html#what-would-you-do",
-    "href": "learn/cube/why-is-25-percent-the-basic-take-point.html#what-would-you-do",
-    "title": "Why Is 25% the Basic Take Point When a Double Is Offered?",
-    "section": "What would you do?",
-    "text": "What would you do?\n\nThe opponent has doubled. Would you take or pass?\n\n\nTake\n\n\nPass\n\n\n\nChoose an action to open the working answer.\n\n\n\n\nShow the working answer\n\n\n\nAnswer\n\n\nTODO: Add the verified answer after the position is selected.\n\n\nWhy\n\n\n\nTODO: Compare taking with passing for the verified position.\n\n\nVERIFY: Confirm that the position supports the simplified assumptions.\n\n\nSOURCE NEEDED: Accepted project documentation for the calculation.\n\n\n\nThe buttons record the reader’s choice only. Neither choice is labelled correct while the answer remains unverified.\n\n\n\n\n\nExplore this position in the analyzer\n\n\n\nXGID: TBD\n\n\nTODO: Add the verified lesson XGID before creating the lazy-loaded iframe and position-specific direct link.\n\n\n\nOpen the analyzer and enter an XGID",
+    "text": "The position\nThe checker interaction below is fixture-only UI work. It deliberately reuses the same starting SVG as the cube lesson so shared asset paths can be tested from two lessons in this track.\n\n\n\n\n\nExplore this position in the analyzer\n\n\n\nXGID: TBD\n\n\nTODO: Add the verified lesson XGID before creating the lazy-loaded iframe and position-specific direct link.\n\n\n\nOpen the analyzer and enter an XGID",
     "crumbs": [
       "Learn",
       "The Doubling Cube",
@@ -1585,7 +1573,7 @@
     "href": "learn/cube/what-the-cube-is-asking.html#worked-position",
     "title": "What the Cube Is Really Asking",
     "section": "Worked Position",
-    "text": "Worked Position\n\nOpen the position and choose an action\n\n  \n    Cube decision test position\n    A simplified backgammon board used to test responsive scrolling content.\n    \n      \n        \n        \n      \n    \n    \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n      \n      \n      \n      \n      \n    \n    \n    2\n  \n\n  The second view highlights how the position can change after the first cube decision.\n\n  \n    Follow-up market-loser view\n    A second simplified board showing the attacking zone after the first decision.\n    \n      \n        \n      \n    \n    \n      \n      \n      \n      \n        \n        \n        \n        \n        \n      \n      \n        \n        \n        \n      \n    \n  \n\n  \n    What would you do?\n    \n      Double\n      Wait\n      Take\n      Pass\n    \n    Choose an action to open the explanation.\n  \n\n  \n    Open the explanation\n    \n      Taking keeps the game alive at the doubled stake, while passing ends it immediately.\n      This nested explanation deliberately changes the lesson height so scrolling and table-of-contents tracking can be verified.",
+    "text": "Worked Position\n\n\n\n\n\nOpen the component-isolation fixture\n\nThis second instance uses the same starting SVG but has Roll as its fixture answer. It exists to verify that repeated components receive independent controls and IDs.",
     "crumbs": [
       "Learn",
       "The Doubling Cube",
