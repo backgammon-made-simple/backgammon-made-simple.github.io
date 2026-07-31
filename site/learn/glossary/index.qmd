@@ -1,7 +1,7 @@
 ---
 title: "Backgammon Glossary"
 description: "A searchable backgammon dictionary of terms and glossary for concepts used throughout Backgammon Made Simple."
-sidebar: learn
+sidebar: false
 page-layout: article
 body-classes: bms-glossary-index
 toc: false

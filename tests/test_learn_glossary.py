@@ -302,6 +302,8 @@ class LearnGlossaryTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertEqual(source.count("canonical-url:"), 1)
+        self.assertIn("sidebar: false", source)
+        self.assertNotIn("sidebar: learn", source)
         self.assertIn(
             'canonical-url: "https://backgammon-made-simple.github.io/learn/glossary/"',
             source,
