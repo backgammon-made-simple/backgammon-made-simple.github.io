@@ -1066,6 +1066,7 @@
     let marginSidebarCollapsed = false;
     let rightRailScrollCollapsed = false;
     let lastRightRailScrollY = window.scrollY;
+    let suppressRightRailAutoCollapse = false;
     let mobileDrawerOpen = false;
     let mobileTouchStart = null;
     let mobileDrawer = null;
@@ -1143,22 +1144,35 @@
       }
       toggle.dataset.bmsTocToggleBound = "true";
       toggle.addEventListener("click", function () {
-        tocCollapsed = !tocCollapsed;
-        updateToc();
-        document
-          .querySelectorAll("[data-bms-lesson-track-nav]")
-          .forEach(function (trackNav) {
-            const trackContent = trackNav.querySelector(
-              ".bms-lesson-track-content"
-            );
-            if (trackContent) {
-              trackContent.hidden = tocCollapsed;
-              trackNav.classList.toggle(
-                "bms-lesson-track-collapsed",
-                tocCollapsed
+        suppressRightRailAutoCollapse = true;
+        rightRailScrollCollapsed = false;
+        if (marginSidebar) {
+          marginSidebar.classList.remove(
+            "bms-refined-right-rail-scroll-collapsed"
+          );
+        }
+        preservePagePosition(function () {
+          tocCollapsed = !tocCollapsed;
+          updateToc();
+          document
+            .querySelectorAll("[data-bms-lesson-track-nav]")
+            .forEach(function (trackNav) {
+              const trackContent = trackNav.querySelector(
+                ".bms-lesson-track-content"
               );
-            }
-          });
+              if (trackContent) {
+                trackContent.hidden = tocCollapsed;
+                trackNav.classList.toggle(
+                  "bms-lesson-track-collapsed",
+                  tocCollapsed
+                );
+              }
+            });
+        });
+        window.setTimeout(function () {
+          lastRightRailScrollY = window.scrollY;
+          suppressRightRailAutoCollapse = false;
+        }, 220);
       });
     };
 
@@ -1574,6 +1588,14 @@
       }
 
       const currentScrollY = window.scrollY;
+      if (suppressRightRailAutoCollapse) {
+        rightRailScrollCollapsed = false;
+        marginSidebar.classList.remove(
+          "bms-refined-right-rail-scroll-collapsed"
+        );
+        lastRightRailScrollY = currentScrollY;
+        return;
+      }
       if (currentScrollY <= 32) {
         rightRailScrollCollapsed = false;
       } else if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
