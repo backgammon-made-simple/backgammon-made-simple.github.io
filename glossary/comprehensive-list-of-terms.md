@@ -1708,7 +1708,6 @@ Zone of Attack
 8-9-12 Doubling Rule
 10 in the Zone
 Ten in the Zone
-10 Checkers in the Zone, candidate only
 25 Percent Rule
 ABT
 American Backgammon Tour
@@ -1737,3 +1736,23 @@ Double Falcon
 Tiger Play
 Double Tiger
 Double Phoenix
+Automatic Double
+Awkward Position
+Performance Rate
+ER
+Winner's Curse
+BMAB
+Backgammon Masters Awarding Body
+UBC
+Ultimate Backgammon Championship
+Simple Delay
+US Delay
+Delay Time
+Fischer Increment
+Increment
+Fischer Time
+Bonus Time
+Reserve Time
+Time Bank
+Clock Reserve Time
+Bank Time

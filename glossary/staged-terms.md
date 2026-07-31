@@ -32,7 +32,12 @@ Categories and learning tracks are optional. Unclear taxonomy must not block pro
 
 ## Alias and spelling candidates
 
-No alias candidate has been identified yet.
+### Super 10 Rule
+
+#### Source and treatment notes
+
+- Seen in or proposed from: Comprehensive term list and user editorial direction.
+- Proposed treatment: approved alias of 10-Percent Doubling Rule.
 
 ## Related words
 
@@ -45,10 +50,6 @@ No alias candidate has been identified yet.
 - Liby's Rule
 
 ## Audio review notes
-
-### Alias candidate
-
-- Super 10 Rule
 
 ### Confirmed direction
 
@@ -65,7 +66,7 @@ No alias candidate has been identified yet.
 ## Decision notes
 
 - Canonical term:
-- Aliases to keep or add:
+- Aliases to keep or add: Super 10 Rule
 - Aliases to reject:
 - Definition changes:
 - Terms that must remain separate:
@@ -236,188 +237,6 @@ No alias candidate has been identified yet.
 
 ---
 
-# Adjusted Pip Count
-
-**Status:** New canonical candidate
-
-**Working slug:** `adjusted-pip-count`
-
-**Category:** analysis and probability
-
-## Word to use
-
-### Adjusted Pip Count
-
-#### Definition
-
-An adjusted pip count modifies a raw pip count to account for checker distribution, expected wastage, or another feature that changes practical racing strength.
-
-#### Sources in which this concept or wording appears
-
-- **User editorial notes:** `Adjusted Pip Count`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Pip Count
-- Effective Pip Count
-- Wastage
-- Keith Count
-- Trice Count
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Advanced Level
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `advanced-level`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Advanced Level
-
-#### Definition
-
-Players use Advanced Level to describe a tournament or teaching division for strong, experienced players below the top open level. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Advanced Level`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Division
-- Tournament
-- Intermediate Level
-- Stop Pot
-- Splot
-- Touch Down
-- Snake Eyes
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Ammunition
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `ammunition`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Ammunition
-
-#### Definition
-
-Ammunition describes checkers positioned where they can attack blots or build points. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Ammunition`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Attack
-- Stack
-- Settlement
-- Zone of Attack
-- Stripped
-- Snake Eyes
-- Deuce
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Analog Clock
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `analog-clock`
-
-**Category:** board, equipment, and notation
-
-## Word to use
-
-### Analog Clock
-
-#### Definition
-
-Analog Clock is a mechanical chess-style clock with hands rather than a digital display. It is useful vocabulary when describing a position, decision, rule, or result.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Analog Clock`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Clock
-- Three-Point
-- Digital Clock
-- Closed Board
-- Fischer Clock
-- Bronstein Clock
-- Own a Point
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
 # Anchor
 
 **Status:** Existing BMS canonical entry
@@ -476,639 +295,6 @@ An anchor is a made point in your opponent's board that gives your checkers safe
 - High anchors were described as the opponent's 21-point and 20-point.
 - Decide how forward anchors and outer-board anchors fit this classification.
 - Decide whether anchor types belong in the full definition or only under related words.
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Anchor Game
-
-**Status:** New candidate; broader than Holding Game
-
-**Working slug:** `anchor-game`
-
-**Category:** strategy and position types
-
-## Word to use
-
-### Anchor Game
-
-#### Definition
-
-An anchor game is a position or game plan built around keeping one or more anchors in the opponent's board.
-
-#### Sources in which this concept or wording appears
-
-- **Backgammon.com:** `Anchor Game`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Anchor
-- Holding Game
-- Back Game
-- Multi-Anchor Position
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Annotated Match
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `annotated-match`
-
-**Category:** match and tournament play
-
-## Word to use
-
-### Annotated Match
-
-#### Definition
-
-Players use Annotated Match to describe a recorded match accompanied by explanations of checker plays and cube decisions. Players may see this term in strategy discussions, match records, or analysis software.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Annotated Match`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Checker
-- Doubling Cube
-- Match
-- Match Play
-- Semifinals
-- Finals
-- Flight
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Annotation
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `annotation`
-
-**Category:** board, equipment, and notation
-
-## Word to use
-
-### Annotation
-
-#### Definition
-
-Annotation describes written or spoken analysis explaining decisions in a recorded game or match. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Annotation`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Match
-- Clear a Point
-- Switch Points
-- Made Point
-- Checker
-- Make a Point
-- Too Many Points
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Anti-Joker
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `anti-joker`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Anti-Joker
-
-#### Definition
-
-In backgammon, Anti-Joker refers to an exceptionally unlucky roll that sharply damages a position. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Anti-Joker`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Joker
-- Snake Eyes
-- Deuce
-- Trailer
-- Combination
-- Stack
-- Response
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Army
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `army`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Army
-
-#### Definition
-
-Players use Army to describe a player’s full group of 15 checkers. It is useful vocabulary when describing a position, decision, rule, or result.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Army`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Boxcars
-- Quads
-- Ace
-- Steamer
-- Confetti
-- Gammonish
-- Stay Back
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Around the Corner
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `around-the-corner`
-
-**Category:** match and tournament play
-
-## Word to use
-
-### Around the Corner
-
-#### Definition
-
-Around the Corner means movement from the other player’s outer board into the player’s own outer board. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Around the Corner`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Backgammon Board
-- Outer Board
-- Novice Division
-- Main Flight
-- One-Point Match
-- Tournament
-- Fighter's Bracket
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Asset
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `asset`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Asset
-
-#### Definition
-
-Players use Asset to describe a useful positional feature, such as an anchor, prime, strong board, or flexible builder. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Asset`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Anchor
-- Backgammon Board
-- Builder
-- Prime
-- Strong Board
-- Sydney
-- Die
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Attack
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `attack`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Attack
-
-#### Definition
-
-The action called Attack is to hit or threaten opposing blots, generally near or inside your home board. Players may see this term in strategy discussions, match records, or analysis software.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Attack`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Backgammon Board
-- Hit
-- Home Board
-- Match
-- Run
-- Turn the Corner
-- Deep
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Attack Zone
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `attack-zone`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Attack Zone
-
-#### Definition
-
-Attack Zone is the points on your side of the board from which checkers can support a blitz. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Attack Zone`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Attack
-- Backgammon Board
-- Blitz
-- Zone of Attack
-- Close Out
-- Dyscommunication
-- Die
-
-## Audio review notes
-
-- The Zone is defined as your side of the board: your home board and outer board.
-- Review Zone and The Zone as aliases.
-- Keep this concept aligned with 10 in the Zone.
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Attacking Game
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `attacking-game`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Attacking Game
-
-#### Definition
-
-Players use Attacking Game to describe a game plan based on hitting, closing points, and keeping opposing checkers on the bar. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Attacking Game`
-- **Gammoned Glossary:** `Attacking Game (Blitz)`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Bar
-- On the Bar
-- Priming Game
-- Close Out
-- Blocking Game
-- Sydney
-- Block
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Automatic Doubles
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `automatic-doubles`
-
-**Category:** cube and scoring
-
-## Word to use
-
-### Automatic Doubles
-
-#### Definition
-
-Automatic Doubles is an optional money-game rule that raises the initial cube value when both players roll the same opening number. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Automatic`, `Automatic Doubles`, `Automatics`
-- **Gammoned Glossary:** `Automatic Doubles`
-- **Wiktionary:** `Automatic double`, `Automatic doubles`
-
-## Alias and spelling candidates
-
-### Automatic
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Current BMS
-- Current treatment: existing BMS alias of this canonical entry.
-
-### Automatic double
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Wiktionary
-- Proposed treatment: review as an alias, spelling variant, inflected form, or separate concept.
-
-### Automatics
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Current BMS
-- Current treatment: existing BMS alias of this canonical entry.
-
-## Related words
-
-- Doubles
-- Doubling Cube
-- Dead Cube
-- Voluntary Double
-- Vigorish
-- Cubeless Equity
-- Post-Crawford
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Awkward Number
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `awkward-number`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Awkward Number
-
-#### Definition
-
-In backgammon, Awkward Number refers to a roll that cannot be played constructively and forces a positional concession. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Awkward Number`
-- **Gammoned Glossary:** `Awkward Number`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Dead Number
-- Diversification
-- Die
-- Sydney
-- Liability
-- Underdog
-- Mobility
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Back Game
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `back-game`
-
-**Category:** strategy and position types
-
-## Word to use
-
-### Back Game
-
-#### Definition
-
-In backgammon, Back Game refers to a strategy based on holding two or more points deep in the other player’s home board and waiting for a late shot. It is useful vocabulary when describing a position, decision, rule, or result.
-
-#### Sources in which this concept or wording appears
-
-- **Backgammon Rules:** `Back game`
-- **Backgammon.com:** `Back game`
-- **Current BMS:** `Back Game`
-- **Gammoned Glossary:** `Backgame`
-- **Wiktionary:** `Back game`
-
-## Alias and spelling candidates
-
-### Backgame
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Gammoned Glossary
-- Proposed treatment: review as an alias, spelling variant, inflected form, or separate concept.
-
-## Related words
-
-- Backgammon Board
-- Deep
-- Home Board
-- Shot
-- Holding Game
-- Primed
-- Blitz
 
 ## Decision notes
 
@@ -3550,6 +2736,7 @@ A butterfly anchor is an anchor on the opponent's three-point.
 
 #### Sources in which this concept or wording appears
 
+- **USBGF:** `Butterfly Anchor`
 - **User editorial notes:** `Butterfly Anchor`
 
 ## Alias and spelling candidates
@@ -3569,7 +2756,7 @@ No alias candidate has been identified yet.
 - Aliases to keep or add:
 - Aliases to reject:
 - Definition changes:
-- Terms that must remain separate:
+- Terms that must remain separate: Review against Deep Anchor, Low Anchor, High Anchor, and Advanced Anchor.
 - Ready for JSON patch: No
 - Delete this section after merge: No
 
@@ -7146,16 +6333,7 @@ Players use Deep Anchor to describe an anchor on the other player’s one-point 
 
 ## Alias and spelling candidates
 
-### Low Anchor
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Backgammon.com, User editorial notes
-- Review note: May be a teaching category overlapping Deep Anchor rather than a strict alias.
-
-## Separation or merge warnings
-
-- May be a teaching category overlapping Deep Anchor rather than a strict alias.
+No alias candidate has been identified yet.
 
 ## Related words
 
@@ -7212,6 +6390,60 @@ No alias candidate has been identified yet.
 - Trailer
 - Settlement
 - Stack
+
+## Decision notes
+
+- Canonical term:
+- Aliases to keep or add:
+- Aliases to reject:
+- Definition changes:
+- Terms that must remain separate:
+- Ready for JSON patch: No
+- Delete this section after merge: No
+
+---
+
+# Deuce-Point Game
+
+**Status:** New canonical candidate; less common holding-game term
+
+**Working slug:** `deuce-point-game`
+
+**Category:** strategy and position types
+
+## Word to use
+
+### Deuce-Point Game
+
+#### Definition
+
+A deuce-point game is a holding game in which you hold an anchor on your opponent's two-point and wait for a chance to hit as the opponent brings checkers home or bears off.
+
+#### Sources in which this concept or wording appears
+
+- **The Gammon Press:** `Deuce-Point Game`
+- **Wiktionary glossary of backgammon:** `Deuce-point game`
+- **Comprehensive term list:** `Deuce-point game`
+
+## Alias and spelling candidates
+
+### Deuce-point game
+
+#### Source and treatment notes
+
+- Proposed treatment: capitalization variant of Deuce-Point Game.
+
+## Related words
+
+- Two-Point
+- Anchor
+- Low Anchor
+- Holding Game
+- Ace-Point Game
+- Three-Point Game
+- Bear In
+- Bear Off
+- Shot
 
 ## Decision notes
 
@@ -9790,52 +9022,6 @@ No alias candidate has been identified yet.
 
 ---
 
-# Error Rate
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `error-rate`
-
-**Category:** analysis and probability
-
-## Word to use
-
-### Error Rate
-
-#### Definition
-
-Error Rate describes average equity lost through checker and cube mistakes, generally normalized per decision or per move. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Error Rate`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Checker
-- Doubling Cube
-- Equity
-- Counterclockwise
-- Rollout
-- Keith Count
-- Elo Ratings System
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
 # Escape
 
 **Status:** Existing BMS canonical entry
@@ -10860,7 +10046,7 @@ No alias candidate has been identified yet.
 - Aliases to keep or add:
 - Aliases to reject:
 - Definition changes:
-- Terms that must remain separate:
+- Terms that must remain separate: Keep distinct from High Anchor until the broader forward-anchor range is confirmed.
 - Ready for JSON patch: No
 - Delete this section after merge: No
 
@@ -12183,6 +11369,59 @@ No alias candidate has been identified yet.
 
 ---
 
+# Golden Anchor
+
+**Status:** New candidate; perspective-specific anchor term
+
+**Working slug:** `golden-anchor`
+
+**Category:** strategy and position types
+
+## Word to use
+
+### Golden Anchor
+
+#### Definition
+
+A golden anchor is an anchor on your opponent's five-point, which is your twenty-point. It is generally considered the strongest anchor because it provides safety, outfield influence, and strong resistance to an opposing prime.
+
+#### Sources in which this concept or wording appears
+
+- **Backgammon.com:** `Golden Anchor`
+- **Deluxe Backgammon:** `Golden Anchor`
+- **Comprehensive term list:** `Golden Anchor`
+
+## Alias and spelling candidates
+
+No alias candidate has been identified yet.
+
+## Separation or merge warnings
+
+- Golden Anchor describes holding the opponent's five-point; Golden Point names the five-point itself. Review whether the glossary should keep both perspective-specific terms.
+
+## Related words
+
+- Golden Point
+- Five-Point
+- Anchor
+- High Anchor
+- Advanced Anchor
+- Holding Game
+- Prime
+- Outfield Control
+
+## Decision notes
+
+- Canonical term:
+- Aliases to keep or add:
+- Aliases to reject:
+- Definition changes:
+- Terms that must remain separate: Golden Point
+- Ready for JSON patch: No
+- Delete this section after merge: No
+
+---
+
 # Golden Point
 
 **Status:** Existing BMS canonical entry
@@ -12209,16 +11448,7 @@ Golden Point describes the five-point in either player’s home board. Knowing t
 
 ## Alias and spelling candidates
 
-### Golden Anchor
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Backgammon.com, User editorial notes
-- Review note: May be an alias of Golden Point or a separate perspective-specific term.
-
-## Separation or merge warnings
-
-- May be an alias of Golden Point or a separate perspective-specific term.
+No alias candidate has been identified yet.
 
 ## Related words
 
@@ -12650,6 +11880,63 @@ No alias candidate has been identified yet.
 - Sydney
 - Underdog
 - Settlement Limit
+
+## Decision notes
+
+- Canonical term:
+- Aliases to keep or add:
+- Aliases to reject:
+- Definition changes:
+- Terms that must remain separate:
+- Ready for JSON patch: No
+- Delete this section after merge: No
+
+---
+
+# High Anchor
+
+**Status:** New candidate; may overlap Advanced Anchor
+
+**Working slug:** `high-anchor`
+
+**Category:** strategy and position types
+
+## Word to use
+
+### High Anchor
+
+#### Definition
+
+A high anchor is an anchor on your opponent's four-point or five-point, corresponding to your twenty-one-point or twenty-point. High anchors are strong holding-game assets because they provide safety and influence the opponent's outer board.
+
+#### Sources in which this concept or wording appears
+
+- **Backgammon.com:** `High Anchor`
+- **Comprehensive term list:** `High Anchor`
+
+## Alias and spelling candidates
+
+### Advanced Anchor
+
+#### Source and treatment notes
+
+- Review as a likely synonym or overlapping teaching category rather than approving an alias automatically.
+
+## Separation or merge warnings
+
+- Current definitions substantially overlap Advanced Anchor. Decide whether one should be canonical and the other an alias.
+
+## Related words
+
+- Anchor
+- Advanced Anchor
+- Golden Anchor
+- Silver Anchor
+- Four-Point
+- Five-Point
+- Holding Game
+- Low Anchor
+- Forward Anchor
 
 ## Decision notes
 
@@ -15413,6 +14700,63 @@ Long Backgammon is a family of variants in which players generally move in the s
 - Normal Game
 - Takhteh
 - Shesh Besh
+
+## Decision notes
+
+- Canonical term:
+- Aliases to keep or add:
+- Aliases to reject:
+- Definition changes:
+- Terms that must remain separate:
+- Ready for JSON patch: No
+- Delete this section after merge: No
+
+---
+
+# Low Anchor
+
+**Status:** New candidate; may overlap Deep Anchor
+
+**Working slug:** `low-anchor`
+
+**Category:** strategy and position types
+
+## Word to use
+
+### Low Anchor
+
+#### Definition
+
+A low anchor is an anchor on your opponent's one-point or two-point, corresponding to your twenty-four-point or twenty-three-point. It provides safety and gammon protection but usually offers fewer immediate hitting chances than a high anchor.
+
+#### Sources in which this concept or wording appears
+
+- **Backgammon.com:** `Low Anchor`
+- **Comprehensive term list:** `Low Anchor`
+
+## Alias and spelling candidates
+
+### Deep Anchor
+
+#### Source and treatment notes
+
+- Review as a likely synonym or overlapping teaching category rather than approving an alias automatically.
+
+## Separation or merge warnings
+
+- Current definitions substantially overlap Deep Anchor. Decide whether one should be canonical and the other an alias.
+
+## Related words
+
+- Anchor
+- Deep Anchor
+- One-Point
+- Two-Point
+- Ace-Point Anchor
+- Deuce-Point Game
+- High Anchor
+- Holding Game
+- Gammon
 
 ## Decision notes
 
@@ -20677,54 +20021,6 @@ No alias candidate has been identified yet.
 
 ---
 
-# Performance Rating
-
-**Status:** New canonical candidate
-
-**Working slug:** `performance-rating`
-
-**Category:** analysis and probability
-
-## Word to use
-
-### Performance Rating
-
-#### Definition
-
-Performance rating, commonly abbreviated PR, is a measure of average error in analyzed play. Lower values indicate stronger performance.
-
-#### Sources in which this concept or wording appears
-
-- **Backgammon.com:** `Performance Rating`, `PR`
-
-## Alias and spelling candidates
-
-### PR
-
-#### Source and treatment notes
-
-- Seen in or proposed from: Backgammon.com
-- Proposed treatment: review as an alias, spelling variant, inflected form, or separate concept.
-
-## Related words
-
-- Error Rate
-- Blunder
-- Whopper
-- Analysis
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
 # Permanent Asset
 
 **Status:** New canonical candidate
@@ -25729,7 +25025,7 @@ No alias candidate has been identified yet.
 - Aliases to keep or add:
 - Aliases to reject:
 - Definition changes:
-- Terms that must remain separate:
+- Terms that must remain separate: Review whether Silver Anchor is the perspective-specific anchor term corresponding to Silver Point.
 - Ready for JSON patch: No
 - Delete this section after merge: No
 
@@ -29012,6 +28308,67 @@ No alias candidate has been identified yet.
 
 ---
 
+# Three-Point Game
+
+**Status:** New canonical candidate; less common holding-game term
+
+**Working slug:** `three-point-game`
+
+**Category:** strategy and position types
+
+## Word to use
+
+### Three-Point Game
+
+#### Definition
+
+A three-point game is a holding game in which you hold an anchor on your opponent's three-point and wait for a chance to hit while the opponent brings checkers home.
+
+#### Sources in which this concept or wording appears
+
+- **USBGF:** `Three-Point Holding Game`
+- **Backgammon Galore:** `Three-point game`
+- **Wiktionary glossary of backgammon:** `Three-point game`
+- **Comprehensive term list:** `Three-point game`
+
+## Alias and spelling candidates
+
+### Three-point game
+
+#### Source and treatment notes
+
+- Proposed treatment: capitalization variant of Three-Point Game.
+
+### Three-Point Holding Game
+
+#### Source and treatment notes
+
+- Review as an expanded form or preferred canonical wording.
+
+## Related words
+
+- Three-Point
+- Butterfly Anchor
+- Anchor
+- Holding Game
+- Deuce-Point Game
+- Ace-Point Game
+- Bear In
+- Shot
+- Timing
+
+## Decision notes
+
+- Canonical term:
+- Aliases to keep or add:
+- Aliases to reject:
+- Definition changes:
+- Terms that must remain separate:
+- Ready for JSON patch: No
+- Delete this section after merge: No
+
+---
+
 # Three-Point
 
 **Status:** Existing BMS canonical entry
@@ -29207,52 +28564,6 @@ No alias candidate has been identified yet.
 - Mobility
 - Temperature Map
 - Captain
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Time Delay
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `time-delay`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Time Delay
-
-#### Definition
-
-Players use Time Delay to describe a clock setting that gives a short free interval at the start of each turn before reserve time runs. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Time Delay`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Clock
-- Time
-- Turn
-- Splot
-- Snake Eyes
-- Deuce
-- Pressure
 
 ## Decision notes
 
@@ -31615,100 +30926,6 @@ No alias candidate has been identified yet.
 - Coffeehouse
 - Beaver
 - Team
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Your Side of the Board
-
-**Status:** New canonical candidate
-
-**Working slug:** `your-side-of-the-board`
-
-**Category:** board, equipment, and notation
-
-## Word to use
-
-### Your Side of the Board
-
-#### Definition
-
-Your side of the board is the half containing your home board and outer board, points 1 through 12 from your perspective.
-
-#### Sources in which this concept or wording appears
-
-- **User editorial notes:** `My Side of the Board`, `Your Side of the Board`
-
-## Alias and spelling candidates
-
-### My Side of the Board
-
-#### Source and treatment notes
-
-- Seen in or proposed from: User editorial notes
-- Proposed treatment: review as an alias, spelling variant, inflected form, or separate concept.
-
-## Related words
-
-- Opponent's Side of the Board
-- Home Board
-- Outer Board
-- Outfield Control
-
-## Decision notes
-
-- Canonical term:
-- Aliases to keep or add:
-- Aliases to reject:
-- Definition changes:
-- Terms that must remain separate:
-- Ready for JSON patch: No
-- Delete this section after merge: No
-
----
-
-# Zone of Attack
-
-**Status:** Existing BMS canonical entry
-
-**Working slug:** `zone-of-attack`
-
-**Category:** language, rules, and culture
-
-## Word to use
-
-### Zone of Attack
-
-#### Definition
-
-Zone of Attack refers to your one-point through eleven-point, where checkers can support a blitz. The term gives players a shared way to talk about this part of the game.
-
-#### Sources in which this concept or wording appears
-
-- **Current BMS:** `Zone of Attack`
-
-## Alias and spelling candidates
-
-No alias candidate has been identified yet.
-
-## Related words
-
-- Attack
-- Blitz
-- One-Point
-- Point
-- Attack Zone
-- Stack
-- Ammunition
 
 ## Decision notes
 
