@@ -1447,7 +1447,8 @@ class LearnGlossaryTests(unittest.TestCase):
             "font-size: 0.86rem",
             ".bms-lesson-track-collapsed",
             ".bms-refined-right-rail.bms-toc-collapsed",
-            "#TOC\n    > ul",
+            "#TOC\n    > :not(.bms-toc-toggle-divider)",
+            "> .bms-lesson-track-nav",
             ".bms-research-article",
             ".bms-toc-toggle-divider",
             ".bms-toc-heading-toggle",
@@ -1459,6 +1460,11 @@ class LearnGlossaryTests(unittest.TestCase):
             "@media (min-width: 992px)",
         ):
             self.assertIn(required, css)
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools--sidebar \{[^}]*"
+            r"padding-top: 0\.15rem;[^}]*border-top: 0;",
+        )
         self.assertNotIn(".bms-lesson-track-toggle", css)
         self.assertIn(".bms-distraction-free-toggle.is-active", css)
         self.assertIn("min-height: 2.1rem", css)

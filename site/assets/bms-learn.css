@@ -1666,7 +1666,12 @@ body:is(.bms-learn-index, .bms-learn-article)
 
   #quarto-margin-sidebar.bms-refined-right-rail.bms-toc-collapsed
     #TOC
-    > ul {
+    > :not(.bms-toc-toggle-divider) {
+    display: none !important;
+  }
+
+  #quarto-margin-sidebar.bms-refined-right-rail.bms-toc-collapsed
+    > .bms-lesson-track-nav {
     display: none !important;
   }
 
@@ -1771,8 +1776,9 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar {
     align-items: center;
-    margin-top: 0.15rem;
-    padding-top: 0.25rem;
+    margin-top: 0;
+    padding-top: 0.15rem;
+    border-top: 0;
   }
 
   body:is(
