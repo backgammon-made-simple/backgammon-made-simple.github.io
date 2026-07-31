@@ -60,75 +60,16 @@ Prerequisite: Basic doubling-cube rules
 
 ## The position
 
-<!--
-XGID: TBD
+The checker interaction below is fixture-only UI work. It deliberately reuses
+the same starting SVG as the cube lesson so shared asset paths can be tested
+from two lessons in this track.
 
-Position requirements:
-- money play;
-- cube offered from 1 to 2;
-- receiver deciding Take or Pass;
-- minimal gammon and backgammon complications;
-- no useful future redouble in the simplified model;
-- suitable for explaining the basic 25% calculation.
--->
-
-::: {.bms-board role="img" aria-label="Board position placeholder. A verified position has not yet been selected."}
-**XGID: TBD**
-
-TODO: Render the verified XGID using the established backgammonboard plotting workflow.
-:::
-
-::: {.bms-position-context}
-- **Player deciding:** TODO
-- **Cube state:** Offered from 1 to 2
-- **Context:** Money play
-- **Decision:** Take or Pass
-- **Why this position:** TODO: select a position that isolates the simplified comparison.
-:::
-
-::: {.column-margin}
-::: {.bms-margin-note}
-**Why this position?**
-
-- Money play.
-- Cube offered from 1 to 2.
-- Minimal gammon and backgammon complications.
-- No useful future redouble in the simplified model.
-- VERIFY: confirm all assumptions after selecting the position.
-:::
-:::
-
-## What would you do?
-
-::: {.bms-decision-prompt data-answer-panel="bms-take-point-answer"}
-The opponent has doubled. Would you take or pass?
-
-<div class="bms-answer-choice-row" role="group" aria-label="Choose Take or Pass">
-<button type="button" class="bms-button-outline bms-answer-choice" data-answer="take" aria-pressed="false">Take</button>
-<button type="button" class="bms-button-outline bms-answer-choice" data-answer="pass" aria-pressed="false">Pass</button>
-</div>
-
-<p class="bms-choice-status" aria-live="polite">Choose an action to open the working answer.</p>
-:::
-
-<details class="bms-answer-panel" id="bms-take-point-answer">
-<summary>Show the working answer</summary>
-<div class="bms-answer-panel-content">
-<h3>Answer</h3>
-
-<p><strong>TODO:</strong> Add the verified answer after the position is selected.</p>
-
-<h3>Why</h3>
-
-<ul>
-<li><strong>TODO:</strong> Compare taking with passing for the verified position.</li>
-<li><strong>VERIFY:</strong> Confirm that the position supports the simplified assumptions.</li>
-<li><strong>SOURCE NEEDED:</strong> Accepted project documentation for the calculation.</li>
-</ul>
-
-<p>The buttons record the reader's choice only. Neither choice is labelled correct while the answer remains unverified.</p>
-</div>
-</details>
+<div
+  class="bms-lesson-analysis-host"
+  data-bms-checker-decision
+  data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json"
+  data-bms-fixture-id="checker-three-candidates"
+></div>
 
 <details class="bms-analyzer-embed">
 <summary>Explore this position in the analyzer</summary>

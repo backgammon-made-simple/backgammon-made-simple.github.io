@@ -76,6 +76,7 @@ format:
       - assets/bms-shared.css
       - assets/bms-components.css
       - assets/bms-learn.css
+      - assets/bms-lesson-analysis.css
     include-after-body:
       - includes/bms-scripts.html
     include-in-header:

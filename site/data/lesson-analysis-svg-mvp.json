@@ -34,6 +34,19 @@
         },
         "double": {
           "summary": "Doubling is the fixture answer.",
+          "analysis": {
+            "recommendation": "Double",
+            "equities": {
+              "roll": 0.082,
+              "double_take": 0.146
+            },
+            "winning_probabilities": {
+              "win": 0.63,
+              "win_gammon": 0.14,
+              "lose_gammon": 0.07
+            },
+            "explanation": "Fixture explanation: offering the cube is the supplied first decision."
+          },
           "responder": {
             "prompt": "Pass or Take?",
             "image": "responder-flipped.svg",
@@ -147,6 +160,19 @@
         },
         "double": {
           "summary": "Doubling is the fixture answer.",
+          "analysis": {
+            "recommendation": "Double",
+            "equities": {
+              "roll": 0.44,
+              "double_pass": 1.0
+            },
+            "winning_probabilities": {
+              "win": 0.78,
+              "win_gammon": 0.22,
+              "lose_gammon": 0.03
+            },
+            "explanation": "Fixture explanation: offering the cube is the supplied first decision."
+          },
           "responder": {
             "prompt": "Pass or Take?",
             "image": "responder-flipped.svg",
