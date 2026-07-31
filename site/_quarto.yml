@@ -13,6 +13,8 @@ project:
     - assets/bms-glossary-lookup.json
     - assets/bms-learn-sequence.json
     - assets/bms-research-sequence.json
+    - "assets/positions/**"
+    - data/lesson-analysis-svg-mvp.json
     - "data/engine-benchmark/**"
     - "engine-benchmark/**/figures/**"
     - "engine-benchmark/**/tables/**"
