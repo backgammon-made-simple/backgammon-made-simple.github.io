@@ -1198,9 +1198,7 @@ class LearnGlossaryTests(unittest.TestCase):
         for required in (
             "initializeMobileLessonBar",
             "initializeLearnLeftSidebarToggle",
-            "initializeDistractionFreeMode",
             "bms-learn-left-sidebar-toggle",
-            "bms-distraction-free-toggle",
             "Hide Learn table of contents",
             "Show Learn table of contents",
             "isMobileDrawerSwipe",
@@ -1315,8 +1313,8 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertRegex(
             css,
             r"body\.bms-learn-article #quarto-margin-sidebar \{[^}]*"
-            r"width: clamp\(12rem, 19vw, 20rem\);[^}]*"
-            r"min-width: clamp\(12rem, 19vw, 20rem\);",
+            r"width: clamp\(10rem, 16vw, 18rem\);[^}]*"
+            r"min-width: clamp\(10rem, 16vw, 18rem\);",
         )
         self.assertRegex(
             css,
@@ -1373,8 +1371,6 @@ class LearnGlossaryTests(unittest.TestCase):
             ".bms-site-tools--sidebar .bms-toc-toggle",
             ".bms-site-tools--sidebar .bms-margin-sidebar-toggle",
             ".bms-site-tools--sidebar .bms-site-back-to-top",
-            ".bms-distraction-free-toggle",
-            "body.bms-distraction-free #quarto-sidebar",
             "#quarto-margin-sidebar.bms-margin-sidebar-collapsed",
             "#quarto-margin-sidebar.bms-toc-collapsed:not(.bms-refined-right-rail) #TOC",
             "> :not(.bms-margin-sidebar-toggle)",
@@ -1412,7 +1408,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "trackContent.hidden = tocCollapsed",
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
-            'tocHeadingToggle.textContent = tocCollapsed ? "\\u25be" : "\\u25b4"',
+            '"Contents \\u25be"',
             "bms-toc-toggle-divider",
             "toc.appendChild(divider)",
             "updateLookupForScroll",
@@ -1425,26 +1421,25 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn("data.bmsLessonTrackToggle", javascript)
         for required in (
             '<span aria-hidden="true">&larr;</span> Term Search',
-            'toggle.textContent = active ? "\\u2192 Show" : "\\u2190 Hide"',
-            "(scrollingDown && window.scrollY > 32)",
+            'toggle.textContent = active ? "\\u2192 Show Lessons" : "\\u2190 Hide"',
             'sidebar.querySelector(".sidebar-menu-container") || sidebar',
             "const updateVisibility = function",
             "sidebarScroller.addEventListener",
             "let autoCollapsePending = window.scrollY <= 32",
             "autoCollapsePending &&",
             "collapsed = true",
-            '? \'<span aria-hidden="true">\\u25be</span>\'',
-            'toggle.classList.toggle("is-active", active)',
         ):
             self.assertIn(required, javascript)
+        self.assertNotIn("initializeDistractionFreeMode", javascript)
+        self.assertNotIn("bms-distraction-free", javascript)
 
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
         ).read_text(encoding="utf-8")
         for required in (
             "body.bms-learn-article:not(.bms-learn-track-index)",
-            "width: clamp(12rem, 19vw, 20rem)",
-            "font-size: 0.86rem",
+            "width: clamp(10rem, 16vw, 18rem)",
+            "font-size: 0.78rem",
             ".bms-lesson-track-collapsed",
             ".bms-refined-right-rail.bms-toc-collapsed",
             "#TOC\n    > :not(.bms-toc-toggle-divider)",
@@ -1452,6 +1447,7 @@ class LearnGlossaryTests(unittest.TestCase):
             ".bms-research-article",
             ".bms-toc-toggle-divider",
             ".bms-toc-heading-toggle",
+            '.bms-toc-heading-toggle[aria-expanded="false"]',
             ":is(.bms-toc-toggle, .bms-margin-sidebar-toggle)",
             ".bms-term-lookup-close",
             ".bms-term-lookup-browse",
@@ -1466,8 +1462,7 @@ class LearnGlossaryTests(unittest.TestCase):
             r"padding-top: 0\.15rem;[^}]*border-top: 0;",
         )
         self.assertNotIn(".bms-lesson-track-toggle", css)
-        self.assertIn(".bms-distraction-free-toggle.is-active", css)
-        self.assertIn("min-height: 2.1rem", css)
+        self.assertNotIn(".bms-distraction-free-toggle", css)
         self.assertRegex(
             css,
             r"\.bms-toc-toggle-divider \{[^}]*"
