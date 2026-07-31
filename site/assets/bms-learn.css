@@ -1729,13 +1729,25 @@ body:is(.bms-learn-index, .bms-learn-article)
       .bms-research-article,
       .bms-learn-article:not(.bms-learn-track-index)
     )
+    .bms-toc-toggle-divider {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.45rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--bms-border);
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
     .bms-toc-heading-toggle {
     display: inline-flex;
     width: 1.45rem;
     min-height: 1.45rem;
     align-items: center;
     justify-content: center;
-    margin: 0.35rem 0 0 auto;
+    margin: 0;
     padding: 0;
     border: 1px solid var(--bms-border);
     border-radius: 5px;

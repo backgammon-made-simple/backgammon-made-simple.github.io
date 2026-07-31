@@ -434,9 +434,9 @@
     }
     const clone = toc.cloneNode(true);
     clone
-      .querySelectorAll("[data-bms-toc-heading-toggle]")
-      .forEach(function (toggle) {
-        toggle.remove();
+      .querySelectorAll("[data-bms-toc-toggle-divider]")
+      .forEach(function (divider) {
+        divider.remove();
       });
     clone.querySelectorAll(".active").forEach(function (element) {
       element.classList.remove("active");
@@ -472,6 +472,9 @@
     const headingToggle = globalToc.querySelector(
       "[data-bms-toc-heading-toggle]"
     );
+    const toggleDivider = headingToggle
+      ? headingToggle.closest("[data-bms-toc-toggle-divider]")
+      : null;
     const controlledLinksId = headingToggle
       ? headingToggle.getAttribute("aria-controls")
       : "";
@@ -490,7 +493,7 @@
       if (controlledLinksId) {
         tocLinks.id = controlledLinksId;
       }
-      globalToc.appendChild(headingToggle);
+      globalToc.appendChild(toggleDivider || headingToggle);
     }
     globalToc.hidden = false;
     globalToc.removeAttribute("aria-hidden");

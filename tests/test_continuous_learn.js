@@ -15,7 +15,11 @@ assert.match(
   /querySelector\(\s*"\[data-bms-toc-heading-toggle\]"\s*\)/
 );
 assert.match(scrollSource, /tocLinks\.id = controlledLinksId/);
-assert.match(scrollSource, /globalToc\.appendChild\(headingToggle\)/);
+assert.match(
+  scrollSource,
+  /globalToc\.appendChild\(toggleDivider \|\| headingToggle\)/
+);
+assert.match(scrollSource, /data-bms-toc-toggle-divider/);
 assert.doesNotMatch(scrollSource, /tocTitle\.appendChild\(headingToggle\)/);
 assert.match(
   scrollSource,

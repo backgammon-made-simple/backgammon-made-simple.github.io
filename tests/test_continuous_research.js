@@ -52,6 +52,7 @@ const source = fs.readFileSync(
 );
 for (const required of [
   "bms-research-scroll-sentinel",
+  "data-bms-toc-toggle-divider",
   "IntersectionObserver",
   "rewriteIdReferences",
   "rewriteResourceUrls",

@@ -70,9 +70,9 @@
     }
     const clone = toc.cloneNode(true);
     clone
-      .querySelectorAll("[data-bms-toc-heading-toggle]")
-      .forEach(function (toggle) {
-        toggle.remove();
+      .querySelectorAll("[data-bms-toc-toggle-divider]")
+      .forEach(function (divider) {
+        divider.remove();
       });
     clone.querySelectorAll("a[href]").forEach(function (link) {
       try {

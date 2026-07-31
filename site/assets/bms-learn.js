@@ -1160,6 +1160,23 @@
       });
     };
 
+    const placeTocHeadingToggleBelowDivider = function (toggle) {
+      if (!toc || !toggle) {
+        return;
+      }
+      let divider = toggle.closest(".bms-toc-toggle-divider");
+      if (!divider) {
+        divider = document.createElement("div");
+        divider.className = "bms-toc-toggle-divider";
+        divider.dataset.bmsTocToggleDivider = "";
+        toggle.replaceWith(divider);
+        divider.appendChild(toggle);
+      }
+      if (divider.parentElement !== toc) {
+        toc.appendChild(divider);
+      }
+    };
+
     const mountTocHeadingToggle = function () {
       if (!refinedRightRailPage) {
         return false;
@@ -1177,6 +1194,7 @@
       if (existingToggle) {
         tocHeadingToggle = existingToggle;
         bindTocHeadingToggle(tocHeadingToggle);
+        placeTocHeadingToggleBelowDivider(tocHeadingToggle);
         return true;
       }
       const tocLinks = toc.querySelector(":scope > ul");
@@ -1189,7 +1207,11 @@
         tocHeadingToggle.setAttribute("aria-controls", tocLinks.id);
         tocHeadingToggle.hidden = true;
         bindTocHeadingToggle(tocHeadingToggle);
-        toc.appendChild(tocHeadingToggle);
+        const divider = document.createElement("div");
+        divider.className = "bms-toc-toggle-divider";
+        divider.dataset.bmsTocToggleDivider = "";
+        divider.appendChild(tocHeadingToggle);
+        toc.appendChild(divider);
         return true;
       }
       return false;
