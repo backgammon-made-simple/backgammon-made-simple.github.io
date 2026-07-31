@@ -2471,7 +2471,10 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         r'<details class="bms-glossary-entry"[^>]*>',
         glossary_html,
     )
-    if any(" open" in tag for tag in entry_tags):
+    if any(
+        re.search(r"\sopen(?:\s|>)", re.sub(r'"[^"]*"', '""', tag))
+        for tag in entry_tags
+    ):
         raise ValidationError("Rendered term disclosures do not begin collapsed")
     if glossary_html.count('class="bms-glossary-definition"') != len(entries):
         raise ValidationError("Rendered glossary is missing full definitions")
