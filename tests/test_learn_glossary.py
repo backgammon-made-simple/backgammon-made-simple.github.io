@@ -841,7 +841,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "bms-post-taxonomy--collapsed",
             "Hide article categories and tags",
             "Show article categories and tags",
-            'toggle.textContent = collapsed ? "\\u2304" : "\\u2303"',
+            'toggle.textContent = collapsed ? "\\u25be" : "\\u25b4"',
             "window.scrollY > 32",
         ):
             self.assertIn(required, extension)
@@ -1410,7 +1410,7 @@ class LearnGlossaryTests(unittest.TestCase):
             "trackContent.hidden = tocCollapsed",
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
-            'tocHeadingToggle.textContent = tocCollapsed ? "\\u2304" : "\\u2303"',
+            'tocHeadingToggle.textContent = tocCollapsed ? "\\u25be" : "\\u25b4"',
             "toc.appendChild(tocHeadingToggle)",
             "updateLookupForScroll",
             "window.scrollY <= 32",
@@ -1421,10 +1421,10 @@ class LearnGlossaryTests(unittest.TestCase):
             self.assertIn(required, javascript)
         self.assertNotIn("data.bmsLessonTrackToggle", javascript)
         for required in (
-            '<span aria-hidden="true">&lt;</span> Term Search',
-            'toggle.textContent = active ? ">" : "<"',
-            'toggle.hidden = !desktopQuery.matches || window.scrollY > 32',
-            '? \'<span aria-hidden="true">\\u2304</span>\'',
+            '<span aria-hidden="true">&larr;</span> Term Search',
+            'toggle.textContent = active ? "\\u2192 Show" : "\\u2190 Hide"',
+            "(scrollingDown && window.scrollY > 32)",
+            '? \'<span aria-hidden="true">\\u25be</span>\'',
             'toggle.classList.toggle("is-active", active)',
         ):
             self.assertIn(required, javascript)
@@ -1453,7 +1453,7 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertIn(".bms-distraction-free-toggle.is-active", css)
         self.assertIn("min-height: 2.1rem", css)
         self.assertIn(
-            'toggle.style.left = Math.max(8, sidebarRight + 6) + "px"',
+            "sidebarRight - toggle.offsetWidth - 14",
             javascript,
         )
         self.assertRegex(

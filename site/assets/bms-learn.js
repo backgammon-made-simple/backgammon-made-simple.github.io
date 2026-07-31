@@ -918,7 +918,7 @@
       '<button type="button" class="bms-term-lookup-close" ' +
       'data-bms-term-lookup-close aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="true" aria-label="Collapse term lookup">' +
-      '<span aria-hidden="true">&gt;</span></button>' +
+      '<span aria-hidden="true">&rarr;</span></button>' +
       "</div>" +
       '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
@@ -1022,7 +1022,7 @@
       '<button type="button" class="bms-term-lookup-reveal" ' +
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false" aria-label="Open term lookup">' +
-      '<span aria-hidden="true">&lt;</span> Term Search</button>' +
+      '<span aria-hidden="true">&larr;</span> Term Search</button>' +
       (refinedRightRailPage
         ? ""
         : '<button type="button" class="bms-toc-toggle" ' +
@@ -1031,10 +1031,10 @@
           '<button type="button" class="bms-margin-sidebar-toggle" ' +
           'data-bms-margin-sidebar-toggle aria-controls="quarto-margin-sidebar" ' +
           'aria-expanded="true" aria-label="Collapse all right sidebar content" hidden>' +
-          'Collapse All <span aria-hidden="true">&uarr;</span></button>') +
+          'Collapse All <span aria-hidden="true">&#9652;</span></button>') +
       '<button type="button" class="bms-site-back-to-top" ' +
       'data-bms-site-back-to-top hidden>Back to top ' +
-      '<span aria-hidden="true">\u2303</span></button>';
+      '<span aria-hidden="true">\u25b4</span></button>';
 
     const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
     const tocToggle = tools.querySelector("[data-bms-toc-toggle]");
@@ -1440,8 +1440,8 @@
           : "Collapse all right sidebar content"
       );
       marginSidebarToggle.innerHTML = collapsed
-        ? 'Expand All <span aria-hidden="true">&darr;</span>'
-        : 'Collapse All <span aria-hidden="true">&uarr;</span>';
+        ? 'Expand All <span aria-hidden="true">&#9662;</span>'
+        : 'Collapse All <span aria-hidden="true">&#9652;</span>';
     };
 
     const updateToc = function () {
@@ -1466,7 +1466,7 @@
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = tocCollapsed ? "\u2304" : "\u2303";
+        tocHeadingToggle.textContent = tocCollapsed ? "\u25be" : "\u25b4";
         return;
       }
       if (tocHeadingToggle) {
@@ -1774,6 +1774,8 @@
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const toggle = document.createElement("button");
     let collapsed = false;
+    let lastScrollY = window.scrollY;
+    let scrollingDown = false;
     toggle.type = "button";
     toggle.className = "bms-learn-left-sidebar-toggle";
     toggle.dataset.bmsLearnLeftSidebarToggle = "";
@@ -1784,18 +1786,21 @@
       const active = desktopQuery.matches && collapsed;
       sidebar.hidden = active;
       document.body.classList.toggle("bms-learn-left-sidebar-collapsed", active);
-      toggle.hidden = !desktopQuery.matches;
+      toggle.hidden =
+        !desktopQuery.matches ||
+        (active && scrollingDown && window.scrollY > 32);
       toggle.setAttribute("aria-expanded", active ? "false" : "true");
       toggle.setAttribute(
         "aria-label",
         active ? "Show Learn table of contents" : "Hide Learn table of contents"
       );
-      toggle.textContent = active ? ">" : "<";
+      toggle.textContent = active ? "\u2192 Show" : "\u2190 Hide";
       if (active) {
         toggle.style.left = "0.5rem";
       } else {
         const sidebarRight = sidebar.getBoundingClientRect().right;
-        toggle.style.left = Math.max(8, sidebarRight + 6) + "px";
+        toggle.style.left =
+          Math.max(8, sidebarRight - toggle.offsetWidth - 14) + "px";
       }
     };
 
@@ -1804,6 +1809,18 @@
       update();
     });
     window.addEventListener("resize", update);
+    window.addEventListener(
+      "scroll",
+      function () {
+        const currentScrollY = window.scrollY;
+        if (Math.abs(currentScrollY - lastScrollY) > 4) {
+          scrollingDown = currentScrollY > lastScrollY;
+          lastScrollY = currentScrollY;
+          update();
+        }
+      },
+      { passive: true }
+    );
     desktopQuery.addEventListener("change", update);
     update();
   }
@@ -1823,6 +1840,8 @@
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const toggle = document.createElement("button");
     let active = false;
+    let lastScrollY = window.scrollY;
+    let scrollingDown = false;
     toggle.type = "button";
     toggle.className = "bms-distraction-free-toggle";
     toggle.dataset.bmsDistractionFreeToggle = "";
@@ -1848,7 +1867,9 @@
         active = false;
       }
       document.body.classList.toggle("bms-distraction-free", active);
-      toggle.hidden = !desktopQuery.matches || window.scrollY > 32;
+      toggle.hidden =
+        !desktopQuery.matches ||
+        (scrollingDown && window.scrollY > 32);
       toggle.setAttribute("aria-expanded", active ? "false" : "true");
       toggle.setAttribute(
         "aria-label",
@@ -1857,7 +1878,7 @@
           : "Collapse sidebars for distraction-free mode"
       );
       toggle.innerHTML = active
-        ? '<span aria-hidden="true">\u2304</span>'
+        ? '<span aria-hidden="true">\u25be</span>'
         : "Distraction-free mode";
       toggle.classList.toggle("is-active", active);
       position();
@@ -1868,7 +1889,18 @@
       update();
     });
     window.addEventListener("resize", position);
-    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener(
+      "scroll",
+      function () {
+        const currentScrollY = window.scrollY;
+        if (Math.abs(currentScrollY - lastScrollY) > 4) {
+          scrollingDown = currentScrollY > lastScrollY;
+          lastScrollY = currentScrollY;
+          update();
+        }
+      },
+      { passive: true }
+    );
     desktopQuery.addEventListener("change", update);
     update();
   }

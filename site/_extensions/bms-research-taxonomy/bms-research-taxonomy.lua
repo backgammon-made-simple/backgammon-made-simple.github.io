@@ -262,7 +262,7 @@ local javascript = [==[
           ? "Show article categories and tags"
           : "Hide article categories and tags"
       );
-      toggle.textContent = collapsed ? "\u2304" : "\u2303";
+      toggle.textContent = collapsed ? "\u25be" : "\u25b4";
     }
 
     toggle.addEventListener("click", function () {
