@@ -350,7 +350,7 @@ highlighted-terms: [ace]
         self.assertIn("<code>Take point ~= risk / (risk + reward)</code>", result.stdout)
         self.assertNotIn("data-bms-glossary-summary", result.stdout)
 
-    def test_real_lesson_unapproved_terms_do_not_create_public_backlinks(self) -> None:
+    def test_real_lesson_terms_create_relationships_without_extra_highlights(self) -> None:
         lessons = learn_glossary.discover_lessons()
         selected = next(
             lesson
@@ -360,10 +360,7 @@ highlighted-terms: [ace]
         related = learn_glossary.validate_lessons(lessons, self.entries)
         for slug in selected["terms"]:
             with self.subTest(slug=slug):
-                if slug in {"10-in-the-zone", "active-builder"}:
-                    self.assertIn(selected, related.get(slug, []))
-                else:
-                    self.assertNotIn(selected, related.get(slug, []))
+                self.assertIn(selected, related.get(slug, []))
 
 
 if __name__ == "__main__":

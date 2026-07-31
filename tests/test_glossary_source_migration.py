@@ -3,422 +3,196 @@ from __future__ import annotations
 import inspect
 import json
 import unittest
-from unittest import mock
 
 from scripts import glossary_source as source
 from scripts import learn_glossary
 
 
-def parsed_entry(
-    term: str,
-    slug: str,
+def entry_block(
+    term: str = "Sample Term",
     *,
+    slug: str = "sample-term",
+    status: str = "Confirmed",
     aliases: tuple[str, ...] = (),
-    categories: tuple[str, ...] = ("checker play and tactics",),
-    definition_links: tuple[tuple[str, str], ...] = (),
-    related_terms: tuple[str, ...] = (),
-    learning_tracks: tuple[str, ...] = (),
-    full_definition: str | None = None,
-) -> source.ParsedEntry:
-    return source.ParsedEntry(
-        term=term,
-        slug=slug,
-        date_added="2026-07-30",
-        aliases=aliases,
-        short_definition=f"Short definition for {term}.",
-        full_definition=full_definition or f"Full definition for {term}.",
-        definition_links=definition_links,
-        related_terms=related_terms,
-        categories=categories,
-        learning_tracks=learning_tracks,
+    categories: tuple[str, ...] = ("Checker Play",),
+    inline: tuple[tuple[str, str], ...] = (),
+    related: tuple[str, ...] = (),
+    added: str | None = "2026-07-30",
+    usage_note: str | None = None,
+    editorial_note: str | None = None,
+) -> str:
+    alias_lines = "\n".join(f"- {alias}" for alias in aliases) or "- None"
+    category_lines = "\n".join(f"- {category}" for category in categories) or "- None"
+    inline_lines = (
+        "\n".join(f'- "{text}" -> `{target}`' for text, target in inline)
+        or "- None"
     )
+    related_lines = "\n".join(f"- {term}" for term in related) or "- None"
+    added_field = f"\n**Added:** {added}\n" if added else ""
+    usage = f"\n## Usage note\n\n{usage_note}\n" if usage_note else ""
+    editorial = (
+        f"\n## Editorial notes\n\n{editorial_note}\n" if editorial_note else ""
+    )
+    return f"""# {term}
+
+**Status:** {status}
+
+**Slug:** `{slug}`
+{added_field}
+## AKA
+
+{alias_lines}
+
+## Short definition
+
+Short definition for {term}.
+
+## Full definition
+
+Full definition for {term} with visible phrase.
+{usage}
+## Inline terms
+
+{inline_lines}
+
+## Related words
+
+{related_lines}
+
+## Categories
+
+{category_lines}
+
+## Learning tracks
+
+- None
+{editorial}
+---
+"""
 
 
-def legacy_entry(
-    term: str,
-    slug: str,
-    *,
-    aliases: tuple[tuple[str, str], ...] = (),
-) -> dict[str, object]:
-    return {
-        "aliases": [
-            {"slug": alias_slug, "term": alias_term}
-            for alias_slug, alias_term in aliases
-        ],
-        "category": "language, rules, and culture",
-        "definition": f"Legacy definition for {term}.",
-        "slug": slug,
-        "term": term,
-    }
+class UnifiedGlossarySourceTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.source_text = source.GLOSSARY_SOURCE_PATH.read_text(encoding="utf-8")
+        cls.parsed = source.parse_markdown(cls.source_text)
+        cls.serialized, cls.report = source.build_production_source()
+        cls.data = json.loads(cls.serialized)
 
-
-def legacy_data(*entries: dict[str, object]) -> dict[str, object]:
-    return {
-        "entries": sorted(
-            entries,
-            key=lambda item: (
-                str(item["term"]).casefold(),
-                str(item["slug"]),
-            ),
-        ),
-        "schema_version": "1.0",
-    }
-
-
-class GlossarySourceMigrationTests(unittest.TestCase):
-    def test_production_source_contract_excludes_workflow_and_task_files(self) -> None:
+    def test_only_unified_markdown_is_a_production_input(self) -> None:
         self.assertEqual(
-            source.CONFIRMED_SOURCE_PATH,
-            learn_glossary.REPOSITORY_ROOT
-            / "glossary_wip"
-            / "confirmed-terms.md",
+            source.GLOSSARY_SOURCE_PATH,
+            learn_glossary.REPOSITORY_ROOT / "glossary" / "glossary.md",
         )
-        self.assertEqual(
-            source.LEGACY_MIGRATION_PATH,
-            learn_glossary.REPOSITORY_ROOT
-            / "glossary_wip"
-            / "legacy-unconfirmed-glossary.json",
-        )
-        self.assertEqual(source.PRODUCTION_SOURCE_PATH, learn_glossary.PUBLIC_DATA_PATH)
-        implementation = inspect.getsource(source)
-        self.assertNotIn("staged-terms.md", implementation)
-        self.assertNotIn("comprehensive-list-of-terms.md", implementation)
-        self.assertNotIn("task-management", implementation)
-        source_runner = inspect.getsource(learn_glossary.run_glossary_source_command)
-        self.assertIn('"glossary_source.py"', source_runner)
+        implementation = inspect.getsource(source.build_production_source)
+        self.assertIn("GLOSSARY_SOURCE_PATH", implementation)
+        self.assertNotIn("staged-terms", implementation)
+        self.assertNotIn("comprehensive-list", implementation)
+        module_source = inspect.getsource(source)
+        self.assertNotIn("legacy-unconfirmed-glossary.json", module_source)
+        self.assertNotIn("glossary_wip", module_source)
 
-    def test_confirmed_entry_and_aliases_replace_same_slug_legacy_data(self) -> None:
-        confirmed = parsed_entry(
-            "Alpha",
-            "alpha",
-            aliases=("Approved Alpha",),
-            categories=("analysis and probability",),
-            full_definition="Confirmed full definition for Alpha.",
-        )
-        data, report = source.merge_confirmed_and_legacy(
-            [confirmed],
-            legacy_data(
-                legacy_entry(
-                    "Alpha",
-                    "alpha",
-                    aliases=(("old-alpha", "Old Alpha"),),
-                ),
-                legacy_entry("Beta", "beta"),
-            ),
-        )
-        by_slug = {entry["slug"]: entry for entry in data["entries"]}
-        self.assertEqual(set(by_slug), {"alpha"})
-        self.assertEqual(
-            by_slug["alpha"]["definition"],
-            "Confirmed full definition for Alpha.",
-        )
-        self.assertEqual(
-            by_slug["alpha"]["aliases"],
-            [{"slug": "approved-alpha", "term": "Approved Alpha"}],
-        )
-        self.assertNotIn("old-alpha", json.dumps(by_slug["alpha"]))
-        self.assertEqual(by_slug["alpha"]["category"], "analysis and probability")
-        self.assertEqual(by_slug["alpha"]["categories"], ["analysis and probability"])
-        self.assertEqual(report["confirmed_replaced_slugs"], ["alpha"])
-        self.assertEqual(report["retained_legacy_entries"], 0)
-        self.assertEqual(report["review_only_legacy_entries"], 1)
+    def test_complete_migration_counts_and_statuses(self) -> None:
+        self.assertEqual(len(self.parsed), 625)
+        self.assertEqual(self.report["canonical_entries"], 625)
+        self.assertEqual(self.report["confirmed_entries"], 12)
+        self.assertEqual(self.report["legacy_unconfirmed_entries"], 613)
+        self.assertEqual(self.report["aliases"], 184)
+        self.assertEqual(len(self.data["entries"]), 625)
 
-    def test_exact_confirmed_aka_absorbs_same_spelling_legacy_canonical(self) -> None:
-        confirmed = parsed_entry(
-            "Ahead in the Count",
-            "ahead-in-the-count",
-            aliases=("Ahead in the Race",),
-        )
-        data, report = source.merge_confirmed_and_legacy(
-            [confirmed],
-            legacy_data(
-                legacy_entry("Ahead in the Count", "ahead-in-the-count"),
-                legacy_entry("Ahead in the Race", "ahead-in-the-race"),
-                legacy_entry("Beta", "beta"),
-            ),
-        )
-        by_slug = {entry["slug"]: entry for entry in data["entries"]}
-        self.assertNotIn("ahead-in-the-race", by_slug)
-        self.assertEqual(
-            by_slug["ahead-in-the-count"]["aliases"],
-            [{"slug": "ahead-in-the-race", "term": "Ahead in the Race"}],
-        )
-        self.assertEqual(
-            report["legacy_canonicals_absorbed_as_confirmed_aliases"],
-            [
-                {
-                    "confirmed_slug": "ahead-in-the-count",
-                    "legacy_slug": "ahead-in-the-race",
-                    "term": "Ahead in the Race",
-                }
-            ],
-        )
+    def test_status_and_editorial_sections_do_not_leak_publicly(self) -> None:
+        serialized = self.serialized
+        self.assertNotIn('"status"', serialized.casefold())
+        self.assertNotIn("editorial notes", serialized.casefold())
+        self.assertNotIn("alias notes", serialized.casefold())
+        by_slug = {entry.slug: entry for entry in self.parsed}
+        self.assertIsNotNone(by_slug["blue-game"].usage_note)
+        public = {entry["slug"]: entry for entry in self.data["entries"]}
+        self.assertIn("usage_note", public["blue-game"])
 
-    def test_exact_confirmed_name_removes_matching_legacy_alias(self) -> None:
-        confirmed = parsed_entry("Alpha", "alpha")
-        data, report = source.merge_confirmed_and_legacy(
-            [confirmed],
-            legacy_data(
-                legacy_entry("Alpha", "alpha"),
-                legacy_entry(
-                    "Beta",
-                    "beta",
-                    aliases=(("alpha-name", "Alpha"),),
-                ),
-            ),
-        )
-        self.assertEqual(
-            [entry["slug"] for entry in data["entries"]],
-            ["alpha"],
-        )
-        self.assertEqual(len(report["legacy_aliases_removed"]), 1)
-
-    def test_normalized_confirmed_canonical_vs_legacy_alias_conflict_fails(self) -> None:
-        confirmed = parsed_entry("Alpha Term", "alpha-term")
-        with self.assertRaisesRegex(
-            learn_glossary.ValidationError,
-            "Normalized confirmed/legacy alias conflict",
-        ):
-            source.merge_confirmed_and_legacy(
-                [confirmed],
-                legacy_data(
-                    legacy_entry("Alpha Term", "alpha-term"),
-                    legacy_entry(
-                        "Beta",
-                        "beta",
-                        aliases=(("alpha-term-alias", "Alpha-Term"),),
-                    ),
-                ),
-            )
-
-    def test_normalized_confirmed_alias_vs_legacy_canonical_conflict_fails(self) -> None:
-        confirmed = parsed_entry(
-            "Alpha",
-            "alpha",
-            aliases=("Legacy Term",),
-        )
-        with self.assertRaisesRegex(
-            learn_glossary.ValidationError,
-            "conflicts with retained legacy canonical",
-        ):
-            source.merge_confirmed_and_legacy(
-                [confirmed],
-                legacy_data(
-                    legacy_entry("Alpha", "alpha"),
-                    legacy_entry("Legacy-Term", "legacy-term"),
-                ),
-            )
-
-    def test_duplicate_canonical_terms_slugs_and_alias_ownership_fail(self) -> None:
-        cases = (
-            (
-                [parsed_entry("Alpha", "alpha"), parsed_entry("Alpha", "other")],
-                "Duplicate canonical term",
-            ),
-            (
-                [parsed_entry("Alpha", "alpha"), parsed_entry("Beta", "alpha")],
-                "Duplicate canonical slug",
-            ),
-            (
-                [
-                    parsed_entry("Alpha", "alpha", aliases=("Shared",)),
-                    parsed_entry("Beta", "beta", aliases=("Shared",)),
-                ],
-                "assigned to both",
-            ),
-        )
-        for entries, message in cases:
-            with self.subTest(message=message):
-                with self.assertRaisesRegex(
-                    learn_glossary.ValidationError,
-                    message,
-                ):
-                    source.validate_name_conflicts(entries)
-
-    def test_rich_fields_targets_multiple_and_zero_categories_survive(self) -> None:
-        target = legacy_entry(
-            "Target Term",
-            "target-term",
-            aliases=(("target-alias", "Target Alias"),),
-        )
-        confirmed_target = parsed_entry(
-            "Target Term",
-            "target-term",
-            aliases=("Target Alias",),
-        )
-        rich = parsed_entry(
-            "Rich Term",
-            "rich-term",
-            aliases=("Rich Alias",),
-            categories=(
-                "checker play and tactics",
-                "strategy and position types",
-            ),
-            definition_links=(("Target Alias", "target-alias"),),
-            related_terms=("Target Term", "Pending Related"),
-            learning_tracks=("Checker Play",),
-            full_definition="Target Alias appears in this full definition.",
-        )
-        uncategorized = parsed_entry(
-            "Uncategorized",
-            "uncategorized",
-            categories=(),
-        )
-        data, report = source.merge_confirmed_and_legacy(
-            [rich, uncategorized, confirmed_target],
-            legacy_data(target),
-        )
-        by_slug = {entry["slug"]: entry for entry in data["entries"]}
-        self.assertEqual(
-            by_slug["rich-term"]["categories"],
-            ["checker play and tactics", "strategy and position types"],
-        )
-        self.assertEqual(
-            by_slug["rich-term"]["category"],
-            "checker play and tactics",
-        )
-        self.assertEqual(by_slug["rich-term"]["learning_tracks"], ["Checker Play"])
-        self.assertEqual(
-            by_slug["rich-term"]["definition_links"],
-            [{"slug": "target-term", "text": "Target Alias"}],
-        )
-        self.assertEqual(
-            by_slug["rich-term"]["related_terms"],
-            [
-                {"slug": "target-term", "term": "Target Term"},
-                {"term": "Pending Related"},
-            ],
-        )
-        self.assertEqual(by_slug["uncategorized"]["categories"], [])
-        self.assertNotIn("category", by_slug["uncategorized"])
-        self.assertEqual(
-            report["canonicalized_inline_targets"],
-            [
-                {
-                    "authored_target": "target-alias",
-                    "canonical_target": "target-term",
-                    "entry_slug": "rich-term",
-                    "visible": "Target Alias",
-                }
-            ],
-        )
-        self.assertEqual(
-            report["unresolved_related_terms"],
-            [{"entry_slug": "rich-term", "term": "Pending Related"}],
-        )
-
-    def test_unapproved_inline_target_remains_plain_text(self) -> None:
-        confirmed = parsed_entry(
-            "Alpha",
-            "alpha",
-            definition_links=(("Missing", "missing"),),
-            full_definition="Missing is referenced.",
-        )
-        data, report = source.merge_confirmed_and_legacy(
-            [confirmed],
-            legacy_data(),
-        )
-        self.assertEqual(data["entries"][0]["definition_links"], [])
-        self.assertEqual(
-            report["unresolved_inline_targets"],
-            [
-                {
-                    "entry_slug": "alpha",
-                    "target_slug": "missing",
-                    "visible": "Missing",
-                }
-            ],
-        )
-
-    def test_production_generation_matches_tracked_file_and_is_deterministic(self) -> None:
-        first, first_report = source.build_production_source()
-        second, second_report = source.build_production_source()
-        self.assertEqual(first.encode("utf-8"), second.encode("utf-8"))
-        self.assertEqual(first_report, second_report)
-        self.assertEqual(
-            source.PRODUCTION_SOURCE_PATH.read_text(encoding="utf-8"),
-            first,
-        )
-        self.assertEqual(first_report["confirmed_entries"], 12)
-        self.assertEqual(first_report["confirmed_aliases"], 3)
-        self.assertEqual(first_report["retained_legacy_entries"], 0)
-        self.assertEqual(first_report["retained_legacy_aliases"], 0)
-        self.assertEqual(first_report["review_only_legacy_entries"], 613)
-        self.assertEqual(first_report["review_only_legacy_aliases"], 181)
-        self.assertEqual(first_report["final_entries"], 12)
-        self.assertEqual(first_report["final_aliases"], 3)
-        self.assertTrue(first_report["unresolved_inline_targets"])
-
-    def test_manual_edit_drift_message_is_clear(self) -> None:
-        generated, _report = source.build_production_source()
-        fake_path = mock.Mock()
-        fake_path.exists.return_value = True
-        fake_path.read_text.return_value = generated + " "
-        with mock.patch.object(source, "PRODUCTION_SOURCE_PATH", fake_path):
-            with self.assertRaisesRegex(
-                learn_glossary.ValidationError,
-                "stale or manually edited",
-            ):
-                source.check_production_source()
-
-    def test_multi_category_html_chips_are_pressable_and_complete(self) -> None:
-        rich = parsed_entry(
-            "Rich Term",
-            "rich-term",
-            categories=(
-                "checker play and tactics",
-                "strategy and position types",
-            ),
-        )
-        data, _report = source.merge_confirmed_and_legacy(
-            [rich],
-            legacy_data(),
-        )
-        entries = source.validate_with_observed_counts(data)
-        html = learn_glossary.build_entries_html(entries, {}, {})
-        self.assertIn(
-            'data-bms-categories="[&quot;checker play and tactics&quot;, '
-            '&quot;strategy and position types&quot;]"',
-            html,
-        )
-        self.assertEqual(html.count('data-bms-card-category="'), 2)
-        self.assertEqual(html.count('aria-pressed="false"'), 2)
-
-    def test_confirmed_values_replace_legacy_values_exactly(self) -> None:
-        confirmed = {
-            entry.slug: entry
-            for entry in source.parse_confirmed_markdown(
-                source.CONFIRMED_SOURCE_PATH.read_text(encoding="utf-8")
-            )
+    def test_required_aliases_resolve_to_canonical_records(self) -> None:
+        expected = {
+            "American Backgammon Tour": "abt",
+            "Ahead in the Race": "ahead-in-the-count",
+            "Cube": "doubling-cube",
+            "Ace-Point": "one-point",
         }
-        production = json.loads(
-            source.PRODUCTION_SOURCE_PATH.read_text(encoding="utf-8")
-        )
-        by_slug = {entry["slug"]: entry for entry in production["entries"]}
-        for slug, parsed in confirmed.items():
-            with self.subTest(slug=slug):
-                generated = by_slug[slug]
-                self.assertEqual(generated["term"], parsed.term)
-                self.assertEqual(generated["date_added"], parsed.date_added)
-                self.assertEqual(generated["short_definition"], parsed.short_definition)
-                self.assertEqual(generated["definition"], parsed.full_definition)
-                self.assertEqual(generated["categories"], list(parsed.categories))
-                self.assertEqual(generated["learning_tracks"], list(parsed.learning_tracks))
-                self.assertEqual(
-                    [alias["term"] for alias in generated["aliases"]],
-                    sorted(parsed.aliases, key=str.casefold),
-                )
+        resolved = {}
+        for entry in self.data["entries"]:
+            for alias in entry["aliases"]:
+                resolved[alias["term"]] = entry["slug"]
+        self.assertEqual({key: resolved[key] for key in expected}, expected)
 
-    def test_legacy_input_remains_separate_and_unmodified(self) -> None:
-        legacy = json.loads(source.LEGACY_MIGRATION_PATH.read_text(encoding="utf-8"))
-        production = json.loads(source.PRODUCTION_SOURCE_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(len(legacy["entries"]), 624)
-        self.assertEqual(len(production["entries"]), 12)
-        self.assertNotEqual(legacy, production)
-        self.assertFalse(
-            source.CONFIRMED_SOURCE_PATH.samefile(
-                source.LEGACY_MIGRATION_PATH
+    def test_zero_one_and_multiple_categories_survive(self) -> None:
+        parsed = source.parse_markdown(
+            entry_block("Zero", slug="zero", categories=())
+            + entry_block("One", slug="one", categories=("Checker Play",))
+            + entry_block(
+                "Multiple",
+                slug="multiple",
+                categories=("Checker Play", "Cube Action"),
             )
+        )
+        by_slug = {
+            entry["slug"]: entry for entry in source.build_public_data(parsed)["entries"]
+        }
+        zero, one, multiple = by_slug["zero"], by_slug["one"], by_slug["multiple"]
+        self.assertNotIn("category", zero)
+        self.assertEqual(one["category"], one["categories"][0])
+        self.assertEqual(multiple["category"], multiple["categories"][0])
+
+    def test_generated_categories_follow_contract_order(self) -> None:
+        rank = {name: index for index, name in enumerate(learn_glossary.GLOSSARY_CATEGORIES)}
+        for entry in self.data["entries"]:
+            with self.subTest(slug=entry["slug"]):
+                positions = [rank[value] for value in entry["categories"]]
+                self.assertEqual(positions, sorted(positions))
+
+    def test_duplicate_and_unknown_categories_fail(self) -> None:
+        duplicate = entry_block(
+            categories=("Checker Play", "Checker Play")
+        )
+        with self.assertRaisesRegex(source.ValidationError, "repeats a category"):
+            source.parse_markdown(duplicate)
+        unknown = entry_block(categories=("Unknown",))
+        with self.assertRaisesRegex(source.ValidationError, "Invalid glossary category"):
+            source.parse_markdown(unknown)
+
+    def test_name_and_alias_collisions_fail(self) -> None:
+        text = entry_block("Alpha", slug="alpha", aliases=("Beta",)) + entry_block(
+            "Beta", slug="beta"
+        )
+        with self.assertRaisesRegex(source.ValidationError, "Canonical and alias conflict"):
+            source.parse_markdown(text)
+
+    def test_broken_inline_target_fails(self) -> None:
+        parsed = source.parse_markdown(
+            entry_block(inline=(("visible phrase", "missing-target"),))
+        )
+        with self.assertRaisesRegex(source.ValidationError, "missing inline target"):
+            source.build_public_data(parsed)
+
+    def test_optional_added_date_and_notes_are_supported(self) -> None:
+        parsed = source.parse_markdown(
+            entry_block(
+                added=None,
+                usage_note="Public usage guidance.",
+                editorial_note="Private migration note.",
+            )
+        )
+        data = source.build_public_data(parsed)
+        entry = data["entries"][0]
+        self.assertNotIn("date_added", entry)
+        self.assertEqual(entry["usage_note"], "Public usage guidance.")
+        self.assertNotIn("Private migration note.", json.dumps(data))
+
+    def test_generation_is_deterministic_and_tracked_source_is_current(self) -> None:
+        first, _ = source.build_production_source()
+        second, _ = source.build_production_source()
+        self.assertEqual(first, second)
+        self.assertEqual(
+            learn_glossary.PUBLIC_DATA_PATH.read_text(encoding="utf-8"),
+            first,
         )
 
 

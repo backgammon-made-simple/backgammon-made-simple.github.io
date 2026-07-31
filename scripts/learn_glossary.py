@@ -12,6 +12,7 @@ import subprocess
 import sys
 from collections import defaultdict
 from datetime import date
+from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urljoin
 from xml.etree import ElementTree
@@ -40,8 +41,8 @@ QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
-EXPECTED_CANONICAL_ENTRIES = 12
-EXPECTED_ALIAS_ENTRIES = 3
+EXPECTED_CANONICAL_ENTRIES = 625
+EXPECTED_ALIAS_ENTRIES = 184
 FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
 FULL_BUILD_MARKER_SCHEMA = 1
 RENDERED_CORE_PATHS = (
@@ -83,17 +84,19 @@ TRACKS = (
     "Engines and Analysis",
 )
 GLOSSARY_CATEGORIES = (
-    "analysis and probability",
-    "board, equipment, and notation",
-    "checker play and tactics",
-    "cube and scoring",
-    "language, rules, and culture",
-    "match and tournament play",
-    "organizations and community",
-    "race and bearoff",
-    "software and online play",
-    "strategy and position types",
-    "variants and history",
+    "Checker Play",
+    "Cube Action",
+    "Match Score",
+    "Race & Bearoff",
+    "Game Plans & Position Types",
+    "Board, Equipment & Notation",
+    "Rules & Procedures",
+    "Analysis & Probability",
+    "Tournaments & Community",
+    "Chouette & Money Play",
+    "Variants & History",
+    "Software & Engines",
+    "Slang & Expressions",
 )
 CANONICAL_SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
@@ -361,6 +364,9 @@ def glossary_categories(
     invalid = [value for value in categories if value not in GLOSSARY_CATEGORIES]
     if invalid:
         raise ValidationError(f"{label} has invalid categories: {invalid}")
+    expected_order = sorted(categories, key=GLOSSARY_CATEGORIES.index)
+    if categories != expected_order:
+        raise ValidationError(f"{label} categories are not in contract order")
     return categories
 
 
@@ -1033,10 +1039,12 @@ def discover_update_publications() -> list[dict[str, object]]:
     for entry in glossary_entries:
         slug = str(entry["slug"])
         raw_date = entry.get("date_added")
-        if not isinstance(raw_date, str) or not raw_date:
-            raise ValidationError(
-                f"Glossary entry {slug} requires date_added for the Updates feed"
-            )
+        # Legacy entries predate the Updates feed and intentionally have no
+        # publication date. Only newly added, dated definitions enter the feed.
+        if raw_date in (None, ""):
+            continue
+        if not isinstance(raw_date, str):
+            raise ValidationError(f"Glossary entry {slug} has invalid date_added")
         try:
             publication_date = date.fromisoformat(raw_date)
         except ValueError as error:
@@ -1608,6 +1616,20 @@ def usage_notes_html(entry: dict[str, object]) -> str:
     return "\n".join(notes)
 
 
+@lru_cache(maxsize=None)
+def inline_term_pattern(phrase: str) -> re.Pattern[str] | None:
+    """Compile each glossary phrase once across all generated definitions."""
+    words = re.findall(r"[A-Za-z0-9]+", phrase)
+    if not words:
+        return None
+    return re.compile(
+        r"(?<![A-Za-z0-9-])"
+        + r"[^A-Za-z0-9]+".join(re.escape(word) for word in words)
+        + r"(?![A-Za-z0-9-])",
+        re.IGNORECASE,
+    )
+
+
 def inline_definition_candidates(
     entry: dict[str, object],
     glossary_entries: list[dict[str, object]],
@@ -1649,17 +1671,12 @@ def inline_definition_candidates(
 
     prepared: list[dict[str, object]] = []
     for candidate in candidates.values():
-        words = re.findall(r"[A-Za-z0-9]+", str(candidate["phrase"]))
-        if not words:
+        pattern = inline_term_pattern(str(candidate["phrase"]))
+        if pattern is None:
             continue
         prepared.append({
             **candidate,
-            "pattern": re.compile(
-                r"(?<![A-Za-z0-9-])"
-                + r"[^A-Za-z0-9]+".join(re.escape(word) for word in words)
-                + r"(?![A-Za-z0-9-])",
-                re.IGNORECASE,
-            ),
+            "pattern": pattern,
         })
     return sorted(
         prepared,
@@ -1847,6 +1864,15 @@ def build_entries_html(
             search_values = [str(entry["term"])] + [
                 str(alias["term"]) for alias in entry["aliases"]  # type: ignore[index]
             ]
+            search_values.extend(
+                [
+                    str(entry.get("short_definition") or ""),
+                    str(entry["definition"]),
+                ]
+            )
+            alias_names = [
+                str(alias["term"]) for alias in entry["aliases"]  # type: ignore[index]
+            ]
             alias_slugs = [
                 str(alias["slug"]) for alias in entry["aliases"]  # type: ignore[index]
             ]
@@ -1868,6 +1894,7 @@ def build_entries_html(
                     f"{category_attributes}"
                     f'data-bms-tracks="{html_attr(json.dumps(tracks, ensure_ascii=False))}" '
                     f'data-bms-aliases="{html_attr(json.dumps(alias_slugs, ensure_ascii=False))}" '
+                    f'data-bms-alias-names="{html_attr(json.dumps(alias_names, ensure_ascii=False))}" '
                     f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
                     '<summary class="bms-glossary-entry-summary">'
                     f'<span class="bms-glossary-term-name">'
@@ -2117,7 +2144,10 @@ def validate_generated() -> dict[str, int]:
         r'<details class="bms-glossary-entry"[^>]*>',
         entries_html,
     )
-    if any(" open" in tag for tag in entry_tags):
+    if any(
+        re.search(r"\sopen(?:\s|>)", re.sub(r'"[^"]*"', '""', tag))
+        for tag in entry_tags
+    ):
         raise ValidationError("Canonical term disclosures must begin collapsed")
     if entries_html.count('data-bms-alias="') != EXPECTED_ALIAS_ENTRIES:
         raise ValidationError("Generated alias count does not match public data")

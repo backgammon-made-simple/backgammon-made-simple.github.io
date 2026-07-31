@@ -50,6 +50,8 @@ def glossary_feed_records(data: object) -> list[dict[str, str]]:
     for index, entry in enumerate(data["entries"]):
         if not isinstance(entry, dict):
             raise RuntimeError(f"Glossary RSS entry {index} must be an object")
+        if entry.get("date_added") in (None, ""):
+            continue
         required: dict[str, str] = {}
         for field in ("date_added", "definition", "slug", "term"):
             value = entry.get(field)

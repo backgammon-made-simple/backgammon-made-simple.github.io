@@ -93,6 +93,14 @@
     ) {
       return 8;
     }
+    const searchableText = Array.isArray(item.searchValues)
+      ? item.searchValues.map(normalizeSearch)
+      : [];
+    if (searchableText.some(function (value) {
+      return value.includes(normalizedQuery);
+    })) {
+      return 9;
+    }
     return Number.POSITIVE_INFINITY;
   }
 
@@ -341,7 +349,7 @@
         tracks: parseList(element.dataset.bmsTracks),
         searchValues: searchValues,
         canonical: searchValues[0] || "",
-        aliases: searchValues.slice(1),
+        aliases: parseList(element.dataset.bmsAliasNames),
         originalParent: element.parentElement,
         originalIndex: originalIndex
       };

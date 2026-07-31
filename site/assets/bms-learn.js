@@ -161,6 +161,14 @@
     ) {
       return 8;
     }
+    const shortDefinition = normalizeLearnSearch(entry.short_definition);
+    const fullDefinition = normalizeLearnSearch(entry.definition);
+    if (shortDefinition.includes(normalizedQuery)) {
+      return 9;
+    }
+    if (fullDefinition.includes(normalizedQuery)) {
+      return 10;
+    }
     return Number.POSITIVE_INFINITY;
   }
 
