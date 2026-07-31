@@ -752,6 +752,14 @@ assert.deepEqual(
   ["Doubling Cube"],
   "global section actions preserve learning-track filters"
 );
+assert.equal(
+  glossary.urlWithoutGlossaryFilters(
+    "https://backgammon-made-simple.github.io/learn/glossary/" +
+      "?q=take&category=Cube%20Action&track=Doubling%20Cube#take"
+  ),
+  "https://backgammon-made-simple.github.io/learn/glossary/#take",
+  "related-term navigation clears all incompatible filters"
+);
 
 const currentGlossaryUrl =
   "https://backgammon-made-simple.github.io/learn/glossary/" +
