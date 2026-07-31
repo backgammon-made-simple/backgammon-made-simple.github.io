@@ -1064,6 +1064,8 @@
     let desktopCollapsed = !refinedRightRailPage;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
+    let rightRailScrollCollapsed = false;
+    let lastRightRailScrollY = window.scrollY;
     let mobileDrawerOpen = false;
     let mobileTouchStart = null;
     let mobileDrawer = null;
@@ -1514,6 +1516,33 @@
       tocToggle.textContent = collapsed ? "Expand TOC" : "Collapse TOC";
     };
 
+    const updateRightRailForScroll = function () {
+      if (!marginSidebar || !inRefinedRightRail()) {
+        rightRailScrollCollapsed = false;
+        if (marginSidebar) {
+          marginSidebar.classList.remove(
+            "bms-refined-right-rail-scroll-collapsed"
+          );
+        }
+        lastRightRailScrollY = window.scrollY;
+        return;
+      }
+
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= 32) {
+        rightRailScrollCollapsed = false;
+      } else if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
+        rightRailScrollCollapsed = currentScrollY > lastRightRailScrollY;
+      }
+      marginSidebar.classList.toggle(
+        "bms-refined-right-rail-scroll-collapsed",
+        rightRailScrollCollapsed
+      );
+      if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
+        lastRightRailScrollY = currentScrollY;
+      }
+    };
+
     const placeTools = function () {
       if (inDesktopSidebar()) {
         setMobileDrawerOpen(false, { focus: false });
@@ -1583,6 +1612,7 @@
       }
       updateToc();
       updateMarginSidebar();
+      updateRightRailForScroll();
     };
 
     if (
@@ -1667,6 +1697,9 @@
     };
     if (refinedRightRailPage) {
       window.addEventListener("scroll", updateLookupForScroll, {
+        passive: true
+      });
+      window.addEventListener("scroll", updateRightRailForScroll, {
         passive: true
       });
       updateLookupForScroll();

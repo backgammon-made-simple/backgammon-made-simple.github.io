@@ -1634,6 +1634,10 @@ body:is(.bms-learn-index, .bms-learn-article)
     display: none !important;
   }
 
+  #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed {
+    display: none !important;
+  }
+
   #quarto-margin-sidebar.bms-margin-sidebar-collapsed
     > :not(.bms-site-tools),
   #quarto-margin-sidebar.bms-margin-sidebar-collapsed
