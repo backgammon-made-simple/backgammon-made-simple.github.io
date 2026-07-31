@@ -11,12 +11,19 @@ const fixtures = JSON.parse(
     "utf8"
   )
 );
+const realFixtures = JSON.parse(
+  fs.readFileSync(
+    path.join(root, "site/data/checker-sage-gnu-disagreement-001.json"),
+    "utf8"
+  )
+);
 
 assert.equal(
   analysis.validateFixtureDocument(fixtures),
   fixtures,
   "the checked-in fixture document is accepted"
 );
+assert.equal(analysis.validateFixtureDocument(realFixtures), realFixtures);
 
 const doubleTake = fixtures.cube_cases["cube-double-take"];
 const rollReview = analysis.cubeDecisionState(doubleTake, "roll");
@@ -63,6 +70,30 @@ assert.equal(
 assert.throws(
   () => analysis.cubeDecisionState(doubleTake, "beaver"),
   /Double or Roll/
+);
+
+const realChecker =
+  realFixtures.checker_cases["checker-sage-gnu-disagreement-001"];
+const realCandidate = analysis.checkerCandidateState(
+  realChecker,
+  "candidate-1"
+);
+assert.equal(realCandidate.label, "8/4");
+assert.equal(realCandidate.rank, 1);
+assert.equal(realCandidate.equity, -1.615);
+assert.equal(realCandidate.equity_loss, 0);
+assert.equal(realCandidate.winning_probabilities.lose_gammon, 0.677);
+assert.equal(realCandidate.explanation, null);
+assert.equal(
+  analysis.checkerCandidateIdentityMatches(realChecker, realCandidate),
+  true
+);
+assert.equal(
+  analysis.checkerCandidateIdentityMatches(realChecker, {
+    ...realCandidate,
+    analysis_id: "wrong"
+  }),
+  false
 );
 assert.throws(
   () => analysis.cubeDecisionState(doubleTake, "double", "beaver"),

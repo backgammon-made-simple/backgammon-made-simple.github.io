@@ -60,15 +60,14 @@ Prerequisite: Basic doubling-cube rules
 
 ## The position
 
-The checker interaction below is fixture-only UI work. It deliberately reuses
-the same starting SVG as the cube lesson so shared asset paths can be tested
-from two lessons in this track.
+This checker interaction uses a retained GNU 4-ply review. Select a candidate
+to compare its resulting board, equity, equity loss, and winning probabilities.
 
 <div
   class="bms-lesson-analysis-host"
   data-bms-checker-decision
-  data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json"
-  data-bms-fixture-id="checker-three-candidates"
+  data-bms-fixture-src="/data/checker-sage-gnu-disagreement-001.json"
+  data-bms-fixture-id="checker-sage-gnu-disagreement-001"
 ></div>
 
 <details class="bms-analyzer-embed">

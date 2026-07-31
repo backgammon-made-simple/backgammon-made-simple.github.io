@@ -1,0 +1,111 @@
+{
+  "known_missing_fields": [
+    "rules.beavers",
+    "rules.raccoons"
+  ],
+  "position_id": "checker-sage-gnu-disagreement-001",
+  "presentation": {
+    "default_orientation": "decision-player-bottom",
+    "orientation_participates_in_state_hash": false
+  },
+  "schema_version": "position-v1",
+  "source": {
+    "format": "gnu-id",
+    "game_number": 5,
+    "gnu_match_id": "MIHlACAAKAAE",
+    "gnu_position_id": "3N0DAAD0HDMABw",
+    "move_number": 22,
+    "pair_id": "pair_10",
+    "source_hashes": {
+      "canonical_candidates_csv_sha256": "e4614c89e3b5f17c11340dac4b554726fbf0acc6a8a2e07950e37f5f930c1e78",
+      "canonical_decisions_csv_sha256": "3da11c01bc7584ee5f6a37c93a98e70d66b6f875485ad0c050d8bf057b0762b4",
+      "completed_error_csv_sha256": "60a3195f21172fcee8d73cf8cdd13bf5901567c6cc7911e31d239425696a6c10",
+      "source_review_sha256": "f15c64f46f891b9714c0d9552a98c152e134dc7603c7e4854081b515d923616a"
+    },
+    "source_line_number": 848,
+    "source_match": "pair_10_match_a"
+  },
+  "state": {
+    "checker_arrangement": {
+      "opponent_borne_off": 2,
+      "opponent_points_1_to_24_and_bar": [
+        0,
+        0,
+        3,
+        3,
+        3,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "perspective": "decision_player",
+      "player_borne_off": 0,
+      "player_points_1_to_24_and_bar": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        4,
+        0,
+        3,
+        0,
+        0,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    "crawford": false,
+    "cube": {
+      "owner": "centered",
+      "value": 1
+    },
+    "dice": [
+      3,
+      1
+    ],
+    "player_on_roll": "decision_player",
+    "rules": {
+      "beavers": null,
+      "jacoby": false,
+      "raccoons": null,
+      "variation": "standard-backgammon"
+    },
+    "score": {
+      "match_length": 7,
+      "opponent": 5,
+      "player": 2
+    }
+  },
+  "state_hash": "e0b88727ba5d0cc170a207d4a9f2d44039f7a30d94ab05b6f0a30b2118d35070"
+}

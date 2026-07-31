@@ -96,15 +96,18 @@ class LessonAnalysisFixtureTests(unittest.TestCase):
             "checker-three-candidates"
         ]["initial"]["image"]
         self.assertEqual(cube_start, checker_start)
-        starts = list(
-            (SITE / "assets" / "positions").rglob("starting.svg")
-        )
+        starts = list(ASSET_ROOT.rglob("starting.svg"))
         self.assertEqual(starts, [ASSET_ROOT / "starting.svg"])
 
     def test_two_lessons_use_root_relative_fixture_loading(self):
-        expected = 'data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json"'
-        self.assertIn(expected, self.cube_source)
-        self.assertIn(expected, self.checker_source)
+        self.assertIn(
+            'data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json"',
+            self.cube_source,
+        )
+        self.assertIn(
+            'data-bms-fixture-src="/data/checker-sage-gnu-disagreement-001.json"',
+            self.checker_source,
+        )
         self.assertEqual(
             self.cube_source.count("data-bms-cube-decision"),
             2,
@@ -166,6 +169,7 @@ class LessonAnalysisFixtureTests(unittest.TestCase):
         config = (SITE / "_quarto.yml").read_text(encoding="utf-8")
         self.assertIn('"assets/positions/**"', config)
         self.assertIn("data/lesson-analysis-svg-mvp.json", config)
+        self.assertIn("data/checker-sage-gnu-disagreement-001.json", config)
         self.assertIn("assets/bms-lesson-analysis.css", config)
         provenance = ASSET_ROOT / "PROVENANCE.txt"
         self.assertTrue(provenance.is_file())

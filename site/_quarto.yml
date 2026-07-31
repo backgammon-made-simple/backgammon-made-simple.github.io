@@ -15,6 +15,7 @@ project:
     - assets/bms-research-sequence.json
     - "assets/positions/**"
     - data/lesson-analysis-svg-mvp.json
+    - data/checker-sage-gnu-disagreement-001.json
     - "data/engine-benchmark/**"
     - "engine-benchmark/**/figures/**"
     - "engine-benchmark/**/tables/**"

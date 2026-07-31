@@ -292,13 +292,14 @@ export async function runLessonAnalysisBrowserChecks({
         check(
           startingSource?.endsWith("/starting.svg"),
           checkerContext,
-          "checker lesson reuses the shared starting SVG"
+          "checker lesson loads the retained starting SVG"
         );
-        for (const candidateId of [
-          "candidate-1",
-          "candidate-2",
-          "candidate-3"
-        ]) {
+        const candidateAssets = {
+          "candidate-1": "candidate-1-3N0DAADqGTMABw.svg",
+          "candidate-2": "candidate-2-3N0DAAD0nCUABw.svg",
+          "candidate-3": "candidate-3-3N0DAAD0miYABw.svg"
+        };
+        for (const candidateId of Object.keys(candidateAssets)) {
           await host
             .locator(
               `button[data-bms-analysis-choice='${candidateId}']`
@@ -318,22 +319,30 @@ export async function runLessonAnalysisBrowserChecks({
               ?.textContent.trim()
           }), candidateId);
           check(
-            selected.image?.endsWith(`/${candidateId}.svg`) &&
+            selected.image?.endsWith(`/${candidateAssets[candidateId]}`) &&
               selected.pressed === "true" &&
               selected.status.includes("selected"),
             checkerContext,
-            `${candidateId} updates its supplied image and state`
+            `${candidateId} updates its verified image and state`
           );
         }
-        const missing = await host.evaluate((element) =>
-          Array.from(
-            element.querySelectorAll(".bms-analysis-candidate-result dd")
-          ).filter((item) => item.textContent.trim() === "Not supplied").length
-        );
+        const missing = await host.evaluate((element) => ({
+          explanation: element
+            .querySelector(".bms-analysis-explanation")
+            ?.textContent.trim(),
+          identities: {
+            positionId: element.querySelector("article")?.dataset.positionId,
+            stateHash: element.querySelector("article")?.dataset.stateHash,
+            analysisId: element.querySelector("article")?.dataset.analysisId
+          }
+        }));
         check(
-          missing === 2,
+          missing.explanation === "Not supplied" &&
+            missing.identities.positionId === "checker-sage-gnu-disagreement-001" &&
+            missing.identities.stateHash?.length === 64 &&
+            missing.identities.analysisId?.startsWith("analysis-sha256-"),
           checkerContext,
-          "missing optional probabilities display clearly"
+          "missing explanation and stable identities display correctly"
         );
         await scrollAndRestore(checkerTab);
         check(

@@ -1,0 +1,118 @@
+{
+  "schema_version": "bms-lesson-analysis-fixture-v1",
+  "fixture_status": {
+    "kind": "retained-analysis",
+    "label": "Retained GNU analysis",
+    "message": "Values come from the retained GNU 4-ply review. The reviewer is configured evidence, not proven ground truth."
+  },
+  "asset_root": "/assets/positions/real-analysis/checker-sage-gnu-disagreement-001/",
+  "checker_cases": {
+    "checker-sage-gnu-disagreement-001": {
+      "source_kind": "retained-analysis",
+      "title": "Checker play: compare the top three GNU candidates",
+      "prompt": "Which candidate would you play with 3-1?",
+      "position_id": "checker-sage-gnu-disagreement-001",
+      "state_hash": "e0b88727ba5d0cc170a207d4a9f2d44039f7a30d94ab05b6f0a30b2118d35070",
+      "analysis_id": "analysis-sha256-69690b1d0bb2475087e8d11b31303f17a12a4e2e4ddfb8e0d4486462c5afd14d",
+      "initial": {
+        "image": "starting.svg",
+        "alt": "The retained checker position before a candidate move is selected."
+      },
+      "recommendation": "8/4",
+      "candidates": [
+        {
+          "id": "candidate-1",
+          "label": "8/4",
+          "move": "8/4",
+          "rank": 1,
+          "image": "candidate-1-3N0DAADqGTMABw.svg",
+          "image_alt": "Resulting position for rank 1: 8/4.",
+          "resulting_position_id": "3N0DAADqGTMABw",
+          "position_id": "checker-sage-gnu-disagreement-001",
+          "state_hash": "e0b88727ba5d0cc170a207d4a9f2d44039f7a30d94ab05b6f0a30b2118d35070",
+          "analysis_id": "analysis-sha256-69690b1d0bb2475087e8d11b31303f17a12a4e2e4ddfb8e0d4486462c5afd14d",
+          "equity": -1.615,
+          "equity_loss": 0.0,
+          "winning_probabilities": {
+            "lose": 0.838,
+            "lose_backgammon": 0.052,
+            "lose_gammon": 0.677,
+            "win": 0.162,
+            "win_backgammon": 0.0,
+            "win_gammon": 0.0
+          },
+          "explanation": null,
+          "missing_value_state": {
+            "explanation": true
+          }
+        },
+        {
+          "id": "candidate-2",
+          "label": "13/10 11/10",
+          "move": "13/10 11/10",
+          "rank": 2,
+          "image": "candidate-2-3N0DAAD0nCUABw.svg",
+          "image_alt": "Resulting position for rank 2: 13/10 11/10.",
+          "resulting_position_id": "3N0DAAD0nCUABw",
+          "position_id": "checker-sage-gnu-disagreement-001",
+          "state_hash": "e0b88727ba5d0cc170a207d4a9f2d44039f7a30d94ab05b6f0a30b2118d35070",
+          "analysis_id": "analysis-sha256-69690b1d0bb2475087e8d11b31303f17a12a4e2e4ddfb8e0d4486462c5afd14d",
+          "equity": -1.617,
+          "equity_loss": 0.002,
+          "winning_probabilities": {
+            "lose": 0.838,
+            "lose_backgammon": 0.051,
+            "lose_gammon": 0.676,
+            "win": 0.162,
+            "win_backgammon": 0.0,
+            "win_gammon": 0.0
+          },
+          "explanation": null,
+          "missing_value_state": {
+            "explanation": true
+          }
+        },
+        {
+          "id": "candidate-3",
+          "label": "13/10 8/7",
+          "move": "13/10 8/7",
+          "rank": 3,
+          "image": "candidate-3-3N0DAAD0miYABw.svg",
+          "image_alt": "Resulting position for rank 3: 13/10 8/7.",
+          "resulting_position_id": "3N0DAAD0miYABw",
+          "position_id": "checker-sage-gnu-disagreement-001",
+          "state_hash": "e0b88727ba5d0cc170a207d4a9f2d44039f7a30d94ab05b6f0a30b2118d35070",
+          "analysis_id": "analysis-sha256-69690b1d0bb2475087e8d11b31303f17a12a4e2e4ddfb8e0d4486462c5afd14d",
+          "equity": -1.619,
+          "equity_loss": 0.004,
+          "winning_probabilities": {
+            "lose": 0.838,
+            "lose_backgammon": 0.051,
+            "lose_gammon": 0.677,
+            "win": 0.162,
+            "win_backgammon": 0.0,
+            "win_gammon": 0.0
+          },
+          "explanation": null,
+          "missing_value_state": {
+            "explanation": true
+          }
+        }
+      ],
+      "analysis": {
+        "label": "Show retained engine analysis",
+        "engine": "gnu",
+        "setting": "gnu-4ply-checker-review-v1",
+        "explanation": null,
+        "missing_value_state": {
+          "explanation": true
+        }
+      },
+      "source_contract": {
+        "analyzer_view_schema": "checker-analyzer-view-v1",
+        "authoritative_analysis_schema": "checker-analysis-v1",
+        "manifest_schema": "analysis-artifact-manifest-v1"
+      }
+    }
+  }
+}
