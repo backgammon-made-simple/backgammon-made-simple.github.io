@@ -383,6 +383,16 @@
         )
       );
 
+      if (state.actionData.position) {
+        firstAnswer.content.appendChild(
+          figureFor(
+            state.actionData.position,
+            fixtures.asset_root,
+            "bms-analysis-position bms-analysis-position--answer"
+          ).figure
+        );
+      }
+
       if (state.actionData.analysis) {
         appendAnalysisDisclosure(
           firstAnswer.content,

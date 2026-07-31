@@ -223,6 +223,16 @@ export async function runLessonAnalysisBrowserChecks({
           .getByText("Open the component-isolation fixture", { exact: true })
           .click();
         await second
+          .locator("button[data-bms-analysis-choice='double']")
+          .click();
+        check(
+          (await second
+            .locator(".bms-analysis-answer .bms-analysis-position--answer img")
+            .getAttribute("src"))?.endsWith("/starting.svg"),
+          cubeContext,
+          "rejected Double answer reuses the same position render"
+        );
+        await second
           .locator("button[data-bms-analysis-choice='roll']")
           .click();
         const isolated = await cubeTab.playwright

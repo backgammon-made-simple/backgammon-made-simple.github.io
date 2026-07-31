@@ -65,6 +65,9 @@ class LessonAnalysisFixtureTests(unittest.TestCase):
         names = set()
         for cube in self.data["cube_cases"].values():
             names.add(cube["initial"]["image"])
+            for action in cube["actions"].values():
+                if action.get("position"):
+                    names.add(action["position"]["image"])
             responder = cube["actions"]["double"].get("responder")
             if responder:
                 names.add(responder["image"])
@@ -100,6 +103,13 @@ class LessonAnalysisFixtureTests(unittest.TestCase):
             (SITE / "assets" / "positions").rglob("starting.svg")
         )
         self.assertEqual(starts, [ASSET_ROOT / "starting.svg"])
+
+    def test_rejected_double_reuses_the_same_position_in_its_answer(self):
+        fixture = self.data["cube_cases"]["cube-roll"]
+        self.assertEqual(
+            fixture["actions"]["double"]["position"]["image"],
+            fixture["initial"]["image"],
+        )
 
     def test_two_lessons_use_root_relative_fixture_loading(self):
         expected = 'data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json"'

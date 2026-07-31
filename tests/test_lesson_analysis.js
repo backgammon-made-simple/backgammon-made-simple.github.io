@@ -48,6 +48,11 @@ assert.equal(
   null,
   "a rejected Double does not invent a responder decision"
 );
+assert.equal(
+  analysis.cubeDecisionState(rollFixture, "double").actionData.position.image,
+  "starting.svg",
+  "the rejected Double answer reuses the supplied starting position"
+);
 
 const doublePass = fixtures.cube_cases["cube-double-pass"];
 assert.equal(

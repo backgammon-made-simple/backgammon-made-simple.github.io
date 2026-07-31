@@ -117,6 +117,10 @@
         },
         "double": {
           "summary": "Doubling is not the fixture answer.",
+          "position": {
+            "image": "starting.svg",
+            "alt": "The same fixture position shown again while reviewing the Double choice."
+          },
           "analysis": {
             "recommendation": "Roll",
             "equities": {
