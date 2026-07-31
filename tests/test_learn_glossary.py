@@ -1406,11 +1406,8 @@ class LearnGlossaryTests(unittest.TestCase):
             "refinedRightRailPage",
             "bms-research-article",
             "bms-lesson-track-content",
-            "bms-lesson-track-toggle",
-            'aria-label",\n            collapsed ? "Expand lesson track"',
-            'trackToggle.textContent = collapsed ? "\\u2304" : "\\u2303"',
-            'querySelectorAll("[data-bms-lesson-track-toggle]")',
-            "trackCollapsed !== tocCollapsed",
+            'querySelectorAll("[data-bms-lesson-track-nav]")',
+            "trackContent.hidden = tocCollapsed",
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
             'tocHeadingToggle.textContent = tocCollapsed ? "\\u2304" : "\\u2303"',
@@ -1422,12 +1419,20 @@ class LearnGlossaryTests(unittest.TestCase):
             "inRefinedRightRail",
         ):
             self.assertIn(required, javascript)
+        self.assertNotIn("data.bmsLessonTrackToggle", javascript)
+        for required in (
+            '<span aria-hidden="true">&lt;</span> Term Search',
+            'toggle.textContent = active ? ">" : "<"',
+            'toggle.hidden = !desktopQuery.matches || window.scrollY > 32',
+            '? \'<span aria-hidden="true">\\u2304</span>\'',
+            'toggle.classList.toggle("is-active", active)',
+        ):
+            self.assertIn(required, javascript)
 
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
         ).read_text(encoding="utf-8")
         for required in (
-            ".bms-lesson-track-toggle {\n  display: none;",
             "body.bms-learn-article:not(.bms-learn-track-index)",
             "width: clamp(12rem, 19vw, 20rem)",
             "font-size: 0.86rem",
@@ -1444,6 +1449,9 @@ class LearnGlossaryTests(unittest.TestCase):
             "@media (min-width: 992px)",
         ):
             self.assertIn(required, css)
+        self.assertNotIn(".bms-lesson-track-toggle", css)
+        self.assertIn(".bms-distraction-free-toggle.is-active", css)
+        self.assertIn("min-height: 2.1rem", css)
         self.assertIn(
             'toggle.style.left = Math.max(8, sidebarRight + 6) + "px"',
             javascript,

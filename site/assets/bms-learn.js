@@ -793,9 +793,7 @@
         const lessonPage =
           document.body.classList.contains("bms-learn-article") &&
           !document.body.classList.contains("bms-learn-track-index");
-        let trackCollapsed = false;
         let trackContent = null;
-        let trackToggle = null;
 
         if (lessonPage) {
           trackContent = document.createElement("div");
@@ -804,42 +802,7 @@
           while (trackNav.firstChild) {
             trackContent.appendChild(trackNav.firstChild);
           }
-
-          trackToggle = document.createElement("button");
-          trackToggle.type = "button";
-          trackToggle.className = "bms-lesson-track-toggle";
-          trackToggle.dataset.bmsLessonTrackToggle = "";
-          trackToggle.setAttribute("aria-controls", trackContent.id);
-          trackNav.append(trackContent, trackToggle);
-        }
-
-        function updateTrackControl(desktopRailActive) {
-          if (!trackContent || !trackToggle) {
-            return;
-          }
-          const collapsed = desktopRailActive && trackCollapsed;
-          trackContent.hidden = collapsed;
-          trackNav.classList.toggle(
-            "bms-lesson-track-collapsed",
-            collapsed
-          );
-          trackToggle.hidden = !desktopRailActive;
-          trackToggle.setAttribute(
-            "aria-expanded",
-            collapsed ? "false" : "true"
-          );
-          trackToggle.setAttribute(
-            "aria-label",
-            collapsed ? "Expand lesson track" : "Collapse lesson track"
-          );
-          trackToggle.textContent = collapsed ? "\u2304" : "\u2303";
-        }
-
-        if (trackToggle) {
-          trackToggle.addEventListener("click", function () {
-            trackCollapsed = !trackCollapsed;
-            updateTrackControl(true);
-          });
+          trackNav.appendChild(trackContent);
         }
 
         function place() {
@@ -865,7 +828,16 @@
           } else {
             taxonomy.appendChild(trackNav);
           }
-          updateTrackControl(desktopRailActive);
+          if (trackContent) {
+            const collapsed =
+              desktopRailActive &&
+              sidebar.classList.contains("bms-toc-collapsed");
+            trackContent.hidden = collapsed;
+            trackNav.classList.toggle(
+              "bms-lesson-track-collapsed",
+              collapsed
+            );
+          }
         }
 
         place();
@@ -946,7 +918,7 @@
       '<button type="button" class="bms-term-lookup-close" ' +
       'data-bms-term-lookup-close aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="true" aria-label="Collapse term lookup">' +
-      '<span aria-hidden="true">\u2303</span></button>' +
+      '<span aria-hidden="true">&gt;</span></button>' +
       "</div>" +
       '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
@@ -1050,7 +1022,7 @@
       '<button type="button" class="bms-term-lookup-reveal" ' +
       'data-bms-site-term-toggle aria-controls="bms-term-lookup-panel" ' +
       'aria-expanded="false" aria-label="Open term lookup">' +
-      '<span aria-hidden="true">\u2304</span> Term Search</button>' +
+      '<span aria-hidden="true">&lt;</span> Term Search</button>' +
       (refinedRightRailPage
         ? ""
         : '<button type="button" class="bms-toc-toggle" ' +
@@ -1172,12 +1144,17 @@
         tocCollapsed = !tocCollapsed;
         updateToc();
         document
-          .querySelectorAll("[data-bms-lesson-track-toggle]")
-          .forEach(function (trackButton) {
-            const trackCollapsed =
-              trackButton.getAttribute("aria-expanded") === "false";
-            if (trackCollapsed !== tocCollapsed) {
-              trackButton.click();
+          .querySelectorAll("[data-bms-lesson-track-nav]")
+          .forEach(function (trackNav) {
+            const trackContent = trackNav.querySelector(
+              ".bms-lesson-track-content"
+            );
+            if (trackContent) {
+              trackContent.hidden = tocCollapsed;
+              trackNav.classList.toggle(
+                "bms-lesson-track-collapsed",
+                tocCollapsed
+              );
             }
           });
       });
@@ -1813,7 +1790,7 @@
         "aria-label",
         active ? "Show Learn table of contents" : "Hide Learn table of contents"
       );
-      toggle.textContent = active ? "\u2304" : "\u2303";
+      toggle.textContent = active ? ">" : "<";
       if (active) {
         toggle.style.left = "0.5rem";
       } else {
@@ -1836,10 +1813,10 @@
       document.body.classList.contains("bms-learn-article") &&
       !document.body.classList.contains("bms-learn-track-index");
     const marginSidebar = document.getElementById("quarto-margin-sidebar");
-    const trackToggle = document.querySelector(
-      "[data-bms-lesson-track-toggle]"
+    const trackNav = document.querySelector(
+      "[data-bms-lesson-track-nav]"
     );
-    if (!lessonPage || !marginSidebar || !trackToggle) {
+    if (!lessonPage || !marginSidebar || !trackNav) {
       return;
     }
 
@@ -1859,9 +1836,9 @@
       if (!desktopQuery.matches || active) {
         return;
       }
-      const trackRect = trackToggle.getBoundingClientRect();
+      const trackRect = trackNav.getBoundingClientRect();
       const sidebarRect = marginSidebar.getBoundingClientRect();
-      toggle.style.top = Math.max(77, trackRect.bottom + 6) + "px";
+      toggle.style.top = Math.max(77, trackRect.top) + "px";
       toggle.style.right =
         Math.max(8, window.innerWidth - sidebarRect.right) + "px";
     };
@@ -1871,7 +1848,7 @@
         active = false;
       }
       document.body.classList.toggle("bms-distraction-free", active);
-      toggle.hidden = !desktopQuery.matches;
+      toggle.hidden = !desktopQuery.matches || window.scrollY > 32;
       toggle.setAttribute("aria-expanded", active ? "false" : "true");
       toggle.setAttribute(
         "aria-label",
@@ -1880,8 +1857,9 @@
           : "Collapse sidebars for distraction-free mode"
       );
       toggle.innerHTML = active
-        ? '<span aria-hidden="true">\u2304</span> Exit distraction-free mode'
-        : '<span aria-hidden="true">\u2303</span> Distraction-free mode';
+        ? '<span aria-hidden="true">\u2304</span>'
+        : "Distraction-free mode";
+      toggle.classList.toggle("is-active", active);
       position();
     };
 
@@ -1890,6 +1868,7 @@
       update();
     });
     window.addEventListener("resize", position);
+    window.addEventListener("scroll", update, { passive: true });
     desktopQuery.addEventListener("change", update);
     update();
   }
