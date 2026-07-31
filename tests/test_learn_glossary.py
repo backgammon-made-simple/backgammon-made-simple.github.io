@@ -1465,6 +1465,16 @@ class LearnGlossaryTests(unittest.TestCase):
             r"\.bms-site-tools--sidebar \{[^}]*"
             r"padding-top: 0\.15rem;[^}]*border-top: 0;",
         )
+        self.assertIn(
+            ".bms-refined-right-rail-scroll-collapsed\n"
+            "    > :not(.bms-site-tools)",
+            css,
+        )
+        self.assertIn(
+            ".bms-refined-right-rail-scroll-collapsed\n"
+            "    .bms-term-lookup",
+            css,
+        )
         self.assertNotIn(".bms-lesson-track-toggle", css)
         self.assertNotIn(".bms-distraction-free-toggle", css)
         self.assertRegex(
