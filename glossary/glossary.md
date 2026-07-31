@@ -26,6 +26,7 @@ Edit canonical entries here only during the at-home reconciliation. Aliases belo
 ## AKA
 
 - Ten in the Zone
+- 10 Checkers in the Zone
 
 ## Short definition
 
@@ -100,9 +101,9 @@ With ten checkers in the zone, you have strong blitzing potential. Nine checkers
 
 ## Categories
 
-- Rules & Procedures
-- Race & Bearoff
 - Cube Action
+- Race & Bearoff
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -120,7 +121,7 @@ With ten checkers in the zone, you have strong blitzing potential. Nine checkers
 
 ## AKA
 
-- None
+- 25% Rule
 
 ## Short definition
 
@@ -171,7 +172,7 @@ The 25 Percent Rule is a simplified baseline for cube decisions. In a holding ga
 
 ## AKA
 
-- None
+- 8-9-12 Rule
 
 ## Short definition
 
@@ -307,7 +308,7 @@ In backgammon, ace means one. It can describe rolling a one or refer to the one-
 
 ## AKA
 
-- None
+- Ace Point Game
 
 ## Short definition
 
@@ -342,8 +343,8 @@ It is stronger than a two-point or three-point holding game because those anchor
 
 ## Categories
 
-- Game Plans & Position Types
 - Race & Bearoff
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -416,7 +417,7 @@ For example, the captain may offer a double that the box passes. If the box stil
 - "cube" -> `doubling-cube`
 - "captain" -> `captain`
 - "box" -> `box`
-- "checker decisions" -> `checker-play`
+- "checker decisions" -> `play`
 - "double" -> `double`
 - "passes" -> `pass`
 
@@ -523,9 +524,9 @@ An action position is a volatile position with multiple hitting or exchange poss
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
 - Cube Action
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -598,6 +599,57 @@ These are not yet approved canonical entries.
 
 ---
 
+# Adjusted Pip Count
+
+**Status:** Confirmed
+
+**Slug:** `adjusted-pip-count`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- None
+
+## Short definition
+
+An adjusted pip count modifies a pip count to account for checker distribution and bear-off efficiency.
+
+## Full definition
+
+An adjusted pip count is a pip count modified to account for checker distribution and bear-off efficiency. Large gaps and tall stacks usually raise the adjusted pip count because they make a position less efficient. Adjusted pip counts are commonly used to judge who is really ahead in a race, especially when making cube decisions. Methods include Keith Count, Trice Count, and the iSight method.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Pip Count
+- Effective Pip Count
+- Distribution
+- Wastage
+- Gap
+- Stack
+- Pure Race
+- Race Equity
+- Keith Count
+- Trice Count
+- Thorp Count
+- Ward Count
+- Cube Action
+
+## Categories
+
+- Race & Bearoff
+- Analysis & Probability
+
+## Learning tracks
+
+- None
+
+---
+
 # Advanced Anchor
 
 **Status:** Confirmed
@@ -642,8 +694,8 @@ An advanced anchor is an anchor on your opponent's four-point or five-point. It 
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -653,9 +705,11 @@ An advanced anchor is an anchor on your opponent's four-point or five-point. It 
 
 # Advanced Level
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `advanced-level`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -663,11 +717,11 @@ An advanced anchor is an anchor on your opponent's four-point or five-point. It 
 
 ## Short definition
 
-Players use Advanced Level to describe a tournament or teaching division for strong, experienced players below the top open level. The term gives players a shared way to talk about this part of the game.
+Advanced Level is a tournament or teaching division for strong, experienced players below the top open level.
 
 ## Full definition
 
-Players use Advanced Level to describe a tournament or teaching division for strong, experienced players below the top open level. The term gives players a shared way to talk about this part of the game.
+Advanced Level describes a tournament or teaching division for strong, experienced players below the top open or championship level.
 
 ## Inline terms
 
@@ -675,7 +729,12 @@ Players use Advanced Level to describe a tournament or teaching division for str
 
 ## Related words
 
-- None
+- Division
+- Tournament
+- Intermediate Level
+- Championship Division
+- Open Division
+- Novice Level
 
 ## Categories
 
@@ -737,9 +796,11 @@ A common principle is, "When you are ahead in the race, race." Avoid unnecessary
 
 # Ammunition
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `ammunition`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -747,11 +808,11 @@ A common principle is, "When you are ahead in the race, race." Avoid unnecessary
 
 ## Short definition
 
-Ammunition describes checkers positioned where they can attack blots or build points. The term gives players a shared way to talk about this part of the game.
+Ammunition describes checkers positioned where they can attack blots or build points.
 
 ## Full definition
 
-Ammunition describes checkers positioned where they can attack blots or build points. The term gives players a shared way to talk about this part of the game.
+Ammunition describes checkers positioned where they can attack opposing blots or help make useful points. Ammunition is especially valuable in the attack zone, where it can support a blitz, strengthen the home board, or help close out an opponent.
 
 ## Inline terms
 
@@ -759,7 +820,17 @@ Ammunition describes checkers positioned where they can attack blots or build po
 
 ## Related words
 
-- None
+- Attack
+- Attack Zone
+- Attacking Game
+- Builder
+- Active Builder
+- Blot
+- Stack
+- Make a Point
+- Blitz
+- Home Board
+- Close Out
 
 ## Categories
 
@@ -773,9 +844,11 @@ Ammunition describes checkers positioned where they can attack blots or build po
 
 # Analog Clock
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `analog-clock`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -783,11 +856,11 @@ Ammunition describes checkers positioned where they can attack blots or build po
 
 ## Short definition
 
-Analog Clock is a mechanical chess-style clock with hands rather than a digital display. It is useful vocabulary when describing a position, decision, rule, or result.
+An analog clock is a backgammon timing device with physical dials rather than digital displays.
 
 ## Full definition
 
-Analog Clock is a mechanical chess-style clock with hands rather than a digital display. It is useful vocabulary when describing a position, decision, rule, or result.
+An analog clock is a physical timing device with traditional dials and hands rather than digital displays. It tracks each player's remaining time during a backgammon match and helps ensure that the match is completed within the established time limits.
 
 ## Inline terms
 
@@ -795,7 +868,16 @@ Analog Clock is a mechanical chess-style clock with hands rather than a digital 
 
 ## Related words
 
-- None
+- Clock
+- Digital Clock
+- Simple Delay
+- Fischer Increment
+- Reserve Time
+- Time Bank
+- Bronstein Clock
+- Fischer Clock
+- Match
+- Time Control
 
 ## Categories
 
@@ -844,11 +926,13 @@ Anchor is a made point in the other player’s home board or outer board that gi
 
 ---
 
-# Annotated Match
+# Anchor Game
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
-**Slug:** `annotated-match`
+**Slug:** `anchor-game`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -856,11 +940,11 @@ Anchor is a made point in the other player’s home board or outer board that gi
 
 ## Short definition
 
-Players use Annotated Match to describe a recorded match accompanied by explanations of checker plays and cube decisions. Players may see this term in strategy discussions, match records, or analysis software.
+An anchor game is a strategic game plan in which you hold one or more anchors in your opponent's home board, often while waiting for a shot that could turn the game around.
 
 ## Full definition
 
-Players use Annotated Match to describe a recorded match accompanied by explanations of checker plays and cube decisions. Players may see this term in strategy discussions, match records, or analysis software.
+An anchor game is a strategic approach in which you retain one or more anchors, or made points, in your opponent's home board. These anchors give your checkers safety and allow you to wait for an opportunity to hit an exposed opposing checker. Anchor games are strongest when you also have a strong home board, making any successful hit more dangerous for your opponent.
 
 ## Inline terms
 
@@ -868,10 +952,68 @@ Players use Annotated Match to describe a recorded match accompanied by explanat
 
 ## Related words
 
-- None
+- Anchor
+- Made Point
+- Home Board
+- Holding Game
+- Back Game
+- Advanced Anchor
+- Deep Anchor
+- Shot
+- Hit
+- Strong Board
 
 ## Categories
 
+- Game Plans & Position Types
+
+## Learning tracks
+
+- None
+
+---
+
+# Annotated Match
+
+**Status:** Confirmed
+
+**Slug:** `annotated-match`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- None
+
+## Short definition
+
+An annotated match is a recorded backgammon match whose rolls and plays have been entered into analysis software so the players' decisions can be reviewed.
+
+## Full definition
+
+An annotated match is usually video recorded, with each dice roll and checker play entered into an analysis engine such as eXtreme Gammon during or after the match. The engine analyzes the decisions, identifies mistakes, and calculates measures such as Performance Rating, or PR.
+
+An annotated match may also include written or spoken commentary. BMAB uses analyzed match results when assessing player classifications. In formats such as UBC, players can also earn a point by recording a lower PR than their opponent.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Annotation
+- Match
+- Match Record
+- Video Recording
+- eXtreme Gammon
+- Performance Rating
+- BMAB
+- UBC
+- Commentary
+
+## Categories
+
+- Analysis & Probability
 - Tournaments & Community
 
 ## Learning tracks
@@ -882,9 +1024,11 @@ Players use Annotated Match to describe a recorded match accompanied by explanat
 
 # Annotation
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `annotation`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -892,11 +1036,13 @@ Players use Annotated Match to describe a recorded match accompanied by explanat
 
 ## Short definition
 
-Annotation describes written or spoken analysis explaining decisions in a recorded game or match. The term gives players a shared way to talk about this part of the game.
+Annotation is the process of adding analysis to a backgammon match record.
 
 ## Full definition
 
-Annotation describes written or spoken analysis explaining decisions in a recorded game or match. The term gives players a shared way to talk about this part of the game.
+Annotation is the process of entering each dice roll and checker play from a backgammon match into an analysis engine such as eXtreme Gammon. This is usually done from a video recording, either during the match or afterward.
+
+The engine analyzes the players' decisions move by move and calculates measures such as PR. The resulting analysis can be used to study mistakes, assess playing strength, support BMAB classifications, or determine performance-based results in formats such as UBC.
 
 ## Inline terms
 
@@ -904,11 +1050,19 @@ Annotation describes written or spoken analysis explaining decisions in a record
 
 ## Related words
 
-- None
+- Annotated Match
+- Match
+- Match Record
+- Video Recording
+- eXtreme Gammon
+- Performance Rating
+- BMAB
+- UBC
 
 ## Categories
 
 - Board, Equipment & Notation
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -918,9 +1072,11 @@ Annotation describes written or spoken analysis explaining decisions in a record
 
 # Anti-Joker
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `anti-joker`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -928,11 +1084,11 @@ Annotation describes written or spoken analysis explaining decisions in a record
 
 ## Short definition
 
-In backgammon, Anti-Joker refers to an exceptionally unlucky roll that sharply damages a position. The term gives players a shared way to talk about this part of the game.
+An anti-joker is an extremely unlucky roll that usually leaves your position worse after the roll than it was before.
 
 ## Full definition
 
-In backgammon, Anti-Joker refers to an exceptionally unlucky roll that sharply damages a position. The term gives players a shared way to talk about this part of the game.
+An anti-joker is an exceptionally unlucky roll, or sequence of rolls, that significantly worsens your position. Your position does not need to have been good beforehand; an anti-joker can make an already difficult position even worse. Because the result can feel especially harsh or unexpected, an anti-joker may contribute to tilt.
 
 ## Inline terms
 
@@ -940,7 +1096,13 @@ In backgammon, Anti-Joker refers to an exceptionally unlucky roll that sharply d
 
 ## Related words
 
-- None
+- Joker
+- Awkward Number
+- Luck Factor
+- Roll
+- Dice
+- Tilt
+- Variance
 
 ## Categories
 
@@ -954,9 +1116,11 @@ In backgammon, Anti-Joker refers to an exceptionally unlucky roll that sharply d
 
 # Army
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `army`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -964,11 +1128,13 @@ In backgammon, Anti-Joker refers to an exceptionally unlucky roll that sharply d
 
 ## Short definition
 
-Players use Army to describe a player’s full group of 15 checkers. It is useful vocabulary when describing a position, decision, rule, or result.
+Your army is your full group of checkers, viewed as a coordinated unit that should work together.
 
 ## Full definition
 
-Players use Army to describe a player’s full group of 15 checkers. It is useful vocabulary when describing a position, decision, rule, or result.
+In backgammon, your army refers to all of your checkers. The term emphasizes that your checkers should work together as a coordinated unit rather than acting as isolated pieces.
+
+A strong army has good formation, connected checkers, and continuity across the board. This allows the checkers to support one another, create useful points, and carry out a common game plan.
 
 ## Inline terms
 
@@ -976,10 +1142,18 @@ Players use Army to describe a player’s full group of 15 checkers. It is usefu
 
 ## Related words
 
-- None
+- Checker
+- Connectivity
+- Connected Position
+- Game Plan
+- Distribution
+- Flexibility
+- Prime
+- Home Board
 
 ## Categories
 
+- Game Plans & Position Types
 - Slang & Expressions
 
 ## Learning tracks
@@ -990,9 +1164,11 @@ Players use Army to describe a player’s full group of 15 checkers. It is usefu
 
 # Around the Corner
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `around-the-corner`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -1000,11 +1176,13 @@ Players use Army to describe a player’s full group of 15 checkers. It is usefu
 
 ## Short definition
 
-Around the Corner means movement from the other player’s outer board into the player’s own outer board. The term gives players a shared way to talk about this part of the game.
+Around the Corner means moving a checker from your opponent's outer board into your own outer board.
 
 ## Full definition
 
-Around the Corner means movement from the other player’s outer board into the player’s own outer board. The term gives players a shared way to talk about this part of the game.
+Around the Corner describes the transition in which a checker moves from your opponent's outer board, past the mid-point, and into your own outer board. This brings the checker onto your side of the board and closer to your home board.
+
+The move often marks progress from the early game toward bringing your checkers home and eventually bearing them in.
 
 ## Inline terms
 
@@ -1012,11 +1190,17 @@ Around the Corner means movement from the other player’s outer board into the 
 
 ## Related words
 
-- None
+- Outer Board
+- Mid-Point
+- Home Board
+- Bear In
+- Crossover
+- Runner
+- Your Side of the Board
 
 ## Categories
 
-- Tournaments & Community
+- Checker Play
 - Board, Equipment & Notation
 
 ## Learning tracks
@@ -1027,9 +1211,11 @@ Around the Corner means movement from the other player’s outer board into the 
 
 # Asset
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `asset`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -1037,11 +1223,13 @@ Around the Corner means movement from the other player’s outer board into the 
 
 ## Short definition
 
-Players use Asset to describe a useful positional feature, such as an anchor, prime, strong board, or flexible builder. Knowing this term makes it easier to follow backgammon lessons and analysis.
+An asset is a useful positional feature that works in your favour and improves your winning chances.
 
 ## Full definition
 
-Players use Asset to describe a useful positional feature, such as an anchor, prime, strong board, or flexible builder. Knowing this term makes it easier to follow backgammon lessons and analysis.
+In backgammon, an asset is any useful feature of your position that increases your winning chances. Assets can include a made point, a strong anchor, a strong prime, a strong home board, or an advantageous checker distribution.
+
+You consider your assets when making checker-play and cube decisions, including whether your position is strong enough to double or whether you have enough positional resources to take an opponent's cube.
 
 ## Inline terms
 
@@ -1049,7 +1237,16 @@ Players use Asset to describe a useful positional feature, such as an anchor, pr
 
 ## Related words
 
-- None
+- Made Point
+- Anchor
+- Prime
+- Strong Board
+- Home Board
+- Distribution
+- Checker Play
+- Cube Action
+- Double
+- Take
 
 ## Categories
 
@@ -1063,9 +1260,11 @@ Players use Asset to describe a useful positional feature, such as an anchor, pr
 
 # Attack
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `attack`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -1073,11 +1272,13 @@ Players use Asset to describe a useful positional feature, such as an anchor, pr
 
 ## Short definition
 
-The action called Attack is to hit or threaten opposing blots, generally near or inside your home board. Players may see this term in strategy discussions, match records, or analysis software.
+An attack is an aggressive play intended to hit or threaten opposing blots and improve your position.
 
 ## Full definition
 
-The action called Attack is to hit or threaten opposing blots, generally near or inside your home board. Players may see this term in strategy discussions, match records, or analysis software.
+An attack is a deliberate play aimed at hitting one or more of your opponent's blots, often to gain a positional or timing advantage. Blitzing and trying to close out your opponent are common forms of attack.
+
+Attacking can also help your back checkers escape. When you have several checkers trapped behind your opponent, hitting can put an opposing checker on the bar instead of leaving your own checkers vulnerable to being put on the bar.
 
 ## Inline terms
 
@@ -1085,7 +1286,16 @@ The action called Attack is to hit or threaten opposing blots, generally near or
 
 ## Related words
 
-- None
+- Hit
+- Blot
+- Blitz
+- Close Out
+- Bar
+- Runner
+- Escape
+- Timing
+- Attack Zone
+- Attacking Game
 
 ## Categories
 
@@ -1099,21 +1309,26 @@ The action called Attack is to hit or threaten opposing blots, generally near or
 
 # Attack Zone
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `attack-zone`
 
+**Added:** 2026-07-31
+
 ## AKA
 
-- None
+- The Zone
+- Zone
+- Zone of Attack
+- Your Side of the Board
 
 ## Short definition
 
-Attack Zone is the points on your side of the board from which checkers can support a blitz. Knowing this term makes it easier to follow backgammon lessons and analysis.
+The attack zone is your side of the board, consisting of your home board and outer board.
 
 ## Full definition
 
-Attack Zone is the points on your side of the board from which checkers can support a blitz. Knowing this term makes it easier to follow backgammon lessons and analysis.
+The attack zone is your side of the board: your home board and outer board. It is the area where you can use your ammunition to attack opposing checkers, launch a blitz, make home-board points, or try to close out your opponent.
 
 ## Inline terms
 
@@ -1121,10 +1336,20 @@ Attack Zone is the points on your side of the board from which checkers can supp
 
 ## Related words
 
-- None
+- Home Board
+- Outer Board
+- Ammunition
+- Attack
+- Blitz
+- Close Out
+- 10 in the Zone
+- Attacking Game
+- Builder
+- Active Builder
 
 ## Categories
 
+- Checker Play
 - Game Plans & Position Types
 
 ## Learning tracks
@@ -1135,9 +1360,11 @@ Attack Zone is the points on your side of the board from which checkers can supp
 
 # Attacking Game
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `attacking-game`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -1145,11 +1372,11 @@ Attack Zone is the points on your side of the board from which checkers can supp
 
 ## Short definition
 
-Players use Attacking Game to describe a game plan based on hitting, closing points, and keeping opposing checkers on the bar. Knowing this term makes it easier to follow backgammon lessons and analysis.
+An attacking game is a game plan based on hitting, closing points, and keeping opposing checkers on the bar.
 
 ## Full definition
 
-Players use Attacking Game to describe a game plan based on hitting, closing points, and keeping opposing checkers on the bar. Knowing this term makes it easier to follow backgammon lessons and analysis.
+An attacking game is a game plan based on hitting, closing points, and keeping opposing checkers on the bar. The most famous type of attacking game is a blitz, where in the early to middle game you repeatedly attack your opponent, put their checkers on the bar, and try to close them out.
 
 ## Inline terms
 
@@ -1157,7 +1384,16 @@ Players use Attacking Game to describe a game plan based on hitting, closing poi
 
 ## Related words
 
-- None
+- Attack
+- Blitz
+- Hit
+- Bar
+- Close Out
+- Home Board
+- Attack Zone
+- Ammunition
+- Priming Game
+- Blocking Game
 
 ## Categories
 
@@ -1171,22 +1407,25 @@ Players use Attacking Game to describe a game plan based on hitting, closing poi
 
 # Automatic Doubles
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `automatic-doubles`
+
+**Added:** 2026-07-31
 
 ## AKA
 
 - Automatic
 - Automatics
+- Automatic Double
 
 ## Short definition
 
-Automatic Doubles is an optional money-game rule that raises the initial cube value when both players roll the same opening number. Knowing this term makes it easier to follow backgammon lessons and analysis.
+Automatic Doubles is an optional money-game rule where matching opening rolls automatically double the game's value.
 
 ## Full definition
 
-Automatic Doubles is an optional money-game rule that raises the initial cube value when both players roll the same opening number. Knowing this term makes it easier to follow backgammon lessons and analysis.
+Automatic Doubles is an optional rule used in money play. If both players roll the same number while determining who moves first, the game's value automatically doubles. The doubling cube is turned to 2 but remains centered, so neither player owns it and either player may offer the next double. Players normally agree before playing whether to use this rule and may limit the number of automatic doubles allowed in one game.
 
 ## Inline terms
 
@@ -1194,12 +1433,21 @@ Automatic Doubles is an optional money-game rule that raises the initial cube va
 
 ## Related words
 
-- None
+- Opening Roll
+- Doubles
+- Doubling Cube
+- Centered Cube
+- Initial Double
+- Initial Stake
+- Money Play
+- Redouble
+- Cube Ownership
 
 ## Categories
 
 - Cube Action
 - Rules & Procedures
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -1209,9 +1457,11 @@ Automatic Doubles is an optional money-game rule that raises the initial cube va
 
 # Awkward Number
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `awkward-number`
+
+**Added:** 2026-07-31
 
 ## AKA
 
@@ -1219,11 +1469,13 @@ Automatic Doubles is an optional money-game rule that raises the initial cube va
 
 ## Short definition
 
-In backgammon, Awkward Number refers to a roll that cannot be played constructively and forces a positional concession. Knowing this term makes it easier to follow backgammon lessons and analysis.
+An awkward number is a roll that leaves no clearly good checker play, forcing you to choose among several suboptimal options.
 
 ## Full definition
 
-In backgammon, Awkward Number refers to a roll that cannot be played constructively and forces a positional concession. Knowing this term makes it easier to follow backgammon lessons and analysis.
+An awkward number is a roll that creates a difficult checker-play decision because none of the available moves fits the position well. The challenge is not choosing between two strong plays, but identifying the least damaging option among several suboptimal ones.
+
+An awkward number is related to an anti-joker, but the emphasis is different. An anti-joker describes an exceptionally bad roll that worsens your position, while an awkward number describes the difficulty of the decision because there is no obvious checker play.
 
 ## Inline terms
 
@@ -1231,11 +1483,70 @@ In backgammon, Awkward Number refers to a roll that cannot be played constructiv
 
 ## Related words
 
-- None
+- Awkward Position
+- Anti-Joker
+- Checker Play
+- Forced Move
+- Dead Number
+- Flexibility
+- Diversification
+- Mobility
+- Blunder
 
 ## Categories
 
-- Rules & Procedures
+- Checker Play
+- Slang & Expressions
+
+## Learning tracks
+
+- None
+
+---
+
+# Awkward Position
+
+**Status:** Confirmed
+
+**Slug:** `awkward-position`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- None
+
+## Short definition
+
+An awkward position is a position in which many rolls leave no clearly constructive checker play.
+
+## Full definition
+
+An awkward position has poor flexibility, distribution, connectivity, or checker coordination, causing many rolls to produce difficult choices among suboptimal plays. The player often has no obvious constructive move and must choose the option that does the least damage.
+
+An awkward position is different from an awkward number. The position is the underlying board structure that makes many rolls difficult, while an awkward number is one particular roll that creates a difficult decision.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Awkward Number
+- Flexibility
+- Mobility
+- Distribution
+- Diversification
+- Cramped
+- Dead Number
+- Forced Move
+- Anti-Joker
+- Connectivity
+
+## Categories
+
+- Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -1245,21 +1556,25 @@ In backgammon, Awkward Number refers to a roll that cannot be played constructiv
 
 # Back Game
 
-**Status:** Legacy unconfirmed
+**Status:** Confirmed
 
 **Slug:** `back-game`
 
+**Added:** 2026-07-31
+
 ## AKA
 
-- None
+- Backgame
 
 ## Short definition
 
-In backgammon, Back Game refers to a strategy based on holding two or more points deep in the other player’s home board and waiting for a late shot. It is useful vocabulary when describing a position, decision, rule, or result.
+A back game is a strategy based on holding two or more points deep in your opponent's home board while waiting for a late opportunity to hit.
 
 ## Full definition
 
-In backgammon, Back Game refers to a strategy based on holding two or more points deep in the other player’s home board and waiting for a late shot. It is useful vocabulary when describing a position, decision, rule, or result.
+A back game is a highly technical and volatile game plan in which you hold two or more points deep in your opponent's home board. Good timing is essential. If you are forced to break your board or kill checkers, the back game loses much of its effectiveness. It is common to be 70 to 100 pips behind in the race and still have meaningful winning chances.
+
+Back-game play can be counterintuitive. Sometimes you avoid hitting because the hit would give your opponent additional timing, while being hit may help recycle one of your checkers and maintain your own timing. Back games can involve substantial cube action and high cube values. They occur relatively infrequently, generally in fewer than 10 percent of games, so beginners should study more common game plans first. Understanding back games becomes increasingly important when progressing from expert play toward master level and beyond.
 
 ## Inline terms
 
@@ -1267,7 +1582,22 @@ In backgammon, Back Game refers to a strategy based on holding two or more point
 
 ## Related words
 
-- None
+- Anchor
+- Deep Anchor
+- Back Checker
+- Holding Game
+- Timing
+- Shot
+- Hit
+- Crunch
+- Busted Back Game
+- Dead Checker
+- Kill a Checker
+- Break One's Board
+- Recirculate
+- Cube Action
+- Pip Count
+- Race
 
 ## Categories
 
@@ -1379,8 +1709,8 @@ Players use Backgammon Server to describe an online service that hosts backgammo
 
 ## Categories
 
-- Software & Engines
 - Tournaments & Community
+- Software & Engines
 
 ## Learning tracks
 
@@ -1823,8 +2153,8 @@ Beaver is used in money play. It is an immediate redouble made by the player who
 
 ## Categories
 
-- Chouette & Money Play
 - Cube Action
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -2076,8 +2406,8 @@ In backgammon, Blockade refers to a connected group of made points that obstruct
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -2263,6 +2593,50 @@ Players use Blunder to describe a large checker-play or cube error, often define
 ## Categories
 
 - Rules & Procedures
+
+## Learning tracks
+
+- None
+
+---
+
+# BMAB
+
+**Status:** Confirmed
+
+**Slug:** `bmab`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- Backgammon Masters Awarding Body
+
+## Short definition
+
+BMAB stands for the Backgammon Masters Awarding Body, an organization that awards backgammon titles based on verified performance ratings.
+
+## Full definition
+
+The Backgammon Masters Awarding Body, commonly called BMAB, awards mastership titles and proficiency certificates using Performance Rating from verified, analyzed matches. Players must complete the required amount of qualifying play and meet the applicable PR standard.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Performance Rating
+- eXtreme Gammon
+- Annotated Match
+- Annotation
+- Match
+- Tournament
+- UBC
+
+## Categories
+
+- Tournaments & Community
 
 ## Learning tracks
 
@@ -2915,8 +3289,8 @@ Players use Calcutta Auction to describe a tournament side auction in which part
 
 ## Categories
 
-- Chouette & Money Play
 - Tournaments & Community
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -2952,8 +3326,8 @@ California Rule is a local chouette convention that allows a player to decline j
 
 ## Categories
 
-- Chouette & Money Play
 - Rules & Procedures
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -2989,8 +3363,8 @@ Players use Candlesticks to describe an inflexible distribution with tall stacks
 
 ## Categories
 
-- Slang & Expressions
 - Game Plans & Position Types
+- Slang & Expressions
 
 ## Learning tracks
 
@@ -3062,9 +3436,9 @@ Cash a Game means offering a double that the other player should pass. The game 
 
 ## Categories
 
-- Chouette & Money Play
-- Game Plans & Position Types
 - Cube Action
+- Game Plans & Position Types
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -4266,8 +4640,8 @@ Correspondence Games refers to games played slowly through exchanged messages, w
 
 ## Categories
 
-- Rules & Procedures
 - Game Plans & Position Types
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -4303,9 +4677,9 @@ The term Counterclockwise refers to the direction of checker movement when the p
 
 ## Categories
 
-- Analysis & Probability
-- Rules & Procedures
 - Board, Equipment & Notation
+- Rules & Procedures
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -4597,8 +4971,8 @@ Crossover Count describes the number of quadrant boundaries your checkers must c
 
 ## Categories
 
-- Analysis & Probability
 - Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -5705,8 +6079,8 @@ Distribution means how a player’s checkers are spread among the points, bar, a
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -5742,8 +6116,8 @@ Diversification means arranging checkers so that many different future rolls pla
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -5928,8 +6302,8 @@ The term Double Ducks refers to the roll 2-2. Players may see this term in strat
 
 ## Categories
 
-- Slang & Expressions
 - Rules & Procedures
+- Slang & Expressions
 
 ## Learning tracks
 
@@ -6146,8 +6520,8 @@ Players use Doubles to describe a roll in which both dice show the same number, 
 
 ## Categories
 
-- Slang & Expressions
 - Rules & Procedures
+- Slang & Expressions
 
 ## Learning tracks
 
@@ -6767,8 +7141,8 @@ In backgammon, Effective Pip Count refers to a race measure that adjusts the raw
 
 ## Categories
 
-- Analysis & Probability
 - Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -7022,8 +7396,8 @@ The action called Enter is to move a checker from the bar into an open point in 
 
 ## Categories
 
-- Rules & Procedures
 - Checker Play
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -7097,42 +7471,6 @@ In backgammon, ER Backgammon refers to a backgammon program associated with earl
 ## Categories
 
 - Software & Engines
-
-## Learning tracks
-
-- None
-
----
-
-# Error Rate
-
-**Status:** Legacy unconfirmed
-
-**Slug:** `error-rate`
-
-## AKA
-
-- None
-
-## Short definition
-
-Error Rate describes average equity lost through checker and cube mistakes, generally normalized per decision or per move. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-## Full definition
-
-Error Rate describes average equity lost through checker and cube mistakes, generally normalized per decision or per move. Knowing this term makes it easier to follow backgammon lessons and analysis.
-
-## Inline terms
-
-- None
-
-## Related words
-
-- None
-
-## Categories
-
-- Analysis & Probability
 
 ## Learning tracks
 
@@ -7348,8 +7686,8 @@ In backgammon, Fast Board refers to a bearoff structure that removes checkers ef
 
 ## Categories
 
-- Board, Equipment & Notation
 - Race & Bearoff
+- Board, Equipment & Notation
 
 ## Learning tracks
 
@@ -7718,6 +8056,56 @@ Fischer Clock is a clock that adds a fixed increment to a player’s remaining t
 
 ---
 
+# Fischer Increment
+
+**Status:** Confirmed
+
+**Slug:** `fischer-increment`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- Increment
+- Fischer Time
+- Bonus Time
+
+## Short definition
+
+Fischer Increment adds a fixed amount of time to a player's bank for each turn, allowing unused time to accumulate.
+
+## Full definition
+
+Fischer Increment credits a fixed amount of time for each turn. Depending on the clock or software, the increment may be credited at the start of the turn or after the completed turn. Unlike Simple Delay, the full increment is cumulative. If a player uses less time than the increment, their time bank grows.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Reserve Time
+- Time Bank
+- Simple Delay
+- Fischer Clock
+- Bronstein Clock
+- Clock
+- Digital Clock
+- Unlimited Game
+- Money Play
+- Time Control
+
+## Categories
+
+- Board, Equipment & Notation
+- Rules & Procedures
+
+## Learning tracks
+
+- None
+
+---
+
 # Fish
 
 **Status:** Legacy unconfirmed
@@ -7966,8 +8354,8 @@ In backgammon, Forward Game refers to a strategy based on advanced anchors, forw
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -8039,8 +8427,8 @@ Free Drop refers to at certain post-Crawford scores, the trailer’s option to p
 
 ## Categories
 
-- Match Score
 - Cube Action
+- Match Score
 
 ## Learning tracks
 
@@ -8257,8 +8645,8 @@ Game Plan is the broad strategy suited to the position, such as racing, priming,
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -8406,8 +8794,8 @@ In backgammon, Gammon Count refers to an estimate of the rolls or crossovers eac
 
 ## Categories
 
-- Analysis & Probability
 - Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -8696,8 +9084,8 @@ Gap is an unmade point inside a group of made points or a prime. Knowing this te
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -8841,8 +9229,8 @@ Giving for Game is a settlement convention in which a player offers points in ex
 
 ## Categories
 
-- Chouette & Money Play
 - Game Plans & Position Types
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -9932,8 +10320,8 @@ The term Initiative refers to the ability to make threats that force the other p
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -10151,8 +10539,8 @@ Jacoby Rule is used in money play. Gammons and backgammons count only after one 
 ## Categories
 
 - Cube Action
-- Chouette & Money Play
 - Rules & Procedures
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -10548,9 +10936,9 @@ Players use Keith Count to describe a race-cube count that adjusts pip count for
 
 ## Categories
 
-- Analysis & Probability
-- Race & Bearoff
 - Cube Action
+- Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -10766,9 +11154,9 @@ Kleinman Doubling Formula is a race formula that estimates winning chances from 
 
 ## Categories
 
-- Analysis & Probability
-- Race & Bearoff
 - Cube Action
+- Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -10841,8 +11229,8 @@ Last Call for Breakfast is humorous tournament slang announcing the last opportu
 ## Categories
 
 - Checker Play
-- Slang & Expressions
 - Tournaments & Community
+- Slang & Expressions
 
 ## Learning tracks
 
@@ -10914,8 +11302,8 @@ Last Roll Position is a position in which the next roll determines the game’s 
 
 ## Categories
 
-- Game Plans & Position Types
 - Race & Bearoff
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -11169,9 +11557,9 @@ In backgammon, Liby's Rule refers to a race-cube rule of thumb based on adjusted
 
 ## Categories
 
-- Rules & Procedures
-- Race & Bearoff
 - Cube Action
+- Race & Bearoff
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -12120,8 +12508,8 @@ Match is a series of games played until one player reaches a fixed target score.
 
 ## Categories
 
-- Tournaments & Community
 - Match Score
+- Tournaments & Community
 
 ## Learning tracks
 
@@ -12233,8 +12621,8 @@ Match Play is backgammon played to a fixed number of points rather than for a va
 
 ## Categories
 
-- Tournaments & Community
 - Match Score
+- Tournaments & Community
 
 ## Learning tracks
 
@@ -12668,8 +13056,8 @@ Mobility is the number and quality of legal, constructive moves available to a p
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -13139,8 +13527,8 @@ Players use N-Roll Position to describe a race or bearoff position expected to f
 
 ## Categories
 
-- Game Plans & Position Types
 - Race & Bearoff
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -13610,9 +13998,9 @@ Normal Game refers to standard backgammon played with the usual starting positio
 
 ## Categories
 
-- Variants & History
-- Rules & Procedures
 - Game Plans & Position Types
+- Rules & Procedures
+- Variants & History
 
 ## Learning tracks
 
@@ -13648,8 +14036,8 @@ Players use Normalized Match Score to describe a score expressed by points each 
 
 ## Categories
 
-- Tournaments & Community
 - Match Score
+- Tournaments & Community
 
 ## Learning tracks
 
@@ -13829,8 +14217,8 @@ Odds is a numerical comparison of the likelihoods of different outcomes, or term
 
 ## Categories
 
-- Chouette & Money Play
 - Analysis & Probability
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -13866,8 +14254,8 @@ The term On Roll refers to the player whose turn it is to roll and move. Players
 
 ## Categories
 
-- Rules & Procedures
 - Board, Equipment & Notation
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -14049,8 +14437,8 @@ One-Point Match is a match consisting of a single game with no cube action and n
 
 ## Categories
 
-- Tournaments & Community
 - Match Score
+- Tournaments & Community
 
 ## Learning tracks
 
@@ -14303,8 +14691,8 @@ The term Opening Roll refers to the first roll of a game, made with one die by e
 
 ## Categories
 
-- Rules & Procedures
 - Board, Equipment & Notation
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -14376,8 +14764,8 @@ Otter is used in some money-game conventions. It is an immediate further redoubl
 
 ## Categories
 
-- Chouette & Money Play
 - Cube Action
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -14631,8 +15019,8 @@ Overage is the portion of a tournament entry or side pool paid above the basic a
 
 ## Categories
 
-- Chouette & Money Play
 - Tournaments & Community
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -15043,6 +15431,62 @@ Perfecta is the best possible roll for the position. Players may see this term i
 
 ---
 
+# Performance Rating
+
+**Status:** Confirmed
+
+**Slug:** `performance-rating`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- PR
+- Performance Rate
+- Error Rate
+- ER
+
+## Short definition
+
+Performance Rating, or PR, measures how closely your checker plays and cube decisions match the moves chosen to be "correct" by an analysis bot.
+
+## Full definition
+
+Performance Rating, usually shortened to PR and sometimes called Error Rate or ER, is a number used to judge how well you played an analyzed match. A PR of 0 means the bot found no mistakes in your checker plays or cube decisions. As a rough guide, newer players may play around 20 to 40 PR, intermediate players around 10 to 20, and advanced players below 10. Different bots can produce different ratings, so results from different programs should not be compared directly.
+
+When describing your PR across several matches, combine the value lost across all counted decisions and divide by the total number of those decisions. Do not take a simple average of the separate match PRs, because matches can contain very different numbers of decisions. Lower-PR, more skilled players win more often over large samples, although the PR from one match can be affected by Winner's Curse.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Equity
+- Checker Play
+- Cube Action
+- Forced Move
+- Blunder
+- eXtreme Gammon
+- GNU Backgammon
+- Annotation
+- Annotated Match
+- BMAB
+- UBC
+- Winner's Curse
+- Neural Network
+- Match
+
+## Categories
+
+- Analysis & Probability
+
+## Learning tracks
+
+- None
+
+---
+
 # Pick and Pass
 
 **Status:** Legacy unconfirmed
@@ -15187,8 +15631,8 @@ Pip Count is the total number of pips all of a player’s checkers must move to 
 
 ## Categories
 
-- Analysis & Probability
 - Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -15442,8 +15886,8 @@ Players use Point Game to describe a strategy based on making and preserving str
 
 ## Categories
 
-- Board, Equipment & Notation
 - Game Plans & Position Types
+- Board, Equipment & Notation
 
 ## Learning tracks
 
@@ -15516,8 +15960,8 @@ Players use Points per Game to describe a performance or scoring average calcula
 
 ## Categories
 
-- Board, Equipment & Notation
 - Game Plans & Position Types
+- Board, Equipment & Notation
 
 ## Learning tracks
 
@@ -16529,8 +16973,8 @@ Players use Quarter Entry to describe a tournament entry purchased for one quart
 
 ## Categories
 
-- Chouette & Money Play
 - Tournaments & Community
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -16675,8 +17119,8 @@ Raccoon is an immediate redouble by the original doubler after the other player 
 
 ## Categories
 
-- Chouette & Money Play
 - Cube Action
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -16749,8 +17193,8 @@ Race Equity refers to expected value in a no-contact position based on each side
 ## Categories
 
 - Cube Action
-- Analysis & Probability
 - Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -16786,8 +17230,8 @@ Railroad Tracks describes two long parallel stacks or lines of checkers that cre
 
 ## Categories
 
-- Slang & Expressions
 - Game Plans & Position Types
+- Slang & Expressions
 
 ## Learning tracks
 
@@ -17300,6 +17744,58 @@ Reference Position is a memorized, well-analyzed position used to judge similar 
 
 ---
 
+# Reserve Time
+
+**Status:** Confirmed
+
+**Slug:** `reserve-time`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- Time Bank
+- Clock Reserve Time
+- Bank Time
+
+## Short definition
+
+Reserve time is the bank of clock time a player can use across a match after any per-move delay has expired.
+
+## Full definition
+
+Reserve time is the main bank of time available to a player across an entire match or playing session. With Simple Delay, the delay is used first on each turn, and reserve time begins to count down only after the delay expires.
+
+Under Fischer Increment, a fixed amount of time is credited to this bank for each turn, so the bank can increase when moves are played quickly.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Time Bank
+- Simple Delay
+- Fischer Increment
+- Clock
+- Digital Clock
+- Analog Clock
+- Bronstein Clock
+- Fischer Clock
+- Match
+- Time Control
+
+## Categories
+
+- Board, Equipment & Notation
+- Rules & Procedures
+
+## Learning tracks
+
+- None
+
+---
+
 # Resign
 
 **Status:** Legacy unconfirmed
@@ -17472,8 +17968,8 @@ Roll means to throw the dice, or the pair of values produced. Knowing this term 
 
 ## Categories
 
-- Rules & Procedures
 - Board, Equipment & Notation
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -17800,8 +18296,8 @@ Running Game is a strategy or phase focused on racing home after contact has end
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -18486,8 +18982,8 @@ Shift Gears means to change game plans as the position develops. The term gives 
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -18640,6 +19136,55 @@ Silver Point means the other player’s four-point, often regarded as the second
 
 ---
 
+# Simple Delay
+
+**Status:** Confirmed
+
+**Slug:** `simple-delay`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- US Delay
+- Delay Time
+- Time Delay
+
+## Short definition
+
+Simple Delay gives a player a fixed amount of use-it-or-lose-it time at the start of every turn before reserve time begins to count down.
+
+## Full definition
+
+Simple Delay provides a fixed amount of time at the start of each turn. The delay counts down before the player's reserve time begins to decrease. If the turn is completed within the delay, no reserve time is used. Any unused delay disappears and does not carry forward.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Reserve Time
+- Time Bank
+- Clock
+- Digital Clock
+- Analog Clock
+- Bronstein Clock
+- Fischer Increment
+- Time Control
+- Turn
+
+## Categories
+
+- Board, Equipment & Notation
+- Rules & Procedures
+
+## Learning tracks
+
+- None
+
+---
+
 # Simple Direct Shot
 
 **Status:** Legacy unconfirmed
@@ -18740,8 +19285,8 @@ In backgammon, Single Game refers to a normal one-unit win in which the loser ha
 
 ## Categories
 
-- Rules & Procedures
 - Game Plans & Position Types
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -19281,8 +19826,8 @@ Stack describes four or more checkers piled on one point. The term gives players
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -19318,8 +19863,8 @@ Staine's Rule is an optional rule under which doubles are played only twice, lik
 
 ## Categories
 
-- Variants & History
 - Rules & Procedures
+- Variants & History
 
 ## Learning tracks
 
@@ -19499,8 +20044,8 @@ The action called Stay Back is to keep one or more checkers in the other player�
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -19716,8 +20261,8 @@ Players use Stretched to describe a position with too few spare checkers and man
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -19789,8 +20334,8 @@ Stripped means having made points but few or no spare checkers available to move
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -20128,8 +20673,8 @@ Players use Swiss-Cheese Formation to describe a weak structure with many gaps a
 
 ## Categories
 
-- Slang & Expressions
 - Game Plans & Position Types
+- Slang & Expressions
 
 ## Learning tracks
 
@@ -20310,8 +20855,8 @@ Players use Table Stakes to describe a rule limiting losses to the amount placed
 ## Categories
 
 - Board, Equipment & Notation
-- Chouette & Money Play
 - Rules & Procedures
+- Chouette & Money Play
 
 ## Learning tracks
 
@@ -20419,8 +20964,8 @@ Tactics means immediate, calculable actions such as hitting, covering, making po
 
 ## Categories
 
-- Game Plans & Position Types
 - Checker Play
+- Game Plans & Position Types
 
 ## Learning tracks
 
@@ -21033,9 +21578,9 @@ In backgammon, Thorp Count refers to an adjusted race count and cube guideline t
 
 ## Categories
 
-- Analysis & Probability
-- Race & Bearoff
 - Cube Action
+- Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -21108,8 +21653,8 @@ Throw means to release the dice onto the board from a cup or by hand under the r
 
 ## Categories
 
-- Rules & Procedures
 - Board, Equipment & Notation
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -21146,42 +21691,6 @@ Time describes the number of rolls or playable pips a structure can preserve bef
 ## Categories
 
 - Game Plans & Position Types
-
-## Learning tracks
-
-- None
-
----
-
-# Time Delay
-
-**Status:** Legacy unconfirmed
-
-**Slug:** `time-delay`
-
-## AKA
-
-- None
-
-## Short definition
-
-Players use Time Delay to describe a clock setting that gives a short free interval at the start of each turn before reserve time runs. The term gives players a shared way to talk about this part of the game.
-
-## Full definition
-
-Players use Time Delay to describe a clock setting that gives a short free interval at the start of each turn before reserve time runs. The term gives players a shared way to talk about this part of the game.
-
-## Inline terms
-
-- None
-
-## Related words
-
-- None
-
-## Categories
-
-- Rules & Procedures
 
 ## Learning tracks
 
@@ -21651,8 +22160,8 @@ Trice Count is another name for effective pip count and is associated with Walte
 
 ## Categories
 
-- Analysis & Probability
 - Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -21796,8 +22305,8 @@ Turn is one player’s complete sequence of possible cube action, roll, checker 
 
 ## Categories
 
-- Rules & Procedures
 - Board, Equipment & Notation
+- Rules & Procedures
 
 ## Learning tracks
 
@@ -22017,6 +22526,50 @@ Players use Two-Sided Bearoff Database to describe a database containing results
 
 - Race & Bearoff
 - Software & Engines
+
+## Learning tracks
+
+- None
+
+---
+
+# UBC
+
+**Status:** Confirmed
+
+**Slug:** `ubc`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- Ultimate Backgammon Championship
+
+## Short definition
+
+UBC stands for the Ultimate Backgammon Championship, a competition in which match results and Performance Rating both contribute to the standings.
+
+## Full definition
+
+The Ultimate Backgammon Championship, commonly called UBC, rewards both winning matches and playing with a lower Performance Rating. A match can award one point for the match win and a separate point for the PR win, allowing a player to earn zero, one, or two points.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Performance Rating
+- eXtreme Gammon
+- Annotated Match
+- Annotation
+- Match
+- Tournament
+- BMAB
+
+## Categories
+
+- Tournaments & Community
 
 ## Learning tracks
 
@@ -22592,9 +23145,9 @@ Ward Count is an adjusted pip-count method and cube guideline for pure races. It
 
 ## Categories
 
-- Analysis & Probability
-- Race & Bearoff
 - Cube Action
+- Race & Bearoff
+- Analysis & Probability
 
 ## Learning tracks
 
@@ -22818,6 +23371,57 @@ Whopper is a very large checker-play or cube error, often more than 0.100 equity
 
 ---
 
+# Winner's Curse
+
+**Status:** Confirmed
+
+**Slug:** `winners-curse`
+
+**Added:** 2026-07-31
+
+## AKA
+
+- None
+
+## Short definition
+
+Winner's Curse is the tendency for favourable rolls that help a player win to also create more difficult decisions, making the winner's match PR look worse than usual.
+
+## Full definition
+
+Winners often roll more doubles and other strong rolls, hit more checkers, and put their opponent on the bar more often. These favourable rolls improve their chances of winning, but they can also create more decisions and several good-looking moves, making it harder to choose the very best play. A winning position can also make it easier to miss a double or send the cube too late.
+
+Winner's Curse does not mean winners are usually less skilled or play with a higher PR. Lower-PR, more skilled players still win more often, especially over longer matches or sessions. It means that the same favourable rolls that help produce a win can also make that winning path unusually difficult to play accurately.
+
+## Inline terms
+
+- None
+
+## Related words
+
+- Performance Rating
+- Error Rate
+- Equity
+- Luck Factor
+- Doubles
+- Bar
+- Checker Play
+- Cube Action
+- Missed Double
+- Late Double
+- Blunder
+- Match Length
+
+## Categories
+
+- Analysis & Probability
+
+## Learning tracks
+
+- None
+
+---
+
 # Wisecarver Paradox
 
 **Status:** Legacy unconfirmed
@@ -22919,42 +23523,6 @@ X-22 describes the nickname used by backgammon author and champion Paul Magriel.
 ## Categories
 
 - Slang & Expressions
-
-## Learning tracks
-
-- None
-
----
-
-# Zone of Attack
-
-**Status:** Legacy unconfirmed
-
-**Slug:** `zone-of-attack`
-
-## AKA
-
-- None
-
-## Short definition
-
-Zone of Attack refers to your one-point through eleven-point, where checkers can support a blitz. The term gives players a shared way to talk about this part of the game.
-
-## Full definition
-
-Zone of Attack refers to your one-point through eleven-point, where checkers can support a blitz. The term gives players a shared way to talk about this part of the game.
-
-## Inline terms
-
-- None
-
-## Related words
-
-- None
-
-## Categories
-
-- Rules & Procedures
 
 ## Learning tracks
 
