@@ -173,6 +173,61 @@ assert.equal(
   "a nonmatching term excludes the lesson"
 );
 
+const rankedLessonSearch = [
+  {
+    primarySearchValues: ["Opening Responses", "A checker-play lesson"],
+    bodySearchValues: ["This body explains the golden point."],
+    originalIndex: 0
+  },
+  {
+    primarySearchValues: ["The Golden Point", "A tagged reference"],
+    bodySearchValues: ["Supporting lesson body."],
+    originalIndex: 1
+  },
+  {
+    primarySearchValues: ["Anchors", "A positional lesson"],
+    bodySearchValues: ["The golden point appears only in this lesson body."],
+    originalIndex: 2
+  }
+];
+assert.equal(
+  learn.lessonSearchRank(rankedLessonSearch[1], "golden point"),
+  1,
+  "title, description, tag, category, and term metadata are first-rank matches"
+);
+assert.equal(
+  learn.lessonSearchRank(rankedLessonSearch[0], "golden point"),
+  2,
+  "lesson body phrases are second-rank matches"
+);
+assert.deepEqual(
+  learn.rankLessonItems(rankedLessonSearch, "golden point").map(
+    (item) => item.originalIndex
+  ),
+  [1, 0, 2],
+  "metadata matches display before body-only matches with stable source order"
+);
+assert.deepEqual(
+  learn.rankLessonItems(rankedLessonSearch, "").map(
+    (item) => item.originalIndex
+  ),
+  [0, 1, 2],
+  "clearing search restores the authored lesson order"
+);
+assert.equal(
+  learn.lessonGroupSearchRank(
+    [rankedLessonSearch[0], rankedLessonSearch[2]],
+    "golden point"
+  ),
+  2,
+  "a group containing only body matches ranks below a metadata-match group"
+);
+assert.equal(
+  learn.lessonGroupSearchRank([rankedLessonSearch[1]], "golden point"),
+  1,
+  "a group inherits the best metadata match rank from its lessons"
+);
+
 const learnGroups = [
   { open: true, hidden: false },
   { open: true, hidden: false },

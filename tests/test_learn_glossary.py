@@ -151,6 +151,56 @@ class LearnGlossaryTests(unittest.TestCase):
         for path, expected in outputs.items():
             self.assertEqual(path.read_text(encoding="utf-8"), expected)
 
+    def test_lesson_search_indexes_metadata_first_and_body_prose_second(self) -> None:
+        with writable_test_directory() as directory:
+            lesson_path = directory / "lesson.qmd"
+            lesson_path.write_text(
+                """---
+title: Metadata title
+tags: [Tagged phrase]
+---
+
+# Body heading
+
+The body-only phrase is searchable.
+
+[Visible link words](https://example.com)
+
+```text
+private code phrase
+```
+
+<span>Visible HTML words</span>
+""",
+                encoding="utf-8",
+            )
+            body = learn_glossary.lesson_body_search_text(lesson_path)
+        self.assertIn("Body heading", body)
+        self.assertIn("body-only phrase", body)
+        self.assertIn("Visible link words", body)
+        self.assertIn("Visible HTML words", body)
+        self.assertNotIn("Metadata title", body)
+        self.assertNotIn("private code phrase", body)
+
+        lesson = next(
+            lesson
+            for lesson in self.lessons
+            if lesson["relative_path"] == "cube/what-the-cube-is-asking.qmd"
+        )
+        markup = "\n".join(
+            learn_glossary.lesson_catalogue_item_html(
+                lesson,
+                {str(entry["slug"]): str(entry["term"]) for entry in self.entries},
+            )
+        )
+        self.assertIn("data-bms-search-primary=", markup)
+        self.assertIn("data-bms-search-body=", markup)
+        self.assertIn(str(lesson["title"]), markup)
+        self.assertIn(str(lesson["description"]), markup)
+        self.assertIn("Doubling Cube", markup)
+        self.assertIn("worked position", markup.casefold())
+        self.assertNotIn("data-bms-search=", markup)
+
     def test_research_sequence_is_sorted_and_linked(self) -> None:
         sequence = learn_glossary.build_research_sequence(
             self.research_articles

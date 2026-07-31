@@ -53,13 +53,50 @@
     );
   }
 
-  function itemMatchesLesson(item, query, difficulties, terms) {
+  function lessonSearchRank(item, query) {
     const normalizedQuery = normalizeLearnSearch(query);
-    const matchesSearch =
-      normalizedQuery.length === 0 ||
-      item.searchValues.some(function (value) {
+    if (!normalizedQuery) {
+      return 0;
+    }
+    const primaryValues =
+      item.primarySearchValues || item.searchValues || [];
+    const bodyValues = item.bodySearchValues || [];
+    if (
+      primaryValues.some(function (value) {
         return normalizeLearnSearch(value).includes(normalizedQuery);
-      });
+      })
+    ) {
+      return 1;
+    }
+    if (
+      bodyValues.some(function (value) {
+        return normalizeLearnSearch(value).includes(normalizedQuery);
+      })
+    ) {
+      return 2;
+    }
+    return Number.POSITIVE_INFINITY;
+  }
+
+  function rankLessonItems(items, query) {
+    return Array.from(items).sort(function (left, right) {
+      const rankDifference =
+        lessonSearchRank(left, query) - lessonSearchRank(right, query);
+      if (rankDifference !== 0) {
+        return rankDifference;
+      }
+      return left.originalIndex - right.originalIndex;
+    });
+  }
+
+  function lessonGroupSearchRank(items, query) {
+    return Array.from(items).reduce(function (best, item) {
+      return Math.min(best, lessonSearchRank(item, query));
+    }, Number.POSITIVE_INFINITY);
+  }
+
+  function itemMatchesLesson(item, query, difficulties, terms) {
+    const matchesSearch = Number.isFinite(lessonSearchRank(item, query));
     return (
       matchesSearch &&
       matchesAny(item.difficulties, difficulties) &&
@@ -404,17 +441,25 @@
     }
 
     const items = Array.from(list.querySelectorAll(LESSON_SELECTOR)).map(
-      function (element) {
+      function (element, originalIndex) {
         return {
           element: element,
           difficulties: parseList(element.dataset.bmsDifficulties),
           track: element.dataset.bmsTrack || "",
           terms: parseList(element.dataset.bmsTerms),
-          searchValues: parseList(element.dataset.bmsSearch)
+          primarySearchValues: parseList(element.dataset.bmsSearchPrimary),
+          bodySearchValues: parseList(element.dataset.bmsSearchBody),
+          originalIndex: originalIndex,
+          originalParent: element.parentElement
         };
       }
     );
     const groups = Array.from(list.querySelectorAll(GROUP_SELECTOR));
+    const groupOrder = new Map(
+      groups.map(function (group, index) {
+        return [group, index];
+      })
+    );
     const difficultyButtons = Array.from(
       panel.querySelectorAll(DIFFICULTY_SELECTOR)
     );
@@ -592,6 +637,32 @@
             (groupVisibleCount === 1 ? " lesson" : " lessons");
         }
       });
+
+      const groupParent = groups[0] ? groups[0].parentElement : null;
+      if (groupParent) {
+        Array.from(groups)
+          .sort(function (left, right) {
+            const leftRank = lessonGroupSearchRank(
+              items.filter(function (item) {
+                return left.contains(item.element);
+              }),
+              query
+            );
+            const rightRank = lessonGroupSearchRank(
+              items.filter(function (item) {
+                return right.contains(item.element);
+              }),
+              query
+            );
+            return (
+              leftRank - rightRank ||
+              groupOrder.get(left) - groupOrder.get(right)
+            );
+          })
+          .forEach(function (group) {
+            groupParent.appendChild(group);
+          });
+      }
 
       setPressed(
         difficultyButtons,
@@ -1018,6 +1089,24 @@
         link.textContent = related.term;
         item.appendChild(link);
         relatedTermsList.appendChild(item);
+      });
+
+      Array.from(
+        new Set(items.map(function (item) {
+          return item.originalParent;
+        }))
+      ).forEach(function (parent) {
+        if (!parent) {
+          return;
+        }
+        rankLessonItems(
+          items.filter(function (item) {
+            return item.originalParent === parent;
+          }),
+          query
+        ).forEach(function (item) {
+          parent.appendChild(item.element);
+        });
       });
       container.append(relatedTermsHeading, relatedTermsList);
     }
@@ -2187,6 +2276,8 @@
     isMobileDrawerSwipe: isMobileDrawerSwipe,
     isSamePageTocHref: isSamePageTocHref,
     itemMatchesLesson: itemMatchesLesson,
+    lessonSearchRank: lessonSearchRank,
+    lessonGroupSearchRank: lessonGroupSearchRank,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
     normalizeLearnSearch: normalizeLearnSearch,
@@ -2194,6 +2285,7 @@
     lookupMatchRank: lookupMatchRank,
     mountLesson: mountLesson,
     parseList: parseList,
+    rankLessonItems: rankLessonItems,
     setAllGroupsExpanded: setAllGroupsExpanded
   };
 

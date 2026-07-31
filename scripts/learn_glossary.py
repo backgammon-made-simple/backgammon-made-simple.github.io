@@ -693,6 +693,31 @@ def positive_integer(value: object, label: str) -> int:
     return parsed
 
 
+def lesson_body_search_text(path: Path) -> str:
+    """Return stable prose text for lower-priority lesson body search."""
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    if lines and lines[0].strip() == "---":
+        closing = next(
+            (
+                index
+                for index, line in enumerate(lines[1:], start=1)
+                if line.strip() == "---"
+            ),
+            None,
+        )
+        if closing is not None:
+            text = "\n".join(lines[closing + 1 :])
+    text = re.sub(r"<!--.*?-->", " ", text, flags=re.DOTALL)
+    text = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)
+    text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r" \1 ", text)
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r" \1 ", text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\{[^{}\n]*\}", " ", text)
+    text = re.sub(r"[#>*_~`|]+", " ", text)
+    return " ".join(text.split())
+
+
 def discover_tracks() -> list[dict[str, object]]:
     tracks: list[dict[str, object]] = []
     ids: set[str] = set()
@@ -803,6 +828,7 @@ def discover_lessons(
             complete_metadata,
             f"Lesson {relative.as_posix()}",
         )
+        lesson["body_search_text"] = lesson_body_search_text(path)
         lessons.append(lesson)
 
     if not lessons:
@@ -1333,20 +1359,24 @@ def lesson_catalogue_item_html(
         for value in lesson["terms"]
         if str(value) in term_names
     ]
-    search_values = [
+    primary_search_values = [
         str(lesson["title"]),
         str(lesson["description"]),
         *difficulties,
         *tags,
         *(term_names[slug] for slug in terms),
     ]
+    body_search_values = [str(lesson.get("body_search_text") or "")]
     title = str(lesson["title"])
     return [
         f'<article class="bms-learn-catalogue-item" data-bms-learn-item '
         f'data-bms-difficulties="{html_attr(json.dumps(difficulties, ensure_ascii=False))}" '
         f'data-bms-track="{html_attr(lesson["track_id"])}" '
         f'data-bms-terms="{html_attr(json.dumps(terms, ensure_ascii=False))}" '
-        f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
+        f'data-bms-search-primary="'
+        f'{html_attr(json.dumps(primary_search_values, ensure_ascii=False))}" '
+        f'data-bms-search-body="'
+        f'{html_attr(json.dumps(body_search_values, ensure_ascii=False))}">',
         '<div class="bms-learn-catalogue-title-row">',
         '<details class="bms-learn-catalogue-description">',
         f'<summary><a class="bms-learn-catalogue-link" '
@@ -1451,7 +1481,7 @@ def build_lesson_catalogue_html(
         '<div class="bms-learn-search-group">',
         '<label for="bms-learn-search">Search lessons</label>',
         '<input id="bms-learn-search" type="search" '
-        'placeholder="Search titles and descriptions" '
+        'placeholder="Search lesson titles, tags, and text" '
         'autocomplete="off" data-bms-learn-search>',
         "</div>",
     ]
