@@ -323,7 +323,10 @@
           heading.textContent = entry.term;
           const definition = document.createElement("span");
           definition.textContent = summary;
-          tooltip.replaceChildren(heading, definition);
+          const instruction = document.createElement("span");
+          instruction.className = "bms-inline-glossary-tooltip-action";
+          instruction.textContent = "Click for full definition";
+          tooltip.replaceChildren(heading, definition, instruction);
           tooltip.hidden = false;
           link.setAttribute("aria-describedby", tooltip.id);
           positionTooltip(link);
@@ -345,6 +348,15 @@
       });
       link.addEventListener("blur", function () {
         hideTooltip(link);
+      });
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        hideTooltip(link);
+        document.dispatchEvent(
+          new CustomEvent("bms:open-glossary-term", {
+            detail: { slug: link.dataset.bmsGlossarySlug }
+          })
+        );
       });
     });
 
@@ -969,10 +981,46 @@
       container.appendChild(aliases);
     }
 
+    const shortDefinition = document.createElement("p");
+    shortDefinition.className = "bms-term-lookup-short-definition";
+    shortDefinition.textContent = entry.short_definition;
+    container.appendChild(shortDefinition);
+
     const definition = document.createElement("p");
     definition.className = "bms-term-lookup-definition";
     definition.textContent = entry.definition;
     container.appendChild(definition);
+
+    if (Array.isArray(entry.categories) && entry.categories.length > 0) {
+      const categories = document.createElement("p");
+      categories.className = "bms-term-lookup-categories";
+      categories.textContent =
+        (entry.categories.length === 1 ? "Category: " : "Categories: ") +
+        entry.categories.join(", ");
+      container.appendChild(categories);
+    }
+
+    const resolvedRelated = Array.isArray(entry.related_terms)
+      ? entry.related_terms.filter(function (related) {
+          return related && related.slug;
+        })
+      : [];
+    if (resolvedRelated.length > 0) {
+      const relatedTermsHeading = document.createElement("p");
+      relatedTermsHeading.className = "bms-term-lookup-related-heading";
+      relatedTermsHeading.textContent = "Related terms";
+      const relatedTermsList = document.createElement("ul");
+      relatedTermsList.className = "bms-term-lookup-related";
+      resolvedRelated.forEach(function (related) {
+        const item = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = "/learn/glossary/#" + encodeURIComponent(related.slug);
+        link.textContent = related.term;
+        item.appendChild(link);
+        relatedTermsList.appendChild(item);
+      });
+      container.append(relatedTermsHeading, relatedTermsList);
+    }
 
     if (
       Array.isArray(entry.related_lessons) &&
@@ -1810,6 +1858,34 @@
           });
       });
     }
+
+    document.addEventListener("bms:open-glossary-term", function (event) {
+      const slug = event && event.detail ? event.detail.slug : "";
+      if (!slug || !lookup || !result) {
+        return;
+      }
+      if (!desktopQuery.matches && mobileDrawer) {
+        setMobileDrawerOpen(true);
+      } else {
+        preservePagePosition(function () {
+          open({ focusInput: false });
+        });
+      }
+      result.hidden = false;
+      result.textContent = "Looking up\u2026";
+      loadGlossaryLookupEntries()
+        .then(function (entries) {
+          const entry = canonicalEntryBySlug(entries, slug);
+          if (entry && input) {
+            input.value = entry.term;
+          }
+          renderLookupResult(result, entry, entry ? entry.term : slug);
+        })
+        .catch(function () {
+          window.location.href =
+            "/learn/glossary/#" + encodeURIComponent(slug);
+        });
+    });
 
     const legacyBackToTop = document.querySelector(
       "[data-bms-glossary-back-to-top]"

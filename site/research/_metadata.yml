@@ -1,6 +1,7 @@
 filters:
   - bms-research-taxonomy
   - bms-term-lookup
+  - bms-inline-glossary
 term-lookup: true
 format:
   html:

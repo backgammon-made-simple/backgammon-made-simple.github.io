@@ -1103,6 +1103,10 @@ def discover_research_articles() -> list[dict[str, object]]:
                 "title": title,
                 "description": description,
                 "terms": [str(item) for item in terms],
+                "highlighted_terms": highlighted_terms_from_metadata(
+                    metadata,
+                    f"Research article {path.name}",
+                ),
             }
         )
     if not articles:
@@ -1217,6 +1221,22 @@ def validate_research_articles(
             if slug not in canonical_slugs:
                 continue
             related[slug].append(article)
+        for slug in article.get("highlighted_terms", []):
+            if slug in alias_to_canonical:
+                raise ValidationError(
+                    f"Research article {relative} highlighted-terms uses alias "
+                    f"slug {slug}; use canonical slug {alias_to_canonical[slug]}"
+                )
+            if slug not in canonical_slugs:
+                raise ValidationError(
+                    f"Research article {relative} highlighted-terms uses unknown "
+                    f"term slug {slug}"
+                )
+            if slug not in article["terms"]:
+                raise ValidationError(
+                    f"Research article {relative} highlighted term {slug} is "
+                    "missing from terms"
+                )
 
     for related_articles in related.values():
         related_articles.sort(key=lambda article: str(article["title"]).casefold())

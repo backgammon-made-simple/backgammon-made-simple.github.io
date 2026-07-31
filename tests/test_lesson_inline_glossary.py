@@ -297,6 +297,10 @@ highlighted-terms: [ace]
         self.assertIn('link.addEventListener("mouseenter"', javascript)
         self.assertIn('link.addEventListener("focus"', javascript)
         self.assertIn('link.addEventListener("blur"', javascript)
+        self.assertIn('link.addEventListener("click"', javascript)
+        self.assertIn("Click for full definition", javascript)
+        self.assertIn('"bms:open-glossary-term"', javascript)
+        self.assertIn("renderLookupResult(result, entry", javascript)
         self.assertIn("link.dataset.bmsGlossarySlug", javascript)
         self.assertIn("inlineGlossaryTooltipPosition", javascript)
         self.assertIn('window.addEventListener("resize"', javascript)
@@ -361,6 +365,49 @@ highlighted-terms: [ace]
         for slug in selected["terms"]:
             with self.subTest(slug=slug):
                 self.assertIn(selected, related.get(slug, []))
+
+    def test_real_research_article_uses_the_same_highlight_contract(self) -> None:
+        articles = learn_glossary.discover_research_articles()
+        selected = next(
+            article
+            for article in articles
+            if article["relative_path"]
+            == "research/sage-vs-gnu-additional-details.qmd"
+        )
+        self.assertEqual(selected["highlighted_terms"], ["equity"])
+        self.assertIn("equity", selected["terms"])
+        related = learn_glossary.validate_research_articles(
+            articles,
+            self.entries,
+        )
+        self.assertIn(selected, related["equity"])
+
+        result = self.render(selected["path"].read_text(encoding="utf-8"))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(
+            result.stdout.count('data-bms-glossary-slug="equity"'),
+            1,
+        )
+        self.assertIn('href="/learn/glossary/#equity"', result.stdout)
+
+    def test_research_highlighted_term_must_be_canonical_and_in_terms(self) -> None:
+        base = {
+            "relative_path": "research/fixture.qmd",
+            "terms": ["ahead-in-the-count"],
+            "highlighted_terms": ["ahead-in-the-race"],
+            "title": "Fixture",
+        }
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "uses alias slug",
+        ):
+            learn_glossary.validate_research_articles([base], self.entries)
+        base["highlighted_terms"] = ["ace"]
+        with self.assertRaisesRegex(
+            learn_glossary.ValidationError,
+            "missing from terms",
+        ):
+            learn_glossary.validate_research_articles([base], self.entries)
 
 
 if __name__ == "__main__":
