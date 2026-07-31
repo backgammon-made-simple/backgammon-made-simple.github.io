@@ -173,7 +173,13 @@ const interactWithMobileDrawer = async (tab, check, context) => {
   );
 };
 
-const interactWithToc = async (tab, check, context, desktop) => {
+const interactWithToc = async (
+  tab,
+  check,
+  context,
+  desktop,
+  collapseLessonTrack = false
+) => {
   const toggleState = () =>
     tab.playwright.locator("html").evaluate(() => {
       const toggle = Array.from(
@@ -208,6 +214,18 @@ const interactWithToc = async (tab, check, context, desktop) => {
   if (!initial.available) {
     return;
   }
+  const lessonTrack = collapseLessonTrack
+    ? await visibleLocator(
+        tab.playwright.locator(".bms-lesson-track-content")
+      )
+    : null;
+  if (collapseLessonTrack) {
+    check(
+      Boolean(lessonTrack),
+      context,
+      "lesson track is visible before collapsing the TOC rail"
+    );
+  }
   await clickToggle();
   const collapsed = await toggleState();
   check(
@@ -220,12 +238,11 @@ const interactWithToc = async (tab, check, context, desktop) => {
     context,
     "TOC restore control remains available"
   );
-  const lessonTrack = tab.playwright.locator(".bms-lesson-track-content");
-  if ((await lessonTrack.count()) >= 1) {
+  if (lessonTrack) {
     check(
       !(await visibleLocator(lessonTrack)),
       context,
-      "TOC control collapses the lesson track"
+      "TOC rail collapse also hides the lesson track"
     );
   }
   if (!collapsed.available) {
@@ -238,11 +255,11 @@ const interactWithToc = async (tab, check, context, desktop) => {
     context,
     "TOC links restore"
   );
-  if ((await lessonTrack.count()) >= 1) {
+  if (lessonTrack) {
     check(
       Boolean(await visibleLocator(lessonTrack)),
       context,
-      "TOC control restores the lesson track"
+      "restoring the TOC rail also restores the lesson track"
     );
   }
 };
@@ -255,11 +272,7 @@ const interactWithLessonTrack = async (tab, check, context, desktop) => {
     check(!toggle, context, "desktop lesson-track control stays hidden");
     return;
   }
-  check(
-    !toggle,
-    context,
-    "separate lesson-track control is absent"
-  );
+  check(!toggle, context, "separate lesson-track control is absent");
   const track = tab.playwright.locator(".bms-lesson-track-content");
   check(
     Boolean(await visibleLocator(track)),
@@ -465,8 +478,7 @@ const runPageInteraction = async ({
     await interactWithLearnIndex(tab, check, context);
   }
   if (page.kind === "learn-lesson") {
-    await interactWithLessonTrack(tab, check, context, desktop);
-    await interactWithToc(tab, check, context, desktop);
+    await interactWithToc(tab, check, context, desktop, true);
     if (desktop) {
       await interactWithLookup(tab, check, context, desktop);
     } else {

@@ -12,6 +12,7 @@ import subprocess
 import sys
 from collections import defaultdict
 from datetime import date
+from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urljoin
 from xml.etree import ElementTree
@@ -40,8 +41,8 @@ QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
-EXPECTED_CANONICAL_ENTRIES = 12
-EXPECTED_ALIAS_ENTRIES = 3
+EXPECTED_CANONICAL_ENTRIES = 625
+EXPECTED_ALIAS_ENTRIES = 184
 FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
 FULL_BUILD_MARKER_SCHEMA = 1
 RENDERED_CORE_PATHS = (
@@ -83,17 +84,19 @@ TRACKS = (
     "Engines and Analysis",
 )
 GLOSSARY_CATEGORIES = (
-    "analysis and probability",
-    "board, equipment, and notation",
-    "checker play and tactics",
-    "cube and scoring",
-    "language, rules, and culture",
-    "match and tournament play",
-    "organizations and community",
-    "race and bearoff",
-    "software and online play",
-    "strategy and position types",
-    "variants and history",
+    "Checker Play",
+    "Cube Action",
+    "Match Score",
+    "Race & Bearoff",
+    "Game Plans & Position Types",
+    "Board, Equipment & Notation",
+    "Rules & Procedures",
+    "Analysis & Probability",
+    "Tournaments & Community",
+    "Chouette & Money Play",
+    "Variants & History",
+    "Software & Engines",
+    "Slang & Expressions",
 )
 CANONICAL_SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
@@ -361,6 +364,9 @@ def glossary_categories(
     invalid = [value for value in categories if value not in GLOSSARY_CATEGORIES]
     if invalid:
         raise ValidationError(f"{label} has invalid categories: {invalid}")
+    expected_order = sorted(categories, key=GLOSSARY_CATEGORIES.index)
+    if categories != expected_order:
+        raise ValidationError(f"{label} categories are not in contract order")
     return categories
 
 
@@ -687,6 +693,33 @@ def positive_integer(value: object, label: str) -> int:
     return parsed
 
 
+def lesson_body_search_text(path: Path) -> str:
+    """Return stable prose text for lower-priority lesson body search."""
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    if lines and lines[0].strip() == "---":
+        closing = next(
+            (
+                index
+                for index, line in enumerate(lines[1:], start=1)
+                if line.strip() == "---"
+            ),
+            None,
+        )
+        if closing is not None:
+            text = "\n".join(lines[closing + 1 :])
+    text = re.sub(r"<!--.*?-->", " ", text, flags=re.DOTALL)
+    text = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)
+    text = re.sub(r"(?m)^:::+(?:\s+\{[^}\n]*\})?\s*$", " ", text)
+    text = re.sub(r"\{\{<.*?>\}\}", " ", text)
+    text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r" \1 ", text)
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r" \1 ", text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\{[^{}\n]*\}", " ", text)
+    text = re.sub(r"[#>*_~`|]+", " ", text)
+    return " ".join(text.split())
+
+
 def discover_tracks() -> list[dict[str, object]]:
     tracks: list[dict[str, object]] = []
     ids: set[str] = set()
@@ -797,6 +830,7 @@ def discover_lessons(
             complete_metadata,
             f"Lesson {relative.as_posix()}",
         )
+        lesson["body_search_text"] = lesson_body_search_text(path)
         lessons.append(lesson)
 
     if not lessons:
@@ -1033,10 +1067,12 @@ def discover_update_publications() -> list[dict[str, object]]:
     for entry in glossary_entries:
         slug = str(entry["slug"])
         raw_date = entry.get("date_added")
-        if not isinstance(raw_date, str) or not raw_date:
-            raise ValidationError(
-                f"Glossary entry {slug} requires date_added for the Updates feed"
-            )
+        # Legacy entries predate the Updates feed and intentionally have no
+        # publication date. Only newly added, dated definitions enter the feed.
+        if raw_date in (None, ""):
+            continue
+        if not isinstance(raw_date, str):
+            raise ValidationError(f"Glossary entry {slug} has invalid date_added")
         try:
             publication_date = date.fromisoformat(raw_date)
         except ValueError as error:
@@ -1095,6 +1131,10 @@ def discover_research_articles() -> list[dict[str, object]]:
                 "title": title,
                 "description": description,
                 "terms": [str(item) for item in terms],
+                "highlighted_terms": highlighted_terms_from_metadata(
+                    metadata,
+                    f"Research article {path.name}",
+                ),
             }
         )
     if not articles:
@@ -1209,6 +1249,22 @@ def validate_research_articles(
             if slug not in canonical_slugs:
                 continue
             related[slug].append(article)
+        for slug in article.get("highlighted_terms", []):
+            if slug in alias_to_canonical:
+                raise ValidationError(
+                    f"Research article {relative} highlighted-terms uses alias "
+                    f"slug {slug}; use canonical slug {alias_to_canonical[slug]}"
+                )
+            if slug not in canonical_slugs:
+                raise ValidationError(
+                    f"Research article {relative} highlighted-terms uses unknown "
+                    f"term slug {slug}"
+                )
+            if slug not in article["terms"]:
+                raise ValidationError(
+                    f"Research article {relative} highlighted term {slug} is "
+                    "missing from terms"
+                )
 
     for related_articles in related.values():
         related_articles.sort(key=lambda article: str(article["title"]).casefold())
@@ -1305,20 +1361,24 @@ def lesson_catalogue_item_html(
         for value in lesson["terms"]
         if str(value) in term_names
     ]
-    search_values = [
+    primary_search_values = [
         str(lesson["title"]),
         str(lesson["description"]),
         *difficulties,
         *tags,
         *(term_names[slug] for slug in terms),
     ]
+    body_search_values = [str(lesson.get("body_search_text") or "")]
     title = str(lesson["title"])
     return [
         f'<article class="bms-learn-catalogue-item" data-bms-learn-item '
         f'data-bms-difficulties="{html_attr(json.dumps(difficulties, ensure_ascii=False))}" '
         f'data-bms-track="{html_attr(lesson["track_id"])}" '
         f'data-bms-terms="{html_attr(json.dumps(terms, ensure_ascii=False))}" '
-        f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
+        f'data-bms-search-primary="'
+        f'{html_attr(json.dumps(primary_search_values, ensure_ascii=False))}" '
+        f'data-bms-search-body="'
+        f'{html_attr(json.dumps(body_search_values, ensure_ascii=False))}">',
         '<div class="bms-learn-catalogue-title-row">',
         '<details class="bms-learn-catalogue-description">',
         f'<summary><a class="bms-learn-catalogue-link" '
@@ -1423,7 +1483,7 @@ def build_lesson_catalogue_html(
         '<div class="bms-learn-search-group">',
         '<label for="bms-learn-search">Search lessons</label>',
         '<input id="bms-learn-search" type="search" '
-        'placeholder="Search titles and descriptions" '
+        'placeholder="Search lesson titles, tags, and text" '
         'autocomplete="off" data-bms-learn-search>',
         "</div>",
     ]
@@ -1608,6 +1668,20 @@ def usage_notes_html(entry: dict[str, object]) -> str:
     return "\n".join(notes)
 
 
+@lru_cache(maxsize=None)
+def inline_term_pattern(phrase: str) -> re.Pattern[str] | None:
+    """Compile each glossary phrase once across all generated definitions."""
+    words = re.findall(r"[A-Za-z0-9]+", phrase)
+    if not words:
+        return None
+    return re.compile(
+        r"(?<![A-Za-z0-9-])"
+        + r"[^A-Za-z0-9]+".join(re.escape(word) for word in words)
+        + r"(?![A-Za-z0-9-])",
+        re.IGNORECASE,
+    )
+
+
 def inline_definition_candidates(
     entry: dict[str, object],
     glossary_entries: list[dict[str, object]],
@@ -1649,17 +1723,12 @@ def inline_definition_candidates(
 
     prepared: list[dict[str, object]] = []
     for candidate in candidates.values():
-        words = re.findall(r"[A-Za-z0-9]+", str(candidate["phrase"]))
-        if not words:
+        pattern = inline_term_pattern(str(candidate["phrase"]))
+        if pattern is None:
             continue
         prepared.append({
             **candidate,
-            "pattern": re.compile(
-                r"(?<![A-Za-z0-9-])"
-                + r"[^A-Za-z0-9]+".join(re.escape(word) for word in words)
-                + r"(?![A-Za-z0-9-])",
-                re.IGNORECASE,
-            ),
+            "pattern": pattern,
         })
     return sorted(
         prepared,
@@ -1847,6 +1916,15 @@ def build_entries_html(
             search_values = [str(entry["term"])] + [
                 str(alias["term"]) for alias in entry["aliases"]  # type: ignore[index]
             ]
+            search_values.extend(
+                [
+                    str(entry.get("short_definition") or ""),
+                    str(entry["definition"]),
+                ]
+            )
+            alias_names = [
+                str(alias["term"]) for alias in entry["aliases"]  # type: ignore[index]
+            ]
             alias_slugs = [
                 str(alias["slug"]) for alias in entry["aliases"]  # type: ignore[index]
             ]
@@ -1868,6 +1946,7 @@ def build_entries_html(
                     f"{category_attributes}"
                     f'data-bms-tracks="{html_attr(json.dumps(tracks, ensure_ascii=False))}" '
                     f'data-bms-aliases="{html_attr(json.dumps(alias_slugs, ensure_ascii=False))}" '
+                    f'data-bms-alias-names="{html_attr(json.dumps(alias_names, ensure_ascii=False))}" '
                     f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
                     '<summary class="bms-glossary-entry-summary">'
                     f'<span class="bms-glossary-term-name">'
@@ -2117,7 +2196,10 @@ def validate_generated() -> dict[str, int]:
         r'<details class="bms-glossary-entry"[^>]*>',
         entries_html,
     )
-    if any(" open" in tag for tag in entry_tags):
+    if any(
+        re.search(r"\sopen(?:\s|>)", re.sub(r'"[^"]*"', '""', tag))
+        for tag in entry_tags
+    ):
         raise ValidationError("Canonical term disclosures must begin collapsed")
     if entries_html.count('data-bms-alias="') != EXPECTED_ALIAS_ENTRIES:
         raise ValidationError("Generated alias count does not match public data")
@@ -2391,7 +2473,10 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         r'<details class="bms-glossary-entry"[^>]*>',
         glossary_html,
     )
-    if any(" open" in tag for tag in entry_tags):
+    if any(
+        re.search(r"\sopen(?:\s|>)", re.sub(r'"[^"]*"', '""', tag))
+        for tag in entry_tags
+    ):
         raise ValidationError("Rendered term disclosures do not begin collapsed")
     if glossary_html.count('class="bms-glossary-definition"') != len(entries):
         raise ValidationError("Rendered glossary is missing full definitions")

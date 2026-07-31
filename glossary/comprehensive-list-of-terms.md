@@ -1,3 +1,15 @@
+# Comprehensive glossary term list
+
+This is the raw vocabulary inbox.
+
+- One term or phrase per line.
+- Duplicates are allowed.
+- Aliases, spelling variants, uncertain terms, and research candidates are allowed.
+- Append new terms during the at-home reconciliation.
+- This file never feeds the website build.
+
+---
+
 10-Percent Doubling Rule
 8-9-12 Doubling Rule
 ABT

@@ -1255,6 +1255,12 @@ body:is(.bms-learn-index, .bms-learn-article)
   margin-bottom: 0.25rem;
 }
 
+.bms-inline-glossary-tooltip .bms-inline-glossary-tooltip-action {
+  margin-top: 0.35rem;
+  color: var(--bms-text-muted);
+  font-size: 0.78rem;
+}
+
 .bms-term-lookup-heading {
   display: flex;
   align-items: center;

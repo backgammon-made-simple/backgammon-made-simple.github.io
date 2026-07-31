@@ -53,13 +53,50 @@
     );
   }
 
-  function itemMatchesLesson(item, query, difficulties, terms) {
+  function lessonSearchRank(item, query) {
     const normalizedQuery = normalizeLearnSearch(query);
-    const matchesSearch =
-      normalizedQuery.length === 0 ||
-      item.searchValues.some(function (value) {
+    if (!normalizedQuery) {
+      return 0;
+    }
+    const primaryValues =
+      item.primarySearchValues || item.searchValues || [];
+    const bodyValues = item.bodySearchValues || [];
+    if (
+      primaryValues.some(function (value) {
         return normalizeLearnSearch(value).includes(normalizedQuery);
-      });
+      })
+    ) {
+      return 1;
+    }
+    if (
+      bodyValues.some(function (value) {
+        return normalizeLearnSearch(value).includes(normalizedQuery);
+      })
+    ) {
+      return 2;
+    }
+    return Number.POSITIVE_INFINITY;
+  }
+
+  function rankLessonItems(items, query) {
+    return Array.from(items).sort(function (left, right) {
+      const rankDifference =
+        lessonSearchRank(left, query) - lessonSearchRank(right, query);
+      if (rankDifference !== 0) {
+        return rankDifference;
+      }
+      return left.originalIndex - right.originalIndex;
+    });
+  }
+
+  function lessonGroupSearchRank(items, query) {
+    return Array.from(items).reduce(function (best, item) {
+      return Math.min(best, lessonSearchRank(item, query));
+    }, Number.POSITIVE_INFINITY);
+  }
+
+  function itemMatchesLesson(item, query, difficulties, terms) {
+    const matchesSearch = Number.isFinite(lessonSearchRank(item, query));
     return (
       matchesSearch &&
       matchesAny(item.difficulties, difficulties) &&
@@ -160,6 +197,14 @@
       })
     ) {
       return 8;
+    }
+    const shortDefinition = normalizeLearnSearch(entry.short_definition);
+    const fullDefinition = normalizeLearnSearch(entry.definition);
+    if (shortDefinition.includes(normalizedQuery)) {
+      return 9;
+    }
+    if (fullDefinition.includes(normalizedQuery)) {
+      return 10;
     }
     return Number.POSITIVE_INFINITY;
   }
@@ -315,7 +360,10 @@
           heading.textContent = entry.term;
           const definition = document.createElement("span");
           definition.textContent = summary;
-          tooltip.replaceChildren(heading, definition);
+          const instruction = document.createElement("span");
+          instruction.className = "bms-inline-glossary-tooltip-action";
+          instruction.textContent = "Click for full definition";
+          tooltip.replaceChildren(heading, definition, instruction);
           tooltip.hidden = false;
           link.setAttribute("aria-describedby", tooltip.id);
           positionTooltip(link);
@@ -337,6 +385,15 @@
       });
       link.addEventListener("blur", function () {
         hideTooltip(link);
+      });
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        hideTooltip(link);
+        document.dispatchEvent(
+          new CustomEvent("bms:open-glossary-term", {
+            detail: { slug: link.dataset.bmsGlossarySlug }
+          })
+        );
       });
     });
 
@@ -384,17 +441,25 @@
     }
 
     const items = Array.from(list.querySelectorAll(LESSON_SELECTOR)).map(
-      function (element) {
+      function (element, originalIndex) {
         return {
           element: element,
           difficulties: parseList(element.dataset.bmsDifficulties),
           track: element.dataset.bmsTrack || "",
           terms: parseList(element.dataset.bmsTerms),
-          searchValues: parseList(element.dataset.bmsSearch)
+          primarySearchValues: parseList(element.dataset.bmsSearchPrimary),
+          bodySearchValues: parseList(element.dataset.bmsSearchBody),
+          originalIndex: originalIndex,
+          originalParent: element.parentElement
         };
       }
     );
     const groups = Array.from(list.querySelectorAll(GROUP_SELECTOR));
+    const groupOrder = new Map(
+      groups.map(function (group, index) {
+        return [group, index];
+      })
+    );
     const difficultyButtons = Array.from(
       panel.querySelectorAll(DIFFICULTY_SELECTOR)
     );
@@ -572,6 +637,32 @@
             (groupVisibleCount === 1 ? " lesson" : " lessons");
         }
       });
+
+      const groupParent = groups[0] ? groups[0].parentElement : null;
+      if (groupParent) {
+        Array.from(groups)
+          .sort(function (left, right) {
+            const leftRank = lessonGroupSearchRank(
+              items.filter(function (item) {
+                return left.contains(item.element);
+              }),
+              query
+            );
+            const rightRank = lessonGroupSearchRank(
+              items.filter(function (item) {
+                return right.contains(item.element);
+              }),
+              query
+            );
+            return (
+              leftRank - rightRank ||
+              groupOrder.get(left) - groupOrder.get(right)
+            );
+          })
+          .forEach(function (group) {
+            groupParent.appendChild(group);
+          });
+      }
 
       setPressed(
         difficultyButtons,
@@ -961,10 +1052,64 @@
       container.appendChild(aliases);
     }
 
+    const shortDefinition = document.createElement("p");
+    shortDefinition.className = "bms-term-lookup-short-definition";
+    shortDefinition.textContent = entry.short_definition;
+    container.appendChild(shortDefinition);
+
     const definition = document.createElement("p");
     definition.className = "bms-term-lookup-definition";
     definition.textContent = entry.definition;
     container.appendChild(definition);
+
+    if (Array.isArray(entry.categories) && entry.categories.length > 0) {
+      const categories = document.createElement("p");
+      categories.className = "bms-term-lookup-categories";
+      categories.textContent =
+        (entry.categories.length === 1 ? "Category: " : "Categories: ") +
+        entry.categories.join(", ");
+      container.appendChild(categories);
+    }
+
+    const resolvedRelated = Array.isArray(entry.related_terms)
+      ? entry.related_terms.filter(function (related) {
+          return related && related.slug;
+        })
+      : [];
+    if (resolvedRelated.length > 0) {
+      const relatedTermsHeading = document.createElement("p");
+      relatedTermsHeading.className = "bms-term-lookup-related-heading";
+      relatedTermsHeading.textContent = "Related terms";
+      const relatedTermsList = document.createElement("ul");
+      relatedTermsList.className = "bms-term-lookup-related";
+      resolvedRelated.forEach(function (related) {
+        const item = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = "/learn/glossary/#" + encodeURIComponent(related.slug);
+        link.textContent = related.term;
+        item.appendChild(link);
+        relatedTermsList.appendChild(item);
+      });
+
+      Array.from(
+        new Set(items.map(function (item) {
+          return item.originalParent;
+        }))
+      ).forEach(function (parent) {
+        if (!parent) {
+          return;
+        }
+        rankLessonItems(
+          items.filter(function (item) {
+            return item.originalParent === parent;
+          }),
+          query
+        ).forEach(function (item) {
+          parent.appendChild(item.element);
+        });
+      });
+      container.append(relatedTermsHeading, relatedTermsList);
+    }
 
     if (
       Array.isArray(entry.related_lessons) &&
@@ -1803,6 +1948,34 @@
       });
     }
 
+    document.addEventListener("bms:open-glossary-term", function (event) {
+      const slug = event && event.detail ? event.detail.slug : "";
+      if (!slug || !lookup || !result) {
+        return;
+      }
+      if (!desktopQuery.matches && mobileDrawer) {
+        setMobileDrawerOpen(true);
+      } else {
+        preservePagePosition(function () {
+          open({ focusInput: false });
+        });
+      }
+      result.hidden = false;
+      result.textContent = "Looking up\u2026";
+      loadGlossaryLookupEntries()
+        .then(function (entries) {
+          const entry = canonicalEntryBySlug(entries, slug);
+          if (entry && input) {
+            input.value = entry.term;
+          }
+          renderLookupResult(result, entry, entry ? entry.term : slug);
+        })
+        .catch(function () {
+          window.location.href =
+            "/learn/glossary/#" + encodeURIComponent(slug);
+        });
+    });
+
     const legacyBackToTop = document.querySelector(
       "[data-bms-glossary-back-to-top]"
     );
@@ -2103,6 +2276,8 @@
     isMobileDrawerSwipe: isMobileDrawerSwipe,
     isSamePageTocHref: isSamePageTocHref,
     itemMatchesLesson: itemMatchesLesson,
+    lessonSearchRank: lessonSearchRank,
+    lessonGroupSearchRank: lessonGroupSearchRank,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
     normalizeLearnSearch: normalizeLearnSearch,
@@ -2110,6 +2285,7 @@
     lookupMatchRank: lookupMatchRank,
     mountLesson: mountLesson,
     parseList: parseList,
+    rankLessonItems: rankLessonItems,
     setAllGroupsExpanded: setAllGroupsExpanded
   };
 

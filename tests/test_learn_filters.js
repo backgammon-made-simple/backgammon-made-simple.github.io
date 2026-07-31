@@ -173,6 +173,61 @@ assert.equal(
   "a nonmatching term excludes the lesson"
 );
 
+const rankedLessonSearch = [
+  {
+    primarySearchValues: ["Opening Responses", "A checker-play lesson"],
+    bodySearchValues: ["This body explains the golden point."],
+    originalIndex: 0
+  },
+  {
+    primarySearchValues: ["The Golden Point", "A tagged reference"],
+    bodySearchValues: ["Supporting lesson body."],
+    originalIndex: 1
+  },
+  {
+    primarySearchValues: ["Anchors", "A positional lesson"],
+    bodySearchValues: ["The golden point appears only in this lesson body."],
+    originalIndex: 2
+  }
+];
+assert.equal(
+  learn.lessonSearchRank(rankedLessonSearch[1], "golden point"),
+  1,
+  "title, description, tag, category, and term metadata are first-rank matches"
+);
+assert.equal(
+  learn.lessonSearchRank(rankedLessonSearch[0], "golden point"),
+  2,
+  "lesson body phrases are second-rank matches"
+);
+assert.deepEqual(
+  learn.rankLessonItems(rankedLessonSearch, "golden point").map(
+    (item) => item.originalIndex
+  ),
+  [1, 0, 2],
+  "metadata matches display before body-only matches with stable source order"
+);
+assert.deepEqual(
+  learn.rankLessonItems(rankedLessonSearch, "").map(
+    (item) => item.originalIndex
+  ),
+  [0, 1, 2],
+  "clearing search restores the authored lesson order"
+);
+assert.equal(
+  learn.lessonGroupSearchRank(
+    [rankedLessonSearch[0], rankedLessonSearch[2]],
+    "golden point"
+  ),
+  2,
+  "a group containing only body matches ranks below a metadata-match group"
+);
+assert.equal(
+  learn.lessonGroupSearchRank([rankedLessonSearch[1]], "golden point"),
+  1,
+  "a group inherits the best metadata match rank from its lessons"
+);
+
 const learnGroups = [
   { open: true, hidden: false },
   { open: true, hidden: false },
@@ -359,6 +414,21 @@ assert.equal(
   ),
   3
 );
+assert.equal(
+  glossary.glossaryMatchRank(
+    {
+      canonical: "Take Point",
+      aliases: [],
+      searchValues: [
+        "Take Point",
+        "The minimum winning chance needed to accept a double."
+      ]
+    },
+    "minimum winning chance"
+  ),
+  9,
+  "glossary filtering indexes definition text after canonical names and aliases"
+);
 
 function decodeHtmlAttribute(value) {
   return value
@@ -389,7 +459,7 @@ const generatedGlossaryItems = Array.from(
       slug: attributeValue(tag, "data-bms-slug"),
       aliasSlugs: JSON.parse(attributeValue(tag, "data-bms-aliases")),
       canonical: searchValues[0],
-      aliases: searchValues.slice(1),
+      aliases: JSON.parse(attributeValue(tag, "data-bms-alias-names")),
       categories: categoriesAttribute
         ? JSON.parse(categoriesAttribute)
         : primaryCategory
@@ -403,14 +473,14 @@ const generatedGlossaryItems = Array.from(
 
 const multiCategoryItems = [
   {
-    categories: ["checker play and tactics", "strategy and position types"],
+    categories: ["Checker Play", "Game Plans & Position Types"],
     element: { hidden: false, open: false },
     canonical: "Active Builder",
     aliases: [],
     tracks: []
   },
   {
-    categories: ["checker play and tactics"],
+    categories: ["Checker Play"],
     element: { hidden: false, open: false },
     canonical: "Ace",
     aliases: [],
@@ -421,7 +491,7 @@ assert.equal(
   glossary.itemMatchesGlossary(
     multiCategoryItems[0],
     "",
-    ["strategy and position types"],
+    ["Game Plans & Position Types"],
     []
   ),
   true,
@@ -430,7 +500,7 @@ assert.equal(
 assert.equal(
   glossary.expandCategoryMatches(
     multiCategoryItems,
-    "strategy and position types"
+    "Game Plans & Position Types"
   )[0].canonical,
   "Active Builder",
   "either Active Builder category resolves to the canonical entry"
@@ -441,7 +511,7 @@ multiCategoryItems.forEach((item) => {
 assert.equal(
   glossary.expandCategoryMatches(
     multiCategoryItems,
-    "checker play and tactics"
+    "Checker Play"
   ).length,
   2,
   "category filtering expands every matching entry"
@@ -453,16 +523,16 @@ assert.equal(
 );
 assert.equal(
   generatedGlossaryItems.length,
-  12,
-  "the JavaScript integration fixture uses all approved canonical entries"
+  625,
+  "the JavaScript integration fixture uses every canonical entry"
 );
 assert.equal(
   generatedGlossaryItems.reduce(
     (count, item) => count + item.aliasSlugs.length,
     0
   ),
-  3,
-  "the JavaScript integration fixture uses every approved alias"
+  184,
+  "the JavaScript integration fixture uses every canonical alias"
 );
 
 [
@@ -604,11 +674,15 @@ const lookupCandidates = [
   {
     term: "Take Point",
     aliases: ["Point of Last Take"],
+    short_definition: "The minimum winning chance needed to accept a double.",
+    definition: "A full cube decision definition.",
     slug: "take-point"
   },
   {
     term: "Outfield",
     aliases: ["Out Field"],
+    short_definition: "The outer board.",
+    definition: "A full board definition.",
     slug: "outfield"
   }
 ];
@@ -633,6 +707,16 @@ assert.equal(
   "a partial alias match resolves to the best canonical term"
 );
 assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "minimum winning chance").slug,
+  "take-point",
+  "short-definition search resolves to the canonical term"
+);
+assert.equal(
+  learn.bestLookupEntry(lookupCandidates, "cube decision").slug,
+  "take-point",
+  "full-definition search resolves to the canonical term"
+);
+assert.equal(
   learn.bestLookupEntry(lookupCandidates, "no matching concept"),
   null,
   "an unrelated query does not invent a glossary result"
@@ -644,13 +728,13 @@ const lookupData = JSON.parse(
     "utf8"
   )
 );
-assert.equal(lookupData.entries.length, 12);
+assert.equal(lookupData.entries.length, 625);
 assert.equal(
   lookupData.entries.reduce(
     (total, entry) => total + entry.aliases.length,
     0
   ),
-  3
+  184
 );
 assert.equal(
   learn.bestLookupEntry(lookupData.entries, "Ahead in the Race").term,
@@ -722,6 +806,14 @@ assert.deepEqual(
   clearedUrl.searchParams.getAll("track"),
   ["Doubling Cube"],
   "global section actions preserve learning-track filters"
+);
+assert.equal(
+  glossary.urlWithoutGlossaryFilters(
+    "https://backgammon-made-simple.github.io/learn/glossary/" +
+      "?q=take&category=Cube%20Action&track=Doubling%20Cube#take"
+  ),
+  "https://backgammon-made-simple.github.io/learn/glossary/#take",
+  "related-term navigation clears all incompatible filters"
 );
 
 const currentGlossaryUrl =

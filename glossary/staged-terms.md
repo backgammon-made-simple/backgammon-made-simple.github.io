@@ -1,12 +1,19 @@
 # Staged glossary terms
 
-This is the alphabetical working queue used during the daily audio review.
+This is the alphabetical review queue for mobile and car sessions.
 
-A term stays here until its canonical wording, AKA terms, short definition, full definition, inline terms, related words, and any obvious taxonomy decisions are ready.
+During the session, focus on:
 
-When a term is approved at home, move its complete information to `confirmed-terms.md` and remove its top-level section from this file in the same Git patch.
+- canonical wording when needed;
+- obvious aliases when they arise;
+- the short definition;
+- the full definition.
 
-Categories and learning tracks are optional. Unclear taxonomy must not block promotion.
+Categories, related words, learning tracks, and explicit inline overrides are handled during the one-time at-home reconciliation.
+
+This file never feeds the website build.
+
+When a term is completed at home, update its canonical entry in `glossary.md` and remove its entire top-level section from this file in the same patch.
 
 ---
 

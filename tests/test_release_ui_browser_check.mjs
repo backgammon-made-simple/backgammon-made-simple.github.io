@@ -1,9 +1,15 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
 import {
   DEFAULT_MANIFEST,
   summarizeReport
 } from "../scripts/release_ui_browser_check.mjs";
+
+const helperSource = readFileSync(
+  new URL("../scripts/release_ui_browser_check.mjs", import.meta.url),
+  "utf8"
+);
 
 assert.equal(DEFAULT_MANIFEST.version, 1);
 assert.deepEqual(
@@ -50,6 +56,21 @@ assert.equal(
     durationMs: 50
   }).passed,
   false
+);
+
+assert.ok(
+  helperSource.includes("TOC rail collapse also hides the lesson track")
+);
+assert.ok(
+  helperSource.includes("restoring the TOC rail also restores the lesson track")
+);
+assert.ok(!helperSource.includes("[data-bms-lesson-track-toggle]"));
+assert.match(
+  helperSource,
+  /await scrollTo\(tab, 420\);\s+await scrollTo\(tab, 280\);/
+);
+assert.ok(
+  helperSource.includes("term lookup closes without reloading the page")
 );
 
 console.log("UI release browser helper tests passed");

@@ -533,7 +533,7 @@ def generate_artifacts(
     ):
         raise ValidationError("Refusing to overwrite the production glossary JSON")
 
-    review_data = learn_glossary.read_json(glossary_source.LEGACY_MIGRATION_PATH)
+    review_data = learn_glossary.read_json(learn_glossary.PUBLIC_DATA_PATH)
     reference_entries = glossary_source.validate_with_observed_counts(review_data)
     data = learn_glossary.read_json(input_path)
     entries = validate_review_data(data, reference_entries)

@@ -93,6 +93,14 @@
     ) {
       return 8;
     }
+    const searchableText = Array.isArray(item.searchValues)
+      ? item.searchValues.map(normalizeSearch)
+      : [];
+    if (searchableText.some(function (value) {
+      return value.includes(normalizedQuery);
+    })) {
+      return 9;
+    }
     return Number.POSITIVE_INFINITY;
   }
 
@@ -243,6 +251,14 @@
     return next.toString();
   }
 
+  function urlWithoutGlossaryFilters(value) {
+    const next = new URL(value);
+    next.searchParams.delete("q");
+    next.searchParams.delete("category");
+    next.searchParams.delete("track");
+    return next.toString();
+  }
+
   function letterNavigationUrl(currentUrl, fragment) {
     return samePageFragmentUrl(
       urlWithoutGlossaryQuery(currentUrl),
@@ -341,7 +357,7 @@
         tracks: parseList(element.dataset.bmsTracks),
         searchValues: searchValues,
         canonical: searchValues[0] || "",
-        aliases: searchValues.slice(1),
+        aliases: parseList(element.dataset.bmsAliasNames),
         originalParent: element.parentElement,
         originalIndex: originalIndex
       };
@@ -789,6 +805,41 @@
     });
 
     groupContainer.addEventListener("click", function (event) {
+      const relatedLink = event.target.closest(
+        ".bms-glossary-related-terms a[href]"
+      );
+      if (relatedLink) {
+        const canonicalSlug = canonicalSlugForFragment(
+          items,
+          relatedLink.getAttribute("href") || ""
+        );
+        if (!canonicalSlug) {
+          return;
+        }
+        event.preventDefault();
+        activeLetterBrowse = "";
+        autoOpenedSearchItem = null;
+        selectedCategories.clear();
+        selectedTracks.clear();
+        if (searchInput) {
+          searchInput.value = "";
+        }
+        if (categoryDisclosure instanceof HTMLDetailsElement) {
+          categoryDisclosure.open = false;
+        }
+        if (trackDisclosure instanceof HTMLDetailsElement) {
+          trackDisclosure.open = false;
+        }
+        closeTermEntries(items);
+        applyFilters({ updateUrl: false });
+        const destination = normalizedTermFragmentUrl(
+          urlWithoutGlossaryFilters(window.location.href),
+          canonicalSlug
+        );
+        window.history.pushState({}, "", destination);
+        openCurrentHash();
+        return;
+      }
       const categoryButton = event.target.closest("[data-bms-card-category]");
       if (!categoryButton) {
         return;
@@ -914,6 +965,7 @@
     setExactlyOneExpandedTerm: setExactlyOneExpandedTerm,
     termDisclosureState: termDisclosureState,
     hasAtMostOneExpandedTerm: hasAtMostOneExpandedTerm,
+    urlWithoutGlossaryFilters: urlWithoutGlossaryFilters,
     urlWithoutGlossaryQuery: urlWithoutGlossaryQuery
   };
 
