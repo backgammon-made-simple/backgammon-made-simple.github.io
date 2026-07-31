@@ -1430,6 +1430,9 @@ class LearnGlossaryTests(unittest.TestCase):
             'sidebar.querySelector(".sidebar-menu-container") || sidebar',
             "const updateVisibility = function",
             "sidebarScroller.addEventListener",
+            "let autoCollapsePending = window.scrollY <= 32",
+            "autoCollapsePending &&",
+            "collapsed = true",
             '? \'<span aria-hidden="true">\\u25be</span>\'',
             'toggle.classList.toggle("is-active", active)',
         ):
@@ -1447,7 +1450,6 @@ class LearnGlossaryTests(unittest.TestCase):
             "#TOC\n    > ul",
             ".bms-research-article",
             ".bms-toc-toggle-divider",
-            "border-top: 1px solid var(--bms-border)",
             ".bms-toc-heading-toggle",
             ":is(.bms-toc-toggle, .bms-margin-sidebar-toggle)",
             ".bms-term-lookup-close",
@@ -1460,6 +1462,11 @@ class LearnGlossaryTests(unittest.TestCase):
         self.assertNotIn(".bms-lesson-track-toggle", css)
         self.assertIn(".bms-distraction-free-toggle.is-active", css)
         self.assertIn("min-height: 2.1rem", css)
+        self.assertRegex(
+            css,
+            r"\.bms-toc-toggle-divider \{[^}]*"
+            r"margin: 0\.3rem 0 0\.15rem;[^}]*\}",
+        )
         self.assertIn(
             "sidebarRight - toggle.offsetWidth - 14",
             javascript,

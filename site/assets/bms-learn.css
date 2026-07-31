@@ -1732,9 +1732,7 @@ body:is(.bms-learn-index, .bms-learn-article)
     .bms-toc-toggle-divider {
     display: flex;
     justify-content: flex-end;
-    margin-top: 0.45rem;
-    padding-top: 0.4rem;
-    border-top: 1px solid var(--bms-border);
+    margin: 0.3rem 0 0.15rem;
   }
 
   body:is(
@@ -1773,8 +1771,8 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar {
     align-items: center;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
+    margin-top: 0.15rem;
+    padding-top: 0.25rem;
   }
 
   body:is(

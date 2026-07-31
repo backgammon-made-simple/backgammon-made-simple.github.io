@@ -1801,6 +1801,7 @@
     let lastScrollY = window.scrollY;
     let lastSidebarScrollTop = sidebarScroller.scrollTop;
     let scrollingDown = false;
+    let autoCollapsePending = window.scrollY <= 32;
     toggle.type = "button";
     toggle.className = "bms-learn-left-sidebar-toggle";
     toggle.dataset.bmsLearnLeftSidebarToggle = "";
@@ -1843,9 +1844,24 @@
       "scroll",
       function () {
         const currentScrollY = window.scrollY;
+        if (currentScrollY <= 32) {
+          autoCollapsePending = true;
+        }
         if (Math.abs(currentScrollY - lastScrollY) > 4) {
           scrollingDown = currentScrollY > lastScrollY;
           lastScrollY = currentScrollY;
+          if (
+            autoCollapsePending &&
+            scrollingDown &&
+            currentScrollY > 32
+          ) {
+            autoCollapsePending = false;
+            if (!collapsed) {
+              collapsed = true;
+              update();
+              return;
+            }
+          }
           updateVisibility();
         }
       },
