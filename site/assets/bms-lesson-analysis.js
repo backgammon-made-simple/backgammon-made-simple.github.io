@@ -199,7 +199,9 @@
     const img = element("img", "bms-analysis-position-image");
     img.src = assetUrl(assetRoot, image.image);
     img.alt = optionalText(image.alt || image.image_alt, "Fixture position");
-    img.loading = "lazy";
+    img.width = 1200;
+    img.height = 910;
+    img.loading = "eager";
     img.decoding = "async";
     figure.appendChild(img);
     return { figure: figure, image: img };

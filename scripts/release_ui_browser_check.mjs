@@ -96,7 +96,10 @@ const interactWithLookup = async (
       return;
     }
   }
-  await scrollTo(tab, 320);
+  await scrollTo(tab, 1400);
+  await delay(700);
+  await scrollTo(tab, 900);
+  await delay(700);
   const toggle = await visibleLocator(
     tab.playwright.locator(
       "[data-bms-site-term-toggle], [data-bms-mobile-term-toggle]"
@@ -121,8 +124,13 @@ const interactWithLookup = async (
     "opening term lookup preserves scroll position " +
       `(before=${before}, after=${afterOpen})`
   );
-  await tab.goto(await tab.url());
-  await delay(500);
+  const close = await visibleLocator(
+    tab.playwright.locator(".bms-term-lookup-close")
+  );
+  if (close) {
+    await clickInPlace(tab, close);
+    await delay(250);
+  }
 };
 
 const interactWithMobileDrawer = async (tab, check, context) => {
@@ -212,6 +220,14 @@ const interactWithToc = async (tab, check, context, desktop) => {
     context,
     "TOC restore control remains available"
   );
+  const lessonTrack = tab.playwright.locator(".bms-lesson-track-content");
+  if ((await lessonTrack.count()) >= 1) {
+    check(
+      !(await visibleLocator(lessonTrack)),
+      context,
+      "TOC control collapses the lesson track"
+    );
+  }
   if (!collapsed.available) {
     return;
   }
@@ -222,6 +238,13 @@ const interactWithToc = async (tab, check, context, desktop) => {
     context,
     "TOC links restore"
   );
+  if ((await lessonTrack.count()) >= 1) {
+    check(
+      Boolean(await visibleLocator(lessonTrack)),
+      context,
+      "TOC control restores the lesson track"
+    );
+  }
 };
 
 const interactWithLessonTrack = async (tab, check, context, desktop) => {
@@ -232,25 +255,16 @@ const interactWithLessonTrack = async (tab, check, context, desktop) => {
     check(!toggle, context, "desktop lesson-track control stays hidden");
     return;
   }
-  check(Boolean(toggle), context, "lesson-track sideways control is visible");
-  if (!toggle) {
-    return;
-  }
-  const initiallyExpanded =
-    (await toggle.getAttribute("aria-expanded")) === "true";
-  await toggle.click();
   check(
-    (await toggle.getAttribute("aria-expanded")) !==
-      String(initiallyExpanded),
+    !toggle,
     context,
-    "lesson track changes state"
+    "separate lesson-track control is absent"
   );
-  await toggle.click();
+  const track = tab.playwright.locator(".bms-lesson-track-content");
   check(
-    (await toggle.getAttribute("aria-expanded")) ===
-      String(initiallyExpanded),
+    Boolean(await visibleLocator(track)),
     context,
-    "lesson track restores independently"
+    "lesson track starts visible"
   );
 };
 
@@ -331,6 +345,39 @@ const interactWithRichFixture = async (tab, check, context) => {
     context,
     "choice opens the nested explanation"
   );
+};
+
+const interactWithLessonAnalysisFixture = async (tab, check, context) => {
+  const fixture = tab.playwright.locator("[data-bms-cube-decision]").nth(0);
+  check(
+    (await fixture.count()) === 1,
+    context,
+    "cube lesson analysis mounts"
+  );
+  if ((await fixture.count()) !== 1) {
+    return;
+  }
+  const double = fixture.locator(
+    "button[data-bms-analysis-choice='double']"
+  );
+  await double.click();
+  check(
+    (await double.getAttribute("aria-pressed")) === "true",
+    context,
+    "Double records its pressed state"
+  );
+  const take = fixture.locator(
+    "button[data-bms-analysis-choice='take']"
+  );
+  check((await take.count()) === 1, context, "Double reveals Pass and Take");
+  if ((await take.count()) === 1) {
+    await take.click();
+    check(
+      (await take.getAttribute("aria-pressed")) === "true",
+      context,
+      "Take records its pressed state"
+    );
+  }
 };
 
 const interactWithEdgeFixture = async (tab, check, context) => {
@@ -425,7 +472,7 @@ const runPageInteraction = async ({
     } else {
       await interactWithMobileDrawer(tab, check, context);
     }
-    await interactWithRichFixture(tab, check, context);
+    await interactWithLessonAnalysisFixture(tab, check, context);
   }
   if (page.kind === "rich-scroll-fixture") {
     await interactWithRichFixture(tab, check, context);
@@ -570,6 +617,7 @@ export async function runReleaseUiChecks({
             height: viewportCase.height
           });
           await activeTab.goto(new URL(page.route, baseUrl).href);
+          await scrollTo(activeTab, 0);
           await delay(500);
 
           phase = "landmarks and initial layout";

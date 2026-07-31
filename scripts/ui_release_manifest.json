@@ -40,7 +40,7 @@
       "name": "Cube lesson",
       "route": "/learn/cube/what-the-cube-is-asking.html",
       "kind": "learn-lesson",
-      "required_markers": ["bms-scroll-fixture-disclosure"]
+      "required_markers": ["data-bms-cube-decision"]
     },
     {
       "id": "rich-scroll-fixture",

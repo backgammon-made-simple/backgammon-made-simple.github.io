@@ -130,9 +130,10 @@ class ScrollingTestLessonGeneratorTests(unittest.TestCase):
             ROOT / "site" / "learn" / "cube" / "what-the-cube-is-asking.qmd"
         ).read_text(encoding="utf-8")
         self.assertIn(
-            "{{< include ../../includes/scrolling-position-disclosure.html >}}",
+            "data-bms-cube-decision",
             real_lesson,
         )
+        self.assertNotIn(generator.RICH_DISCLOSURE_INCLUDE, real_lesson)
 
     def test_one_fixture_per_track_includes_ui_edge_cases(self) -> None:
         outputs = generator.build_expected_outputs(self.test_root)

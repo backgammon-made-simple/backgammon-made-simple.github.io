@@ -11,6 +11,11 @@ assert.deepEqual(
   ["desktop", "mobile"]
 );
 assert.ok(DEFAULT_MANIFEST.pages.some((page) => page.id === "home"));
+assert.deepEqual(
+  DEFAULT_MANIFEST.pages.find((page) => page.id === "cube-lesson")
+    .required_markers,
+  ["data-bms-cube-decision"]
+);
 assert.equal(
   DEFAULT_MANIFEST.pages.filter(
     (page) => page.kind === "edge-scroll-fixture"

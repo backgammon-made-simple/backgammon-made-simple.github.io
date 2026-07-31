@@ -886,7 +886,6 @@ class LearnGlossaryTests(unittest.TestCase):
             includes,
             [
                 "../../includes/analyzer-form.html",
-                "../../includes/scrolling-position-disclosure.html",
                 "../../includes/subscribe.html",
                 "../../includes/report-problem.html",
             ],
@@ -898,6 +897,11 @@ class LearnGlossaryTests(unittest.TestCase):
             )
             self.assertTrue(resolved.is_file(), resolved)
         self.assertNotRegex(source, r"[A-Za-z]:\\")
+        self.assertIn("data-bms-cube-decision", source)
+        self.assertIn(
+            'data-bms-fixture-src="/data/lesson-analysis-svg-mvp.json"',
+            source,
+        )
         self.assertIn("[Back to the cube overview](index.qmd)", source)
         self.assertNotIn("[Back to the cube overview](../index.qmd)", source)
 

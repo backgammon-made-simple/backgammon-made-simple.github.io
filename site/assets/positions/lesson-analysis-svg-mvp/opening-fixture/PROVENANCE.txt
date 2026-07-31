@@ -1,4 +1,5 @@
-# Lesson analysis SVG MVP fixture provenance
+Lesson analysis SVG MVP fixture provenance
+===========================================
 
 These assets are retained fixture artifacts. They are not newly verified engine
 positions or engine analysis.
