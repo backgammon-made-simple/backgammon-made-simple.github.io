@@ -1357,6 +1357,28 @@ body:is(.bms-learn-index, .bms-learn-article)
   line-height: 1.35;
 }
 
+.bms-term-lookup-related-term {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bms-link);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.bms-term-lookup-related-term:hover,
+.bms-term-lookup-related-term:focus-visible {
+  color: var(--bms-link-hover);
+}
+
+.bms-term-lookup-related-term:focus-visible {
+  outline: 2px solid var(--bms-link-hover);
+  outline-offset: 2px;
+}
+
 .bms-term-lookup-full {
   display: inline-flex;
   align-items: center;

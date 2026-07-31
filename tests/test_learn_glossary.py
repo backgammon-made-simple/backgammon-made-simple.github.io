@@ -1321,7 +1321,7 @@ private code phrase
             "/assets/bms-glossary-lookup.json",
             "renderLookupResult",
             "related_lessons",
-            r"Full Glossary Lookup \u2192",
+            "Go to glossary entry",
             "isMainSiteIndex",
             "lookupDisabled",
             "let desktopCollapsed = !refinedRightRailPage;",
@@ -1679,6 +1679,31 @@ private code phrase
             "definition.textContent = entry.short_definition;",
             lookup_renderer,
         )
+
+    def test_lookup_related_terms_replace_the_sidebar_result(self) -> None:
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        lookup_renderer = javascript[
+            javascript.index("  function renderLookupResult(") :
+            javascript.index("  function initializeTermLookup()")
+        ]
+        self.assertIn(
+            'button.dataset.bmsTermLookupRelated = related.slug;',
+            lookup_renderer,
+        )
+        self.assertIn('button.type = "button";', lookup_renderer)
+        self.assertIn(
+            'fullEntry.textContent = "Go to glossary entry";',
+            lookup_renderer,
+        )
+        self.assertNotIn("new Set(items.map", lookup_renderer)
+        self.assertIn(
+            'event.target.closest("[data-bms-term-lookup-related]")',
+            javascript,
+        )
+        self.assertIn("detail: { slug: slug, focusResult: true }", javascript)
+        self.assertIn('heading.focus({ preventScroll: true });', javascript)
 
     def test_update_toc_null_guard_contract(self) -> None:
         javascript = (

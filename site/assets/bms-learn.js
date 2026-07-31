@@ -1043,6 +1043,7 @@
 
     const heading = document.createElement("h3");
     heading.textContent = entry.term;
+    heading.tabIndex = -1;
     container.appendChild(heading);
 
     if (Array.isArray(entry.aliases) && entry.aliases.length > 0) {
@@ -1084,29 +1085,13 @@
       relatedTermsList.className = "bms-term-lookup-related";
       resolvedRelated.forEach(function (related) {
         const item = document.createElement("li");
-        const link = document.createElement("a");
-        link.href = "/learn/glossary/#" + encodeURIComponent(related.slug);
-        link.textContent = related.term;
-        item.appendChild(link);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bms-term-lookup-related-term";
+        button.dataset.bmsTermLookupRelated = related.slug;
+        button.textContent = related.term;
+        item.appendChild(button);
         relatedTermsList.appendChild(item);
-      });
-
-      Array.from(
-        new Set(items.map(function (item) {
-          return item.originalParent;
-        }))
-      ).forEach(function (parent) {
-        if (!parent) {
-          return;
-        }
-        rankLessonItems(
-          items.filter(function (item) {
-            return item.originalParent === parent;
-          }),
-          query
-        ).forEach(function (item) {
-          parent.appendChild(item.element);
-        });
       });
       container.append(relatedTermsHeading, relatedTermsList);
     }
@@ -1134,7 +1119,7 @@
     const fullEntry = document.createElement("a");
     fullEntry.className = "bms-term-lookup-full";
     fullEntry.href = "/learn/glossary/#" + encodeURIComponent(entry.slug);
-    fullEntry.textContent = "Full Glossary Lookup \u2192";
+    fullEntry.textContent = "Go to glossary entry";
     container.appendChild(fullEntry);
   }
 
@@ -1948,6 +1933,28 @@
       });
     }
 
+    if (result) {
+      result.addEventListener("click", function (event) {
+        const target =
+          event.target && typeof event.target.closest === "function"
+            ? event.target.closest("[data-bms-term-lookup-related]")
+            : null;
+        if (!target || !result.contains(target)) {
+          return;
+        }
+        const slug = target.dataset.bmsTermLookupRelated;
+        if (!slug) {
+          return;
+        }
+        event.preventDefault();
+        document.dispatchEvent(
+          new CustomEvent("bms:open-glossary-term", {
+            detail: { slug: slug, focusResult: true }
+          })
+        );
+      });
+    }
+
     document.addEventListener("bms:open-glossary-term", function (event) {
       const slug = event && event.detail ? event.detail.slug : "";
       if (!slug || !lookup || !result) {
@@ -1969,6 +1976,12 @@
             input.value = entry.term;
           }
           renderLookupResult(result, entry, entry ? entry.term : slug);
+          if (entry && event.detail.focusResult) {
+            const heading = result.querySelector("h3");
+            if (heading) {
+              heading.focus({ preventScroll: true });
+            }
+          }
         })
         .catch(function () {
           window.location.href =
