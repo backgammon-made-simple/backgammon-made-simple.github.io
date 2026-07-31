@@ -1524,13 +1524,41 @@
     const positionRefinedRightTools = function () {
       if (!inRefinedRightRail()) {
         tools.style.removeProperty("--bms-refined-tools-left");
+        tools.style.removeProperty("--bms-refined-tools-width");
+        if (backToTop) {
+          backToTop.style.removeProperty("--bms-refined-tools-right");
+        }
         return;
       }
-      const sidebarLeft = marginSidebar.getBoundingClientRect().left;
+      const sidebarBounds = marginSidebar.getBoundingClientRect();
       tools.style.setProperty(
         "--bms-refined-tools-left",
-        Math.max(8, sidebarLeft) + "px"
+        Math.max(8, sidebarBounds.left) + "px"
       );
+      tools.style.setProperty(
+        "--bms-refined-tools-width",
+        sidebarBounds.width + "px"
+      );
+      if (backToTop) {
+        const viewportWidth = document.documentElement.clientWidth;
+        backToTop.style.setProperty(
+          "--bms-refined-tools-right",
+          Math.max(8, viewportWidth - sidebarBounds.right) + "px"
+        );
+      }
+    };
+
+    const placeRefinedBackToTop = function () {
+      if (!backToTop) {
+        return;
+      }
+      const refined = inRefinedRightRail();
+      backToTop.classList.toggle("bms-refined-back-to-top", refined);
+      if (refined) {
+        document.body.appendChild(backToTop);
+      } else if (backToTop.parentElement !== tools) {
+        tools.appendChild(backToTop);
+      }
     };
 
     const updateRightRailForScroll = function () {
@@ -1629,6 +1657,7 @@
       }
       updateToc();
       updateMarginSidebar();
+      placeRefinedBackToTop();
       positionRefinedRightTools();
       updateRightRailForScroll();
     };

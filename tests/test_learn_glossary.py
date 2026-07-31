@@ -1418,8 +1418,14 @@ class LearnGlossaryTests(unittest.TestCase):
             "rightRailScrollCollapsed = currentScrollY > lastRightRailScrollY",
             '"bms-refined-right-rail-scroll-collapsed"',
             "positionRefinedRightTools",
+            "placeRefinedBackToTop",
             '"--bms-refined-tools-left"',
-            "marginSidebar.getBoundingClientRect().left",
+            '"--bms-refined-tools-width"',
+            '"--bms-refined-tools-right"',
+            'backToTop.classList.toggle("bms-refined-back-to-top", refined)',
+            "document.body.appendChild(backToTop)",
+            "marginSidebar.getBoundingClientRect()",
+            "document.documentElement.clientWidth",
             "Browse the full glossary",
             "marginSidebarToggle || backToTop",
             "inRefinedRightRail",
@@ -1504,7 +1510,9 @@ class LearnGlossaryTests(unittest.TestCase):
             r"top: 50%;[^}]*"
             r"right: 0\.75rem;[^}]*"
             r"left: var\(--bms-refined-tools-left, auto\);[^}]*"
-            r"width: clamp\(10rem, 16vw, 18rem\);",
+            r"width: var\([^}]*"
+            r"--bms-refined-tools-width,[^}]*"
+            r"clamp\(10rem, 16vw, 18rem\)",
         )
         self.assertRegex(
             css,
@@ -1515,9 +1523,15 @@ class LearnGlossaryTests(unittest.TestCase):
         )
         self.assertRegex(
             css,
-            r"\.bms-site-tools--sidebar\s+"
-            r"\.bms-site-back-to-top \{[^}]*"
-            r"align-self: flex-start;",
+            r"\.bms-term-lookup-reveal \{[^}]*"
+            r"align-self: flex-end;",
+        )
+        self.assertRegex(
+            css,
+            r"button\.bms-refined-back-to-top \{[^}]*"
+            r"position: fixed;[^}]*"
+            r"right: var\(--bms-refined-tools-right, 0\.75rem\);[^}]*"
+            r"bottom: 10vh;",
         )
 
         learn_home = (learn_glossary.LEARN_ROOT / "index.qmd").read_text(
