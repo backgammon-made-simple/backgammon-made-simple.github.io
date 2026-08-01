@@ -34,7 +34,7 @@ local function lookup_html()
     '    <strong>Look Up a Term</strong>',
     '    <button type="button" class="bms-term-lookup-close" data-bms-term-lookup-close aria-controls="bms-term-lookup-panel" aria-expanded="true" aria-label="Collapse term lookup to the right"><span aria-hidden="true">&rarr;</span></button>',
     '  </div>',
-    '  <form action="/learn/glossary/" method="get" data-bms-term-lookup-form>',
+    '  <form action="/glossary/" method="get" data-bms-term-lookup-form>',
     '    <label class="visually-hidden" for="bms-term-lookup-input">Term or alias</label>',
     '    <div class="bms-term-lookup-controls">',
     '      <input id="bms-term-lookup-input" name="q" type="search" required autocomplete="off" spellcheck="false" placeholder="Enter Term">',

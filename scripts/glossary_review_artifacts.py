@@ -21,7 +21,7 @@ except ModuleNotFoundError:  # Direct execution sets sys.path to scripts/.
 REVIEW_TERMS = {"ABT", "Ace", "Active Builder"}
 INLINE_LINK = re.compile(
     r'<a class="bms-inline-glossary" '
-    r'href="/learn/glossary/#(?P<slug>[^"]+)" '
+    r'href="/glossary/#(?P<slug>[^"]+)" '
     r'data-bms-glossary-slug="(?P=slug)" '
     r'data-bms-definition-link="(?P=slug)">(?P<text>[^<]+)</a>'
 )
@@ -174,7 +174,7 @@ def preview_fragment(
         )
 
     fragment = INLINE_LINK.sub(replace_inline_link, entries_html)
-    fragment = fragment.replace('href="/learn/glossary/#', 'href="#')
+    fragment = fragment.replace('href="/glossary/#', 'href="#')
     fragment = fragment.replace(
         '<button type="button" data-bms-card-category=',
         '<button type="button" aria-pressed="false" data-bms-card-category=',

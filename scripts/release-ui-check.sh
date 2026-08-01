@@ -79,7 +79,6 @@ printf 'Render:     %s\n\n' "$([[ ${RENDER} -eq 1 ]] && printf yes || printf no)
 
 printf '[1/6] Source diff and deterministic fixture validation\n'
 git diff --check
-"${PYTHON_COMMAND[@]}" scripts/generate_scrolling_test_lessons.py validate
 
 printf '\n[2/6] JavaScript syntax and focused logic tests\n'
 node --check site/assets/bms-learn.js

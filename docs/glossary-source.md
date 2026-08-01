@@ -29,7 +29,7 @@ The generated chain is:
 glossary/glossary.md
   -> site/data/glossary.json
   -> site/assets/bms-glossary-lookup.json
-  -> site/learn/glossary/_entries.html
+  -> site/glossary/_entries.html
 ```
 
 Generated files are deterministic and must not be edited manually.

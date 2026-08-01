@@ -110,7 +110,7 @@ class GlossaryPageGenerationTests(unittest.TestCase):
 
     def test_related_terms_are_links_only_when_resolved(self) -> None:
         output = learn_glossary.related_terms_html(self.sample)
-        self.assertIn('href="/learn/glossary/#one-point"', output)
+        self.assertIn('href="/glossary/#one-point"', output)
         self.assertIn(">Ace-Point</a>", output)
         self.assertIn("<li>Pending idea</li>", output)
 

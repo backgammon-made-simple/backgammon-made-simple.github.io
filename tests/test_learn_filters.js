@@ -443,7 +443,7 @@ function attributeValue(tag, name) {
 }
 
 const generatedGlossaryMarkup = fs.readFileSync(
-  path.join(__dirname, "../site/learn/glossary/_entries.html"),
+  path.join(__dirname, "../site/glossary/_entries.html"),
   "utf8"
 );
 const generatedGlossaryItems = Array.from(
@@ -792,7 +792,7 @@ assert.deepEqual(
 
 const clearedUrl = new URL(
   glossary.urlWithoutGlossaryQuery(
-    "https://backgammon-made-simple.github.io/learn/glossary/" +
+    "https://backgammon-made-simple.github.io/glossary/" +
       "?q=take+point&category=cube%20and%20scoring&track=Doubling%20Cube"
   )
 );
@@ -809,20 +809,20 @@ assert.deepEqual(
 );
 assert.equal(
   glossary.urlWithoutGlossaryFilters(
-    "https://backgammon-made-simple.github.io/learn/glossary/" +
+    "https://backgammon-made-simple.github.io/glossary/" +
       "?q=take&category=Cube%20Action&track=Doubling%20Cube#take"
   ),
-  "https://backgammon-made-simple.github.io/learn/glossary/#take",
+  "https://backgammon-made-simple.github.io/glossary/#take",
   "related-term navigation clears all incompatible filters"
 );
 
 const currentGlossaryUrl =
-  "https://backgammon-made-simple.github.io/learn/glossary/" +
+  "https://backgammon-made-simple.github.io/glossary/" +
   "?q=take-point&category=cube%20and%20scoring&track=Doubling%20Cube";
 const letterUrl = new URL(
   glossary.letterNavigationUrl(currentGlossaryUrl, "#letter-t")
 );
-assert.equal(letterUrl.pathname, "/learn/glossary/");
+assert.equal(letterUrl.pathname, "/glossary/");
 assert.equal(letterUrl.searchParams.has("q"), false);
 assert.deepEqual(
   letterUrl.searchParams.getAll("category"),
@@ -872,7 +872,7 @@ assert.equal(
 assert.equal(
   new URL(
     glossary.normalizedTermFragmentUrl(
-      "https://backgammon-made-simple.github.io/learn/glossary/" +
+      "https://backgammon-made-simple.github.io/glossary/" +
         "?track=Doubling%20Cube#accept-a-double",
       "take"
     )

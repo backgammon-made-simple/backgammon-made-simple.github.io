@@ -1011,7 +1011,7 @@
       'aria-expanded="true" aria-label="Collapse term lookup">' +
       '<span aria-hidden="true">&rarr;</span></button>' +
       "</div>" +
-      '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
+      '<form action="/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
       "Term or alias</label>" +
       '<div class="bms-term-lookup-controls">' +
@@ -1035,7 +1035,7 @@
       const fullSearch = document.createElement("a");
       fullSearch.className = "bms-term-lookup-full";
       fullSearch.href =
-        "/learn/glossary/?q=" + encodeURIComponent(query);
+        "/glossary/?q=" + encodeURIComponent(query);
       fullSearch.textContent = "Search the Full Glossary \u2192";
       container.append(message, fullSearch);
       return;
@@ -1118,19 +1118,26 @@
 
     const fullEntry = document.createElement("a");
     fullEntry.className = "bms-term-lookup-full";
-    fullEntry.href = "/learn/glossary/#" + encodeURIComponent(entry.slug);
+    fullEntry.href = "/glossary/#" + encodeURIComponent(entry.slug);
     fullEntry.textContent = "Go to glossary entry";
     container.appendChild(fullEntry);
   }
 
   function initializeTermLookup() {
-    const lookupDisabled = isMainSiteIndex();
+    const lookupDisabled =
+      isMainSiteIndex() ||
+      document.body.classList.contains("bms-learn-index") ||
+      document.body.classList.contains("bms-learn-track-index");
     const glossarySearch = document.querySelector(
       "[data-bms-glossary-search]"
     );
-    let lookup = lookupDisabled
-      ? null
-      : document.querySelector("[data-bms-term-lookup]");
+    const lookupCandidates = lookupDisabled
+      ? []
+      : Array.from(document.querySelectorAll("[data-bms-term-lookup]"));
+    let lookup =
+      lookupCandidates.find(function (candidate) {
+        return !candidate.closest(".quarto-sidebar-toggle-contents");
+      }) || lookupCandidates[0] || null;
     if (!lookupDisabled && !lookup && !glossarySearch) {
       lookup = createTermLookup();
     }
@@ -1166,15 +1173,15 @@
       'data-bms-site-back-to-top hidden>Back to top ' +
       '<span aria-hidden="true">\u25b4</span></button>';
 
-    const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
+    let termToggle = tools.querySelector("[data-bms-site-term-toggle]");
     const tocToggle = tools.querySelector("[data-bms-toc-toggle]");
     const marginSidebarToggle = tools.querySelector(
       "[data-bms-margin-sidebar-toggle]"
     );
     const backToTop = tools.querySelector("[data-bms-site-back-to-top]");
     if (termToggle && !lookup && !glossarySearch) {
-      termToggle.removeAttribute("aria-controls");
-      termToggle.hidden = true;
+      termToggle.remove();
+      termToggle = null;
     }
     const form = lookup
       ? lookup.querySelector("[data-bms-term-lookup-form]")
@@ -1187,16 +1194,22 @@
       ? lookup.querySelector("[data-bms-term-lookup-close]")
       : null;
     const desktopQuery = window.matchMedia("(min-width: 992px)");
-    const marginSidebar = document.getElementById("quarto-margin-sidebar");
+    let marginSidebar =
+      document.querySelector(
+        "#quarto-margin-sidebar:not(.quarto-sidebar-toggle-contents)"
+      ) || document.getElementById("quarto-margin-sidebar");
     let toc = null;
     let tocHeadingToggle = null;
     let tocObserver = null;
+    let tocCloneObserver = null;
+    const boundTocHeadingToggles = new WeakSet();
     let desktopCollapsed = !refinedRightRailPage;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
     let rightRailScrollCollapsed = false;
     let lastRightRailScrollY = window.scrollY;
     let suppressRightRailAutoCollapse = false;
+    let lookupPinnedOpen = false;
     let mobileDrawerOpen = false;
     let mobileTouchStart = null;
     let mobileDrawer = null;
@@ -1268,22 +1281,28 @@
       window.setTimeout(restore, 180);
     };
 
-    const bindTocHeadingToggle = function (toggle) {
-      if (!toggle || toggle.dataset.bmsTocToggleBound === "true") {
-        return;
-      }
-      toggle.dataset.bmsTocToggleBound = "true";
-      toggle.addEventListener("click", function () {
+    const activateTocHeadingToggle = function (clickedToggle) {
+        tocHeadingToggle = clickedToggle;
+        toc = clickedToggle.closest("#TOC") || toc;
+        marginSidebar =
+          clickedToggle.closest("#quarto-margin-sidebar") || marginSidebar;
         suppressRightRailAutoCollapse = true;
-        rightRailScrollCollapsed = false;
+        const visiblyCollapsed =
+          clickedToggle.getAttribute("aria-expanded") === "false";
+        if (visiblyCollapsed) {
+          rightRailScrollCollapsed = false;
+          tocCollapsed = false;
+        } else {
+          tocCollapsed = !tocCollapsed;
+        }
         if (marginSidebar) {
           marginSidebar.classList.remove(
             "bms-refined-right-rail-scroll-collapsed"
           );
         }
         preservePagePosition(function () {
-          tocCollapsed = !tocCollapsed;
           updateToc();
+          positionRefinedRightTools();
           document
             .querySelectorAll("[data-bms-lesson-track-nav]")
             .forEach(function (trackNav) {
@@ -1303,6 +1322,16 @@
           lastRightRailScrollY = window.scrollY;
           suppressRightRailAutoCollapse = false;
         }, 220);
+    };
+
+    const bindTocHeadingToggle = function (toggle) {
+      if (!toggle || boundTocHeadingToggles.has(toggle)) {
+        return;
+      }
+      boundTocHeadingToggles.add(toggle);
+      toggle.dataset.bmsTocToggleBound = "true";
+      toggle.addEventListener("click", function () {
+        activateTocHeadingToggle(toggle);
       });
     };
 
@@ -1334,6 +1363,11 @@
       }
       const tocCandidates = Array.from(document.querySelectorAll("#TOC"));
       toc =
+        (marginSidebar
+          ? tocCandidates.find(function (candidate) {
+              return marginSidebar.contains(candidate) && tocHasHashLinks(candidate);
+            })
+          : null) ||
         tocCandidates.find(tocHasHashLinks) ||
         (marginSidebar ? marginSidebar.querySelector("#TOC") : null);
       if (!toc || !tocHasHashLinks(toc)) {
@@ -1374,7 +1408,7 @@
       if (formElement && !lookup.querySelector(".bms-term-lookup-browse")) {
         const browseGlossary = document.createElement("a");
         browseGlossary.className = "bms-term-lookup-browse";
-        browseGlossary.href = "/learn/glossary/";
+        browseGlossary.href = "/glossary/";
         browseGlossary.textContent = "Browse the full glossary";
         formElement.insertAdjacentElement("afterend", browseGlossary);
       }
@@ -1530,7 +1564,8 @@
     }
 
     const open = function (options) {
-      const focusInput = !options || options.focusInput !== false;
+      const settings = options || {};
+      const focusInput = settings.focusInput !== false;
       if (glossarySearch) {
         glossarySearch.scrollIntoView({ behavior: "smooth", block: "center" });
         glossarySearch.focus();
@@ -1538,6 +1573,9 @@
       }
       if (!lookup) {
         return;
+      }
+      if (settings.pinOpen) {
+        lookupPinnedOpen = true;
       }
       if (inDesktopDock()) {
         desktopCollapsed = false;
@@ -1564,6 +1602,9 @@
       const settings = options || {};
       if (!lookup) {
         return;
+      }
+      if (!settings.preservePinned) {
+        lookupPinnedOpen = false;
       }
       if (settings.rememberDesktop && inDesktopDock()) {
         desktopCollapsed = true;
@@ -1624,23 +1665,28 @@
       const refined = inRefinedRightRail() && Boolean(tocHeadingToggle);
       marginSidebar.classList.toggle("bms-refined-right-rail", refined);
       if (refined) {
-        marginSidebar.classList.toggle("bms-toc-collapsed", tocCollapsed);
+        const effectivelyCollapsed =
+          tocCollapsed || rightRailScrollCollapsed;
+        marginSidebar.classList.toggle(
+          "bms-toc-collapsed",
+          effectivelyCollapsed
+        );
         if (tocToggle) {
           tocToggle.hidden = true;
         }
         tocHeadingToggle.hidden = false;
         tocHeadingToggle.setAttribute(
           "aria-expanded",
-          tocCollapsed ? "false" : "true"
+          effectivelyCollapsed ? "false" : "true"
         );
         tocHeadingToggle.setAttribute(
           "aria-label",
-          tocCollapsed
+          effectivelyCollapsed
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = tocCollapsed
-          ? "Contents \u25be"
+        tocHeadingToggle.textContent = effectivelyCollapsed
+          ? "Table of Contents \u25be"
           : "\u25b4";
         return;
       }
@@ -1669,22 +1715,35 @@
       if (!inRefinedRightRail()) {
         tools.style.removeProperty("--bms-refined-tools-left");
         tools.style.removeProperty("--bms-refined-tools-width");
+        tools.style.removeProperty("--bms-refined-tools-top");
         if (backToTop) {
           backToTop.style.removeProperty("--bms-refined-tools-right");
         }
         return;
       }
       const sidebarBounds = marginSidebar.getBoundingClientRect();
+      const viewportWidth = document.documentElement.clientWidth;
+      const toolsWidth = Math.min(
+        sidebarBounds.width * 3,
+        viewportWidth - 32
+      );
+      const tocBounds =
+        toc && toc.getClientRects().length > 0
+          ? toc.getBoundingClientRect()
+          : sidebarBounds;
       tools.style.setProperty(
         "--bms-refined-tools-left",
-        Math.max(8, sidebarBounds.left) + "px"
+        Math.max(16, sidebarBounds.right - toolsWidth) + "px"
       );
       tools.style.setProperty(
         "--bms-refined-tools-width",
-        sidebarBounds.width + "px"
+        toolsWidth + "px"
+      );
+      tools.style.setProperty(
+        "--bms-refined-tools-top",
+        Math.max(sidebarBounds.top, tocBounds.bottom) + 4 + "px"
       );
       if (backToTop) {
-        const viewportWidth = document.documentElement.clientWidth;
         backToTop.style.setProperty(
           "--bms-refined-tools-right",
           Math.max(8, viewportWidth - sidebarBounds.right) + "px"
@@ -1735,6 +1794,8 @@
         "bms-refined-right-rail-scroll-collapsed",
         rightRailScrollCollapsed
       );
+      updateToc();
+      positionRefinedRightTools();
       if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
         lastRightRailScrollY = currentScrollY;
       }
@@ -1752,7 +1813,23 @@
         if (lookup) {
           lookup.classList.remove("bms-term-lookup--floating");
         }
-        marginSidebar.appendChild(tools);
+        if (inRefinedRightRail()) {
+          document.body.appendChild(tools);
+        } else {
+          let tocAnchor = toc;
+          while (
+            tocAnchor &&
+            tocAnchor.parentElement &&
+            tocAnchor.parentElement !== marginSidebar
+          ) {
+            tocAnchor = tocAnchor.parentElement;
+          }
+          if (tocAnchor && tocAnchor.parentElement === marginSidebar) {
+            marginSidebar.insertBefore(tools, tocAnchor.nextSibling);
+          } else {
+            marginSidebar.appendChild(tools);
+          }
+        }
         if (lookup && !desktopCollapsed) {
           open({ focusInput: false });
         } else if (lookup) {
@@ -1832,11 +1909,26 @@
         subtree: true
       });
     }
+    if (refinedRightRailPage && "MutationObserver" in window) {
+      tocCloneObserver = new MutationObserver(function () {
+        document
+          .querySelectorAll("[data-bms-toc-heading-toggle]")
+          .forEach(bindTocHeadingToggle);
+        positionRefinedRightTools();
+      });
+      tocCloneObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+      document
+        .querySelectorAll("[data-bms-toc-heading-toggle]")
+        .forEach(bindTocHeadingToggle);
+    }
 
     if (termToggle) {
       termToggle.addEventListener("click", function () {
         preservePagePosition(function () {
-          open();
+          open({ pinOpen: true });
         });
       });
     }
@@ -1884,6 +1976,13 @@
     window.addEventListener("resize", positionRefinedRightTools, {
       passive: true
     });
+    window.addEventListener("scroll", positionRefinedRightTools, {
+      passive: true
+    });
+    window.addEventListener("load", positionRefinedRightTools, { once: true });
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(positionRefinedRightTools);
+    });
 
     const updateLookupForScroll = function () {
       if (!lookup || !inRefinedRightRail()) {
@@ -1892,12 +1991,15 @@
       if (suppressRightRailAutoCollapse) {
         return;
       }
+      if (lookupPinnedOpen) {
+        return;
+      }
       if (window.scrollY <= 32) {
         if (lookup.hidden) {
           open({ focusInput: false });
         }
       } else if (!lookup.hidden) {
-        closeLookup({ rememberDesktop: true });
+        closeLookup({ preservePinned: true });
       }
     };
     if (refinedRightRailPage) {
@@ -1931,7 +2033,7 @@
           })
           .catch(function () {
             window.location.href =
-              "/learn/glossary/?q=" + encodeURIComponent(query);
+              "/glossary/?q=" + encodeURIComponent(query);
           });
       });
     }
@@ -1974,7 +2076,7 @@
         setMobileDrawerOpen(true);
       } else {
         preservePagePosition(function () {
-          open({ focusInput: false });
+          open({ focusInput: false, pinOpen: true });
         });
       }
       result.hidden = false;
@@ -1995,7 +2097,7 @@
         })
         .catch(function () {
           window.location.href =
-            "/learn/glossary/#" + encodeURIComponent(slug);
+            "/glossary/#" + encodeURIComponent(slug);
         });
       window.setTimeout(function () {
         lastRightRailScrollY = window.scrollY;
@@ -2118,7 +2220,8 @@
     const updateVisibility = function () {
       toggle.hidden =
         !desktopQuery.matches ||
-        (scrollingDown &&
+        (!collapsed &&
+          scrollingDown &&
           (window.scrollY > 32 || sidebarScroller.scrollTop > 4));
     };
 

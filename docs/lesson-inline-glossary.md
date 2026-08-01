@@ -59,12 +59,12 @@ The generated link retains the visible lesson wording and stores only the canoni
 ```html
 <a
   class="bms-inline-glossary"
-  href="/learn/glossary/#anchor"
+  href="/glossary/#anchor"
   data-bms-glossary-slug="anchor"
 >Holding Point</a>
 ```
 
-The lesson markup never contains a copied definition. On pointer hover or keyboard focus, `bms-learn.js` loads the generated canonical lookup, resolves `data-bms-glossary-slug`, and displays that record's `short_definition`. Activating the ordinary link navigates to `/learn/glossary/#canonical-slug`.
+The lesson markup never contains a copied definition. On pointer hover or keyboard focus, `bms-learn.js` loads the generated canonical lookup, resolves `data-bms-glossary-slug`, and displays that record's `short_definition`. Activating the ordinary link navigates to `/glossary/#canonical-slug`.
 
 The generated lookup always supplies `short_definition`. During the legacy JSON migration, an entry without a separately authored short definition receives its canonical full `definition` as the deterministic compatibility value. The lookup also supplies `alias_slugs` for canonical-only metadata validation. Neither compatibility field modifies `site/data/glossary.json`.
 

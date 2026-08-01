@@ -44,7 +44,7 @@ Clear lessons and tools for stronger backgammon decisions.
 
 [<span class="bms-home-explore-icon" aria-hidden="true"></span>
 <span class="bms-home-explore-copy"><span class="bms-home-explore-title">Glossary</span><span class="bms-home-explore-description">Look up backgammon terms and get simple explanations of related ideas.</span></span>
-<span class="bms-home-explore-chevron" aria-hidden="true">›</span>](learn/glossary/index.qmd){.bms-home-explore-link .bms-home-explore-link--glossary}
+<span class="bms-home-explore-chevron" aria-hidden="true">›</span>](glossary/index.qmd){.bms-home-explore-link .bms-home-explore-link--glossary}
 :::::
 ::::::
 

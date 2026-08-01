@@ -128,104 +128,6 @@
   padding: 1rem 1.15rem;
 }
 
-.bms-scroll-fixture-disclosure {
-  overflow: clip;
-}
-
-.bms-scroll-fixture-content {
-  display: grid;
-  gap: 1rem;
-}
-
-.bms-scroll-fixture-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 28rem;
-  border-radius: 8px;
-}
-
-.bms-scroll-fixture-content > .bms-decision-prompt {
-  padding: 0.25rem 0;
-}
-
-.bms-scroll-fixture-question {
-  margin: 0;
-  font-weight: 650;
-}
-
-.bms-scroll-fixture-explanation {
-  margin: 0;
-}
-
-.bms-scroll-fixture-nested {
-  margin: 0;
-}
-
-.bms-scroll-fixture-nested > .bms-answer-panel-content {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.bms-scroll-fixture-nested p {
-  margin: 0;
-}
-
-.bms-ui-edge-fixture {
-  min-width: 0;
-  margin: 1.25rem 0;
-  padding: 1rem;
-  border: 1px solid var(--bms-border);
-  border-radius: 8px;
-  background: var(--bms-surface);
-}
-
-.bms-ui-edge-fixture > :first-child {
-  margin-top: 0;
-}
-
-.bms-ui-edge-fixture > :last-child {
-  margin-bottom: 0;
-}
-
-.bms-ui-edge-unbroken,
-.bms-ui-edge-fixture a {
-  overflow-wrap: anywhere;
-}
-
-.bms-ui-edge-panel .bms-answer-panel-content {
-  display: grid;
-  min-width: 0;
-  gap: 1rem;
-}
-
-.bms-ui-edge-panel .bms-answer-panel-content > * {
-  min-width: 0;
-  margin-block: 0;
-}
-
-.bms-ui-edge-scroll-region,
-.bms-ui-edge-code {
-  max-width: 100%;
-  overflow: auto;
-}
-
-.bms-ui-edge-scroll-region:focus-visible {
-  outline: 3px solid var(--bms-navy);
-  outline-offset: 3px;
-}
-
-.bms-ui-edge-scroll-region table {
-  min-width: 50rem;
-  margin: 0;
-}
-
-.bms-ui-edge-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .bms-analyzer-placeholder {
   min-height: 150px;
   padding: 1.15rem;
@@ -738,7 +640,7 @@ body.bms-learn-track-index .bms-learn-filter-count {
 .bms-learn-section-actions,
 .bms-learn-sidebar-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 0.35rem;
 }
 
@@ -801,7 +703,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 .bms-learn-catalogue-section-heading {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.75rem;
   padding: 0.35rem 0.15rem;
   border-bottom: 0;
@@ -826,8 +728,9 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   text-decoration: none;
 }
 
-.bms-learn-catalogue-section-heading > span:last-child {
+.bms-learn-track-heading [data-bms-learn-group-count] {
   flex: 0 0 auto;
+  margin-left: 1.5rem;
   color: var(--bms-text-muted);
   font-family: "Source Code Pro", ui-monospace, monospace;
   font-size: 0.64rem;
@@ -1663,7 +1566,13 @@ body:is(.bms-learn-index, .bms-learn-article)
   }
 
   #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed
-    > * {
+    > :not(#TOC):not(.bms-site-tools) {
+    display: none !important;
+  }
+
+  #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed
+    #TOC
+    > :not(.bms-toc-toggle-divider) {
     display: none !important;
   }
 
@@ -1779,19 +1688,25 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar {
     position: fixed;
-    top: 50%;
-    right: 0.75rem;
+    top: var(--bms-refined-tools-top, 8rem);
     left: var(--bms-refined-tools-left, auto);
     z-index: 1050;
-    width: var(
-      --bms-refined-tools-width,
-      clamp(10rem, 16vw, 18rem)
-    );
-    align-items: center;
+    width: var(--bms-refined-tools-width, min(42rem, calc(100vw - 2rem)));
+    max-width: calc(100vw - 2rem);
+    align-items: flex-end;
     margin-top: 0;
     padding-top: 0.15rem;
-    transform: translateY(-50%);
     border-top: 0;
+    pointer-events: none;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar
+    > * {
+    pointer-events: auto;
   }
 
   body:is(
@@ -1804,6 +1719,7 @@ body:is(.bms-learn-index, .bms-learn-article)
     width: 100%;
     max-height: calc(100vh - 6rem);
     margin: 0;
+    align-self: flex-end;
     overflow-y: auto;
     border-color: var(--bms-border);
     background: var(--bms-page-background);

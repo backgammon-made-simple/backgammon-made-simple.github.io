@@ -1,0 +1,325 @@
+{
+  "10-in-the-zone": {
+    "term": "10 in the Zone",
+    "aliases": [
+      "Ten in the Zone"
+    ],
+    "redirect_slugs": [],
+    "short_definition": "Ten in the Zone means having ten checkers in your home board and outer board, giving you strong attacking or blitzing potential.",
+    "long_definition": "The zone is your side of the board, consisting of your home board and outer board. At the start of the game, you have eight checkers in the attacking zone. Bringing two active builders down from the mid-point increases that number to ten.\n\nWith ten checkers in the zone, you have strong blitzing potential. Nine checkers is borderline, while eight or fewer generally makes a blitz less effective.",
+    "categories": [
+      "Checker Play",
+      "Game Plans & Position Types"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "attack-zone",
+      "zone-of-attack",
+      "your-side-of-the-board",
+      "home-board",
+      "outer-board",
+      "mid-point",
+      "active-builder",
+      "builder",
+      "blitz",
+      "attacking-game",
+      "hit",
+      "cover-a-blot",
+      "close-out"
+    ],
+    "inline_terms": {
+      "active builders": "active-builder"
+    },
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "25-percent-rule": {
+    "term": "25 Percent Rule",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "The 25 Percent Rule says that, if you ignore future recubes, you need about a 25 percent chance to take a double.",
+    "long_definition": "The 25 Percent Rule is a simplified baseline for cube decisions. In a holding game or other positions, if future cube actions are ignored, you need roughly a 25 percent winning chance to take a double. If the cube remains live and you may be able to recube later, you might correctly take with less than 25 percent.",
+    "categories": [
+      "Cube Action",
+      "Analysis & Probability"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "take-point",
+      "raw-take-point",
+      "take",
+      "pass",
+      "redouble",
+      "live-cube",
+      "own-the-cube",
+      "holding-game",
+      "doubling-cube"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "8-9-12-doubling-rule": {
+    "term": "8-9-12 Doubling Rule",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "The 8-9-12 Doubling Rule is a guideline for doubling decisions in a pure race based on pip-count percentages.",
+    "long_definition": "In a pure race, the 8-9-12 Doubling Rule helps guide cube decisions. The percentage is calculated by dividing the difference between the two pip counts by the leader's pip count. The leader considers doubling at about 8 percent, the middle of the doubling window is around 9 percent, and the trailer can usually take when behind by up to about 12 percent.\n\nFor example, if the leader has a pip count of 60 and the trailer has 66, the difference is 6 pips. Six divided by 60 is 10 percent, placing the position within the doubling window.",
+    "categories": [
+      "Cube Action",
+      "Race & Bearoff",
+      "Analysis & Probability"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "pip-count",
+      "pure-race",
+      "doubling-window",
+      "take-point",
+      "double",
+      "take"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "abt": {
+    "term": "ABT",
+    "aliases": [
+      "American Backgammon Tour"
+    ],
+    "redirect_slugs": [],
+    "short_definition": "ABT stands for the American Backgammon Tour, a series of major backgammon tournaments in the United States.",
+    "long_definition": "The American Backgammon Tour is a series of backgammon tournaments held across the United States. Players compete in multiple events and earn points toward the overall ABT standings.",
+    "categories": [
+      "Tournaments & Community"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "tournament",
+      "match-play",
+      "championship-division",
+      "rating",
+      "standings"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "ace": {
+    "term": "Ace",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "Ace means one.",
+    "long_definition": "In backgammon, ace means one. It can describe rolling a one or refer to the one-point, which is also called the ace-point.",
+    "categories": [
+      "Board, Equipment & Notation"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "one-point",
+      "ace-point-anchor",
+      "ace-point-game",
+      "acey-deucey",
+      "deuce"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "ace-point-game": {
+    "term": "Ace-Point Game",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "An ace-point game is a holding game in which you hold an anchor on your opponent's one-point.",
+    "long_definition": "An ace-point game is a holding game in which you hold an anchor on your opponent's one-point. While your opponent bears in, you have about a 50 percent chance of getting a shot.\n\nIt is stronger than a two-point or three-point holding game because those anchors give you fewer opportunities to get a shot. The ace-point anchor therefore offers more hitting chances while the opponent brings their checkers home.",
+    "categories": [
+      "Race & Bearoff",
+      "Game Plans & Position Types"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "one-point",
+      "ace-point-anchor",
+      "anchor",
+      "holding-game",
+      "bear-in",
+      "shot",
+      "hit",
+      "two-point",
+      "three-point"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "acting-captain": {
+    "term": "Acting Captain",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "An acting captain is a chouette player who temporarily takes over the checker play when the original captain's game against the box ends but another cube remains active.",
+    "long_definition": "In a chouette, every team member controls their own cube. The captain makes the checker plays against the box.\n\nFor example, the captain may offer a double that the box passes. If the box still holds another player's cube, that player becomes the acting captain and continues the game against the box. The acting captain takes over the checker decisions for the remaining active game.",
+    "categories": [
+      "Chouette & Money Play"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "chouette",
+      "captain",
+      "box",
+      "team",
+      "doubling-cube",
+      "own-the-cube",
+      "double",
+      "pass",
+      "play"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "action-play": {
+    "term": "Action Play",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "An action play is a bold move made to complicate a position and create chances to turn the game around.",
+    "long_definition": "An action play is a bold move made when you want to complicate the position, often when you are behind. It increases contact or volatility to create chances to turn the game around.",
+    "categories": [
+      "Checker Play"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "contact-position",
+      "volatility"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "editorial_note": "Blitz is not automatically a related term. A blitz is a distinct attacking plan, while an action play does not have to be a blitz.",
+    "references": []
+  },
+  "action-position": {
+    "term": "Action Position",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "An action position is a volatile backgammon position with multiple possible exchanges or hitting opportunities.",
+    "long_definition": "An action position is a volatile position with multiple hitting or exchange possibilities. These positions can lead to large swings in equity and require careful evaluation, especially because they may create strong doubling opportunities.",
+    "categories": [
+      "Checker Play",
+      "Cube Action",
+      "Game Plans & Position Types"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "contact-position",
+      "volatility",
+      "equity",
+      "doubling-cube",
+      "cube-action",
+      "hit"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "active-builder": {
+    "term": "Active Builder",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "An active builder is a blot or spare checker in your outer board that can help make a point in your home board.",
+    "long_definition": "An active builder is a blot or spare checker in your outer board that can help you make a new point in your home board on a future roll. It is positioned to help you build a stronger board.",
+    "categories": [
+      "Checker Play"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "builder",
+      "blot",
+      "spare-checker",
+      "outer-board",
+      "home-board",
+      "point",
+      "building-a-board",
+      "build-ones-board",
+      "our-board",
+      "their-board"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "editorial_note": "Add separate decision-queue sections for:\n\n- Building a Board\n- Our Board\n- Their Board\n\nThese are not yet approved canonical entries.",
+    "references": []
+  },
+  "advanced-anchor": {
+    "term": "Advanced Anchor",
+    "aliases": [],
+    "redirect_slugs": [],
+    "short_definition": "An advanced anchor is an anchor on your opponent's four-point or five-point.",
+    "long_definition": "An advanced anchor is an anchor on your opponent's four-point or five-point. It gives you outfield control and helps your back checkers escape. It is particularly useful in holding games, and you generally try not to break it until late in the middlegame or endgame.",
+    "categories": [
+      "Checker Play",
+      "Game Plans & Position Types"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "anchor",
+      "four-point",
+      "five-point",
+      "outfield-control",
+      "runner",
+      "escape",
+      "holding-game",
+      "middle-game",
+      "end-game"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  },
+  "ahead-in-the-count": {
+    "term": "Ahead in the Count",
+    "aliases": [
+      "Ahead in the Race"
+    ],
+    "redirect_slugs": [],
+    "short_definition": "Ahead in the Count means having a lower pip count than your opponent and therefore being ahead in the race.",
+    "long_definition": "Ahead in the Count means you have a lower pip count than your opponent, meaning you have fewer pips remaining to bring your checkers home and bear them off.\n\nA common principle is, \"When you are ahead in the race, race.\" Avoid unnecessary risk and contact, and focus on bringing your checkers home safely.",
+    "categories": [
+      "Race & Bearoff",
+      "Analysis & Probability"
+    ],
+    "tracks": [],
+    "related_terms": [
+      "pip-count",
+      "race",
+      "bear-off",
+      "contact-position",
+      "safe-play"
+    ],
+    "inline_terms": {},
+    "status": "published",
+    "added": "2026-07-30",
+    "updated": "2026-07-30",
+    "references": []
+  }
+}

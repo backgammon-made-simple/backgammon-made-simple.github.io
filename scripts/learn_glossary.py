@@ -25,7 +25,8 @@ SITE_ROOT = REPOSITORY_ROOT / "site"
 LEARN_ROOT = SITE_ROOT / "learn"
 CUBE_ROOT = LEARN_ROOT / "cube"
 RESEARCH_ROOT = SITE_ROOT / "research"
-GLOSSARY_ROOT = LEARN_ROOT / "glossary"
+GLOSSARY_ROOT = SITE_ROOT / "glossary"
+LEGACY_GLOSSARY_ROOT = LEARN_ROOT / "glossary"
 PUBLIC_DATA_PATH = SITE_ROOT / "data" / "glossary.json"
 AUTHORING_TERMS_PATH = REPOSITORY_ROOT / "docs" / "learn-glossary-terms.md"
 GENERATED_ENTRIES_PATH = GLOSSARY_ROOT / "_entries.html"
@@ -50,7 +51,7 @@ RENDERED_CORE_PATHS = (
     "about.html",
     "learn/index.html",
     "learn/start-here/index.html",
-    "learn/glossary/index.html",
+    "glossary/index.html",
     "learn/cube/index.html",
     "learn/opening-play/index.html",
     "learn/cube/why-is-25-percent-the-basic-take-point.html",
@@ -63,14 +64,14 @@ RSS_FOOTER_REPRESENTATIVE_PATHS = (
     "about.html",
     "learn/index.html",
     "learn/cube/index.html",
-    "learn/glossary/index.html",
+    "glossary/index.html",
     "research/index.html",
     "updates/index.html",
 )
 NOT_FOUND_ROUTES = (
     "/",
     "/learn/",
-    "/learn/glossary/",
+    "/glossary/",
     "/research/",
 )
 
@@ -768,20 +769,11 @@ def discover_tracks() -> list[dict[str, object]]:
     return tracks
 
 
-def discover_lessons(
-    *, include_scrolling_tests: bool = True
-) -> list[dict[str, object]]:
+def discover_lessons() -> list[dict[str, object]]:
     lessons: list[dict[str, object]] = []
     for path in sorted(LEARN_ROOT.rglob("*.qmd")):
         relative = path.relative_to(LEARN_ROOT)
-        if (
-            relative == Path("index.qmd")
-            or relative.parts[0] == "glossary"
-            or (
-                not include_scrolling_tests
-                and relative.parts[0] == "scrolling-test"
-            )
-        ):
+        if relative == Path("index.qmd"):
             continue
         complete_metadata = parse_complete_front_matter(path)
         if complete_metadata.get("learn-track-index"):
@@ -969,7 +961,7 @@ def build_learn_sequence(
 
 def discover_cube_lessons() -> list[dict[str, object]]:
     tracks = discover_tracks()
-    lessons = discover_lessons(include_scrolling_tests=False)
+    lessons = discover_lessons()
     curriculum = build_curriculum(tracks, lessons)
     for track in curriculum:
         if track["id"] != "doubling-cube":
@@ -994,7 +986,7 @@ def discover_update_publications() -> list[dict[str, object]]:
     publications: list[dict[str, object]] = []
     excluded_landings = {
         LEARN_ROOT / "index.qmd",
-        LEARN_ROOT / "glossary" / "index.qmd",
+        GLOSSARY_ROOT / "index.qmd",
         RESEARCH_ROOT / "index.qmd",
         SITE_ROOT / "engine-benchmark" / "index.qmd",
     }
@@ -1085,7 +1077,7 @@ def discover_update_publications() -> list[dict[str, object]]:
                 "description": str(entry["definition"]),
                 "path": PUBLIC_DATA_PATH,
                 "publication_type": "Glossary",
-                "route": f"/learn/glossary/#{slug}",
+                "route": f"/glossary/#{slug}",
                 "title": f"Glossary: {entry['term']}",
             }
         )
@@ -1430,12 +1422,6 @@ def build_navigation_yaml(curriculum: list[dict[str, object]]) -> str:
                 )
         else:
             lines.append("          contents: []")
-    lines.extend(
-        [
-            '        - text: "Backgammon Glossary"',
-            "          href: learn/glossary/index.qmd",
-        ]
-    )
     return "\n".join(lines) + "\n"
 
 
@@ -1547,9 +1533,10 @@ def build_lesson_catalogue_html(
                 f'data-bms-learn-group data-bms-track-id="{html_attr(track["id"])}" '
                 f'data-bms-total-lessons="{len(track_lessons)}" open>',
                 '<summary class="bms-learn-catalogue-section-heading">',
-                f'<span class="bms-learn-track-heading">{heading}</span>',
+                f'<span class="bms-learn-track-heading">{heading}'
                 f'<span data-bms-learn-group-count>{len(track_lessons)} '
-                f'{"lesson" if len(track_lessons) == 1 else "lessons"}</span>',
+                f'{"lesson" if len(track_lessons) == 1 else "lessons"}</span>'
+                '</span>',
                 "</summary>",
                 '<div class="bms-learn-catalogue-section-items">',
             ]
@@ -1777,7 +1764,7 @@ def linked_definition_html(
         visible = match.group(0)
         parts.append(
             f'<a class="bms-inline-glossary" '
-            f'href="/learn/glossary/#{html_attr(slug)}" '
+            f'href="/glossary/#{html_attr(slug)}" '
             f'data-bms-glossary-slug="{html_attr(slug)}" '
             f'data-bms-definition-link="{html_attr(slug)}">'
             f"{html.escape(visible)}</a>"
@@ -1818,7 +1805,7 @@ def related_terms_html(entry: dict[str, object]) -> str:
         slug = related.get("slug")
         if slug:
             lines.append(
-                f'<li><a href="/learn/glossary/#{html_attr(slug)}">'
+                f'<li><a href="/glossary/#{html_attr(slug)}">'
                 f"{html.escape(term)}</a></li>"
             )
         else:
@@ -1985,7 +1972,7 @@ def build_authoring_terms(entries: list[dict[str, object]]) -> str:
     for entry in entries:
         term = str(entry["term"]).replace("|", "\\|")
         slug = str(entry["slug"])
-        lines.append(f"| {term} | `{slug}` | `/learn/glossary/#{slug}` |")
+        lines.append(f"| {term} | `{slug}` | `/glossary/#{slug}` |")
     content = "\n".join(lines) + "\n"
     assert_no_forbidden_text(content, "generated authoring term list")
     return content
@@ -2170,6 +2157,12 @@ def validate_generated() -> dict[str, int]:
             + ", ".join(str(path.relative_to(REPOSITORY_ROOT)) for path in changed[:10])
         )
 
+    if LEGACY_GLOSSARY_ROOT.exists():
+        raise ValidationError(
+            "Legacy Learn glossary source remains: "
+            + str(LEGACY_GLOSSARY_ROOT.relative_to(REPOSITORY_ROOT))
+        )
+
     standalone_pages = sorted(GLOSSARY_ROOT.glob("*/index.qmd"))
     if standalone_pages:
         raise ValidationError(
@@ -2208,7 +2201,7 @@ def validate_generated() -> dict[str, int]:
     old_term_links = [
         slug
         for slug in canonical_slugs
-        if f'/learn/glossary/{slug}/' in entries_html
+        if f'/glossary/{slug}/' in entries_html
     ]
     if old_term_links:
         raise ValidationError(
@@ -2441,10 +2434,30 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     if not sitemap.exists():
         raise ValidationError("Rendered sitemap.xml is missing from the full build")
 
-    glossary_output = output_root / "learn" / "glossary"
+    glossary_output = output_root / "glossary"
     glossary_index = glossary_output / "index.html"
     if not glossary_index.exists():
         raise ValidationError(f"Rendered glossary output is missing: {glossary_index}")
+
+    legacy_glossary_index = output_root / "learn" / "glossary" / "index.html"
+    if not legacy_glossary_index.exists():
+        raise ValidationError(
+            f"Rendered legacy glossary redirect is missing: {legacy_glossary_index}"
+        )
+    legacy_glossary_html = legacy_glossary_index.read_text(
+        encoding="utf-8", errors="replace"
+    )
+    for required_redirect_part in (
+        '<meta name="robots" content="noindex">',
+        '<link rel="canonical" href="https://backgammon-made-simple.github.io/glossary/">',
+        '<meta http-equiv="refresh" content="0; url=/glossary/">',
+        'window.location.replace("/glossary/" + window.location.search + window.location.hash)',
+    ):
+        if required_redirect_part not in legacy_glossary_html:
+            raise ValidationError(
+                "Rendered legacy glossary redirect is malformed: "
+                + required_redirect_part
+            )
 
     html_files = sorted(glossary_output.rglob("*.html"))
     if html_files != [glossary_index]:
@@ -2482,7 +2495,7 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         raise ValidationError("Rendered glossary is missing full definitions")
     if glossary_html.count('data-bms-alias="') != alias_count:
         raise ValidationError("Rendered glossary alias count is incorrect")
-    if any(f"/learn/glossary/{slug}/" in glossary_html for slug in canonical_slugs):
+    if any(f"/glossary/{slug}/" in glossary_html for slug in canonical_slugs):
         raise ValidationError("Rendered glossary still links to standalone term routes")
 
     tracks = discover_tracks()
@@ -2536,7 +2549,6 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     expected_sidebar_routes = {
         str(lesson["route"]) for lesson in expected_sequence["lessons"]
     }
-    rendered_scrolling_test_count = 0
     for lesson in expected_sequence["lessons"]:
         route = str(lesson["route"])
         relative = route.lstrip("/")
@@ -2583,28 +2595,7 @@ def check_rendered(output_root: Path) -> dict[str, int]:
                 + ", ".join(sorted(missing_sidebar_routes)[:5])
             )
 
-        if "/learn/scrolling-test/" in route:
-            rendered_scrolling_test_count += 1
-            for required in (
-                'id="TOC"',
-                'id="overview"',
-                'id="example"',
-                'id="details"',
-                'id="summary"',
-                "Temporary scrolling test content. "
-                "This page is not part of the finished curriculum.",
-            ):
-                if required not in lesson_html:
-                    raise ValidationError(
-                        f"Rendered scrolling fixture {route} is missing {required!r}"
-                    )
         rendered_lesson_count += 1
-
-    temporary_lesson = (
-        output_root / "learn" / "cube" / "scrolling-test-lesson-three.html"
-    )
-    if temporary_lesson.exists():
-        raise ValidationError("Rendered temporary scrolling lesson remains")
     learn_index = output_root / "learn" / "index.html"
     learn_html = learn_index.read_text(encoding="utf-8", errors="replace")
     if learn_html.count("data-bms-learn-item") != len(lessons):
@@ -2662,7 +2653,12 @@ def check_rendered(output_root: Path) -> dict[str, int]:
             r'<span class="bms-learn-track-heading">\s*'
             r'<a\b[^>]*>'
             + re.escape(html.escape(track_title))
-            + r"</a>\s*</span>"
+            + r'</a>\s*<span\b[^>]*data-bms-learn-group-count[^>]*>'
+            + re.escape(
+                f'{len(track["lessons"])} '
+                f'{"lesson" if len(track["lessons"]) == 1 else "lessons"}'
+            )
+            + r"</span>\s*</span>"
         )
         if rendered_heading.search(learn_html) is None:
             raise ValidationError(
@@ -2692,10 +2688,10 @@ def check_rendered(output_root: Path) -> dict[str, int]:
     glossary_locations = [
         html.unescape(location)
         for location in re.findall(r"<loc>(.*?)</loc>", sitemap_text)
-        if "/learn/glossary/" in location
+        if "/glossary/" in location
     ]
     expected_glossary_location = (
-        "https://backgammon-made-simple.github.io/learn/glossary/"
+        "https://backgammon-made-simple.github.io/glossary/"
     )
     if glossary_locations != [expected_glossary_location]:
         raise ValidationError(
@@ -2704,7 +2700,7 @@ def check_rendered(output_root: Path) -> dict[str, int]:
 
     canonical = (
         '<link rel="canonical" '
-        'href="https://backgammon-made-simple.github.io/learn/glossary/">'
+        'href="https://backgammon-made-simple.github.io/glossary/">'
     )
     if canonical not in glossary_html:
         raise ValidationError("Rendered glossary is missing its one canonical URL")
@@ -2790,12 +2786,12 @@ def check_rendered(output_root: Path) -> dict[str, int]:
             raise ValidationError(
                 f"Rendered track index {track['id']} descriptions must begin collapsed"
             )
-        title_positions = [
-            track_html.find(html.escape(str(lesson["title"])))
+        lesson_link_positions = [
+            track_html.find(html.escape(str(lesson["route"]).lstrip("/")))
             for lesson in track_lessons
         ]
-        if any(position < 0 for position in title_positions) or title_positions != sorted(
-            title_positions
+        if any(position < 0 for position in lesson_link_positions) or (
+            lesson_link_positions != sorted(lesson_link_positions)
         ):
             raise ValidationError(
                 f"Rendered track index {track['id']} lessons are missing or out of order"
@@ -2831,7 +2827,6 @@ def check_rendered(output_root: Path) -> dict[str, int]:
         "sitemap_glossary_routes": len(glossary_locations),
         "standalone_term_pages": 0,
         "continuous_lessons": rendered_lesson_count,
-        "scrolling_test_lessons": rendered_scrolling_test_count,
         "updates_feed_items": len(feed_items),
     }
 

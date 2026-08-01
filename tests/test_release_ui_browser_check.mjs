@@ -26,7 +26,7 @@ assert.equal(
   DEFAULT_MANIFEST.pages.filter(
     (page) => page.kind === "edge-scroll-fixture"
   ).length,
-  3
+  0
 );
 
 assert.deepEqual(

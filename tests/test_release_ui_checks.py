@@ -82,28 +82,14 @@ class ReleaseUiStaticCheckTests(unittest.TestCase):
         )
         self.assertTrue(any("broken internal link" in message for message in messages))
 
-    def test_manifest_keeps_edge_fixtures_off_homepage(self) -> None:
+    def test_manifest_uses_only_current_public_pages(self) -> None:
         manifest = json.loads(
             (ROOT / "scripts" / "ui_release_manifest.json").read_text(
                 encoding="utf-8"
             )
         )
-        by_id = {page["id"]: page for page in manifest["pages"]}
-        self.assertIn(
-            "data-bms-ui-edge-fixture",
-            by_id["home"]["forbidden_markers"],
-        )
-        edge_pages = [
-            page
-            for page in manifest["pages"]
-            if page["kind"] == "edge-scroll-fixture"
-        ]
-        self.assertEqual(len(edge_pages), 3)
-        self.assertTrue(
-            all(
-                page["route"].startswith("/learn/scrolling-test/")
-                for page in edge_pages
-            )
+        self.assertFalse(
+            any("/scrolling-test/" in page["route"] for page in manifest["pages"])
         )
 
     def test_release_procedure_references_all_automation_layers(self) -> None:
@@ -123,7 +109,6 @@ class ReleaseUiStaticCheckTests(unittest.TestCase):
             self.assertIn(expected, procedure)
         for expected in (
             "git diff --check",
-            "generate_scrolling_test_lessons.py validate",
             "unittest discover",
             "release_ui_static_check.py",
             "test_continuous_research.js",

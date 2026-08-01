@@ -234,26 +234,26 @@ assert.equal(
 );
 assert.notEqual(
   scroll.idPrefixForRoute(
-    "/learn/scrolling-test/start-here/lesson-01.html"
+    "/learn/start-here/foundation-01.html"
   ),
   scroll.idPrefixForRoute(
-    "/learn/scrolling-test/doubling-cube/lesson-01.html"
+    "/learn/cube/foundation-01.html"
   ),
-  "the full route keeps repeated generated filenames collision-free"
+  "the full route keeps repeated lesson filenames collision-free"
 );
 const generatedPrefixes = ["start-here", "doubling-cube", "opening-play"]
   .flatMap((track) =>
-    Array.from({ length: 10 }, (_, index) =>
+    Array.from({ length: 3 }, (_, index) =>
       scroll.idPrefixForRoute(
-        `/learn/scrolling-test/${track}/lesson-${String(index + 1).padStart(2, "0")}.html`
+        `/learn/${track}/lesson-${String(index + 1).padStart(2, "0")}.html`
       )
     )
   );
-assert.equal(new Set(generatedPrefixes).size, 30);
+assert.equal(new Set(generatedPrefixes).size, 9);
 assert.equal(
   new Set(generatedPrefixes.map((prefixValue) => prefixValue + "overview")).size,
-  30,
-  "repeated heading IDs remain unique across the long fixture sequence"
+  9,
+  "repeated heading IDs remain unique across a multi-track sequence"
 );
 
 class FakeElement {

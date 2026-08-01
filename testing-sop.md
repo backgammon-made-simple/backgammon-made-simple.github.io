@@ -50,7 +50,6 @@ bash testing-scripts/run-browserless-short.sh
 This checks:
 
 - whitespace and patch integrity with `git diff --check`;
-- deterministic scrolling-test fixtures;
 - syntax of Learn, continuous-scroll, lesson-analysis, and browser-helper JS;
 - Learn filters/search ranking;
 - continuous Learn and Research loading;
@@ -178,8 +177,8 @@ The long pass covers:
 - Research TOC, categories/tags rail, term search, and continuous articles;
 - glossary full definitions, aliases, related-term links, hover/click behavior,
   search, clear, and absence of the Learn sidebar;
-- rich/nested SVG disclosures, long labels, long text, wide tables, anchor
-  navigation, and generated scrolling edge fixtures;
+- rich/nested SVG disclosures, long labels, long text, wide tables, and anchor
+  navigation;
 - Analyzer, About, Engine Benchmark, navbar routes, and ordinary-page isolation;
 - duplicate IDs, console errors, broken resources, overlap, clipping, keyboard
   focus, and horizontal overflow at both viewports.

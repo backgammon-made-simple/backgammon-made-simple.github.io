@@ -1,0 +1,314 @@
+---
+title: "Why Is 25% the Basic Take Point When a Double Is Offered?"
+description: >
+  Learn why a backgammon player can correctly take a double with only
+  a 25% chance to win in a simplified money game, how taking compares
+  with passing, and why gammons, cube ownership, future redoubles, and
+  match score can move the real take point away from 25%.
+sidebar: learn
+learn-track: doubling-cube
+learn-order: 3
+categories:
+  - Beginner
+  - Intermediate
+tags:
+  - Doubling Cube
+terms:
+  - take-point
+  - take
+  - pass
+  - doubling-cube
+  - gammon
+  - backgammon
+  - own-the-cube
+  - redouble
+  - match-play
+  - volatility
+  - equity
+level: Foundation
+body-classes: bms-learn-article
+page-layout: article
+toc: true
+toc-depth: 2
+execute:
+  enabled: false
+---
+
+
+::: {.bms-lesson-meta}
+Concept: Taking a double  
+Level: Foundation  
+Prerequisite: Basic doubling-cube rules
+:::
+
+## The question
+
+Your opponent doubles the cube from 1 to 2.
+
+You expect to lose about three games out of four.
+
+Why could taking still be correct?
+
+## The position
+
+::: {.bms-position-placeholder}
+**Position interaction placeholder**
+
+Show the verified board from the receiver's perspective, with the opponent on roll and offering the cube.
+:::
+
+<!--
+AUTHOR POSITION NOTE
+
+Money play
+Cube centered at 1 before the double
+Jacoby off
+Beavers off
+No gammons or backgammons possible
+
+Opponent, on roll:
+- 1 checker on the 6-point
+- 2 checkers on the 3-point
+- 1 checker on the 1-point
+- 11 checkers borne off
+
+Learner, receiving the cube:
+- 4 checkers on the 3-point
+- 11 checkers borne off
+
+Working XGID, receiver view:
+XGID=---D---------------a--b-a-:0:0:-1:00:0:0:0:0:8
+
+Working GNU Position ID:
+PAAAICMAAAAAAA
+
+Confirm the Match ID and combined GNU ID in GNU before publication.
+Confirm the final winning chances, action equities, and cube response in GNU.
+-->
+
+Both players have already borne off 11 checkers, so neither player can win a gammon or backgammon.
+
+Your opponent is on roll and has approximately a 75% chance to win. You have approximately a 25% chance.
+
+Your opponent doubles. Should you take or pass?
+
+::: {.bms-response-placeholder}
+**Response placeholder**
+
+Show the learner's Take and Pass buttons, followed by the verified GNU response and action equities.
+:::
+
+## The short answer
+
+A take is not a prediction that you will win.
+
+It is a comparison between two ways of losing value:
+
+- pass now and lose 1 point for certain;
+- take, risk losing 2 points, but keep a chance to win 2 points.
+
+Under the simplified assumptions in this lesson, taking and passing have the same average value when your winning chance is exactly 25%.
+
+That is why 25% is called the basic take point.
+
+::: {.bms-callout}
+::: {.bms-callout-title}
+Key idea
+:::
+
+You do not need to be the favorite to take. You only need taking to be better than surrendering the current stake.
+:::
+
+## What happens when you pass?
+
+Passing ends the game immediately.
+
+The cube is still at 1, so you lose 1 point.
+
+$$
+E(\text{Pass})=-1
+$$
+
+There is no uncertainty. You lose exactly 1 point every time you pass in this situation.
+
+## What happens when you take?
+
+Taking keeps the game going with the cube at 2.
+
+There are two simplified outcomes:
+
+- if you win, you gain 2 points;
+- if you lose, you lose 2 points.
+
+At a 25% winning chance, you win one quarter of the time and lose three quarters of the time.
+
+$$
+E(\text{Take})
+=
+0.25(2)+0.75(-2)
+$$
+
+$$
+E(\text{Take})
+=
+0.50-1.50
+=
+-1
+$$
+
+Taking also loses 1 point on average.
+
+Therefore:
+
+$$
+E(\text{Take})=E(\text{Pass})=-1
+$$
+
+At exactly 25%, the two choices are equal in the simplified model.
+
+## See it across four games
+
+Imagine reaching this decision four times.
+
+If you pass every time, you lose 1 point in each game:
+
+$$
+4(-1)=-4
+$$
+
+If you take every time and win one of the four games:
+
+- one win earns 2 points;
+- three losses cost 6 points;
+- the total is a loss of 4 points.
+
+$$
+1(2)+3(-2)=-4
+$$
+
+Either choice loses 4 points across the four games, or 1 point per game on average.
+
+This is the simplest way to understand the 25% take point.
+
+## Deriving the boundary
+
+Let $p$ be your probability of winning after taking.
+
+Your take equity is:
+
+$$
+E(\text{Take})=2p-2(1-p)
+$$
+
+Simplifying:
+
+$$
+E(\text{Take})=4p-2
+$$
+
+At the take point, taking and passing have equal value:
+
+$$
+4p-2=-1
+$$
+
+$$
+4p=1
+$$
+
+$$
+p=0.25
+$$
+
+So the simplified take point is:
+
+$$
+25\%
+$$
+
+## Why this position is useful
+
+This bearoff removes almost everything that could distract from the basic calculation:
+
+- there is no contact;
+- gammons and backgammons are impossible;
+- only four checkers remain for each player;
+- the winning chances are close to 75% versus 25%;
+- the cube decision can be explained with ordinary arithmetic.
+
+The board gives us a concrete example, but the reason for the 25% boundary comes from comparing the equity of taking with the equity of passing.
+
+## Is exactly 25% a take or a pass?
+
+In the simplified model, it is neither better nor worse. The two actions are equal.
+
+- above 25%, taking is better;
+- below 25%, passing is better;
+- at exactly 25%, you are indifferent.
+
+In a real money game, the cube is usually still alive after you take. You then own the cube and may be able to redouble later. That future right can make taking slightly better than the simple calculation suggests.
+
+For this first lesson, we deliberately set that complication aside. The next lesson explains why the practical take point can be lower than 25%.
+
+::: {.callout-note}
+## Why GNU may show a take
+
+If GNU calls this position a take rather than complete indifference, that does not invalidate the 25% calculation.
+
+The calculation assumes that the cube has no future value after the take. GNU also considers the value of owning the cube and possibly redoubling later.
+:::
+
+## What 25% does not mean
+
+Twenty-five percent is not a universal rule for every cube decision.
+
+It does not account for:
+
+- gammon and backgammon wins;
+- gammon and backgammon losses;
+- future redoubles;
+- cube ownership;
+- match score;
+- position-specific volatility.
+
+Those features change the value of taking and can move the real take point.
+
+The 25% rule is the starting model. It gives us a clear benchmark before we add the rest of the game.
+
+## What to remember
+
+- Passing loses 1 point immediately.
+- Taking means playing for 2 points.
+- At a 25% winning chance, the simplified take equity is $-1$.
+- Passing also has equity of $-1$.
+- A correct take can still lose most of the time.
+- Twenty-five percent is a basic benchmark, not the answer to every practical cube decision.
+
+## Continue
+
+[Back to The Doubling Cube](index.qmd)
+
+**Next planned lesson:** How Can You Take With Less Than 25% Winning Chances?
+
+<!--
+AUTHOR CHECK, DO NOT PUBLISH IN THIS BEGINNER LESSON UNLESS DESIRED
+
+iSight sanity check for the player on roll:
+
+Raw pip count:
+- player on roll: 13
+- receiver: 12
+
+iSight-style adjustments:
+- player on roll: +2 for empty 4-point and 5-point, adjusted count 15
+- receiver: +3 for empty 4-point, 5-point, and 6-point
+- receiver: +1 for the fourth checker on the 3-point, adjusted count 16
+
+Adjusted-count lead for the player on roll: 1
+
+Estimated winning percentage:
+p = 80 - 15/3 + 2(1) = 77%
+
+This is a rough race estimate and is close to the approximately 75% GNU result.
+Use GNU or an exact bearoff database for the published percentage and cube equities.
+-->

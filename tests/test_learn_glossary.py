@@ -58,9 +58,7 @@ class LearnGlossaryTests(unittest.TestCase):
         cls.entries = learn_glossary.validate_public_data(cls.data)
         cls.tracks = learn_glossary.discover_tracks()
         cls.lessons = learn_glossary.discover_lessons()
-        cls.real_lessons = learn_glossary.discover_lessons(
-            include_scrolling_tests=False
-        )
+        cls.real_lessons = learn_glossary.discover_lessons()
         cls.lesson_sections = learn_glossary.build_curriculum(
             cls.tracks,
             cls.lessons,
@@ -231,6 +229,11 @@ private code phrase
             )
 
     def test_exactly_one_glossary_source_page_and_zero_term_pages(self) -> None:
+        self.assertEqual(
+            learn_glossary.GLOSSARY_ROOT,
+            learn_glossary.SITE_ROOT / "glossary",
+        )
+        self.assertFalse((learn_glossary.LEARN_ROOT / "glossary").exists())
         self.assertTrue((learn_glossary.GLOSSARY_ROOT / "index.qmd").exists())
         self.assertEqual(
             list(learn_glossary.GLOSSARY_ROOT.glob("*/index.qmd")),
@@ -349,7 +352,7 @@ private code phrase
     def test_no_old_term_routes_metadata_or_navigation_remain(self) -> None:
         canonical = {str(entry["slug"]) for entry in self.entries}
         self.assertFalse(
-            any(f"/learn/glossary/{slug}/" in self.entries_html for slug in canonical)
+            any(f"/glossary/{slug}/" in self.entries_html for slug in canonical)
         )
         for forbidden in (
             "canonical-url:",
@@ -375,7 +378,7 @@ private code phrase
         self.assertIn("sidebar: false", source)
         self.assertNotIn("sidebar: learn", source)
         self.assertIn(
-            'canonical-url: "https://backgammon-made-simple.github.io/learn/glossary/"',
+            'canonical-url: "https://backgammon-made-simple.github.io/glossary/"',
             source,
         )
         self.assertEqual(source.count("social-card-slug: glossary"), 1)
@@ -460,7 +463,7 @@ private code phrase
         ).read_text(encoding="utf-8")
         self.assertRegex(
             term_lookup,
-            r'<form action="/learn/glossary/" method="get" '
+            r'<form action="/glossary/" method="get" '
             r"data-bms-term-lookup-form",
         )
         self.assertRegex(term_lookup, r'<input[^>]*name="q"')
@@ -574,10 +577,7 @@ private code phrase
             for alias in entry["aliases"]
         }
         self.assertEqual(len(self.tracks), 3)
-        self.assertEqual(
-            len(self.lessons),
-            len(self.real_lessons) + 10 * len(self.tracks),
-        )
+        self.assertEqual(self.lessons, self.real_lessons)
         for lesson in self.lessons:
             self.assertTrue(
                 set(lesson["categories"]).issubset(learn_glossary.DIFFICULTIES)
@@ -592,14 +592,14 @@ private code phrase
                 self.assertIn(article, self.related_research[slug])
 
     def test_source_glossary_links_use_root_or_canonical_fragments(self) -> None:
-        href_pattern = re.compile(r'href=["\'](/learn/glossary/[^"\']*)')
+        href_pattern = re.compile(r'href=["\'](/glossary/[^"\']*)')
         source_paths = [
             *learn_glossary.LEARN_ROOT.rglob("*.qmd"),
             *learn_glossary.RESEARCH_ROOT.rglob("*.qmd"),
         ]
         for path in source_paths:
             for href in href_pattern.findall(path.read_text(encoding="utf-8")):
-                suffix = href.removeprefix("/learn/glossary/")
+                suffix = href.removeprefix("/glossary/")
                 self.assertTrue(
                     suffix == "" or suffix.startswith(("#", "?")),
                     f"{path.relative_to(ROOT)} uses obsolete glossary route {href}",
@@ -607,7 +607,7 @@ private code phrase
 
     def test_cube_sequence_is_preserved_in_generated_track_index(self) -> None:
         self.assertEqual(
-            [lesson["relative_path"] for lesson in self.cube_lessons],
+            [lesson["relative_path"] for lesson in self.cube_lessons[:2]],
             [
                 "why-is-25-percent-the-basic-take-point.qmd",
                 "what-the-cube-is-asking.qmd",
@@ -615,7 +615,7 @@ private code phrase
         )
         self.assertEqual(
             [lesson["cube-order"] for lesson in self.cube_lessons],
-            [1, 2],
+            list(range(1, len(self.cube_lessons) + 1)),
         )
         cube_index = (learn_glossary.CUBE_ROOT / "index.qmd").read_text(
             encoding="utf-8"
@@ -699,7 +699,7 @@ private code phrase
         routes = {lesson["route"] for lesson in self.learn_sequence["lessons"]}
         excluded = {
             "/learn/",
-            "/learn/glossary/",
+            "/glossary/",
             *[str(track["route"]) for track in self.lesson_sections],
         }
         self.assertTrue(routes.isdisjoint(excluded))
@@ -776,53 +776,14 @@ private code phrase
         ):
             learn_glossary.validate_learn_sequence(broken)
 
-    def test_temporary_scrolling_lesson_is_removed(self) -> None:
-        temporary_source = (
-            learn_glossary.CUBE_ROOT / "scrolling-test-lesson-three.qmd"
-        )
-        self.assertFalse(temporary_source.exists())
-        self.assertNotIn(
-            "/learn/cube/scrolling-test-lesson-three.html",
-            {lesson["route"] for lesson in self.learn_sequence["lessons"]},
-        )
-
-    def test_generated_scrolling_lessons_are_in_the_one_sequence(self) -> None:
+    def test_removed_scrolling_fixtures_are_not_in_the_sequence(self) -> None:
+        self.assertFalse((learn_glossary.LEARN_ROOT / "scrolling-test").exists())
         sequence_lessons = self.learn_sequence["lessons"]
         sequence_routes = [lesson["route"] for lesson in sequence_lessons]
         self.assertEqual(len(sequence_routes), len(set(sequence_routes)))
-
-        for track in self.lesson_sections:
-            track_id = str(track["id"])
-            track_lessons = [
-                lesson
-                for lesson in sequence_lessons
-                if lesson["track_id"] == track_id
-            ]
-            generated = [
-                lesson
-                for lesson in track_lessons
-                if str(lesson["route"]).startswith(
-                    f"/learn/scrolling-test/{track_id}/"
-                )
-            ]
-            real = [
-                lesson
-                for lesson in track_lessons
-                if lesson not in generated
-            ]
-            self.assertEqual(len(generated), 10)
-            self.assertEqual(
-                [lesson["route"] for lesson in generated],
-                [
-                    f"/learn/scrolling-test/{track_id}/lesson-{index:02d}.html"
-                    for index in range(1, 11)
-                ],
-            )
-            if real:
-                self.assertLess(
-                    max(lesson["sequence_index"] for lesson in real),
-                    min(lesson["sequence_index"] for lesson in generated),
-                )
+        self.assertFalse(
+            any("/scrolling-test/" in str(route) for route in sequence_routes)
+        )
 
         non_empty_tracks = [
             track for track in self.lesson_sections if track["lessons"]
@@ -856,7 +817,7 @@ private code phrase
         for label, route in (
             ("Home", "/"),
             ("Learn", "/learn/"),
-            ("Backgammon Glossary", "/learn/glossary/"),
+            ("Backgammon Glossary", "/glossary/"),
             ("Research", "/research/"),
         ):
             self.assertIn(f"[{label}]({route})", content)
@@ -931,7 +892,7 @@ private code phrase
         )
         for required in (
             "## Single-Page Glossary",
-            "/learn/glossary/#prime",
+            "/glossary/#prime",
             "Do not create a directory or page for an individual term",
             "site/404.qmd",
             "canonical `terms` metadata",
@@ -943,7 +904,7 @@ private code phrase
         ):
             self.assertIn(required, guide)
         self.assertIn("there are no standalone term routes", terms)
-        self.assertEqual(terms.count("/learn/glossary/#"), 625)
+        self.assertEqual(terms.count("/glossary/#"), 625)
 
     def test_moved_analyzer_include_and_all_cube_includes_resolve(self) -> None:
         include_copies = list(
@@ -980,31 +941,34 @@ private code phrase
         self.assertNotIn("[Back to the cube overview](../index.qmd)", source)
 
     def test_cube_order_is_metadata_driven_and_consistent(self) -> None:
-        expected_paths = [
+        required_prefix = [
             "why-is-25-percent-the-basic-take-point.qmd",
             "what-the-cube-is-asking.qmd",
         ]
-        expected_titles = [
+        required_titles = [
             "Why Is 25% the Basic Take Point When a Double Is Offered?",
             "What the Cube Is Really Asking",
         ]
         self.assertEqual(
-            [lesson["relative_path"] for lesson in self.cube_lessons],
-            expected_paths,
+            [lesson["relative_path"] for lesson in self.cube_lessons[:2]],
+            required_prefix,
         )
         self.assertEqual(
-            [lesson["title"] for lesson in self.cube_lessons],
-            expected_titles,
+            [lesson["title"] for lesson in self.cube_lessons[:2]],
+            required_titles,
         )
         self.assertEqual(
             [lesson["cube-order"] for lesson in self.cube_lessons],
-            [1, 2],
+            list(range(1, len(self.cube_lessons) + 1)),
         )
 
         navigation = learn_glossary.GENERATED_NAVIGATION_PATH.read_text(
             encoding="utf-8"
         )
-        sidebar_paths = [f"learn/cube/{path}" for path in expected_paths]
+        sidebar_paths = [
+            f"learn/cube/{lesson['relative_path']}"
+            for lesson in self.cube_lessons
+        ]
         self.assertTrue(
             navigation.index(sidebar_paths[0]) < navigation.index(sidebar_paths[1])
         )
@@ -1265,6 +1229,12 @@ private code phrase
         about = config.index("text: About")
         self.assertLess(research, glossary)
         self.assertLess(glossary, about)
+        self.assertIn("href: glossary/index.qmd", config)
+        learn_navigation = (
+            learn_glossary.GENERATED_NAVIGATION_PATH.read_text(encoding="utf-8")
+        )
+        self.assertNotIn("Backgammon Glossary", learn_navigation)
+        self.assertNotIn("glossary/index.qmd", learn_navigation)
         self.assertIn("assets/bms-glossary-lookup.json", config)
         self.assertIn("assets/bms-research-sequence.json", config)
         scripts_include = (
@@ -1307,8 +1277,13 @@ private code phrase
             "const mountTocHeadingToggle = function",
             "const bindTocHeadingToggle = function",
             "toggle.dataset.bmsTocToggleBound",
+            "const boundTocHeadingToggles = new WeakSet()",
+            "tocCloneObserver = new MutationObserver",
             "const tocCandidates = Array.from(document.querySelectorAll(\"#TOC\"));",
             "tocCandidates.find(tocHasHashLinks)",
+            "marginSidebar.contains(candidate) && tocHasHashLinks(candidate)",
+            '"#quarto-margin-sidebar:not(.quarto-sidebar-toggle-contents)"',
+            '!candidate.closest(".quarto-sidebar-toggle-contents")',
             "isSamePageTocHref",
             "tocObserver = new MutationObserver",
             "inEditorialDock",
@@ -1324,6 +1299,8 @@ private code phrase
             "Go to glossary entry",
             "isMainSiteIndex",
             "lookupDisabled",
+            'document.body.classList.contains("bms-learn-index")',
+            'document.body.classList.contains("bms-learn-track-index")',
             "let desktopCollapsed = !refinedRightRailPage;",
             "window.scrollY <= window.innerHeight",
             'window.addEventListener("resize", updateBackToTop)',
@@ -1474,6 +1451,17 @@ private code phrase
         ):
             self.assertIn(required, css)
 
+    def test_desktop_site_scale_is_125_percent_without_changing_mobile(self) -> None:
+        css = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-shared.css"
+        ).read_text(encoding="utf-8")
+        self.assertRegex(
+            css,
+            r"@media \(min-width: 992px\) \{\s*html \{\s*"
+            r"font-size: 125%;\s*\}\s*body \{\s*"
+            r"font-size: 21\.25px;",
+        )
+
     def test_lesson_and_research_article_desktop_right_rail_contract(
         self,
     ) -> None:
@@ -1489,11 +1477,15 @@ private code phrase
             "preservePagePosition(function ()",
             "bms-toc-heading-toggle",
             'tocHeadingToggle.setAttribute("aria-controls", tocLinks.id)',
-            '"Contents \\u25be"',
+            "const visiblyCollapsed =",
+            'clickedToggle.getAttribute("aria-expanded") === "false"',
+            '"Table of Contents \\u25be"',
             "bms-toc-toggle-divider",
             "placeTocHeadingToggleBeforeLinks",
             "toc.insertBefore(divider, tocLinks)",
             "updateLookupForScroll",
+            "lookupPinnedOpen",
+            "open({ pinOpen: true })",
             "window.scrollY <= 32",
             "updateRightRailForScroll",
             "rightRailScrollCollapsed = currentScrollY > lastRightRailScrollY",
@@ -1504,6 +1496,8 @@ private code phrase
             "placeRefinedBackToTop",
             '"--bms-refined-tools-left"',
             '"--bms-refined-tools-width"',
+            '"--bms-refined-tools-top"',
+            "sidebarBounds.width * 3",
             '"--bms-refined-tools-right"',
             'backToTop.classList.toggle("bms-refined-back-to-top", refined)',
             "document.body.appendChild(backToTop)",
@@ -1560,7 +1554,7 @@ private code phrase
         )
         self.assertIn(
             ".bms-refined-right-rail-scroll-collapsed\n"
-            "    > *",
+            "    > :not(#TOC):not(.bms-site-tools)",
             css,
         )
         self.assertNotIn(
@@ -1590,19 +1584,18 @@ private code phrase
             css,
             r"\.bms-site-tools--sidebar \{[^}]*"
             r"position: fixed;[^}]*"
-            r"top: 50%;[^}]*"
-            r"right: 0\.75rem;[^}]*"
+            r"top: var\(--bms-refined-tools-top, 8rem\);[^}]*"
             r"left: var\(--bms-refined-tools-left, auto\);[^}]*"
-            r"width: var\([^}]*"
-            r"--bms-refined-tools-width,[^}]*"
-            r"clamp\(10rem, 16vw, 18rem\)",
+            r"width: var\(--bms-refined-tools-width,[^}]*"
+            r"align-items: flex-end;",
         )
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar\s+"
             r"\.bms-term-lookup \{[^}]*"
             r"position: static;[^}]*"
-            r"width: 100%;",
+            r"width: 100%;[^}]*"
+            r"align-self: flex-end;",
         )
         self.assertRegex(
             css,
@@ -1855,13 +1848,13 @@ private code phrase
         source = (learn_glossary.GLOSSARY_ROOT / "index.qmd").read_text(
             encoding="utf-8"
         )
-        clean_url = "https://backgammon-made-simple.github.io/learn/glossary/"
+        clean_url = "https://backgammon-made-simple.github.io/glossary/"
         self.assertIn(f'canonical-url: "{clean_url}"', source)
-        self.assertNotIn("/learn/glossary/index.html", source)
+        self.assertNotIn("/glossary/index.html", source)
         generator = MODULE_PATH.read_text(encoding="utf-8")
         self.assertIn(f'"{clean_url}"', generator)
         self.assertNotIn(
-            '"https://backgammon-made-simple.github.io/learn/glossary/index.html"',
+            '"https://backgammon-made-simple.github.io/glossary/index.html"',
             generator,
         )
 
@@ -1893,7 +1886,7 @@ private code phrase
             {"2026-07-30"},
         )
         self.assertIn(
-            "/learn/glossary/#10-in-the-zone",
+            "/glossary/#10-in-the-zone",
             {
                 publication["route"]
                 for publication in self.update_publications
@@ -2064,7 +2057,7 @@ private code phrase
         dirty_404 = (
             '<a href="/.">Home</a>'
             '<a href="/.\\learn/">Learn</a>'
-            '<a href="/./learn/glossary/">Glossary</a>'
+            '<a href="/./glossary/">Glossary</a>'
             '<a href="/.\\research/">Research</a>'
             '<a href="/unrelated/">Unrelated</a>'
         )
@@ -2089,6 +2082,20 @@ private code phrase
         self.assertIn(
             '<footer><a href="/updates/index.xml">RSS</a></footer>',
             normalized_footer,
+        )
+
+    def test_post_render_preserves_legacy_glossary_queries_and_fragments(self) -> None:
+        redirect = bms_post_render.legacy_glossary_redirect_text()
+        self.assertIn('<meta name="robots" content="noindex">', redirect)
+        self.assertIn(
+            '<link rel="canonical" '
+            'href="https://backgammon-made-simple.github.io/glossary/">',
+            redirect,
+        )
+        self.assertIn('content="0; url=/glossary/"', redirect)
+        self.assertIn(
+            '"/glossary/" + window.location.search + window.location.hash',
+            redirect,
         )
 
     def test_post_render_adds_full_glossary_definitions_to_rss_once(self) -> None:
@@ -2134,7 +2141,7 @@ private code phrase
         )
         self.assertEqual(
             zone.findtext("link"),
-            "https://backgammon-made-simple.github.io/learn/glossary/"
+            "https://backgammon-made-simple.github.io/glossary/"
             "#10-in-the-zone",
         )
         self.assertIn(
@@ -2254,7 +2261,7 @@ private code phrase
         self.assertEqual(result["lesson_catalogue_sections"], 3)
         self.assertEqual(result["learn_tracks"], 3)
         self.assertEqual(result["lessons"], len(self.lessons))
-        self.assertEqual(result["cube_lessons"], 2)
+        self.assertEqual(result["cube_lessons"], len(self.cube_lessons))
         self.assertEqual(result["updates_publications"], 12)
         self.assertEqual(
             result["related_lesson_links"],

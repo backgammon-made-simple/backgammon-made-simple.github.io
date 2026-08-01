@@ -27,7 +27,6 @@ printf 'Repository: %s\n\n' "${REPO_ROOT}"
 
 printf '[1/5] Diff and deterministic fixture checks\n'
 git diff --check
-"${PYTHON_COMMAND[@]}" scripts/generate_scrolling_test_lessons.py validate
 
 printf '\n[2/5] JavaScript syntax\n'
 node --check site/assets/bms-learn.js

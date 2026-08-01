@@ -148,6 +148,16 @@ body {
   line-height: 1.68;
 }
 
+@media (min-width: 992px) {
+  html {
+    font-size: 125%;
+  }
+
+  body {
+    font-size: 21.25px;
+  }
+}
+
 h1,
 h2,
 h3,

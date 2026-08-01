@@ -6,628 +6,628 @@ Use only these canonical slugs in Learn and Research `terms` metadata. Every ter
 
 | Term | Canonical slug | Stable glossary anchor |
 |---|---|---|
-| 10 in the Zone | `10-in-the-zone` | `/learn/glossary/#10-in-the-zone` |
-| 10-Percent Doubling Rule | `10-percent-doubling-rule` | `/learn/glossary/#10-percent-doubling-rule` |
-| 25 Percent Rule | `25-percent-rule` | `/learn/glossary/#25-percent-rule` |
-| 8-9-12 Doubling Rule | `8-9-12-doubling-rule` | `/learn/glossary/#8-9-12-doubling-rule` |
-| ABT | `abt` | `/learn/glossary/#abt` |
-| Ace | `ace` | `/learn/glossary/#ace` |
-| Ace-Point Game | `ace-point-game` | `/learn/glossary/#ace-point-game` |
-| Acey-Deucey | `acey-deucey` | `/learn/glossary/#acey-deucey` |
-| Acting Captain | `acting-captain` | `/learn/glossary/#acting-captain` |
-| Action Play | `action-play` | `/learn/glossary/#action-play` |
-| Action Position | `action-position` | `/learn/glossary/#action-position` |
-| Active Builder | `active-builder` | `/learn/glossary/#active-builder` |
-| Advanced Anchor | `advanced-anchor` | `/learn/glossary/#advanced-anchor` |
-| Advanced Level | `advanced-level` | `/learn/glossary/#advanced-level` |
-| Ahead in the Count | `ahead-in-the-count` | `/learn/glossary/#ahead-in-the-count` |
-| Ammunition | `ammunition` | `/learn/glossary/#ammunition` |
-| Analog Clock | `analog-clock` | `/learn/glossary/#analog-clock` |
-| Anchor | `anchor` | `/learn/glossary/#anchor` |
-| Annotated Match | `annotated-match` | `/learn/glossary/#annotated-match` |
-| Annotation | `annotation` | `/learn/glossary/#annotation` |
-| Anti-Joker | `anti-joker` | `/learn/glossary/#anti-joker` |
-| Army | `army` | `/learn/glossary/#army` |
-| Around the Corner | `around-the-corner` | `/learn/glossary/#around-the-corner` |
-| Asset | `asset` | `/learn/glossary/#asset` |
-| Attack | `attack` | `/learn/glossary/#attack` |
-| Attack Zone | `attack-zone` | `/learn/glossary/#attack-zone` |
-| Attacking Game | `attacking-game` | `/learn/glossary/#attacking-game` |
-| Automatic Doubles | `automatic-doubles` | `/learn/glossary/#automatic-doubles` |
-| Awkward Number | `awkward-number` | `/learn/glossary/#awkward-number` |
-| Back Game | `back-game` | `/learn/glossary/#back-game` |
-| Backgammon | `backgammon` | `/learn/glossary/#backgammon` |
-| Backgammon Board | `backgammon-board` | `/learn/glossary/#backgammon-board` |
-| Backgammon Server | `backgammon-server` | `/learn/glossary/#backgammon-server` |
-| Baffle Box | `baffle-box` | `/learn/glossary/#baffle-box` |
-| Bakelite | `bakelite` | `/learn/glossary/#bakelite` |
-| Banana Split | `banana-split` | `/learn/glossary/#banana-split` |
-| Bankroll | `bankroll` | `/learn/glossary/#bankroll` |
-| Bar | `bar` | `/learn/glossary/#bar` |
-| Bar-Point | `bar-point` | `/learn/glossary/#bar-point` |
-| Barabino | `barabino` | `/learn/glossary/#barabino` |
-| Battle of Primes | `battle-of-primes` | `/learn/glossary/#battle-of-primes` |
-| Bear In | `bear-in` | `/learn/glossary/#bear-in` |
-| Bear Off | `bear-off` | `/learn/glossary/#bear-off` |
-| Bearoff Database | `bearoff-database` | `/learn/glossary/#bearoff-database` |
-| Beaver | `beaver` | `/learn/glossary/#beaver` |
-| Behind in the Race | `behind-in-the-race` | `/learn/glossary/#behind-in-the-race` |
-| Bertha | `bertha` | `/learn/glossary/#bertha` |
-| BIBA | `biba` | `/learn/glossary/#biba` |
-| Big Play | `big-play` | `/learn/glossary/#big-play` |
-| Blitz | `blitz` | `/learn/glossary/#blitz` |
-| Block | `block` | `/learn/glossary/#block` |
-| Blockade | `blockade` | `/learn/glossary/#blockade` |
-| Blocking Game | `blocking-game` | `/learn/glossary/#blocking-game` |
-| Blot | `blot` | `/learn/glossary/#blot` |
-| Blot-Hitting Contest | `blot-hitting-contest` | `/learn/glossary/#blot-hitting-contest` |
-| Blue game | `blue-game` | `/learn/glossary/#blue-game` |
-| Blunder | `blunder` | `/learn/glossary/#blunder` |
-| Board Setup | `board-setup` | `/learn/glossary/#board-setup` |
-| Bold Play | `bold-play` | `/learn/glossary/#bold-play` |
-| Bot | `bot` | `/learn/glossary/#bot` |
-| Box | `box` | `/learn/glossary/#box` |
-| Boxcars | `boxcars` | `/learn/glossary/#boxcars` |
-| Break a Point | `break-a-point` | `/learn/glossary/#break-a-point` |
-| Break a Prime | `break-a-prime` | `/learn/glossary/#break-a-prime` |
-| Break Contact | `break-contact` | `/learn/glossary/#break-contact` |
-| Break One's Board | `break-ones-board` | `/learn/glossary/#break-ones-board` |
-| Broken Prime | `broken-prime` | `/learn/glossary/#broken-prime` |
-| Bronstein Clock | `bronstein-clock` | `/learn/glossary/#bronstein-clock` |
-| Build One's Board | `build-ones-board` | `/learn/glossary/#build-ones-board` |
-| Builder | `builder` | `/learn/glossary/#builder` |
-| Bury a Checker | `bury-a-checker` | `/learn/glossary/#bury-a-checker` |
-| Busted Back Game | `busted-back-game` | `/learn/glossary/#busted-back-game` |
-| Bye | `bye` | `/learn/glossary/#bye` |
-| BYOB | `byob` | `/learn/glossary/#byob` |
-| Calcutta Auction | `calcutta-auction` | `/learn/glossary/#calcutta-auction` |
-| California Rule | `california-rule` | `/learn/glossary/#california-rule` |
-| Candlesticks | `candlesticks` | `/learn/glossary/#candlesticks` |
-| Captain | `captain` | `/learn/glossary/#captain` |
-| Cash a Game | `cash-a-game` | `/learn/glossary/#cash-a-game` |
-| Catchers | `catchers` | `/learn/glossary/#catchers` |
-| Centered Cube | `centered-cube` | `/learn/glossary/#centered-cube` |
-| Championship Division | `championship-division` | `/learn/glossary/#championship-division` |
-| Chase | `chase` | `/learn/glossary/#chase` |
-| Checker | `checker` | `/learn/glossary/#checker` |
-| Chouette | `chouette` | `/learn/glossary/#chouette` |
-| Clean Play | `clean-play` | `/learn/glossary/#clean-play` |
-| Clear a Point | `clear-a-point` | `/learn/glossary/#clear-a-point` |
-| Clear from the Rear | `clear-from-the-rear` | `/learn/glossary/#clear-from-the-rear` |
-| Client Software | `client-software` | `/learn/glossary/#client-software` |
-| Clock | `clock` | `/learn/glossary/#clock` |
-| Close Out | `close-out` | `/learn/glossary/#close-out` |
-| Closed Board | `closed-board` | `/learn/glossary/#closed-board` |
-| Cluster Count | `cluster-count` | `/learn/glossary/#cluster-count` |
-| Cock Shot | `cock-shot` | `/learn/glossary/#cock-shot` |
-| Cocked Dice | `cocked-dice` | `/learn/glossary/#cocked-dice` |
-| Coffeehouse | `coffeehouse` | `/learn/glossary/#coffeehouse` |
-| Combination | `combination` | `/learn/glossary/#combination` |
-| Committed Position | `committed-position` | `/learn/glossary/#committed-position` |
-| Compact Position | `compact-position` | `/learn/glossary/#compact-position` |
-| Confetti | `confetti` | `/learn/glossary/#confetti` |
-| Confidence Interval | `confidence-interval` | `/learn/glossary/#confidence-interval` |
-| Connected Position | `connected-position` | `/learn/glossary/#connected-position` |
-| Connectivity | `connectivity` | `/learn/glossary/#connectivity` |
-| Consolation Division | `consolation-division` | `/learn/glossary/#consolation-division` |
-| Consolation Flight | `consolation-flight` | `/learn/glossary/#consolation-flight` |
-| Consolidate | `consolidate` | `/learn/glossary/#consolidate` |
-| Consultation | `consultation` | `/learn/glossary/#consultation` |
-| Contact Position | `contact-position` | `/learn/glossary/#contact-position` |
-| Contain a Checker | `contain-a-checker` | `/learn/glossary/#contain-a-checker` |
-| Control the Cube | `control-the-cube` | `/learn/glossary/#control-the-cube` |
-| Convergence Value (of a Rollout) | `convergence-value-of-a-rollout` | `/learn/glossary/#convergence-value-of-a-rollout` |
-| Correspondence Games | `correspondence-games` | `/learn/glossary/#correspondence-games` |
-| Counterclockwise | `counterclockwise` | `/learn/glossary/#counterclockwise` |
-| Counterplay | `counterplay` | `/learn/glossary/#counterplay` |
-| Coup Classique | `coup-classique` | `/learn/glossary/#coup-classique` |
-| Cover a Blot | `cover-a-blot` | `/learn/glossary/#cover-a-blot` |
-| Cramped | `cramped` | `/learn/glossary/#cramped` |
-| Crawford Rule | `crawford-rule` | `/learn/glossary/#crawford-rule` |
-| Crew | `crew` | `/learn/glossary/#crew` |
-| Crossover | `crossover` | `/learn/glossary/#crossover` |
-| Crossover Count | `crossover-count` | `/learn/glossary/#crossover-count` |
-| Crunch | `crunch` | `/learn/glossary/#crunch` |
-| Cube Action | `cube-action` | `/learn/glossary/#cube-action` |
-| Cube Play | `cube-play` | `/learn/glossary/#cube-play` |
-| Cube Provocation Play | `cube-provocation-play` | `/learn/glossary/#cube-provocation-play` |
-| Cube Reference Position | `cube-reference-position` | `/learn/glossary/#cube-reference-position` |
-| Cubeful Equity | `cubeful-equity` | `/learn/glossary/#cubeful-equity` |
-| Cubeful Rollout | `cubeful-rollout` | `/learn/glossary/#cubeful-rollout` |
-| Cubeless Equity | `cubeless-equity` | `/learn/glossary/#cubeless-equity` |
-| Cubeless Probability of Winning | `cubeless-probability-of-winning` | `/learn/glossary/#cubeless-probability-of-winning` |
-| Cubeless Rollout | `cubeless-rollout` | `/learn/glossary/#cubeless-rollout` |
-| Current Stake | `current-stake` | `/learn/glossary/#current-stake` |
-| Dance | `dance` | `/learn/glossary/#dance` |
-| Dansk Backgammon Forbund (DBgF) | `dansk-backgammon-forbund-dbgf` | `/learn/glossary/#dansk-backgammon-forbund-dbgf` |
-| Dead Checker | `dead-checker` | `/learn/glossary/#dead-checker` |
-| Dead Cube | `dead-cube` | `/learn/glossary/#dead-cube` |
-| Dead Number | `dead-number` | `/learn/glossary/#dead-number` |
-| Deep | `deep` | `/learn/glossary/#deep` |
-| Deep Anchor | `deep-anchor` | `/learn/glossary/#deep-anchor` |
-| Deuce | `deuce` | `/learn/glossary/#deuce` |
-| Dice | `dice` | `/learn/glossary/#dice` |
-| Dice Cup | `dice-cup` | `/learn/glossary/#dice-cup` |
-| Dice Manipulation | `dice-manipulation` | `/learn/glossary/#dice-manipulation` |
-| Dice Mechanic | `dice-mechanic` | `/learn/glossary/#dice-mechanic` |
-| Dice Tube | `dice-tube` | `/learn/glossary/#dice-tube` |
-| Die | `die` | `/learn/glossary/#die` |
-| Digital Clock | `digital-clock` | `/learn/glossary/#digital-clock` |
-| Direct Range | `direct-range` | `/learn/glossary/#direct-range` |
-| Direct Shot | `direct-shot` | `/learn/glossary/#direct-shot` |
-| Disjointed Position | `disjointed-position` | `/learn/glossary/#disjointed-position` |
-| Distribution | `distribution` | `/learn/glossary/#distribution` |
-| Diversification | `diversification` | `/learn/glossary/#diversification` |
-| Division | `division` | `/learn/glossary/#division` |
-| Double | `double` | `/learn/glossary/#double` |
-| Double Bump | `double-bump` | `/learn/glossary/#double-bump` |
-| Double Direct Shot | `double-direct-shot` | `/learn/glossary/#double-direct-shot` |
-| Double Ducks | `double-ducks` | `/learn/glossary/#double-ducks` |
-| Double Elimination | `double-elimination` | `/learn/glossary/#double-elimination` |
-| Double Hit | `double-hit` | `/learn/glossary/#double-hit` |
-| Double Jeopardy | `double-jeopardy` | `/learn/glossary/#double-jeopardy` |
-| Double Match Point | `double-match-point` | `/learn/glossary/#double-match-point` |
-| Double Shot | `double-shot` | `/learn/glossary/#double-shot` |
-| Doubles | `doubles` | `/learn/glossary/#doubles` |
-| Doubling Cube | `doubling-cube` | `/learn/glossary/#doubling-cube` |
-| Doubling on the Come | `doubling-on-the-come` | `/learn/glossary/#doubling-on-the-come` |
-| Doubling Window | `doubling-window` | `/learn/glossary/#doubling-window` |
-| Down | `down` | `/learn/glossary/#down` |
-| Draw | `draw` | `/learn/glossary/#draw` |
-| Drop Point | `drop-point` | `/learn/glossary/#drop-point` |
-| Drop-Take | `drop-take` | `/learn/glossary/#drop-take` |
-| Dropper | `dropper` | `/learn/glossary/#dropper` |
-| Duplicate Dice | `duplicate-dice` | `/learn/glossary/#duplicate-dice` |
-| Duplicate Tournament | `duplicate-tournament` | `/learn/glossary/#duplicate-tournament` |
-| Duplication | `duplication` | `/learn/glossary/#duplication` |
-| Dutch Backgammon | `dutch-backgammon` | `/learn/glossary/#dutch-backgammon` |
-| Dyscommunication | `dyscommunication` | `/learn/glossary/#dyscommunication` |
-| Early Game | `early-game` | `/learn/glossary/#early-game` |
-| Early-Late Ratio | `early-late-ratio` | `/learn/glossary/#early-late-ratio` |
-| Edge of a Prime | `edge-of-a-prime` | `/learn/glossary/#edge-of-a-prime` |
-| Effective Pip Count | `effective-pip-count` | `/learn/glossary/#effective-pip-count` |
-| Efficient Double | `efficient-double` | `/learn/glossary/#efficient-double` |
-| Eject | `eject` | `/learn/glossary/#eject` |
-| Elimination Format | `elimination-format` | `/learn/glossary/#elimination-format` |
-| Elo Ratings System | `elo-ratings-system` | `/learn/glossary/#elo-ratings-system` |
-| EMG Equity | `emg-equity` | `/learn/glossary/#emg-equity` |
-| End Game | `end-game` | `/learn/glossary/#end-game` |
-| Enter | `enter` | `/learn/glossary/#enter` |
-| Equity | `equity` | `/learn/glossary/#equity` |
-| ER Backgammon | `er-backgammon` | `/learn/glossary/#er-backgammon` |
-| Error Rate | `error-rate` | `/learn/glossary/#error-rate` |
-| Escape | `escape` | `/learn/glossary/#escape` |
-| Establish a Point | `establish-a-point` | `/learn/glossary/#establish-a-point` |
-| Eureka | `eureka` | `/learn/glossary/#eureka` |
-| Extras | `extras` | `/learn/glossary/#extras` |
-| eXtreme Gammon | `extreme-gammon` | `/learn/glossary/#extreme-gammon` |
-| Fast Board | `fast-board` | `/learn/glossary/#fast-board` |
-| Favorite | `favorite` | `/learn/glossary/#favorite` |
-| Fevga | `fevga` | `/learn/glossary/#fevga` |
-| FIBS | `fibs` | `/learn/glossary/#fibs` |
-| FIBS Rating | `fibs-rating` | `/learn/glossary/#fibs-rating` |
-| FIBS Rating Formula | `fibs-rating-formula` | `/learn/glossary/#fibs-rating-formula` |
-| Field Goal | `field-goal` | `/learn/glossary/#field-goal` |
-| Fighter's Bracket | `fighters-bracket` | `/learn/glossary/#fighters-bracket` |
-| Finalist | `finalist` | `/learn/glossary/#finalist` |
-| Finals | `finals` | `/learn/glossary/#finals` |
-| Fischer Clock | `fischer-clock` | `/learn/glossary/#fischer-clock` |
-| Fish | `fish` | `/learn/glossary/#fish` |
-| Five-Point | `five-point` | `/learn/glossary/#five-point` |
-| Flexibility | `flexibility` | `/learn/glossary/#flexibility` |
-| Flight | `flight` | `/learn/glossary/#flight` |
-| Forced Move | `forced-move` | `/learn/glossary/#forced-move` |
-| Forward Anchor | `forward-anchor` | `/learn/glossary/#forward-anchor` |
-| Forward Game | `forward-game` | `/learn/glossary/#forward-game` |
-| Four-Point | `four-point` | `/learn/glossary/#four-point` |
-| Free Drop | `free-drop` | `/learn/glossary/#free-drop` |
-| Freeze a Builder | `freeze-a-builder` | `/learn/glossary/#freeze-a-builder` |
-| Freeze-Out Match | `freeze-out-match` | `/learn/glossary/#freeze-out-match` |
-| Front a Prime | `front-a-prime` | `/learn/glossary/#front-a-prime` |
-| Full Prime | `full-prime` | `/learn/glossary/#full-prime` |
-| Gain a Tempo | `gain-a-tempo` | `/learn/glossary/#gain-a-tempo` |
-| Game Plan | `game-plan` | `/learn/glossary/#game-plan` |
-| Game Winning Chances | `game-winning-chances` | `/learn/glossary/#game-winning-chances` |
-| Gamesmanship | `gamesmanship` | `/learn/glossary/#gamesmanship` |
-| Gammon | `gammon` | `/learn/glossary/#gammon` |
-| Gammon Count | `gammon-count` | `/learn/glossary/#gammon-count` |
-| Gammon Cube | `gammon-cube` | `/learn/glossary/#gammon-cube` |
-| Gammon Price | `gammon-price` | `/learn/glossary/#gammon-price` |
-| Gammon Rate | `gammon-rate` | `/learn/glossary/#gammon-rate` |
-| Gammon Vigorish (Vig) | `gammon-vigorish-vig` | `/learn/glossary/#gammon-vigorish-vig` |
-| Gammon-Go | `gammon-go` | `/learn/glossary/#gammon-go` |
-| Gammon-Save | `gammon-save` | `/learn/glossary/#gammon-save` |
-| Gammonish | `gammonish` | `/learn/glossary/#gammonish` |
-| Gap | `gap` | `/learn/glossary/#gap` |
-| Gin Position | `gin-position` | `/learn/glossary/#gin-position` |
-| Gioul | `gioul` | `/learn/glossary/#gioul` |
-| Give a Little Present to | `give-a-little-present-to` | `/learn/glossary/#give-a-little-present-to` |
-| Giving for Game | `giving-for-game` | `/learn/glossary/#giving-for-game` |
-| GNU Backgammon | `gnu-backgammon` | `/learn/glossary/#gnu-backgammon` |
-| Golden Point | `golden-point` | `/learn/glossary/#golden-point` |
-| Greedy Bearoff | `greedy-bearoff` | `/learn/glossary/#greedy-bearoff` |
-| Guff (Guffy) | `guff-guffy` | `/learn/glossary/#guff-guffy` |
-| Gul Bara | `gul-bara` | `/learn/glossary/#gul-bara` |
-| Half a Roll | `half-a-roll` | `/learn/glossary/#half-a-roll` |
-| Half-Crossover Method | `half-crossover-method` | `/learn/glossary/#half-crossover-method` |
-| Handicap | `handicap` | `/learn/glossary/#handicap` |
-| Head-to-Head | `head-to-head` | `/learn/glossary/#head-to-head` |
-| Heavy Point | `heavy-point` | `/learn/glossary/#heavy-point` |
-| Hedge | `hedge` | `/learn/glossary/#hedge` |
-| Hit | `hit` | `/learn/glossary/#hit` |
-| Hit and Cover | `hit-and-cover` | `/learn/glossary/#hit-and-cover` |
-| Hit and Split | `hit-and-split` | `/learn/glossary/#hit-and-split` |
-| Hit Off the Edge of a Prime | `hit-off-the-edge-of-a-prime` | `/learn/glossary/#hit-off-the-edge-of-a-prime` |
-| Holding Game | `holding-game` | `/learn/glossary/#holding-game` |
-| Holland Rule | `holland-rule` | `/learn/glossary/#holland-rule` |
-| Home Board | `home-board` | `/learn/glossary/#home-board` |
-| Horizon | `horizon` | `/learn/glossary/#horizon` |
-| Hustler | `hustler` | `/learn/glossary/#hustler` |
-| Hyper-Backgammon | `hyper-backgammon` | `/learn/glossary/#hyper-backgammon` |
-| Illegal Move | `illegal-move` | `/learn/glossary/#illegal-move` |
-| Illegal Moves Rule | `illegal-moves-rule` | `/learn/glossary/#illegal-moves-rule` |
-| Illegal Position | `illegal-position` | `/learn/glossary/#illegal-position` |
-| Inactive Builder | `inactive-builder` | `/learn/glossary/#inactive-builder` |
-| Indirect Hit | `indirect-hit` | `/learn/glossary/#indirect-hit` |
-| Indirect Shot | `indirect-shot` | `/learn/glossary/#indirect-shot` |
-| Initial Double | `initial-double` | `/learn/glossary/#initial-double` |
-| Initial Stake | `initial-stake` | `/learn/glossary/#initial-stake` |
-| Initiative | `initiative` | `/learn/glossary/#initiative` |
-| Intermediate Division | `intermediate-division` | `/learn/glossary/#intermediate-division` |
-| Intermediate Level | `intermediate-level` | `/learn/glossary/#intermediate-level` |
-| Irish | `irish` | `/learn/glossary/#irish` |
-| Jackpot | `jackpot` | `/learn/glossary/#jackpot` |
-| Jacoby Paradox | `jacoby-paradox` | `/learn/glossary/#jacoby-paradox` |
-| Jacoby Rule | `jacoby-rule` | `/learn/glossary/#jacoby-rule` |
-| Jacquet | `jacquet` | `/learn/glossary/#jacquet` |
-| Janowski's Formula | `janowskis-formula` | `/learn/glossary/#janowskis-formula` |
-| Janowski's Formulas | `janowskis-formulas` | `/learn/glossary/#janowskis-formulas` |
-| Janowski's Takepoint Formula | `janowskis-takepoint-formula` | `/learn/glossary/#janowskis-takepoint-formula` |
-| Jellyfish | `jellyfish` | `/learn/glossary/#jellyfish` |
-| Jeopardy | `jeopardy` | `/learn/glossary/#jeopardy` |
-| Joint Standard Deviation | `joint-standard-deviation` | `/learn/glossary/#joint-standard-deviation` |
-| Joker | `joker` | `/learn/glossary/#joker` |
-| Junior | `junior` | `/learn/glossary/#junior` |
-| Kauder Paradox | `kauder-paradox` | `/learn/glossary/#kauder-paradox` |
-| Keith Count | `keith-count` | `/learn/glossary/#keith-count` |
-| Key Point | `key-point` | `/learn/glossary/#key-point` |
-| Kibitz | `kibitz` | `/learn/glossary/#kibitz` |
-| Kibitzer | `kibitzer` | `/learn/glossary/#kibitzer` |
-| Kill a Checker | `kill-a-checker` | `/learn/glossary/#kill-a-checker` |
-| Kill a Number | `kill-a-number` | `/learn/glossary/#kill-a-number` |
-| Kleinman Doubling Formula | `kleinman-doubling-formula` | `/learn/glossary/#kleinman-doubling-formula` |
-| Ladder | `ladder` | `/learn/glossary/#ladder` |
-| Last Call for Breakfast | `last-call-for-breakfast` | `/learn/glossary/#last-call-for-breakfast` |
-| Last Chance Event | `last-chance-event` | `/learn/glossary/#last-chance-event` |
-| Last Roll Position | `last-roll-position` | `/learn/glossary/#last-roll-position` |
-| Latto Paradox | `latto-paradox` | `/learn/glossary/#latto-paradox` |
-| Leader | `leader` | `/learn/glossary/#leader` |
-| Leave a Shot | `leave-a-shot` | `/learn/glossary/#leave-a-shot` |
-| Legal Move | `legal-move` | `/learn/glossary/#legal-move` |
-| Legal Moves Rule | `legal-moves-rule` | `/learn/glossary/#legal-moves-rule` |
-| Liability | `liability` | `/learn/glossary/#liability` |
-| Liby's Rule | `libys-rule` | `/learn/glossary/#libys-rule` |
-| Lipped Cup | `lipped-cup` | `/learn/glossary/#lipped-cup` |
-| Live-Cube Rollout | `live-cube-rollout` | `/learn/glossary/#live-cube-rollout` |
-| Loaded Dice | `loaded-dice` | `/learn/glossary/#loaded-dice` |
-| Long Backgammon | `long-backgammon` | `/learn/glossary/#long-backgammon` |
-| Loose Hit | `loose-hit` | `/learn/glossary/#loose-hit` |
-| Lose One's Market | `lose-ones-market` | `/learn/glossary/#lose-ones-market` |
-| Lover's Leap | `lovers-leap` | `/learn/glossary/#lovers-leap` |
-| Luck Factor | `luck-factor` | `/learn/glossary/#luck-factor` |
-| Luck Reduction | `luck-reduction` | `/learn/glossary/#luck-reduction` |
-| Made Point | `made-point` | `/learn/glossary/#made-point` |
-| Magriel's Safe-Bold Criteria | `magriels-safe-bold-criteria` | `/learn/glossary/#magriels-safe-bold-criteria` |
-| Main Division | `main-division` | `/learn/glossary/#main-division` |
-| Main Flight | `main-flight` | `/learn/glossary/#main-flight` |
-| Major Split | `major-split` | `/learn/glossary/#major-split` |
-| Make a Point | `make-a-point` | `/learn/glossary/#make-a-point` |
-| Man in the Box | `man-in-the-box` | `/learn/glossary/#man-in-the-box` |
-| Mandatory Beavers | `mandatory-beavers` | `/learn/glossary/#mandatory-beavers` |
-| Mandatory Double | `mandatory-double` | `/learn/glossary/#mandatory-double` |
-| Mandatory Extras | `mandatory-extras` | `/learn/glossary/#mandatory-extras` |
-| Mandatory Take | `mandatory-take` | `/learn/glossary/#mandatory-take` |
-| Manny Wong Proposition | `manny-wong-proposition` | `/learn/glossary/#manny-wong-proposition` |
-| Market (for a Double) | `market-for-a-double` | `/learn/glossary/#market-for-a-double` |
-| Market Gainer | `market-gainer` | `/learn/glossary/#market-gainer` |
-| Market Loser | `market-loser` | `/learn/glossary/#market-loser` |
-| Market Losing Sequence | `market-losing-sequence` | `/learn/glossary/#market-losing-sequence` |
-| Match | `match` | `/learn/glossary/#match` |
-| Match Equity | `match-equity` | `/learn/glossary/#match-equity` |
-| Match Equity Table | `match-equity-table` | `/learn/glossary/#match-equity-table` |
-| Match Play | `match-play` | `/learn/glossary/#match-play` |
-| Match Winning Chances | `match-winning-chances` | `/learn/glossary/#match-winning-chances` |
-| Material | `material` | `/learn/glossary/#material` |
-| Mechanical Play | `mechanical-play` | `/learn/glossary/#mechanical-play` |
-| Mental Shift | `mental-shift` | `/learn/glossary/#mental-shift` |
-| Mexican Backgammon | `mexican-backgammon` | `/learn/glossary/#mexican-backgammon` |
-| Meyer Dice Tube | `meyer-dice-tube` | `/learn/glossary/#meyer-dice-tube` |
-| Mid-Point | `mid-point` | `/learn/glossary/#mid-point` |
-| Middle Game | `middle-game` | `/learn/glossary/#middle-game` |
-| Minor Split | `minor-split` | `/learn/glossary/#minor-split` |
-| Misere | `misere` | `/learn/glossary/#misere` |
-| Mixed Roll | `mixed-roll` | `/learn/glossary/#mixed-roll` |
-| Mobility | `mobility` | `/learn/glossary/#mobility` |
-| Modern Backgammon | `modern-backgammon` | `/learn/glossary/#modern-backgammon` |
-| Money Management | `money-management` | `/learn/glossary/#money-management` |
-| Money Play | `money-play` | `/learn/glossary/#money-play` |
-| Monte Carlo | `monte-carlo` | `/learn/glossary/#monte-carlo` |
-| Motif | `motif` | `/learn/glossary/#motif` |
-| Moultezim | `moultezim` | `/learn/glossary/#moultezim` |
-| Move | `move` | `/learn/glossary/#move` |
-| Move Down | `move-down` | `/learn/glossary/#move-down` |
-| Move Out | `move-out` | `/learn/glossary/#move-out` |
-| Move Up | `move-up` | `/learn/glossary/#move-up` |
-| Mutual Holding Game | `mutual-holding-game` | `/learn/glossary/#mutual-holding-game` |
-| N-Point Board | `n-point-board` | `/learn/glossary/#n-point-board` |
-| N-Roll Position | `n-roll-position` | `/learn/glossary/#n-roll-position` |
-| Nack Blitz | `nack-blitz` | `/learn/glossary/#nack-blitz` |
-| Nackgammon | `nackgammon` | `/learn/glossary/#nackgammon` |
-| Nactation | `nactation` | `/learn/glossary/#nactation` |
-| Narde | `narde` | `/learn/glossary/#narde` |
-| Neil's Numbers | `neils-numbers` | `/learn/glossary/#neils-numbers` |
-| Neural Network (Neural Net) | `neural-network-neural-net` | `/learn/glossary/#neural-network-neural-net` |
-| Next | `next` | `/learn/glossary/#next` |
-| No Dice | `no-dice` | `/learn/glossary/#no-dice` |
-| No-Brainer | `no-brainer` | `/learn/glossary/#no-brainer` |
-| Noncommitted Position | `noncommitted-position` | `/learn/glossary/#noncommitted-position` |
-| Nonprogressive Consolation | `nonprogressive-consolation` | `/learn/glossary/#nonprogressive-consolation` |
-| Norges Backgammonforbund (NBGF) | `norges-backgammonforbund-nbgf` | `/learn/glossary/#norges-backgammonforbund-nbgf` |
-| Normal Game | `normal-game` | `/learn/glossary/#normal-game` |
-| Normalized Match Score | `normalized-match-score` | `/learn/glossary/#normalized-match-score` |
-| Notation | `notation` | `/learn/glossary/#notation` |
-| Novice Division | `novice-division` | `/learn/glossary/#novice-division` |
-| Novice Level | `novice-level` | `/learn/glossary/#novice-level` |
-| Nullo Play | `nullo-play` | `/learn/glossary/#nullo-play` |
-| Odds | `odds` | `/learn/glossary/#odds` |
-| On Roll | `on-roll` | `/learn/glossary/#on-roll` |
-| On the Bar | `on-the-bar` | `/learn/glossary/#on-the-bar` |
-| On Tilt | `on-tilt` | `/learn/glossary/#on-tilt` |
-| One-Checker Model | `one-checker-model` | `/learn/glossary/#one-checker-model` |
-| One-Point | `one-point` | `/learn/glossary/#one-point` |
-| One-Point Match | `one-point-match` | `/learn/glossary/#one-point-match` |
-| One-Sided Bearoff Database | `one-sided-bearoff-database` | `/learn/glossary/#one-sided-bearoff-database` |
-| Online Backgammon | `online-backgammon` | `/learn/glossary/#online-backgammon` |
-| Open Division | `open-division` | `/learn/glossary/#open-division` |
-| Open Point | `open-point` | `/learn/glossary/#open-point` |
-| Open Tournament | `open-tournament` | `/learn/glossary/#open-tournament` |
-| Opening Game | `opening-game` | `/learn/glossary/#opening-game` |
-| Opening Roll | `opening-roll` | `/learn/glossary/#opening-roll` |
-| Optional Reroll Rule | `optional-reroll-rule` | `/learn/glossary/#optional-reroll-rule` |
-| Otter | `otter` | `/learn/glossary/#otter` |
-| Outer Board | `outer-board` | `/learn/glossary/#outer-board` |
-| Outer Checkers | `outer-checkers` | `/learn/glossary/#outer-checkers` |
-| Outer Table | `outer-table` | `/learn/glossary/#outer-table` |
-| Outfield | `outfield` | `/learn/glossary/#outfield` |
-| Outside Prime | `outside-prime` | `/learn/glossary/#outside-prime` |
-| Over the Board | `over-the-board` | `/learn/glossary/#over-the-board` |
-| Overage | `overage` | `/learn/glossary/#overage` |
-| Overplay | `overplay` | `/learn/glossary/#overplay` |
-| Own a Point | `own-a-point` | `/learn/glossary/#own-a-point` |
-| Own the Cube | `own-the-cube` | `/learn/glossary/#own-the-cube` |
-| Parlay | `parlay` | `/learn/glossary/#parlay` |
-| Partial Prime | `partial-prime` | `/learn/glossary/#partial-prime` |
-| Partner for the Box | `partner-for-the-box` | `/learn/glossary/#partner-for-the-box` |
-| Pass | `pass` | `/learn/glossary/#pass` |
-| Pay Later | `pay-later` | `/learn/glossary/#pay-later` |
-| Pay Now | `pay-now` | `/learn/glossary/#pay-now` |
-| Pay-Now-Or-Pay-Later Decision | `pay-now-or-pay-later-decision` | `/learn/glossary/#pay-now-or-pay-later-decision` |
-| Perfecta | `perfecta` | `/learn/glossary/#perfecta` |
-| Pick and Pass | `pick-and-pass` | `/learn/glossary/#pick-and-pass` |
-| Pigeon | `pigeon` | `/learn/glossary/#pigeon` |
-| Pip | `pip` | `/learn/glossary/#pip` |
-| Pip Count | `pip-count` | `/learn/glossary/#pip-count` |
-| Plakoto | `plakoto` | `/learn/glossary/#plakoto` |
-| Play | `play` | `/learn/glossary/#play` |
-| Play Site | `play-site` | `/learn/glossary/#play-site` |
-| Player's Privilege | `players-privilege` | `/learn/glossary/#players-privilege` |
-| Ply | `ply` | `/learn/glossary/#ply` |
-| Point | `point` | `/learn/glossary/#point` |
-| Point Game | `point-game` | `/learn/glossary/#point-game` |
-| Point on a Blot | `point-on-a-blot` | `/learn/glossary/#point-on-a-blot` |
-| Points per Game | `points-per-game` | `/learn/glossary/#points-per-game` |
-| Poof | `poof` | `/learn/glossary/#poof` |
-| Portes | `portes` | `/learn/glossary/#portes` |
-| Position | `position` | `/learn/glossary/#position` |
-| Position Card | `position-card` | `/learn/glossary/#position-card` |
-| Positional Play | `positional-play` | `/learn/glossary/#positional-play` |
-| Post Mortem | `post-mortem` | `/learn/glossary/#post-mortem` |
-| Post-Crawford | `post-crawford` | `/learn/glossary/#post-crawford` |
-| Pottle's Law | `pottles-law` | `/learn/glossary/#pottles-law` |
-| PRAT | `prat` | `/learn/glossary/#prat` |
-| Pre-Crawford | `pre-crawford` | `/learn/glossary/#pre-crawford` |
-| Precision Dice | `precision-dice` | `/learn/glossary/#precision-dice` |
-| Preclear | `preclear` | `/learn/glossary/#preclear` |
-| Premature Burial | `premature-burial` | `/learn/glossary/#premature-burial` |
-| Premature Roll | `premature-roll` | `/learn/glossary/#premature-roll` |
-| Pressure | `pressure` | `/learn/glossary/#pressure` |
-| Prime | `prime` | `/learn/glossary/#prime` |
-| Prime Fighter | `prime-fighter` | `/learn/glossary/#prime-fighter` |
-| Prime-vs-Prime | `prime-vs-prime` | `/learn/glossary/#prime-vs-prime` |
-| Primed | `primed` | `/learn/glossary/#primed` |
-| Priming Game | `priming-game` | `/learn/glossary/#priming-game` |
-| Progressive Consolation | `progressive-consolation` | `/learn/glossary/#progressive-consolation` |
-| Proposition | `proposition` | `/learn/glossary/#proposition` |
-| Proxy | `proxy` | `/learn/glossary/#proxy` |
-| Pure Play | `pure-play` | `/learn/glossary/#pure-play` |
-| Pure Race | `pure-race` | `/learn/glossary/#pure-race` |
-| Quadrant | `quadrant` | `/learn/glossary/#quadrant` |
-| Quads | `quads` | `/learn/glossary/#quads` |
-| Quarter Entry | `quarter-entry` | `/learn/glossary/#quarter-entry` |
-| Quasi-Random Dice | `quasi-random-dice` | `/learn/glossary/#quasi-random-dice` |
-| Quiet Play | `quiet-play` | `/learn/glossary/#quiet-play` |
-| Quiz Factor | `quiz-factor` | `/learn/glossary/#quiz-factor` |
-| Raccoon | `raccoon` | `/learn/glossary/#raccoon` |
-| Race | `race` | `/learn/glossary/#race` |
-| Race Equity | `race-equity` | `/learn/glossary/#race-equity` |
-| Railroad Tracks | `railroad-tracks` | `/learn/glossary/#railroad-tracks` |
-| Rake | `rake` | `/learn/glossary/#rake` |
-| Random Error (in a Rollout) | `random-error-in-a-rollout` | `/learn/glossary/#random-error-in-a-rollout` |
-| Random Seed | `random-seed` | `/learn/glossary/#random-seed` |
-| Rated Match | `rated-match` | `/learn/glossary/#rated-match` |
-| Rating | `rating` | `/learn/glossary/#rating` |
-| Rating Points | `rating-points` | `/learn/glossary/#rating-points` |
-| Ratings Inflation | `ratings-inflation` | `/learn/glossary/#ratings-inflation` |
-| Ratings Pool | `ratings-pool` | `/learn/glossary/#ratings-pool` |
-| Ratings System | `ratings-system` | `/learn/glossary/#ratings-system` |
-| Raw Take Point | `raw-take-point` | `/learn/glossary/#raw-take-point` |
-| Recirculate | `recirculate` | `/learn/glossary/#recirculate` |
-| Recube Vigorish (Vig) | `recube-vigorish-vig` | `/learn/glossary/#recube-vigorish-vig` |
-| Redouble | `redouble` | `/learn/glossary/#redouble` |
-| Reference Position | `reference-position` | `/learn/glossary/#reference-position` |
-| Resign | `resign` | `/learn/glossary/#resign` |
-| Response | `response` | `/learn/glossary/#response` |
-| Return Shot | `return-shot` | `/learn/glossary/#return-shot` |
-| Robustness | `robustness` | `/learn/glossary/#robustness` |
-| Roll | `roll` | `/learn/glossary/#roll` |
-| Roll a Prime | `roll-a-prime` | `/learn/glossary/#roll-a-prime` |
-| Roll-Over | `roll-over` | `/learn/glossary/#roll-over` |
-| Rollout | `rollout` | `/learn/glossary/#rollout` |
-| Root Number | `root-number` | `/learn/glossary/#root-number` |
-| Round | `round` | `/learn/glossary/#round` |
-| Round Robin Format | `round-robin-format` | `/learn/glossary/#round-robin-format` |
-| Run | `run` | `/learn/glossary/#run` |
-| Runner | `runner` | `/learn/glossary/#runner` |
-| Running Game | `running-game` | `/learn/glossary/#running-game` |
-| Russian Backgammon | `russian-backgammon` | `/learn/glossary/#russian-backgammon` |
-| Safe | `safe` | `/learn/glossary/#safe` |
-| Safe Play | `safe-play` | `/learn/glossary/#safe-play` |
-| Safety a Checker | `safety-a-checker` | `/learn/glossary/#safety-a-checker` |
-| Safety Up | `safety-up` | `/learn/glossary/#safety-up` |
-| Sandbag | `sandbag` | `/learn/glossary/#sandbag` |
-| Save a Number | `save-a-number` | `/learn/glossary/#save-a-number` |
-| Save Backgammon | `save-backgammon` | `/learn/glossary/#save-backgammon` |
-| Save Gammon | `save-gammon` | `/learn/glossary/#save-gammon` |
-| Seeded Player | `seeded-player` | `/learn/glossary/#seeded-player` |
-| Semiactive Builder | `semiactive-builder` | `/learn/glossary/#semiactive-builder` |
-| Semifinalist | `semifinalist` | `/learn/glossary/#semifinalist` |
-| Semifinals | `semifinals` | `/learn/glossary/#semifinals` |
-| Settlement | `settlement` | `/learn/glossary/#settlement` |
-| Settlement Limit | `settlement-limit` | `/learn/glossary/#settlement-limit` |
-| Shake | `shake` | `/learn/glossary/#shake` |
-| Shark | `shark` | `/learn/glossary/#shark` |
-| Shesh Besh | `shesh-besh` | `/learn/glossary/#shesh-besh` |
-| Shift Gears | `shift-gears` | `/learn/glossary/#shift-gears` |
-| Shift Points | `shift-points` | `/learn/glossary/#shift-points` |
-| Shot | `shot` | `/learn/glossary/#shot` |
-| Side Pool | `side-pool` | `/learn/glossary/#side-pool` |
-| Silver Point | `silver-point` | `/learn/glossary/#silver-point` |
-| Simple Direct Shot | `simple-direct-shot` | `/learn/glossary/#simple-direct-shot` |
-| Single Elimination | `single-elimination` | `/learn/glossary/#single-elimination` |
-| Single Game | `single-game` | `/learn/glossary/#single-game` |
-| Single Shot | `single-shot` | `/learn/glossary/#single-shot` |
-| Six-Point | `six-point` | `/learn/glossary/#six-point` |
-| Slot | `slot` | `/learn/glossary/#slot` |
-| Slot and Split | `slot-and-split` | `/learn/glossary/#slot-and-split` |
-| Small Play | `small-play` | `/learn/glossary/#small-play` |
-| Snake | `snake` | `/learn/glossary/#snake` |
-| Snake Eyes | `snake-eyes` | `/learn/glossary/#snake-eyes` |
-| Snowie | `snowie` | `/learn/glossary/#snowie` |
-| Solid Prime | `solid-prime` | `/learn/glossary/#solid-prime` |
-| Spare Checker | `spare-checker` | `/learn/glossary/#spare-checker` |
-| Speed Board | `speed-board` | `/learn/glossary/#speed-board` |
-| Split | `split` | `/learn/glossary/#split` |
-| Splot | `splot` | `/learn/glossary/#splot` |
-| Squeeze | `squeeze` | `/learn/glossary/#squeeze` |
-| Stack | `stack` | `/learn/glossary/#stack` |
-| Staine's Rule | `staines-rule` | `/learn/glossary/#staines-rule` |
-| Stake | `stake` | `/learn/glossary/#stake` |
-| Standard Deviation | `standard-deviation` | `/learn/glossary/#standard-deviation` |
-| Start a Point | `start-a-point` | `/learn/glossary/#start-a-point` |
-| Starting Position | `starting-position` | `/learn/glossary/#starting-position` |
-| Stay Back | `stay-back` | `/learn/glossary/#stay-back` |
-| Steam | `steam` | `/learn/glossary/#steam` |
-| Steamer | `steamer` | `/learn/glossary/#steamer` |
-| Stop Pot | `stop-pot` | `/learn/glossary/#stop-pot` |
-| Straggler | `straggler` | `/learn/glossary/#straggler` |
-| Strategy | `strategy` | `/learn/glossary/#strategy` |
-| Stretched | `stretched` | `/learn/glossary/#stretched` |
-| Strip a Point | `strip-a-point` | `/learn/glossary/#strip-a-point` |
-| Stripped | `stripped` | `/learn/glossary/#stripped` |
-| Stroke | `stroke` | `/learn/glossary/#stroke` |
-| Strong Board | `strong-board` | `/learn/glossary/#strong-board` |
-| Structural Play | `structural-play` | `/learn/glossary/#structural-play` |
-| Suicide Play | `suicide-play` | `/learn/glossary/#suicide-play` |
-| Svenska Backgammonförbundet (SBGF) | `svenska-backgammonforbundet-sbgf` | `/learn/glossary/#svenska-backgammonforbundet-sbgf` |
-| Swedish Tables | `swedish-tables` | `/learn/glossary/#swedish-tables` |
-| Swing | `swing` | `/learn/glossary/#swing` |
-| Swiss Format | `swiss-format` | `/learn/glossary/#swiss-format` |
-| Swiss-Cheese Formation | `swiss-cheese-formation` | `/learn/glossary/#swiss-cheese-formation` |
-| Switch Points | `switch-points` | `/learn/glossary/#switch-points` |
-| Sydney | `sydney` | `/learn/glossary/#sydney` |
-| Systematic Error | `systematic-error` | `/learn/glossary/#systematic-error` |
-| Table | `table` | `/learn/glossary/#table` |
-| Table Stakes | `table-stakes` | `/learn/glossary/#table-stakes` |
-| Tables | `tables` | `/learn/glossary/#tables` |
-| Tabula | `tabula` | `/learn/glossary/#tabula` |
-| Tactics | `tactics` | `/learn/glossary/#tactics` |
-| Tailgate | `tailgate` | `/learn/glossary/#tailgate` |
-| Take | `take` | `/learn/glossary/#take` |
-| Take Point | `take-point` | `/learn/glossary/#take-point` |
-| Take/Drop Proposition | `take-drop-proposition` | `/learn/glossary/#take-drop-proposition` |
-| Takhteh | `takhteh` | `/learn/glossary/#takhteh` |
-| Tapa | `tapa` | `/learn/glossary/#tapa` |
-| Tavla | `tavla` | `/learn/glossary/#tavla` |
-| Tavli | `tavli` | `/learn/glossary/#tavli` |
-| TD-Gammon | `td-gammon` | `/learn/glossary/#td-gammon` |
-| Team | `team` | `/learn/glossary/#team` |
-| Technical Play | `technical-play` | `/learn/glossary/#technical-play` |
-| Tell | `tell` | `/learn/glossary/#tell` |
-| Temperature Map | `temperature-map` | `/learn/glossary/#temperature-map` |
-| Tempo | `tempo` | `/learn/glossary/#tempo` |
-| Tempo Move | `tempo-move` | `/learn/glossary/#tempo-move` |
-| Tempt | `tempt` | `/learn/glossary/#tempt` |
-| Thorp Count | `thorp-count` | `/learn/glossary/#thorp-count` |
-| Three-Point | `three-point` | `/learn/glossary/#three-point` |
-| Throw | `throw` | `/learn/glossary/#throw` |
-| Time | `time` | `/learn/glossary/#time` |
-| Time Delay | `time-delay` | `/learn/glossary/#time-delay` |
-| Timing | `timing` | `/learn/glossary/#timing` |
-| Too Good (to Double) | `too-good-to-double` | `/learn/glossary/#too-good-to-double` |
-| Too Many Points | `too-many-points` | `/learn/glossary/#too-many-points` |
-| Touch Down | `touch-down` | `/learn/glossary/#touch-down` |
-| Touch Move Rule | `touch-move-rule` | `/learn/glossary/#touch-move-rule` |
-| Tournament | `tournament` | `/learn/glossary/#tournament` |
-| Tournament Director | `tournament-director` | `/learn/glossary/#tournament-director` |
-| Tourne-Case | `tourne-case` | `/learn/glossary/#tourne-case` |
-| Trailer | `trailer` | `/learn/glossary/#trailer` |
-| Transposition | `transposition` | `/learn/glossary/#transposition` |
-| Trap Play | `trap-play` | `/learn/glossary/#trap-play` |
-| Trial (of a Rollout) | `trial-of-a-rollout` | `/learn/glossary/#trial-of-a-rollout` |
-| Trice Count | `trice-count` | `/learn/glossary/#trice-count` |
-| Trice Triangle | `trice-triangle` | `/learn/glossary/#trice-triangle` |
-| Trictrac | `trictrac` | `/learn/glossary/#trictrac` |
-| Truncated Rollout | `truncated-rollout` | `/learn/glossary/#truncated-rollout` |
-| Turn | `turn` | `/learn/glossary/#turn` |
-| Turn the Corner | `turn-the-corner` | `/learn/glossary/#turn-the-corner` |
-| Turner's Formula | `turners-formula` | `/learn/glossary/#turners-formula` |
-| Tutor Mode | `tutor-mode` | `/learn/glossary/#tutor-mode` |
-| Two-Down | `two-down` | `/learn/glossary/#two-down` |
-| Two-Point | `two-point` | `/learn/glossary/#two-point` |
-| Two-Sided Bearoff Database | `two-sided-bearoff-database` | `/learn/glossary/#two-sided-bearoff-database` |
-| Under the Gun | `under-the-gun` | `/learn/glossary/#under-the-gun` |
-| Underdog | `underdog` | `/learn/glossary/#underdog` |
-| Underplay | `underplay` | `/learn/glossary/#underplay` |
-| Undoubled Gammon | `undoubled-gammon` | `/learn/glossary/#undoubled-gammon` |
-| United States Backgammon Federation (USBGF) | `united-states-backgammon-federation-usbgf` | `/learn/glossary/#united-states-backgammon-federation-usbgf` |
-| Unlimited Game | `unlimited-game` | `/learn/glossary/#unlimited-game` |
-| Unstack | `unstack` | `/learn/glossary/#unstack` |
-| Variance (of a Rollout) | `variance-of-a-rollout` | `/learn/glossary/#variance-of-a-rollout` |
-| Variance Reduction | `variance-reduction` | `/learn/glossary/#variance-reduction` |
-| Variant | `variant` | `/learn/glossary/#variant` |
-| Vidos | `vidos` | `/learn/glossary/#vidos` |
-| Vigorish | `vigorish` | `/learn/glossary/#vigorish` |
-| Volatility | `volatility` | `/learn/glossary/#volatility` |
-| Voluntary Double | `voluntary-double` | `/learn/glossary/#voluntary-double` |
-| Volunteer a Shot | `volunteer-a-shot` | `/learn/glossary/#volunteer-a-shot` |
-| Ward Count | `ward-count` | `/learn/glossary/#ward-count` |
-| Wash | `wash` | `/learn/glossary/#wash` |
-| Wastage | `wastage` | `/learn/glossary/#wastage` |
-| WBA | `wba` | `/learn/glossary/#wba` |
-| WBF | `wbf` | `/learn/glossary/#wbf` |
-| Weaver Coup | `weaver-coup` | `/learn/glossary/#weaver-coup` |
-| Whopper | `whopper` | `/learn/glossary/#whopper` |
-| Wisecarver Paradox | `wisecarver-paradox` | `/learn/glossary/#wisecarver-paradox` |
-| Woolseys Law for Doubling | `woolseys-law-for-doubling` | `/learn/glossary/#woolseys-law-for-doubling` |
-| X-22 | `x-22` | `/learn/glossary/#x-22` |
-| Zone of Attack | `zone-of-attack` | `/learn/glossary/#zone-of-attack` |
+| 10 in the Zone | `10-in-the-zone` | `/glossary/#10-in-the-zone` |
+| 10-Percent Doubling Rule | `10-percent-doubling-rule` | `/glossary/#10-percent-doubling-rule` |
+| 25 Percent Rule | `25-percent-rule` | `/glossary/#25-percent-rule` |
+| 8-9-12 Doubling Rule | `8-9-12-doubling-rule` | `/glossary/#8-9-12-doubling-rule` |
+| ABT | `abt` | `/glossary/#abt` |
+| Ace | `ace` | `/glossary/#ace` |
+| Ace-Point Game | `ace-point-game` | `/glossary/#ace-point-game` |
+| Acey-Deucey | `acey-deucey` | `/glossary/#acey-deucey` |
+| Acting Captain | `acting-captain` | `/glossary/#acting-captain` |
+| Action Play | `action-play` | `/glossary/#action-play` |
+| Action Position | `action-position` | `/glossary/#action-position` |
+| Active Builder | `active-builder` | `/glossary/#active-builder` |
+| Advanced Anchor | `advanced-anchor` | `/glossary/#advanced-anchor` |
+| Advanced Level | `advanced-level` | `/glossary/#advanced-level` |
+| Ahead in the Count | `ahead-in-the-count` | `/glossary/#ahead-in-the-count` |
+| Ammunition | `ammunition` | `/glossary/#ammunition` |
+| Analog Clock | `analog-clock` | `/glossary/#analog-clock` |
+| Anchor | `anchor` | `/glossary/#anchor` |
+| Annotated Match | `annotated-match` | `/glossary/#annotated-match` |
+| Annotation | `annotation` | `/glossary/#annotation` |
+| Anti-Joker | `anti-joker` | `/glossary/#anti-joker` |
+| Army | `army` | `/glossary/#army` |
+| Around the Corner | `around-the-corner` | `/glossary/#around-the-corner` |
+| Asset | `asset` | `/glossary/#asset` |
+| Attack | `attack` | `/glossary/#attack` |
+| Attack Zone | `attack-zone` | `/glossary/#attack-zone` |
+| Attacking Game | `attacking-game` | `/glossary/#attacking-game` |
+| Automatic Doubles | `automatic-doubles` | `/glossary/#automatic-doubles` |
+| Awkward Number | `awkward-number` | `/glossary/#awkward-number` |
+| Back Game | `back-game` | `/glossary/#back-game` |
+| Backgammon | `backgammon` | `/glossary/#backgammon` |
+| Backgammon Board | `backgammon-board` | `/glossary/#backgammon-board` |
+| Backgammon Server | `backgammon-server` | `/glossary/#backgammon-server` |
+| Baffle Box | `baffle-box` | `/glossary/#baffle-box` |
+| Bakelite | `bakelite` | `/glossary/#bakelite` |
+| Banana Split | `banana-split` | `/glossary/#banana-split` |
+| Bankroll | `bankroll` | `/glossary/#bankroll` |
+| Bar | `bar` | `/glossary/#bar` |
+| Bar-Point | `bar-point` | `/glossary/#bar-point` |
+| Barabino | `barabino` | `/glossary/#barabino` |
+| Battle of Primes | `battle-of-primes` | `/glossary/#battle-of-primes` |
+| Bear In | `bear-in` | `/glossary/#bear-in` |
+| Bear Off | `bear-off` | `/glossary/#bear-off` |
+| Bearoff Database | `bearoff-database` | `/glossary/#bearoff-database` |
+| Beaver | `beaver` | `/glossary/#beaver` |
+| Behind in the Race | `behind-in-the-race` | `/glossary/#behind-in-the-race` |
+| Bertha | `bertha` | `/glossary/#bertha` |
+| BIBA | `biba` | `/glossary/#biba` |
+| Big Play | `big-play` | `/glossary/#big-play` |
+| Blitz | `blitz` | `/glossary/#blitz` |
+| Block | `block` | `/glossary/#block` |
+| Blockade | `blockade` | `/glossary/#blockade` |
+| Blocking Game | `blocking-game` | `/glossary/#blocking-game` |
+| Blot | `blot` | `/glossary/#blot` |
+| Blot-Hitting Contest | `blot-hitting-contest` | `/glossary/#blot-hitting-contest` |
+| Blue game | `blue-game` | `/glossary/#blue-game` |
+| Blunder | `blunder` | `/glossary/#blunder` |
+| Board Setup | `board-setup` | `/glossary/#board-setup` |
+| Bold Play | `bold-play` | `/glossary/#bold-play` |
+| Bot | `bot` | `/glossary/#bot` |
+| Box | `box` | `/glossary/#box` |
+| Boxcars | `boxcars` | `/glossary/#boxcars` |
+| Break a Point | `break-a-point` | `/glossary/#break-a-point` |
+| Break a Prime | `break-a-prime` | `/glossary/#break-a-prime` |
+| Break Contact | `break-contact` | `/glossary/#break-contact` |
+| Break One's Board | `break-ones-board` | `/glossary/#break-ones-board` |
+| Broken Prime | `broken-prime` | `/glossary/#broken-prime` |
+| Bronstein Clock | `bronstein-clock` | `/glossary/#bronstein-clock` |
+| Build One's Board | `build-ones-board` | `/glossary/#build-ones-board` |
+| Builder | `builder` | `/glossary/#builder` |
+| Bury a Checker | `bury-a-checker` | `/glossary/#bury-a-checker` |
+| Busted Back Game | `busted-back-game` | `/glossary/#busted-back-game` |
+| Bye | `bye` | `/glossary/#bye` |
+| BYOB | `byob` | `/glossary/#byob` |
+| Calcutta Auction | `calcutta-auction` | `/glossary/#calcutta-auction` |
+| California Rule | `california-rule` | `/glossary/#california-rule` |
+| Candlesticks | `candlesticks` | `/glossary/#candlesticks` |
+| Captain | `captain` | `/glossary/#captain` |
+| Cash a Game | `cash-a-game` | `/glossary/#cash-a-game` |
+| Catchers | `catchers` | `/glossary/#catchers` |
+| Centered Cube | `centered-cube` | `/glossary/#centered-cube` |
+| Championship Division | `championship-division` | `/glossary/#championship-division` |
+| Chase | `chase` | `/glossary/#chase` |
+| Checker | `checker` | `/glossary/#checker` |
+| Chouette | `chouette` | `/glossary/#chouette` |
+| Clean Play | `clean-play` | `/glossary/#clean-play` |
+| Clear a Point | `clear-a-point` | `/glossary/#clear-a-point` |
+| Clear from the Rear | `clear-from-the-rear` | `/glossary/#clear-from-the-rear` |
+| Client Software | `client-software` | `/glossary/#client-software` |
+| Clock | `clock` | `/glossary/#clock` |
+| Close Out | `close-out` | `/glossary/#close-out` |
+| Closed Board | `closed-board` | `/glossary/#closed-board` |
+| Cluster Count | `cluster-count` | `/glossary/#cluster-count` |
+| Cock Shot | `cock-shot` | `/glossary/#cock-shot` |
+| Cocked Dice | `cocked-dice` | `/glossary/#cocked-dice` |
+| Coffeehouse | `coffeehouse` | `/glossary/#coffeehouse` |
+| Combination | `combination` | `/glossary/#combination` |
+| Committed Position | `committed-position` | `/glossary/#committed-position` |
+| Compact Position | `compact-position` | `/glossary/#compact-position` |
+| Confetti | `confetti` | `/glossary/#confetti` |
+| Confidence Interval | `confidence-interval` | `/glossary/#confidence-interval` |
+| Connected Position | `connected-position` | `/glossary/#connected-position` |
+| Connectivity | `connectivity` | `/glossary/#connectivity` |
+| Consolation Division | `consolation-division` | `/glossary/#consolation-division` |
+| Consolation Flight | `consolation-flight` | `/glossary/#consolation-flight` |
+| Consolidate | `consolidate` | `/glossary/#consolidate` |
+| Consultation | `consultation` | `/glossary/#consultation` |
+| Contact Position | `contact-position` | `/glossary/#contact-position` |
+| Contain a Checker | `contain-a-checker` | `/glossary/#contain-a-checker` |
+| Control the Cube | `control-the-cube` | `/glossary/#control-the-cube` |
+| Convergence Value (of a Rollout) | `convergence-value-of-a-rollout` | `/glossary/#convergence-value-of-a-rollout` |
+| Correspondence Games | `correspondence-games` | `/glossary/#correspondence-games` |
+| Counterclockwise | `counterclockwise` | `/glossary/#counterclockwise` |
+| Counterplay | `counterplay` | `/glossary/#counterplay` |
+| Coup Classique | `coup-classique` | `/glossary/#coup-classique` |
+| Cover a Blot | `cover-a-blot` | `/glossary/#cover-a-blot` |
+| Cramped | `cramped` | `/glossary/#cramped` |
+| Crawford Rule | `crawford-rule` | `/glossary/#crawford-rule` |
+| Crew | `crew` | `/glossary/#crew` |
+| Crossover | `crossover` | `/glossary/#crossover` |
+| Crossover Count | `crossover-count` | `/glossary/#crossover-count` |
+| Crunch | `crunch` | `/glossary/#crunch` |
+| Cube Action | `cube-action` | `/glossary/#cube-action` |
+| Cube Play | `cube-play` | `/glossary/#cube-play` |
+| Cube Provocation Play | `cube-provocation-play` | `/glossary/#cube-provocation-play` |
+| Cube Reference Position | `cube-reference-position` | `/glossary/#cube-reference-position` |
+| Cubeful Equity | `cubeful-equity` | `/glossary/#cubeful-equity` |
+| Cubeful Rollout | `cubeful-rollout` | `/glossary/#cubeful-rollout` |
+| Cubeless Equity | `cubeless-equity` | `/glossary/#cubeless-equity` |
+| Cubeless Probability of Winning | `cubeless-probability-of-winning` | `/glossary/#cubeless-probability-of-winning` |
+| Cubeless Rollout | `cubeless-rollout` | `/glossary/#cubeless-rollout` |
+| Current Stake | `current-stake` | `/glossary/#current-stake` |
+| Dance | `dance` | `/glossary/#dance` |
+| Dansk Backgammon Forbund (DBgF) | `dansk-backgammon-forbund-dbgf` | `/glossary/#dansk-backgammon-forbund-dbgf` |
+| Dead Checker | `dead-checker` | `/glossary/#dead-checker` |
+| Dead Cube | `dead-cube` | `/glossary/#dead-cube` |
+| Dead Number | `dead-number` | `/glossary/#dead-number` |
+| Deep | `deep` | `/glossary/#deep` |
+| Deep Anchor | `deep-anchor` | `/glossary/#deep-anchor` |
+| Deuce | `deuce` | `/glossary/#deuce` |
+| Dice | `dice` | `/glossary/#dice` |
+| Dice Cup | `dice-cup` | `/glossary/#dice-cup` |
+| Dice Manipulation | `dice-manipulation` | `/glossary/#dice-manipulation` |
+| Dice Mechanic | `dice-mechanic` | `/glossary/#dice-mechanic` |
+| Dice Tube | `dice-tube` | `/glossary/#dice-tube` |
+| Die | `die` | `/glossary/#die` |
+| Digital Clock | `digital-clock` | `/glossary/#digital-clock` |
+| Direct Range | `direct-range` | `/glossary/#direct-range` |
+| Direct Shot | `direct-shot` | `/glossary/#direct-shot` |
+| Disjointed Position | `disjointed-position` | `/glossary/#disjointed-position` |
+| Distribution | `distribution` | `/glossary/#distribution` |
+| Diversification | `diversification` | `/glossary/#diversification` |
+| Division | `division` | `/glossary/#division` |
+| Double | `double` | `/glossary/#double` |
+| Double Bump | `double-bump` | `/glossary/#double-bump` |
+| Double Direct Shot | `double-direct-shot` | `/glossary/#double-direct-shot` |
+| Double Ducks | `double-ducks` | `/glossary/#double-ducks` |
+| Double Elimination | `double-elimination` | `/glossary/#double-elimination` |
+| Double Hit | `double-hit` | `/glossary/#double-hit` |
+| Double Jeopardy | `double-jeopardy` | `/glossary/#double-jeopardy` |
+| Double Match Point | `double-match-point` | `/glossary/#double-match-point` |
+| Double Shot | `double-shot` | `/glossary/#double-shot` |
+| Doubles | `doubles` | `/glossary/#doubles` |
+| Doubling Cube | `doubling-cube` | `/glossary/#doubling-cube` |
+| Doubling on the Come | `doubling-on-the-come` | `/glossary/#doubling-on-the-come` |
+| Doubling Window | `doubling-window` | `/glossary/#doubling-window` |
+| Down | `down` | `/glossary/#down` |
+| Draw | `draw` | `/glossary/#draw` |
+| Drop Point | `drop-point` | `/glossary/#drop-point` |
+| Drop-Take | `drop-take` | `/glossary/#drop-take` |
+| Dropper | `dropper` | `/glossary/#dropper` |
+| Duplicate Dice | `duplicate-dice` | `/glossary/#duplicate-dice` |
+| Duplicate Tournament | `duplicate-tournament` | `/glossary/#duplicate-tournament` |
+| Duplication | `duplication` | `/glossary/#duplication` |
+| Dutch Backgammon | `dutch-backgammon` | `/glossary/#dutch-backgammon` |
+| Dyscommunication | `dyscommunication` | `/glossary/#dyscommunication` |
+| Early Game | `early-game` | `/glossary/#early-game` |
+| Early-Late Ratio | `early-late-ratio` | `/glossary/#early-late-ratio` |
+| Edge of a Prime | `edge-of-a-prime` | `/glossary/#edge-of-a-prime` |
+| Effective Pip Count | `effective-pip-count` | `/glossary/#effective-pip-count` |
+| Efficient Double | `efficient-double` | `/glossary/#efficient-double` |
+| Eject | `eject` | `/glossary/#eject` |
+| Elimination Format | `elimination-format` | `/glossary/#elimination-format` |
+| Elo Ratings System | `elo-ratings-system` | `/glossary/#elo-ratings-system` |
+| EMG Equity | `emg-equity` | `/glossary/#emg-equity` |
+| End Game | `end-game` | `/glossary/#end-game` |
+| Enter | `enter` | `/glossary/#enter` |
+| Equity | `equity` | `/glossary/#equity` |
+| ER Backgammon | `er-backgammon` | `/glossary/#er-backgammon` |
+| Error Rate | `error-rate` | `/glossary/#error-rate` |
+| Escape | `escape` | `/glossary/#escape` |
+| Establish a Point | `establish-a-point` | `/glossary/#establish-a-point` |
+| Eureka | `eureka` | `/glossary/#eureka` |
+| Extras | `extras` | `/glossary/#extras` |
+| eXtreme Gammon | `extreme-gammon` | `/glossary/#extreme-gammon` |
+| Fast Board | `fast-board` | `/glossary/#fast-board` |
+| Favorite | `favorite` | `/glossary/#favorite` |
+| Fevga | `fevga` | `/glossary/#fevga` |
+| FIBS | `fibs` | `/glossary/#fibs` |
+| FIBS Rating | `fibs-rating` | `/glossary/#fibs-rating` |
+| FIBS Rating Formula | `fibs-rating-formula` | `/glossary/#fibs-rating-formula` |
+| Field Goal | `field-goal` | `/glossary/#field-goal` |
+| Fighter's Bracket | `fighters-bracket` | `/glossary/#fighters-bracket` |
+| Finalist | `finalist` | `/glossary/#finalist` |
+| Finals | `finals` | `/glossary/#finals` |
+| Fischer Clock | `fischer-clock` | `/glossary/#fischer-clock` |
+| Fish | `fish` | `/glossary/#fish` |
+| Five-Point | `five-point` | `/glossary/#five-point` |
+| Flexibility | `flexibility` | `/glossary/#flexibility` |
+| Flight | `flight` | `/glossary/#flight` |
+| Forced Move | `forced-move` | `/glossary/#forced-move` |
+| Forward Anchor | `forward-anchor` | `/glossary/#forward-anchor` |
+| Forward Game | `forward-game` | `/glossary/#forward-game` |
+| Four-Point | `four-point` | `/glossary/#four-point` |
+| Free Drop | `free-drop` | `/glossary/#free-drop` |
+| Freeze a Builder | `freeze-a-builder` | `/glossary/#freeze-a-builder` |
+| Freeze-Out Match | `freeze-out-match` | `/glossary/#freeze-out-match` |
+| Front a Prime | `front-a-prime` | `/glossary/#front-a-prime` |
+| Full Prime | `full-prime` | `/glossary/#full-prime` |
+| Gain a Tempo | `gain-a-tempo` | `/glossary/#gain-a-tempo` |
+| Game Plan | `game-plan` | `/glossary/#game-plan` |
+| Game Winning Chances | `game-winning-chances` | `/glossary/#game-winning-chances` |
+| Gamesmanship | `gamesmanship` | `/glossary/#gamesmanship` |
+| Gammon | `gammon` | `/glossary/#gammon` |
+| Gammon Count | `gammon-count` | `/glossary/#gammon-count` |
+| Gammon Cube | `gammon-cube` | `/glossary/#gammon-cube` |
+| Gammon Price | `gammon-price` | `/glossary/#gammon-price` |
+| Gammon Rate | `gammon-rate` | `/glossary/#gammon-rate` |
+| Gammon Vigorish (Vig) | `gammon-vigorish-vig` | `/glossary/#gammon-vigorish-vig` |
+| Gammon-Go | `gammon-go` | `/glossary/#gammon-go` |
+| Gammon-Save | `gammon-save` | `/glossary/#gammon-save` |
+| Gammonish | `gammonish` | `/glossary/#gammonish` |
+| Gap | `gap` | `/glossary/#gap` |
+| Gin Position | `gin-position` | `/glossary/#gin-position` |
+| Gioul | `gioul` | `/glossary/#gioul` |
+| Give a Little Present to | `give-a-little-present-to` | `/glossary/#give-a-little-present-to` |
+| Giving for Game | `giving-for-game` | `/glossary/#giving-for-game` |
+| GNU Backgammon | `gnu-backgammon` | `/glossary/#gnu-backgammon` |
+| Golden Point | `golden-point` | `/glossary/#golden-point` |
+| Greedy Bearoff | `greedy-bearoff` | `/glossary/#greedy-bearoff` |
+| Guff (Guffy) | `guff-guffy` | `/glossary/#guff-guffy` |
+| Gul Bara | `gul-bara` | `/glossary/#gul-bara` |
+| Half a Roll | `half-a-roll` | `/glossary/#half-a-roll` |
+| Half-Crossover Method | `half-crossover-method` | `/glossary/#half-crossover-method` |
+| Handicap | `handicap` | `/glossary/#handicap` |
+| Head-to-Head | `head-to-head` | `/glossary/#head-to-head` |
+| Heavy Point | `heavy-point` | `/glossary/#heavy-point` |
+| Hedge | `hedge` | `/glossary/#hedge` |
+| Hit | `hit` | `/glossary/#hit` |
+| Hit and Cover | `hit-and-cover` | `/glossary/#hit-and-cover` |
+| Hit and Split | `hit-and-split` | `/glossary/#hit-and-split` |
+| Hit Off the Edge of a Prime | `hit-off-the-edge-of-a-prime` | `/glossary/#hit-off-the-edge-of-a-prime` |
+| Holding Game | `holding-game` | `/glossary/#holding-game` |
+| Holland Rule | `holland-rule` | `/glossary/#holland-rule` |
+| Home Board | `home-board` | `/glossary/#home-board` |
+| Horizon | `horizon` | `/glossary/#horizon` |
+| Hustler | `hustler` | `/glossary/#hustler` |
+| Hyper-Backgammon | `hyper-backgammon` | `/glossary/#hyper-backgammon` |
+| Illegal Move | `illegal-move` | `/glossary/#illegal-move` |
+| Illegal Moves Rule | `illegal-moves-rule` | `/glossary/#illegal-moves-rule` |
+| Illegal Position | `illegal-position` | `/glossary/#illegal-position` |
+| Inactive Builder | `inactive-builder` | `/glossary/#inactive-builder` |
+| Indirect Hit | `indirect-hit` | `/glossary/#indirect-hit` |
+| Indirect Shot | `indirect-shot` | `/glossary/#indirect-shot` |
+| Initial Double | `initial-double` | `/glossary/#initial-double` |
+| Initial Stake | `initial-stake` | `/glossary/#initial-stake` |
+| Initiative | `initiative` | `/glossary/#initiative` |
+| Intermediate Division | `intermediate-division` | `/glossary/#intermediate-division` |
+| Intermediate Level | `intermediate-level` | `/glossary/#intermediate-level` |
+| Irish | `irish` | `/glossary/#irish` |
+| Jackpot | `jackpot` | `/glossary/#jackpot` |
+| Jacoby Paradox | `jacoby-paradox` | `/glossary/#jacoby-paradox` |
+| Jacoby Rule | `jacoby-rule` | `/glossary/#jacoby-rule` |
+| Jacquet | `jacquet` | `/glossary/#jacquet` |
+| Janowski's Formula | `janowskis-formula` | `/glossary/#janowskis-formula` |
+| Janowski's Formulas | `janowskis-formulas` | `/glossary/#janowskis-formulas` |
+| Janowski's Takepoint Formula | `janowskis-takepoint-formula` | `/glossary/#janowskis-takepoint-formula` |
+| Jellyfish | `jellyfish` | `/glossary/#jellyfish` |
+| Jeopardy | `jeopardy` | `/glossary/#jeopardy` |
+| Joint Standard Deviation | `joint-standard-deviation` | `/glossary/#joint-standard-deviation` |
+| Joker | `joker` | `/glossary/#joker` |
+| Junior | `junior` | `/glossary/#junior` |
+| Kauder Paradox | `kauder-paradox` | `/glossary/#kauder-paradox` |
+| Keith Count | `keith-count` | `/glossary/#keith-count` |
+| Key Point | `key-point` | `/glossary/#key-point` |
+| Kibitz | `kibitz` | `/glossary/#kibitz` |
+| Kibitzer | `kibitzer` | `/glossary/#kibitzer` |
+| Kill a Checker | `kill-a-checker` | `/glossary/#kill-a-checker` |
+| Kill a Number | `kill-a-number` | `/glossary/#kill-a-number` |
+| Kleinman Doubling Formula | `kleinman-doubling-formula` | `/glossary/#kleinman-doubling-formula` |
+| Ladder | `ladder` | `/glossary/#ladder` |
+| Last Call for Breakfast | `last-call-for-breakfast` | `/glossary/#last-call-for-breakfast` |
+| Last Chance Event | `last-chance-event` | `/glossary/#last-chance-event` |
+| Last Roll Position | `last-roll-position` | `/glossary/#last-roll-position` |
+| Latto Paradox | `latto-paradox` | `/glossary/#latto-paradox` |
+| Leader | `leader` | `/glossary/#leader` |
+| Leave a Shot | `leave-a-shot` | `/glossary/#leave-a-shot` |
+| Legal Move | `legal-move` | `/glossary/#legal-move` |
+| Legal Moves Rule | `legal-moves-rule` | `/glossary/#legal-moves-rule` |
+| Liability | `liability` | `/glossary/#liability` |
+| Liby's Rule | `libys-rule` | `/glossary/#libys-rule` |
+| Lipped Cup | `lipped-cup` | `/glossary/#lipped-cup` |
+| Live-Cube Rollout | `live-cube-rollout` | `/glossary/#live-cube-rollout` |
+| Loaded Dice | `loaded-dice` | `/glossary/#loaded-dice` |
+| Long Backgammon | `long-backgammon` | `/glossary/#long-backgammon` |
+| Loose Hit | `loose-hit` | `/glossary/#loose-hit` |
+| Lose One's Market | `lose-ones-market` | `/glossary/#lose-ones-market` |
+| Lover's Leap | `lovers-leap` | `/glossary/#lovers-leap` |
+| Luck Factor | `luck-factor` | `/glossary/#luck-factor` |
+| Luck Reduction | `luck-reduction` | `/glossary/#luck-reduction` |
+| Made Point | `made-point` | `/glossary/#made-point` |
+| Magriel's Safe-Bold Criteria | `magriels-safe-bold-criteria` | `/glossary/#magriels-safe-bold-criteria` |
+| Main Division | `main-division` | `/glossary/#main-division` |
+| Main Flight | `main-flight` | `/glossary/#main-flight` |
+| Major Split | `major-split` | `/glossary/#major-split` |
+| Make a Point | `make-a-point` | `/glossary/#make-a-point` |
+| Man in the Box | `man-in-the-box` | `/glossary/#man-in-the-box` |
+| Mandatory Beavers | `mandatory-beavers` | `/glossary/#mandatory-beavers` |
+| Mandatory Double | `mandatory-double` | `/glossary/#mandatory-double` |
+| Mandatory Extras | `mandatory-extras` | `/glossary/#mandatory-extras` |
+| Mandatory Take | `mandatory-take` | `/glossary/#mandatory-take` |
+| Manny Wong Proposition | `manny-wong-proposition` | `/glossary/#manny-wong-proposition` |
+| Market (for a Double) | `market-for-a-double` | `/glossary/#market-for-a-double` |
+| Market Gainer | `market-gainer` | `/glossary/#market-gainer` |
+| Market Loser | `market-loser` | `/glossary/#market-loser` |
+| Market Losing Sequence | `market-losing-sequence` | `/glossary/#market-losing-sequence` |
+| Match | `match` | `/glossary/#match` |
+| Match Equity | `match-equity` | `/glossary/#match-equity` |
+| Match Equity Table | `match-equity-table` | `/glossary/#match-equity-table` |
+| Match Play | `match-play` | `/glossary/#match-play` |
+| Match Winning Chances | `match-winning-chances` | `/glossary/#match-winning-chances` |
+| Material | `material` | `/glossary/#material` |
+| Mechanical Play | `mechanical-play` | `/glossary/#mechanical-play` |
+| Mental Shift | `mental-shift` | `/glossary/#mental-shift` |
+| Mexican Backgammon | `mexican-backgammon` | `/glossary/#mexican-backgammon` |
+| Meyer Dice Tube | `meyer-dice-tube` | `/glossary/#meyer-dice-tube` |
+| Mid-Point | `mid-point` | `/glossary/#mid-point` |
+| Middle Game | `middle-game` | `/glossary/#middle-game` |
+| Minor Split | `minor-split` | `/glossary/#minor-split` |
+| Misere | `misere` | `/glossary/#misere` |
+| Mixed Roll | `mixed-roll` | `/glossary/#mixed-roll` |
+| Mobility | `mobility` | `/glossary/#mobility` |
+| Modern Backgammon | `modern-backgammon` | `/glossary/#modern-backgammon` |
+| Money Management | `money-management` | `/glossary/#money-management` |
+| Money Play | `money-play` | `/glossary/#money-play` |
+| Monte Carlo | `monte-carlo` | `/glossary/#monte-carlo` |
+| Motif | `motif` | `/glossary/#motif` |
+| Moultezim | `moultezim` | `/glossary/#moultezim` |
+| Move | `move` | `/glossary/#move` |
+| Move Down | `move-down` | `/glossary/#move-down` |
+| Move Out | `move-out` | `/glossary/#move-out` |
+| Move Up | `move-up` | `/glossary/#move-up` |
+| Mutual Holding Game | `mutual-holding-game` | `/glossary/#mutual-holding-game` |
+| N-Point Board | `n-point-board` | `/glossary/#n-point-board` |
+| N-Roll Position | `n-roll-position` | `/glossary/#n-roll-position` |
+| Nack Blitz | `nack-blitz` | `/glossary/#nack-blitz` |
+| Nackgammon | `nackgammon` | `/glossary/#nackgammon` |
+| Nactation | `nactation` | `/glossary/#nactation` |
+| Narde | `narde` | `/glossary/#narde` |
+| Neil's Numbers | `neils-numbers` | `/glossary/#neils-numbers` |
+| Neural Network (Neural Net) | `neural-network-neural-net` | `/glossary/#neural-network-neural-net` |
+| Next | `next` | `/glossary/#next` |
+| No Dice | `no-dice` | `/glossary/#no-dice` |
+| No-Brainer | `no-brainer` | `/glossary/#no-brainer` |
+| Noncommitted Position | `noncommitted-position` | `/glossary/#noncommitted-position` |
+| Nonprogressive Consolation | `nonprogressive-consolation` | `/glossary/#nonprogressive-consolation` |
+| Norges Backgammonforbund (NBGF) | `norges-backgammonforbund-nbgf` | `/glossary/#norges-backgammonforbund-nbgf` |
+| Normal Game | `normal-game` | `/glossary/#normal-game` |
+| Normalized Match Score | `normalized-match-score` | `/glossary/#normalized-match-score` |
+| Notation | `notation` | `/glossary/#notation` |
+| Novice Division | `novice-division` | `/glossary/#novice-division` |
+| Novice Level | `novice-level` | `/glossary/#novice-level` |
+| Nullo Play | `nullo-play` | `/glossary/#nullo-play` |
+| Odds | `odds` | `/glossary/#odds` |
+| On Roll | `on-roll` | `/glossary/#on-roll` |
+| On the Bar | `on-the-bar` | `/glossary/#on-the-bar` |
+| On Tilt | `on-tilt` | `/glossary/#on-tilt` |
+| One-Checker Model | `one-checker-model` | `/glossary/#one-checker-model` |
+| One-Point | `one-point` | `/glossary/#one-point` |
+| One-Point Match | `one-point-match` | `/glossary/#one-point-match` |
+| One-Sided Bearoff Database | `one-sided-bearoff-database` | `/glossary/#one-sided-bearoff-database` |
+| Online Backgammon | `online-backgammon` | `/glossary/#online-backgammon` |
+| Open Division | `open-division` | `/glossary/#open-division` |
+| Open Point | `open-point` | `/glossary/#open-point` |
+| Open Tournament | `open-tournament` | `/glossary/#open-tournament` |
+| Opening Game | `opening-game` | `/glossary/#opening-game` |
+| Opening Roll | `opening-roll` | `/glossary/#opening-roll` |
+| Optional Reroll Rule | `optional-reroll-rule` | `/glossary/#optional-reroll-rule` |
+| Otter | `otter` | `/glossary/#otter` |
+| Outer Board | `outer-board` | `/glossary/#outer-board` |
+| Outer Checkers | `outer-checkers` | `/glossary/#outer-checkers` |
+| Outer Table | `outer-table` | `/glossary/#outer-table` |
+| Outfield | `outfield` | `/glossary/#outfield` |
+| Outside Prime | `outside-prime` | `/glossary/#outside-prime` |
+| Over the Board | `over-the-board` | `/glossary/#over-the-board` |
+| Overage | `overage` | `/glossary/#overage` |
+| Overplay | `overplay` | `/glossary/#overplay` |
+| Own a Point | `own-a-point` | `/glossary/#own-a-point` |
+| Own the Cube | `own-the-cube` | `/glossary/#own-the-cube` |
+| Parlay | `parlay` | `/glossary/#parlay` |
+| Partial Prime | `partial-prime` | `/glossary/#partial-prime` |
+| Partner for the Box | `partner-for-the-box` | `/glossary/#partner-for-the-box` |
+| Pass | `pass` | `/glossary/#pass` |
+| Pay Later | `pay-later` | `/glossary/#pay-later` |
+| Pay Now | `pay-now` | `/glossary/#pay-now` |
+| Pay-Now-Or-Pay-Later Decision | `pay-now-or-pay-later-decision` | `/glossary/#pay-now-or-pay-later-decision` |
+| Perfecta | `perfecta` | `/glossary/#perfecta` |
+| Pick and Pass | `pick-and-pass` | `/glossary/#pick-and-pass` |
+| Pigeon | `pigeon` | `/glossary/#pigeon` |
+| Pip | `pip` | `/glossary/#pip` |
+| Pip Count | `pip-count` | `/glossary/#pip-count` |
+| Plakoto | `plakoto` | `/glossary/#plakoto` |
+| Play | `play` | `/glossary/#play` |
+| Play Site | `play-site` | `/glossary/#play-site` |
+| Player's Privilege | `players-privilege` | `/glossary/#players-privilege` |
+| Ply | `ply` | `/glossary/#ply` |
+| Point | `point` | `/glossary/#point` |
+| Point Game | `point-game` | `/glossary/#point-game` |
+| Point on a Blot | `point-on-a-blot` | `/glossary/#point-on-a-blot` |
+| Points per Game | `points-per-game` | `/glossary/#points-per-game` |
+| Poof | `poof` | `/glossary/#poof` |
+| Portes | `portes` | `/glossary/#portes` |
+| Position | `position` | `/glossary/#position` |
+| Position Card | `position-card` | `/glossary/#position-card` |
+| Positional Play | `positional-play` | `/glossary/#positional-play` |
+| Post Mortem | `post-mortem` | `/glossary/#post-mortem` |
+| Post-Crawford | `post-crawford` | `/glossary/#post-crawford` |
+| Pottle's Law | `pottles-law` | `/glossary/#pottles-law` |
+| PRAT | `prat` | `/glossary/#prat` |
+| Pre-Crawford | `pre-crawford` | `/glossary/#pre-crawford` |
+| Precision Dice | `precision-dice` | `/glossary/#precision-dice` |
+| Preclear | `preclear` | `/glossary/#preclear` |
+| Premature Burial | `premature-burial` | `/glossary/#premature-burial` |
+| Premature Roll | `premature-roll` | `/glossary/#premature-roll` |
+| Pressure | `pressure` | `/glossary/#pressure` |
+| Prime | `prime` | `/glossary/#prime` |
+| Prime Fighter | `prime-fighter` | `/glossary/#prime-fighter` |
+| Prime-vs-Prime | `prime-vs-prime` | `/glossary/#prime-vs-prime` |
+| Primed | `primed` | `/glossary/#primed` |
+| Priming Game | `priming-game` | `/glossary/#priming-game` |
+| Progressive Consolation | `progressive-consolation` | `/glossary/#progressive-consolation` |
+| Proposition | `proposition` | `/glossary/#proposition` |
+| Proxy | `proxy` | `/glossary/#proxy` |
+| Pure Play | `pure-play` | `/glossary/#pure-play` |
+| Pure Race | `pure-race` | `/glossary/#pure-race` |
+| Quadrant | `quadrant` | `/glossary/#quadrant` |
+| Quads | `quads` | `/glossary/#quads` |
+| Quarter Entry | `quarter-entry` | `/glossary/#quarter-entry` |
+| Quasi-Random Dice | `quasi-random-dice` | `/glossary/#quasi-random-dice` |
+| Quiet Play | `quiet-play` | `/glossary/#quiet-play` |
+| Quiz Factor | `quiz-factor` | `/glossary/#quiz-factor` |
+| Raccoon | `raccoon` | `/glossary/#raccoon` |
+| Race | `race` | `/glossary/#race` |
+| Race Equity | `race-equity` | `/glossary/#race-equity` |
+| Railroad Tracks | `railroad-tracks` | `/glossary/#railroad-tracks` |
+| Rake | `rake` | `/glossary/#rake` |
+| Random Error (in a Rollout) | `random-error-in-a-rollout` | `/glossary/#random-error-in-a-rollout` |
+| Random Seed | `random-seed` | `/glossary/#random-seed` |
+| Rated Match | `rated-match` | `/glossary/#rated-match` |
+| Rating | `rating` | `/glossary/#rating` |
+| Rating Points | `rating-points` | `/glossary/#rating-points` |
+| Ratings Inflation | `ratings-inflation` | `/glossary/#ratings-inflation` |
+| Ratings Pool | `ratings-pool` | `/glossary/#ratings-pool` |
+| Ratings System | `ratings-system` | `/glossary/#ratings-system` |
+| Raw Take Point | `raw-take-point` | `/glossary/#raw-take-point` |
+| Recirculate | `recirculate` | `/glossary/#recirculate` |
+| Recube Vigorish (Vig) | `recube-vigorish-vig` | `/glossary/#recube-vigorish-vig` |
+| Redouble | `redouble` | `/glossary/#redouble` |
+| Reference Position | `reference-position` | `/glossary/#reference-position` |
+| Resign | `resign` | `/glossary/#resign` |
+| Response | `response` | `/glossary/#response` |
+| Return Shot | `return-shot` | `/glossary/#return-shot` |
+| Robustness | `robustness` | `/glossary/#robustness` |
+| Roll | `roll` | `/glossary/#roll` |
+| Roll a Prime | `roll-a-prime` | `/glossary/#roll-a-prime` |
+| Roll-Over | `roll-over` | `/glossary/#roll-over` |
+| Rollout | `rollout` | `/glossary/#rollout` |
+| Root Number | `root-number` | `/glossary/#root-number` |
+| Round | `round` | `/glossary/#round` |
+| Round Robin Format | `round-robin-format` | `/glossary/#round-robin-format` |
+| Run | `run` | `/glossary/#run` |
+| Runner | `runner` | `/glossary/#runner` |
+| Running Game | `running-game` | `/glossary/#running-game` |
+| Russian Backgammon | `russian-backgammon` | `/glossary/#russian-backgammon` |
+| Safe | `safe` | `/glossary/#safe` |
+| Safe Play | `safe-play` | `/glossary/#safe-play` |
+| Safety a Checker | `safety-a-checker` | `/glossary/#safety-a-checker` |
+| Safety Up | `safety-up` | `/glossary/#safety-up` |
+| Sandbag | `sandbag` | `/glossary/#sandbag` |
+| Save a Number | `save-a-number` | `/glossary/#save-a-number` |
+| Save Backgammon | `save-backgammon` | `/glossary/#save-backgammon` |
+| Save Gammon | `save-gammon` | `/glossary/#save-gammon` |
+| Seeded Player | `seeded-player` | `/glossary/#seeded-player` |
+| Semiactive Builder | `semiactive-builder` | `/glossary/#semiactive-builder` |
+| Semifinalist | `semifinalist` | `/glossary/#semifinalist` |
+| Semifinals | `semifinals` | `/glossary/#semifinals` |
+| Settlement | `settlement` | `/glossary/#settlement` |
+| Settlement Limit | `settlement-limit` | `/glossary/#settlement-limit` |
+| Shake | `shake` | `/glossary/#shake` |
+| Shark | `shark` | `/glossary/#shark` |
+| Shesh Besh | `shesh-besh` | `/glossary/#shesh-besh` |
+| Shift Gears | `shift-gears` | `/glossary/#shift-gears` |
+| Shift Points | `shift-points` | `/glossary/#shift-points` |
+| Shot | `shot` | `/glossary/#shot` |
+| Side Pool | `side-pool` | `/glossary/#side-pool` |
+| Silver Point | `silver-point` | `/glossary/#silver-point` |
+| Simple Direct Shot | `simple-direct-shot` | `/glossary/#simple-direct-shot` |
+| Single Elimination | `single-elimination` | `/glossary/#single-elimination` |
+| Single Game | `single-game` | `/glossary/#single-game` |
+| Single Shot | `single-shot` | `/glossary/#single-shot` |
+| Six-Point | `six-point` | `/glossary/#six-point` |
+| Slot | `slot` | `/glossary/#slot` |
+| Slot and Split | `slot-and-split` | `/glossary/#slot-and-split` |
+| Small Play | `small-play` | `/glossary/#small-play` |
+| Snake | `snake` | `/glossary/#snake` |
+| Snake Eyes | `snake-eyes` | `/glossary/#snake-eyes` |
+| Snowie | `snowie` | `/glossary/#snowie` |
+| Solid Prime | `solid-prime` | `/glossary/#solid-prime` |
+| Spare Checker | `spare-checker` | `/glossary/#spare-checker` |
+| Speed Board | `speed-board` | `/glossary/#speed-board` |
+| Split | `split` | `/glossary/#split` |
+| Splot | `splot` | `/glossary/#splot` |
+| Squeeze | `squeeze` | `/glossary/#squeeze` |
+| Stack | `stack` | `/glossary/#stack` |
+| Staine's Rule | `staines-rule` | `/glossary/#staines-rule` |
+| Stake | `stake` | `/glossary/#stake` |
+| Standard Deviation | `standard-deviation` | `/glossary/#standard-deviation` |
+| Start a Point | `start-a-point` | `/glossary/#start-a-point` |
+| Starting Position | `starting-position` | `/glossary/#starting-position` |
+| Stay Back | `stay-back` | `/glossary/#stay-back` |
+| Steam | `steam` | `/glossary/#steam` |
+| Steamer | `steamer` | `/glossary/#steamer` |
+| Stop Pot | `stop-pot` | `/glossary/#stop-pot` |
+| Straggler | `straggler` | `/glossary/#straggler` |
+| Strategy | `strategy` | `/glossary/#strategy` |
+| Stretched | `stretched` | `/glossary/#stretched` |
+| Strip a Point | `strip-a-point` | `/glossary/#strip-a-point` |
+| Stripped | `stripped` | `/glossary/#stripped` |
+| Stroke | `stroke` | `/glossary/#stroke` |
+| Strong Board | `strong-board` | `/glossary/#strong-board` |
+| Structural Play | `structural-play` | `/glossary/#structural-play` |
+| Suicide Play | `suicide-play` | `/glossary/#suicide-play` |
+| Svenska Backgammonförbundet (SBGF) | `svenska-backgammonforbundet-sbgf` | `/glossary/#svenska-backgammonforbundet-sbgf` |
+| Swedish Tables | `swedish-tables` | `/glossary/#swedish-tables` |
+| Swing | `swing` | `/glossary/#swing` |
+| Swiss Format | `swiss-format` | `/glossary/#swiss-format` |
+| Swiss-Cheese Formation | `swiss-cheese-formation` | `/glossary/#swiss-cheese-formation` |
+| Switch Points | `switch-points` | `/glossary/#switch-points` |
+| Sydney | `sydney` | `/glossary/#sydney` |
+| Systematic Error | `systematic-error` | `/glossary/#systematic-error` |
+| Table | `table` | `/glossary/#table` |
+| Table Stakes | `table-stakes` | `/glossary/#table-stakes` |
+| Tables | `tables` | `/glossary/#tables` |
+| Tabula | `tabula` | `/glossary/#tabula` |
+| Tactics | `tactics` | `/glossary/#tactics` |
+| Tailgate | `tailgate` | `/glossary/#tailgate` |
+| Take | `take` | `/glossary/#take` |
+| Take Point | `take-point` | `/glossary/#take-point` |
+| Take/Drop Proposition | `take-drop-proposition` | `/glossary/#take-drop-proposition` |
+| Takhteh | `takhteh` | `/glossary/#takhteh` |
+| Tapa | `tapa` | `/glossary/#tapa` |
+| Tavla | `tavla` | `/glossary/#tavla` |
+| Tavli | `tavli` | `/glossary/#tavli` |
+| TD-Gammon | `td-gammon` | `/glossary/#td-gammon` |
+| Team | `team` | `/glossary/#team` |
+| Technical Play | `technical-play` | `/glossary/#technical-play` |
+| Tell | `tell` | `/glossary/#tell` |
+| Temperature Map | `temperature-map` | `/glossary/#temperature-map` |
+| Tempo | `tempo` | `/glossary/#tempo` |
+| Tempo Move | `tempo-move` | `/glossary/#tempo-move` |
+| Tempt | `tempt` | `/glossary/#tempt` |
+| Thorp Count | `thorp-count` | `/glossary/#thorp-count` |
+| Three-Point | `three-point` | `/glossary/#three-point` |
+| Throw | `throw` | `/glossary/#throw` |
+| Time | `time` | `/glossary/#time` |
+| Time Delay | `time-delay` | `/glossary/#time-delay` |
+| Timing | `timing` | `/glossary/#timing` |
+| Too Good (to Double) | `too-good-to-double` | `/glossary/#too-good-to-double` |
+| Too Many Points | `too-many-points` | `/glossary/#too-many-points` |
+| Touch Down | `touch-down` | `/glossary/#touch-down` |
+| Touch Move Rule | `touch-move-rule` | `/glossary/#touch-move-rule` |
+| Tournament | `tournament` | `/glossary/#tournament` |
+| Tournament Director | `tournament-director` | `/glossary/#tournament-director` |
+| Tourne-Case | `tourne-case` | `/glossary/#tourne-case` |
+| Trailer | `trailer` | `/glossary/#trailer` |
+| Transposition | `transposition` | `/glossary/#transposition` |
+| Trap Play | `trap-play` | `/glossary/#trap-play` |
+| Trial (of a Rollout) | `trial-of-a-rollout` | `/glossary/#trial-of-a-rollout` |
+| Trice Count | `trice-count` | `/glossary/#trice-count` |
+| Trice Triangle | `trice-triangle` | `/glossary/#trice-triangle` |
+| Trictrac | `trictrac` | `/glossary/#trictrac` |
+| Truncated Rollout | `truncated-rollout` | `/glossary/#truncated-rollout` |
+| Turn | `turn` | `/glossary/#turn` |
+| Turn the Corner | `turn-the-corner` | `/glossary/#turn-the-corner` |
+| Turner's Formula | `turners-formula` | `/glossary/#turners-formula` |
+| Tutor Mode | `tutor-mode` | `/glossary/#tutor-mode` |
+| Two-Down | `two-down` | `/glossary/#two-down` |
+| Two-Point | `two-point` | `/glossary/#two-point` |
+| Two-Sided Bearoff Database | `two-sided-bearoff-database` | `/glossary/#two-sided-bearoff-database` |
+| Under the Gun | `under-the-gun` | `/glossary/#under-the-gun` |
+| Underdog | `underdog` | `/glossary/#underdog` |
+| Underplay | `underplay` | `/glossary/#underplay` |
+| Undoubled Gammon | `undoubled-gammon` | `/glossary/#undoubled-gammon` |
+| United States Backgammon Federation (USBGF) | `united-states-backgammon-federation-usbgf` | `/glossary/#united-states-backgammon-federation-usbgf` |
+| Unlimited Game | `unlimited-game` | `/glossary/#unlimited-game` |
+| Unstack | `unstack` | `/glossary/#unstack` |
+| Variance (of a Rollout) | `variance-of-a-rollout` | `/glossary/#variance-of-a-rollout` |
+| Variance Reduction | `variance-reduction` | `/glossary/#variance-reduction` |
+| Variant | `variant` | `/glossary/#variant` |
+| Vidos | `vidos` | `/glossary/#vidos` |
+| Vigorish | `vigorish` | `/glossary/#vigorish` |
+| Volatility | `volatility` | `/glossary/#volatility` |
+| Voluntary Double | `voluntary-double` | `/glossary/#voluntary-double` |
+| Volunteer a Shot | `volunteer-a-shot` | `/glossary/#volunteer-a-shot` |
+| Ward Count | `ward-count` | `/glossary/#ward-count` |
+| Wash | `wash` | `/glossary/#wash` |
+| Wastage | `wastage` | `/glossary/#wastage` |
+| WBA | `wba` | `/glossary/#wba` |
+| WBF | `wbf` | `/glossary/#wbf` |
+| Weaver Coup | `weaver-coup` | `/glossary/#weaver-coup` |
+| Whopper | `whopper` | `/glossary/#whopper` |
+| Wisecarver Paradox | `wisecarver-paradox` | `/glossary/#wisecarver-paradox` |
+| Woolseys Law for Doubling | `woolseys-law-for-doubling` | `/glossary/#woolseys-law-for-doubling` |
+| X-22 | `x-22` | `/glossary/#x-22` |
+| Zone of Attack | `zone-of-attack` | `/glossary/#zone-of-attack` |

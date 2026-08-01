@@ -56,7 +56,7 @@ website:
         text: Sage vs GNU
       - href: research/index.qmd
         text: Research
-      - href: learn/glossary/index.qmd
+      - href: glossary/index.qmd
         text: Glossary
       - href: about.qmd
         text: About

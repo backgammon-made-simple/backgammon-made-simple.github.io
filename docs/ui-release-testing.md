@@ -89,25 +89,17 @@ The browser phase must:
   restores with it;
 - open and close Look Up a Term without moving the reading position;
 - open both SVG worked-position disclosures and use the Take choice;
-- exercise long text, long button labels, wide tables, anchors, nested details,
-  and responsive SVGs on the generated edge pages;
+- exercise anchors, nested details, and responsive SVGs on the current cube
+  lesson;
 - search and clear the glossary;
 - click from About to Learn and then to the Cube track;
 - append the next Research article and preserve unique IDs, anchors, and TOC;
 - report obvious console exceptions;
 - reset the viewport when finished.
 
-The manifest deliberately includes the homepage for regression detection, but
-the edge fixtures are confined to generated non-home pages:
-
-- `/learn/scrolling-test/start-here/lesson-01.html`;
-- `/learn/scrolling-test/doubling-cube/lesson-03.html`;
-- `/learn/scrolling-test/opening-play/lesson-01.html`.
-
-The rich nested SVG fixture is also checked on:
-
-- `/learn/cube/what-the-cube-is-asking.html`;
-- `/learn/scrolling-test/doubling-cube/lesson-01.html`.
+The manifest deliberately includes the homepage for regression detection. The
+rich nested SVG example is checked on
+`/learn/cube/what-the-cube-is-asking.html`.
 
 ### 5. Five-minute human sanity pass
 
@@ -117,8 +109,8 @@ Use only enough manual clicking to confirm what automation can miss:
    watch the active TOC state as another lesson loads.
 2. Collapse and restore the TOC rail and confirm the lesson track follows it.
 3. Open and close Look Up a Term at mid-page and confirm the page does not jump.
-4. On mobile, repeat the worked-position and edge-fixture interactions and
-   swipe the wide comparison table horizontally.
+4. On mobile, repeat the worked-position interactions and swipe the wide
+   comparison table horizontally.
 5. Click the main navbar routes once and confirm there is no overlap, clipped
    text, or unusable control.
 
@@ -131,9 +123,9 @@ Take screenshots only for an actual visual defect.
 | Homepage | `/` | Unintended global regression only |
 | Learn indexes | `/learn/`, `/learn/cube/` | Narrow text, filters, wrapping |
 | Learn lesson | Cube lesson | Independent rail controls, lookup, SVG disclosure |
-| Continuous Learn | Three generated edge fixtures | Appending, rewritten IDs, active TOC, overflow |
+| Continuous Learn | Current Learn lessons | Appending, rewritten IDs, active TOC, overflow |
 | Research | Sage vs GNU details | Desktop TOC, lookup, continuous article loading |
-| Glossary | `/learn/glossary/` | Full definitions, search, clear, anchors |
+| Glossary | `/glossary/` | Full definitions, search, clear, anchors |
 | Ordinary pages | Analyze, About, Engine Benchmark | Global layout and navigation regression |
 
 ## Pass and fail rules

@@ -18,21 +18,22 @@ NOT_FOUND_PATH = OUTPUT_ROOT / "404.html"
 FULL_BUILD_MARKER = OUTPUT_ROOT / ".bms-full-build.json"
 UPDATES_FEED_PATH = OUTPUT_ROOT / "updates" / "index.xml"
 GLOSSARY_DATA_PATH = REPO_ROOT / "site" / "data" / "glossary.json"
+LEGACY_GLOSSARY_PATH = OUTPUT_ROOT / "learn" / "glossary" / "index.html"
 FULL_BUILD_MARKER_SCHEMA = 1
 GLOSSARY_INDEX_URL = (
-    "https://backgammon-made-simple.github.io/learn/glossary/index.html"
+    "https://backgammon-made-simple.github.io/glossary/index.html"
 )
 NOT_FOUND_ROUTE_MAP = {
     "/.": "/",
     "/./": "/",
     "/./learn/": "/learn/",
-    "/./learn/glossary/": "/learn/glossary/",
+    "/./glossary/": "/glossary/",
     "/./research/": "/research/",
 }
 FOOTER_PATTERN = re.compile(r"<footer\b.*?</footer>", flags=re.DOTALL)
 HREF_PATTERN = re.compile(r'(\bhref=")([^"]+)(")')
 GLOSSARY_CANONICAL_URL = (
-    "https://backgammon-made-simple.github.io/learn/glossary/"
+    "https://backgammon-made-simple.github.io/glossary/"
 )
 GLOSSARY_FEED_URL_PREFIX = GLOSSARY_CANONICAL_URL + "#"
 RSS_NAMESPACES = {
@@ -41,6 +42,38 @@ RSS_NAMESPACES = {
     "dc": "http://purl.org/dc/elements/1.1/",
     "media": "http://search.yahoo.com/mrss/",
 }
+
+
+def legacy_glossary_redirect_text() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://backgammon-made-simple.github.io/glossary/">
+  <meta http-equiv="refresh" content="0; url=/glossary/">
+  <title>Glossary moved</title>
+  <script>
+    window.location.replace("/glossary/" + window.location.search + window.location.hash);
+  </script>
+</head>
+<body>
+  <p>The glossary has moved to <a href="/glossary/">/glossary/</a>.</p>
+</body>
+</html>
+"""
+
+
+def write_legacy_glossary_redirect(
+    path: Path = LEGACY_GLOSSARY_PATH,
+) -> bool:
+    content = legacy_glossary_redirect_text()
+    current = path.read_text(encoding="utf-8") if path.exists() else None
+    if current == content:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8", newline="\n")
+    return True
 
 
 def glossary_feed_records(data: object) -> list[dict[str, str]]:
@@ -290,6 +323,11 @@ def write_full_build_marker(path: Path = FULL_BUILD_MARKER) -> None:
 
 
 def main() -> int:
+    redirect_changed = write_legacy_glossary_redirect()
+    print(
+        "Legacy glossary redirect "
+        + ("written." if redirect_changed else "already current.")
+    )
     glossary_feed_count = augment_updates_rss_feed()
     print(
         f"Updates RSS includes {glossary_feed_count} approved glossary definitions."

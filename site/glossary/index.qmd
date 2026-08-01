@@ -5,7 +5,7 @@ sidebar: false
 page-layout: article
 body-classes: bms-glossary-index
 toc: false
-canonical-url: "https://backgammon-made-simple.github.io/learn/glossary/"
+canonical-url: "https://backgammon-made-simple.github.io/glossary/"
 image: /assets/social/generated/social-glossary.png
 social-card: true
 social-card-slug: glossary

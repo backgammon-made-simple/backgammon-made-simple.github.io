@@ -10,7 +10,7 @@ This private guide explains where the site lives, how the navigation is wired, a
 |---|---|---|
 | Homepage | `site/index.qmd` | Public landing page and homepage playground |
 | Learn | `site/learn/index.qmd` | Curriculum landing page and lesson patterns |
-| Glossary | `site/learn/glossary/index.qmd` | One searchable page containing every canonical term |
+| Glossary | `site/glossary/index.qmd` | One searchable page containing every canonical term |
 | Custom 404 | `site/404.qmd` | Root not-found page and recovery links |
 | Analyze | `site/analyze/index.qmd` | Static analyzer entry page and Shiny companion |
 | Sage vs GNU | `site/engine-benchmark/sage-vs-gnu-stage1/index.qmd` | Study overview and status page |
@@ -127,7 +127,7 @@ the relevant track index, and the sidebar.
 The glossary has one public route:
 
 ```text
-/learn/glossary/
+/glossary/
 ```
 
 Do not create a directory or page for an individual term. Every canonical term
@@ -135,8 +135,8 @@ is an expandable entry in the initial HTML on the glossary page. Link to a term
 with its stable canonical anchor:
 
 ```text
-/learn/glossary/#prime
-/learn/glossary/#take-point
+/glossary/#prime
+/glossary/#take-point
 ```
 
 Use canonical slugs in Learn and Research `terms` metadata. Aliases remain

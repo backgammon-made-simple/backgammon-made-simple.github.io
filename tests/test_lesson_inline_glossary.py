@@ -78,8 +78,8 @@ class LessonInlineGlossaryTests(unittest.TestCase):
             'data-bms-glossary-slug="ahead-in-the-count">Ahead in the Race</a>',
             result.stdout,
         )
-        self.assertIn('href="/learn/glossary/#ace"', result.stdout)
-        self.assertIn('href="/learn/glossary/#ahead-in-the-count"', result.stdout)
+        self.assertIn('href="/glossary/#ace"', result.stdout)
+        self.assertIn('href="/glossary/#ahead-in-the-count"', result.stdout)
         self.assertIn(
             "Ace appears again, and Ahead in the Count appears again",
             result.stdout,
@@ -286,7 +286,7 @@ highlighted-terms: [ace]
             encoding="utf-8"
         )
         glossary_html = (
-            ROOT / "site" / "learn" / "glossary" / "_entries.html"
+            ROOT / "site" / "glossary" / "_entries.html"
         ).read_text(encoding="utf-8")
         self.assertIn("function canonicalShortDefinition(entries, slug)", javascript)
         self.assertIn("entry.short_definition", javascript)
@@ -388,7 +388,7 @@ highlighted-terms: [ace]
             result.stdout.count('data-bms-glossary-slug="equity"'),
             1,
         )
-        self.assertIn('href="/learn/glossary/#equity"', result.stdout)
+        self.assertIn('href="/glossary/#equity"', result.stdout)
 
     def test_research_highlighted_term_must_be_canonical_and_in_terms(self) -> None:
         base = {

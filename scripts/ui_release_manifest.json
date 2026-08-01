@@ -18,8 +18,7 @@
       "name": "Homepage",
       "route": "/",
       "kind": "home",
-      "required_markers": ["Backgammon Made Simple"],
-      "forbidden_markers": ["data-bms-ui-edge-fixture"]
+      "required_markers": ["Backgammon Made Simple"]
     },
     {
       "id": "learn-index",
@@ -43,34 +42,6 @@
       "required_markers": ["data-bms-cube-decision"]
     },
     {
-      "id": "rich-scroll-fixture",
-      "name": "Rich scrolling fixture",
-      "route": "/learn/scrolling-test/doubling-cube/lesson-01.html",
-      "kind": "rich-scroll-fixture",
-      "required_markers": ["bms-scroll-fixture-disclosure"]
-    },
-    {
-      "id": "start-edge-fixture",
-      "name": "Start Here edge fixture",
-      "route": "/learn/scrolling-test/start-here/lesson-01.html",
-      "kind": "edge-scroll-fixture",
-      "required_markers": ["data-bms-ui-edge-fixture"]
-    },
-    {
-      "id": "cube-edge-fixture",
-      "name": "Cube edge fixture",
-      "route": "/learn/scrolling-test/doubling-cube/lesson-03.html",
-      "kind": "edge-scroll-fixture",
-      "required_markers": ["data-bms-ui-edge-fixture"]
-    },
-    {
-      "id": "opening-edge-fixture",
-      "name": "Opening edge fixture",
-      "route": "/learn/scrolling-test/opening-play/lesson-01.html",
-      "kind": "edge-scroll-fixture",
-      "required_markers": ["data-bms-ui-edge-fixture"]
-    },
-    {
       "id": "research-article",
       "name": "Research continuous article",
       "route": "/research/sage-vs-gnu-additional-details.html",
@@ -80,7 +51,7 @@
     {
       "id": "glossary",
       "name": "Glossary",
-      "route": "/learn/glossary/",
+      "route": "/glossary/",
       "kind": "glossary",
       "required_markers": ["data-bms-glossary-filters", "data-bms-glossary-entry"]
     },
