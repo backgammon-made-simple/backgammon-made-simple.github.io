@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "commands": {
     "automated_browser": "Use the browser controller to call runComprehensiveBrowserBaseline({ tab, viewport, baseUrl: 'http://127.0.0.1:8766/', screenshotDir: '<OUTPUT_DIR>/screenshots/browser' }) from scripts/testing/ux/browser/comprehensive_quality_browser_check.mjs and write the returned JSON to <OUTPUT_DIR>/browser/browser-baseline.json.",
     "canonical_entrypoint": "bash scripts/testing/comprehensive-quality.sh --output-dir <OUTPUT_DIR> --browser-report <OUTPUT_DIR>/browser/browser-baseline.json --performance-report <OUTPUT_DIR>/performance/runtime-performance.json",
@@ -60,6 +60,113 @@
       "static.unreferenced_site_asset_count"
     ]
   },
+  "comparison_gate_v2": {
+    "browser_report_fields": [
+      "comparisonContractVersion",
+      "coverage.routeIds",
+      "coverage.viewportNames",
+      "coverage.expectedPageCount",
+      "coverage.executedPageContexts",
+      "coverage.complete",
+      "checks",
+      "findings[].finding_id",
+      "findings[].stability",
+      "findings[].component",
+      "findings[].selector",
+      "findings[].state",
+      "rootCauseGroups[].root_cause_id"
+    ],
+    "finding_partitions": [
+      "new stable findings",
+      "removed stable findings",
+      "unchanged stable findings",
+      "volatile variation",
+      "environment-dependent variation",
+      "test-infrastructure failures"
+    ],
+    "blocking_conditions": [
+      "new stable findings",
+      "missing expected checks",
+      "changed check count",
+      "changed route coverage",
+      "changed viewport coverage",
+      "unexpected test-infrastructure failure",
+      "incomplete browser execution",
+      "new stable root-cause groups",
+      "comparison contract change without an approved version update",
+      "volatile variation overlapping the candidate route, component, state, selector, or root-cause group"
+    ],
+    "non_blocking_conditions": [
+      "volatile variation outside the candidate route, component, state, selector, and root-cause group",
+      "environment-dependent variation without an infrastructure failure"
+    ],
+    "automatic_comparator": "node scripts/testing/quality/browser/compare_browser_baselines.mjs <report> <report> [...] --output <comparison.json>"
+  },
+  "backward_mapping": [
+    {
+      "old_field": "browser.pages",
+      "new_field": "coverage.expectedPageCount and coverage.executedPageContexts",
+      "semantics": "corrected",
+      "mapping": "The v1 total is retained, but v2 records each route/viewport context so missing coverage cannot be hidden by an equal total.",
+      "reconstructable_from_s011_s012": "only the aggregate and intended contract coverage are reconstructable"
+    },
+    {
+      "old_field": "browser.checks",
+      "new_field": "checks and comparator expectedCheckCount/actualCheckCount",
+      "semantics": "unchanged",
+      "mapping": "The count remains the number of executed checks; v2 compares it explicitly to the reference run.",
+      "reconstructable_from_s011_s012": true
+    },
+    {
+      "old_field": "browser.failures",
+      "new_field": "findings partitioned by stability",
+      "semantics": "corrected",
+      "mapping": "The aggregate remains reportable but is not a deterministic identity comparison.",
+      "reconstructable_from_s011_s012": false
+    },
+    {
+      "old_field": "findings[].category",
+      "new_field": "findings[].category",
+      "semantics": "unchanged",
+      "mapping": "Product and infrastructure categories retain their v1 meaning.",
+      "reconstructable_from_s011_s012": true
+    },
+    {
+      "old_field": null,
+      "new_field": "findings[].finding_id",
+      "semantics": "new",
+      "mapping": "Stable identity is derived from category, route, viewport, normalized message, selector, and state.",
+      "reconstructable_from_s011_s012": false
+    },
+    {
+      "old_field": null,
+      "new_field": "findings[].stability",
+      "semantics": "new",
+      "mapping": "Every automated finding is explicitly classified as stable, volatile, environment-dependent, or test-infrastructure.",
+      "reconstructable_from_s011_s012": false
+    },
+    {
+      "old_field": "comparison.json findings.stable_delta",
+      "new_field": "stableFindings, volatileVariation, and environmentDependentVariation",
+      "semantics": "corrected",
+      "mapping": "s012's field compared sampled messages and must not be reinterpreted as stability-classified evidence.",
+      "reconstructable_from_s011_s012": false
+    },
+    {
+      "old_field": null,
+      "new_field": "rootCauseGroups",
+      "semantics": "new",
+      "mapping": "Finding instances are grouped under stable root-cause IDs while remaining visible individually.",
+      "reconstructable_from_s011_s012": false
+    },
+    {
+      "old_field": "browser.screenshot_count",
+      "new_field": "screenshots and rootCauseGroups[].representative_screenshots",
+      "semantics": "unchanged-plus-indexed",
+      "mapping": "Screenshot limits and counts are unchanged; v2 associates representative paths with root-cause groups.",
+      "reconstructable_from_s011_s012": "count and paths are reconstructable, group association is not"
+    }
+  ],
   "performance": {
     "measured_loads": 3,
     "route_ids": [

@@ -1062,6 +1062,7 @@ export async function runReleaseUiChecks({
   let failureScreenshots = 0;
   let checks = 0;
   let pages = 0;
+  const executedPageContexts = [];
   const check = (condition, context, message, metadata = {}) => {
     checks += 1;
     if (!condition) {
@@ -1136,6 +1137,7 @@ export async function runReleaseUiChecks({
       for (const page of manifest.pages) {
         const context = `${viewportCase.name}/${page.id}`;
         pages += 1;
+        executedPageContexts.push(context);
         const activeTab = await acquireTab();
         const failureCountBeforePage = failures.length;
         const continuousConfig = continuousConfigForPage(page);
@@ -1616,9 +1618,19 @@ export async function runReleaseUiChecks({
   });
   const report = {
     version: manifest.version,
+    comparisonContractVersion: 2,
     baseUrl,
     pages,
     checks,
+    coverage: {
+      routeIds: manifest.pages.map((page) => page.id),
+      viewportNames: manifest.viewports.map((item) => item.name),
+      expectedPageCount: manifest.pages.length * manifest.viewports.length,
+      executedPageContexts,
+      complete:
+        executedPageContexts.length ===
+        manifest.pages.length * manifest.viewports.length
+    },
     failures,
     findings,
     stabilitySummary: summarizeStability(findings),
