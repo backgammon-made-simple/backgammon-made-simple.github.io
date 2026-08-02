@@ -9,6 +9,7 @@ Use the smallest gate that covers the change:
 | Quick | `bash scripts/testing/quick.sh` | Routine source, fixture, and focused behavior changes |
 | Comprehensive | `bash scripts/testing/comprehensive.sh` | Shared UI/build changes and release candidates |
 | Comprehensive with social cards | `bash scripts/testing/comprehensive.sh --with-social-cards` | Authorized release preparation |
+| Comprehensive quality baseline | `bash scripts/testing/comprehensive-quality.sh --output-dir <OUTPUT_DIR>` | Reproducible build, browser, performance, bloat, and human-status baseline |
 
 Stop after the same approach fails twice. Record both attempts instead of
 repeating them. Do not run two Quarto renders concurrently.
@@ -26,6 +27,12 @@ and HTML audits, checker contracts, and the comprehensive UX handoff.
 `PASS` applies only to the named automated layer. Live-browser and human work
 must remain `NOT RUN` until actually completed; it is never implied by a build
 result. Follow [ux/UX-TESTING-SOP.md](ux/UX-TESTING-SOP.md) for those phases.
+
+For the comprehensive quality baseline, start a fixed server on port 8766 and
+run the controller helpers documented in `ux/UX-TESTING-SOP.md`. Supply their
+JSON reports to the final entrypoint with `--browser-report` and
+`--performance-report`. Missing controller reports remain `NOT RUN`; human UX
+review is never inferred from them.
 
 ## Optional gates
 

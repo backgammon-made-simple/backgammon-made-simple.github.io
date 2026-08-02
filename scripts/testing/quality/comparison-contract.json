@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "commands": {
+    "automated_browser": "Use the browser controller to call runComprehensiveBrowserBaseline({ tab, viewport, baseUrl: 'http://127.0.0.1:8766/', screenshotDir: '<OUTPUT_DIR>/screenshots/browser' }) from scripts/testing/ux/browser/comprehensive_quality_browser_check.mjs and write the returned JSON to <OUTPUT_DIR>/browser/browser-baseline.json.",
+    "canonical_entrypoint": "bash scripts/testing/comprehensive-quality.sh --output-dir <OUTPUT_DIR> --browser-report <OUTPUT_DIR>/browser/browser-baseline.json --performance-report <OUTPUT_DIR>/performance/runtime-performance.json",
+    "clean_build": "bash scripts/testing/build/comprehensive.sh",
+    "local_server": "python -m http.server 8766 --bind 127.0.0.1 --directory site/_site",
+    "runtime_performance": "Use the same browser tab and viewport controller to call runRuntimePerformanceBaseline({ tab, viewport, baseUrl: 'http://127.0.0.1:8766/' }) from scripts/testing/quality/performance/runtime_performance_baseline.mjs and write the returned JSON to <OUTPUT_DIR>/performance/runtime-performance.json.",
+    "shell_syntax": "bash -n scripts/testing/comprehensive-quality.sh scripts/testing/comprehensive.sh scripts/testing/build/*.sh scripts/testing/ux/*.sh",
+    "static_inventory": "python scripts/testing/quality/static_inventory.py --repo-root . --site-dir site/_site --output <OUTPUT_DIR>/static/static-inventory.json"
+  },
+  "metric_names": {
+    "browser": [
+      "browser.pages",
+      "browser.checks",
+      "browser.failures",
+      "browser.console_messages",
+      "browser.duration_ms",
+      "browser.screenshot_count"
+    ],
+    "build": [
+      "build.clean_duration_ms",
+      "build.rendered_file_count"
+    ],
+    "performance": [
+      "navigation.dns_ms",
+      "navigation.connect_ms",
+      "navigation.request_ms",
+      "navigation.response_ms",
+      "navigation.dom_interactive_ms",
+      "navigation.dom_content_loaded_ms",
+      "navigation.load_event_ms",
+      "navigation.duration_ms",
+      "paint.first_paint_ms",
+      "paint.first_contentful_paint_ms",
+      "paint.largest_contentful_paint_ms",
+      "layout.cumulative_layout_shift",
+      "dom.node_count",
+      "requests.count",
+      "requests.failure_count",
+      "bytes.total.transfer",
+      "bytes.total.encoded_body",
+      "bytes.total.decoded_body",
+      "bytes.html.transfer",
+      "bytes.javascript.transfer",
+      "bytes.css.transfer",
+      "bytes.image.transfer",
+      "bytes.font.transfer",
+      "bytes.json.transfer",
+      "interactions.glossary_search_ms",
+      "interactions.glossary_filter_ms",
+      "interactions.glossary_anchor_ms",
+      "interactions.glossary_sidebar_ms"
+    ],
+    "static": [
+      "static.source_file_count",
+      "static.rendered_file_count",
+      "static.duplicate_group_count",
+      "static.module_review_candidate_count",
+      "static.unreferenced_site_asset_count"
+    ]
+  },
+  "performance": {
+    "measured_loads": 3,
+    "route_ids": [
+      "home",
+      "cube-lesson",
+      "research-article",
+      "glossary",
+      "analyze",
+      "match-predictor"
+    ],
+    "viewport_names": [
+      "desktop-1440",
+      "mobile-390"
+    ],
+    "warmup_loads": 1
+  },
+  "report_schema": {
+    "baseline_json": {
+      "required": [
+        "schema_version",
+        "overall_status",
+        "comparison_contract",
+        "components",
+        "metrics",
+        "screenshots"
+      ]
+    },
+    "component_statuses": [
+      "PASS",
+      "FAIL",
+      "PENDING",
+      "NOT RUN"
+    ],
+    "finding": {
+      "categories": [
+        "product-defect",
+        "performance-opportunity",
+        "simplification-opportunity",
+        "archive-candidate",
+        "test-infrastructure",
+        "needs-review"
+      ],
+      "required": [
+        "category",
+        "severity",
+        "route_or_file",
+        "viewport",
+        "evidence",
+        "reproduction",
+        "safe_for_automated_remediation",
+        "needs_review"
+      ]
+    },
+    "findings_json": {
+      "required": [
+        "schema_version",
+        "findings"
+      ]
+    }
+  },
+  "routes": [
+    {"id": "home", "route": "/"},
+    {"id": "learn-index", "route": "/learn/"},
+    {"id": "cube-index", "route": "/learn/cube/"},
+    {"id": "cube-lesson", "route": "/learn/cube/what-the-cube-is-asking.html"},
+    {"id": "take-point-lesson", "route": "/learn/cube/why-is-25-percent-the-basic-take-point.html"},
+    {"id": "research-index", "route": "/research/"},
+    {"id": "research-article", "route": "/research/sage-vs-gnu-additional-details.html"},
+    {"id": "engine-benchmark", "route": "/engine-benchmark/"},
+    {"id": "sage-vs-gnu", "route": "/engine-benchmark/sage-vs-gnu-stage1/"},
+    {"id": "analyze", "route": "/analyze/"},
+    {"id": "match-predictor", "route": "/match-predictor/"},
+    {"id": "glossary", "route": "/glossary/"},
+    {"id": "about", "route": "/about.html"},
+    {"id": "licensing", "route": "/licensing.html"},
+    {"id": "updates", "route": "/updates/"},
+    {"id": "404", "route": "/404.html"}
+  ],
+  "screenshots": {
+    "baseline_route_ids": [
+      "home",
+      "learn-index",
+      "cube-lesson",
+      "research-article",
+      "glossary",
+      "analyze"
+    ],
+    "baseline_viewport_names": [
+      "desktop-1440",
+      "mobile-390"
+    ],
+    "failure_limit": 30
+  },
+  "viewports": [
+    {"height": 900, "name": "desktop-1440", "width": 1440},
+    {"height": 800, "name": "laptop-1280", "width": 1280},
+    {"height": 768, "name": "tablet-1024", "width": 1024},
+    {"height": 844, "name": "mobile-390", "width": 390},
+    {"height": 568, "name": "small-mobile-320", "width": 320}
+  ]
+}

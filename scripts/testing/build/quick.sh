@@ -55,6 +55,8 @@ printf '\n[4/5] Focused Python contracts\n'
   tests.test_release_ui_checks \
   tests.test_lesson_analysis \
   tests.test_real_checker_analysis \
+  tests.test_static_inventory \
+  tests.test_quality_reports \
   -v
 
 printf '\n[5/5] Existing rendered-site representative audit\n'
