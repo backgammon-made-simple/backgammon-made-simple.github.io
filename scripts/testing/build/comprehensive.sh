@@ -40,6 +40,7 @@ done
 
 if [[ -x "${REPO_ROOT}/.venv/Scripts/python.exe" ]]; then
   PYTHON_COMMAND=("${REPO_ROOT}/.venv/Scripts/python.exe")
+  export PATH="${REPO_ROOT}/.venv/Scripts:${PATH}"
 elif command -v py >/dev/null 2>&1; then
   PYTHON_COMMAND=(py)
 elif command -v python >/dev/null 2>&1; then
