@@ -87,6 +87,7 @@ assert.ok(
     canonicalHelperSource
   )
 );
+assert.ok(canonicalHelperSource.includes("checksByContext[context]"));
 assert.ok(!helperSource.includes("[data-bms-lesson-track-toggle]"));
 assert.match(
   helperSource,

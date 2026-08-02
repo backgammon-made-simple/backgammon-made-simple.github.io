@@ -1099,10 +1099,12 @@ export async function runReleaseUiChecks({
   const screenshots = [];
   let failureScreenshots = 0;
   let checks = 0;
+  const checksByContext = {};
   let pages = 0;
   const executedPageContexts = [];
   const check = (condition, context, message, metadata = {}) => {
     checks += 1;
+    checksByContext[context] = (checksByContext[context] || 0) + 1;
     if (!condition) {
       failures.push({ context, message, ...metadata });
     }
@@ -1704,6 +1706,7 @@ export async function runReleaseUiChecks({
     baseUrl,
     pages,
     checks,
+    checksByContext,
     coverage: {
       routeIds: manifest.pages.map((page) => page.id),
       viewportNames: manifest.viewports.map((item) => item.name),
