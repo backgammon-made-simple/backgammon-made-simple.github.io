@@ -18,7 +18,6 @@ This private guide explains where the site lives, how the navigation is wired, a
 | About | `site/about.qmd` | Project purpose and site-level identity |
 | Posts | `site/posts/**/index.qmd` | Individual blog entries |
 | Shared CSS | `site/assets/` | Layout, color, and component styling |
-| Templates | `site/templates/` | Copyable page skeletons |
 
 ## Navigation
 
@@ -159,8 +158,8 @@ The blog listing is driven by `listing:` metadata on `site/blog/index.qmd`, whic
 eligible Learn article, Research article, study, or benchmark report must live
 under its public section, have a real ISO publication `date`, and explicitly
 set `published: true`. The feed sorts those sources in reverse chronological
-order. Do not mark landings, templates, drafts, hidden or planned pages, or
-private fixture posts as published feed items.
+order. Do not mark landings, drafts, hidden or planned pages, or private fixture
+posts as published feed items.
 
 ## Recently Added
 
