@@ -6,6 +6,10 @@ import {
   runComprehensiveBrowserBaseline,
   runComprehensiveBrowserBaselineWithIsolation
 } from "../scripts/testing/ux/browser/comprehensive_quality_browser_check.mjs";
+import {
+  EXPECTED_CONTINUOUS_APPEND_COUNT,
+  continuousConfigForPage
+} from "../scripts/testing/ux/browser/release_ui_browser_check.mjs";
 
 const helperSource = readFileSync(
   new URL(
@@ -29,6 +33,14 @@ assert.deepEqual(
 assert.equal(DEFAULT_MANIFEST.baseline_screenshot_route_ids.length, 6);
 assert.equal(DEFAULT_MANIFEST.baseline_screenshot_viewport_names.length, 2);
 assert.equal(DEFAULT_MANIFEST.failure_screenshot_limit, 30);
+assert.equal(EXPECTED_CONTINUOUS_APPEND_COUNT, 1);
+assert.deepEqual(continuousConfigForPage({ kind: "learn-lesson" }), {
+  markerSelector: ".bms-learn-scroll-lesson-marker",
+  routeAttribute: "data-bms-learn-scroll-lesson-route",
+  sentinelSelector: ".bms-learn-scroll-sentinel",
+  namespace: "bms-learn-scroll-"
+});
+assert.equal(continuousConfigForPage({ kind: "ordinary" }), null);
 
 const requiredPageIds = [
   "home",
@@ -62,7 +74,11 @@ for (const requiredSourceContract of [
   "limitations",
   "domcontentloaded",
   "safe_for_automated_remediation",
-  "needs_review"
+  "needs_review",
+  "continuousLoading",
+  "expectedAppendedPageCount",
+  "browserHistoryState",
+  "timeoutReason"
 ]) {
   assert.ok(helperSource.includes(requiredSourceContract), requiredSourceContract);
 }

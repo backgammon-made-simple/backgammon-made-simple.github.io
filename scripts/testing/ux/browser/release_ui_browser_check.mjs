@@ -213,6 +213,111 @@ const pagePosition = (tab) =>
     scrollY: window.scrollY
   }));
 
+export const EXPECTED_CONTINUOUS_APPEND_COUNT = 1;
+
+export const continuousConfigForPage = (page) => {
+  if (page.kind === "learn-lesson") {
+    return {
+      markerSelector: ".bms-learn-scroll-lesson-marker",
+      routeAttribute: "data-bms-learn-scroll-lesson-route",
+      sentinelSelector: ".bms-learn-scroll-sentinel",
+      namespace: "bms-learn-scroll-"
+    };
+  }
+  if (page.kind === "research-article") {
+    return {
+      markerSelector: ".bms-research-scroll-marker",
+      routeAttribute: "data-bms-research-scroll-marker",
+      sentinelSelector: ".bms-research-scroll-sentinel",
+      namespace: "bms-research-scroll-"
+    };
+  }
+  return null;
+};
+
+const continuousStateSnapshot = (tab, config) =>
+  tab.playwright.locator("html").evaluate((_root, stateConfig) => {
+    const markers = Array.from(
+      document.querySelectorAll(stateConfig.markerSelector)
+    );
+    const loadedPageOrder = markers.map((marker) =>
+      marker.getAttribute(stateConfig.routeAttribute)
+    );
+    const appendedPages = markers.slice(1).map((marker, index) => {
+      const ids = [];
+      let node = marker.nextElementSibling;
+      const nextMarker = markers[index + 2] || null;
+      while (node && node !== nextMarker && !node.matches(stateConfig.sentinelSelector)) {
+        if (node.id) {
+          ids.push(node.id);
+        }
+        node.querySelectorAll("[id]").forEach((element) => ids.push(element.id));
+        node = node.nextElementSibling;
+      }
+      return {
+        route: marker.getAttribute(stateConfig.routeAttribute),
+        containerIds: Array.from(new Set(ids)).sort()
+      };
+    });
+    const sentinel = document.querySelector(stateConfig.sentinelSelector);
+    let historyState = null;
+    try {
+      historyState = JSON.parse(JSON.stringify(history.state));
+    } catch (_error) {
+      historyState = "unserializable";
+    }
+    return {
+      documentIdentity: {
+        bodyClasses: Array.from(document.body.classList).sort(),
+        h1: document.querySelector("h1")?.textContent?.trim() || null,
+        route: window.location.pathname
+      },
+      loadedPageOrder,
+      appendedPages,
+      markerCount: markers.length,
+      sentinel: sentinel
+        ? {
+            available: true,
+            loading: sentinel.classList.contains("is-loading"),
+            route:
+              sentinel.getAttribute("data-bms-learn-scroll-sentinel") ||
+              sentinel.getAttribute("data-bms-research-scroll-sentinel")
+          }
+        : { available: false, loading: false, route: null },
+      completionSignal: Boolean(sentinel && !sentinel.classList.contains("is-loading")),
+      scrollPosition: {
+        clientHeight: document.documentElement.clientHeight,
+        scrollHeight: document.documentElement.scrollHeight,
+        scrollY: window.scrollY
+      },
+      url: window.location.href,
+      history: {
+        length: history.length,
+        state: historyState
+      }
+    };
+  }, config);
+
+const waitForContinuousState = async (
+  tab,
+  config,
+  predicate,
+  timeoutMs = 10000
+) => {
+  const started = Date.now();
+  let state = await continuousStateSnapshot(tab, config);
+  while (!predicate(state) && Date.now() - started < timeoutMs) {
+    await delay(100);
+    state = await continuousStateSnapshot(tab, config);
+  }
+  return {
+    state,
+    timeoutReason: predicate(state)
+      ? null
+      : `expected continuous state was not reached within ${timeoutMs}ms`
+  };
+};
+
 const scrollTo = async (tab, position) => {
   await tab.playwright.locator("html").evaluate(
     (_element, target) => {
@@ -816,6 +921,7 @@ export async function runReleaseUiChecks({
   const consoleMessages = [];
   const consoleSeen = new Set();
   const limitations = [];
+  const continuousLoading = [];
   const screenshots = [];
   let failureScreenshots = 0;
   let checks = 0;
@@ -896,6 +1002,8 @@ export async function runReleaseUiChecks({
         pages += 1;
         const activeTab = await acquireTab();
         const failureCountBeforePage = failures.length;
+        const continuousConfig = continuousConfigForPage(page);
+        let initialContinuousState = null;
         let phase = "navigation";
         try {
           await viewport.set({
@@ -909,6 +1017,39 @@ export async function runReleaseUiChecks({
           });
           await scrollTo(activeTab, 0);
           await delay(500);
+
+          if (continuousConfig) {
+            phase = "continuous loading initialization";
+            const initialized = await waitForContinuousState(
+              activeTab,
+              continuousConfig,
+              (state) =>
+                state.markerCount === 1 &&
+                state.sentinel.available &&
+                !state.sentinel.loading
+            );
+            initialContinuousState = initialized.state;
+            check(
+              initialized.timeoutReason === null,
+              context,
+              initialized.timeoutReason || "continuous loading initialization is ready"
+            );
+            check(
+              initialContinuousState.documentIdentity.route === page.route,
+              context,
+              `continuous loading starts on the expected route: ${initialContinuousState.documentIdentity.route}`
+            );
+            check(
+              Boolean(initialContinuousState.documentIdentity.h1),
+              context,
+              "continuous loading records the initial document identity"
+            );
+            check(
+              initialContinuousState.appendedPages.length === 0,
+              context,
+              `continuous loading starts before appended pages (actual=${initialContinuousState.appendedPages.length})`
+            );
+          }
 
           phase = "landmarks and initial layout";
           const audit = await accessibilitySnapshot(activeTab);
@@ -1021,36 +1162,99 @@ export async function runReleaseUiChecks({
               Math.floor(initialMetrics.scrollHeight / 2)
             );
           }
-          const continuousPage =
-            page.kind.includes("scroll-fixture") ||
-            page.kind === "learn-lesson" ||
-            page.kind === "research-article";
+          const continuousPage = Boolean(continuousConfig);
           const markerSelector =
             page.kind === "research-article"
               ? ".bms-research-scroll-marker"
               : ".bms-learn-scroll-lesson-marker";
           const markersBeforeScroll = continuousPage
-            ? await activeTab.playwright.locator(markerSelector).count()
+            ? initialContinuousState.markerCount
             : 0;
           phase = "bottom scroll and continuous loading";
           await scrollTo(activeTab, Number.MAX_SAFE_INTEGER);
-          await delay(
-            continuousPage ? 2500 : 180
-          );
+          await delay(continuousPage ? 100 : 180);
           let bottomMetrics = await pagePosition(activeTab);
           if (continuousPage) {
-            const markersAfterScroll = await activeTab.playwright
-              .locator(markerSelector)
-              .count();
+            const completed = await waitForContinuousState(
+              activeTab,
+              continuousConfig,
+              (state) =>
+                state.markerCount ===
+                  markersBeforeScroll + EXPECTED_CONTINUOUS_APPEND_COUNT &&
+                state.completionSignal
+            );
+            const finalState = completed.state;
+            const markersAfterScroll = finalState.markerCount;
+            const actualAppendedPageCount =
+              markersAfterScroll - markersBeforeScroll;
             check(
-              markersAfterScroll > markersBeforeScroll,
+              completed.timeoutReason === null,
+              context,
+              completed.timeoutReason || "continuous loading reached its completion signal"
+            );
+            check(
+              actualAppendedPageCount === EXPECTED_CONTINUOUS_APPEND_COUNT,
               context,
               page.kind === "research-article"
-                ? "continuous scrolling appends the next Research article"
-                : "continuous scrolling appends the next lesson"
+                ? `continuous scrolling appends exactly one Research article (expected=${EXPECTED_CONTINUOUS_APPEND_COUNT}, actual=${actualAppendedPageCount})`
+                : `continuous scrolling appends exactly one lesson (expected=${EXPECTED_CONTINUOUS_APPEND_COUNT}, actual=${actualAppendedPageCount})`
             );
-            await scrollTo(activeTab, Number.MAX_SAFE_INTEGER);
-            await delay(500);
+            check(
+              finalState.loadedPageOrder.length === markersAfterScroll &&
+                new Set(finalState.loadedPageOrder).size === markersAfterScroll,
+              context,
+              `continuous loading records unique loaded-page order: ${finalState.loadedPageOrder.join(" -> ")}`
+            );
+            check(
+              finalState.appendedPages.every((item) => Boolean(item.route)),
+              context,
+              `continuous loading records each appended page identity: ${finalState.appendedPages.map((item) => item.route).join(", ")}`
+            );
+            const namespacedContainerIds = finalState.appendedPages.flatMap(
+              (item) => item.containerIds
+            );
+            check(
+              namespacedContainerIds.length > 0 &&
+                namespacedContainerIds.every((id) =>
+                  id.startsWith(continuousConfig.namespace)
+                ),
+              context,
+              `appended container IDs are namespaced: ${namespacedContainerIds.join(", ")}`
+            );
+            check(
+              finalState.url === initialContinuousState.url,
+              context,
+              `continuous loading preserves the final URL: ${finalState.url}`
+            );
+            check(
+              finalState.history.length === initialContinuousState.history.length &&
+                JSON.stringify(finalState.history.state) ===
+                  JSON.stringify(initialContinuousState.history.state),
+              context,
+              "continuous loading preserves browser history state"
+            );
+            check(
+              finalState.scrollPosition.scrollY > 0,
+              context,
+              `continuous loading records the final scroll position: ${finalState.scrollPosition.scrollY}`
+            );
+            continuousLoading.push({
+              context,
+              initialRoute: page.route,
+              initialDocumentIdentity: initialContinuousState.documentIdentity,
+              expectedAppendedPageCount: EXPECTED_CONTINUOUS_APPEND_COUNT,
+              actualAppendedPageCount,
+              appendedPages: finalState.appendedPages,
+              loadedPageOrder: finalState.loadedPageOrder,
+              loadingCompletionSignal: finalState.completionSignal,
+              scrollTrigger: "window.scrollTo(0, Number.MAX_SAFE_INTEGER)",
+              finalScrollPosition: finalState.scrollPosition,
+              namespacedContainerIds,
+              finalUrl: finalState.url,
+              browserHistoryState: finalState.history,
+              timeoutReason: completed.timeoutReason
+            });
+            await delay(400);
             const navigationState = await activeTab.playwright
               .locator("html")
               .evaluate(() => ({
@@ -1204,6 +1408,7 @@ export async function runReleaseUiChecks({
       };
     }),
     limitations,
+    continuousLoading,
     consoleMessages,
     screenshots,
     durationMs: Date.now() - started
