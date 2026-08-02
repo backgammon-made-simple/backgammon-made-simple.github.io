@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -113,6 +114,17 @@ def build_metrics(report: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def portable_evidence_path(
+    path: Path | None, report: dict[str, Any] | None, output_dir: Path
+) -> str | None:
+    if path is None or report is None:
+        return None
+    try:
+        return Path(os.path.relpath(path.resolve(), output_dir.resolve())).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def assemble(
     *,
     output_dir: Path,
@@ -132,19 +144,21 @@ def assemble(
     components = {
         "clean_build_and_browserless_tests": {
             "status": component_status(build),
-            "evidence": str(build_path) if build else None,
+            "evidence": portable_evidence_path(build_path, build, output_dir),
         },
         "automated_browser_ux_accessibility": {
             "status": component_status(browser, browser=True),
-            "evidence": str(browser_path) if browser else None,
+            "evidence": portable_evidence_path(browser_path, browser, output_dir),
         },
         "runtime_performance": {
             "status": component_status(performance),
-            "evidence": str(performance_path) if performance else None,
+            "evidence": portable_evidence_path(
+                performance_path, performance, output_dir
+            ),
         },
         "static_output_and_bloat_inventory": {
             "status": component_status(static),
-            "evidence": str(static_path) if static else None,
+            "evidence": portable_evidence_path(static_path, static, output_dir),
         },
         "human_ux_review": {
             "status": "NOT RUN",

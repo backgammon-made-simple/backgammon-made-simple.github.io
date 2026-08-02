@@ -34,6 +34,10 @@ class QualityReportTests(unittest.TestCase):
             )
             self.assertEqual(baseline["overall_status"], "PASS")
             self.assertEqual(baseline["components"]["human_ux_review"]["status"], "NOT RUN")
+            self.assertEqual(
+                baseline["components"]["clean_build_and_browserless_tests"]["evidence"],
+                "../build.json",
+            )
             for name in ("baseline-summary.md", "baseline.json", "findings.json"):
                 self.assertTrue((root / "output" / name).is_file())
 
