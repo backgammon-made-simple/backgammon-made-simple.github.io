@@ -18,6 +18,14 @@ const helperSource = readFileSync(
   ),
   "utf8"
 );
+const findingSource = readFileSync(
+  new URL(
+    "../scripts/testing/quality/browser/finding_stability.mjs",
+    import.meta.url
+  ),
+  "utf8"
+);
+const browserContractSource = `${helperSource}\n${findingSource}`;
 
 assert.equal(DEFAULT_MANIFEST.version, 2);
 assert.deepEqual(
@@ -88,7 +96,10 @@ for (const requiredSourceContract of [
   "browserHistoryState",
   "timeoutReason"
 ]) {
-  assert.ok(helperSource.includes(requiredSourceContract), requiredSourceContract);
+  assert.ok(
+    browserContractSource.includes(requiredSourceContract),
+    requiredSourceContract
+  );
 }
 
 await assert.rejects(

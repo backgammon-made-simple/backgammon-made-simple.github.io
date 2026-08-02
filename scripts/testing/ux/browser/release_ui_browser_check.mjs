@@ -1,5 +1,9 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import {
+  classifyBrowserFinding,
+  summarizeStability
+} from "../../quality/browser/finding_stability.mjs";
 
 const manifestUrl = new URL("./ui_release_manifest.json", import.meta.url);
 
@@ -1590,32 +1594,33 @@ export async function runReleaseUiChecks({
     }
   }
 
+  const findings = failures.map((failure) => {
+    const [viewportName, pageId] = failure.context.split("/");
+    const page = manifest.pages.find((item) => item.id === pageId);
+    const viewportCase = manifest.viewports.find(
+      (item) => item.name === viewportName
+    );
+    const screenshot = screenshots.find(
+      (item) =>
+        item.kind === "failure" &&
+        item.viewport === viewportName &&
+        item.page === pageId
+    );
+    return classifyBrowserFinding({
+      failure,
+      page,
+      viewport: viewportCase,
+      screenshot
+    });
+  });
   const report = {
     version: manifest.version,
     baseUrl,
     pages,
     checks,
     failures,
-    findings: failures.map((failure) => {
-      const [viewportName, pageId] = failure.context.split("/");
-      const page = manifest.pages.find((item) => item.id === pageId);
-      const screenshot = screenshots.find(
-        (item) =>
-          item.kind === "failure" &&
-          item.viewport === viewportName &&
-          item.page === pageId
-      );
-      return {
-        category: failure.category || "product-defect",
-        severity: failure.category === "test-infrastructure" ? "blocking" : "major",
-        route_or_file: page?.route || failure.context,
-        viewport: manifest.viewports.find((item) => item.name === viewportName) || null,
-        evidence: `${failure.message}${screenshot ? `; screenshot: ${screenshot.path}` : ""}`,
-        reproduction: `Serve site/_site and run the comprehensive browser baseline for ${failure.context}.`,
-        safe_for_automated_remediation: false,
-        needs_review: true
-      };
-    }),
+    findings,
+    stabilitySummary: summarizeStability(findings),
     limitations,
     continuousLoading,
     focusTraversal,
