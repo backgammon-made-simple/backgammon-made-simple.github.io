@@ -157,12 +157,15 @@ class ReleaseUiStaticCheckTests(unittest.TestCase):
             'PROJECT_PYTHON="${REPO_ROOT}/.venv/Scripts/python.exe"'
         )
         project_selection = 'PYTHON_COMMAND=("${PROJECT_PYTHON}")'
+        project_path = 'export PATH="$(dirname "${PROJECT_PYTHON}"):${PATH}"'
         fallback_selection = "elif command -v py"
 
         self.assertIn(project_python, preview)
         self.assertIn('"${PROJECT_PYTHON}" -c \'import sys\'', preview)
         self.assertIn(project_selection, preview)
+        self.assertIn(project_path, preview)
         self.assertLess(preview.index(project_selection), preview.index(fallback_selection))
+        self.assertLess(preview.index(project_path), preview.index("quarto preview site"))
 
 
 if __name__ == "__main__":
