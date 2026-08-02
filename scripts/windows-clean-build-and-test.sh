@@ -12,7 +12,7 @@ cd "$ROOT"
 
 printf 'Clean build and test on %s\n' "$(git branch --show-current)"
 rm -rf -- site/_site site/.quarto
-bash testing-scripts/run-browserless-long.sh --with-social-cards
+bash scripts/testing/build/comprehensive.sh --with-social-cards
 
 if [[ "${BMS_NO_PREVIEW:-0}" != "1" ]]; then
   exec bash scripts/preview-site.sh "$PORT"
