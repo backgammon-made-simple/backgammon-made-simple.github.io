@@ -66,12 +66,16 @@ class GlossaryPageGenerationTests(unittest.TestCase):
         )
         self.entries = [self.ace, self.one_point, self.sample]
 
-    def test_full_definitions_are_visible_and_short_definitions_are_not(self) -> None:
+    def test_short_summaries_and_full_definitions_are_visible(self) -> None:
         output = learn_glossary.build_entries_html(self.entries, {}, {})
         self.assertEqual(
             output.count('class="bms-glossary-definition"'), len(self.entries)
         )
-        self.assertNotIn("bms-glossary-short-definition", output)
+        self.assertEqual(
+            output.count('class="bms-glossary-short-definition"'),
+            len(self.entries),
+        )
+        self.assertIn("Short definition for Ace.", output)
         self.assertIn("The ace point matters.", output)
 
     def test_automatic_longest_alias_match_wins(self) -> None:
