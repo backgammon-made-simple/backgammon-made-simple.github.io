@@ -2217,6 +2217,9 @@
     }
 
     const desktopQuery = window.matchMedia("(min-width: 992px)");
+    const keepExpandedWhileScrolling =
+      document.body.classList.contains("bms-learn-index") ||
+      document.body.classList.contains("bms-learn-track-index");
     const sidebarScroller =
       sidebar.querySelector(".sidebar-menu-container") || sidebar;
     const pageHeader = document.getElementById("quarto-header");
@@ -2252,6 +2255,7 @@
       toggle.hidden =
         !desktopQuery.matches ||
         (!collapsed &&
+          !keepExpandedWhileScrolling &&
           scrollingDown &&
           (window.scrollY > 32 || sidebarScroller.scrollTop > 4));
       if (!toggle.hidden && !collapsed) {
@@ -2294,6 +2298,7 @@
           scrollingDown = pageScrollingDown;
           lastScrollY = currentScrollY;
           if (
+            !keepExpandedWhileScrolling &&
             autoCollapsePending &&
             scrollingDown &&
             currentScrollY > 32

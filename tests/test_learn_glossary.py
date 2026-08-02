@@ -1566,6 +1566,8 @@ private code phrase
             "const positionExpandedToggle = function",
             "if (!toggle.hidden && !collapsed)",
             "const updateVisibility = function",
+            "const keepExpandedWhileScrolling =",
+            "!keepExpandedWhileScrolling &&",
             "sidebarScroller.addEventListener",
             "let autoCollapsePending = window.scrollY <= 32",
             "autoCollapsePending &&",
@@ -1574,6 +1576,14 @@ private code phrase
             self.assertIn(required, javascript)
         self.assertNotIn("initializeDistractionFreeMode", javascript)
         self.assertNotIn("bms-distraction-free", javascript)
+        left_sidebar_toggle = javascript[
+            javascript.index("  function initializeLearnLeftSidebarToggle") :
+            javascript.index("  function findIdWithinRoot")
+        ]
+        self.assertEqual(
+            left_sidebar_toggle.count("!keepExpandedWhileScrolling &&"),
+            2,
+        )
         glossary_scroll = javascript[
             javascript.index("    const updateGlossaryLookupForScroll") :
             javascript.index("    if (form && input && result)")
