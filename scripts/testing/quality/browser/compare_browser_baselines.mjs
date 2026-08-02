@@ -173,7 +173,9 @@ export const compareBrowserBaselines = (
 };
 
 const isCli =
-  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+  typeof process !== "undefined" &&
+  process.argv?.[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isCli) {
   const argumentsAfterScript = process.argv.slice(2);
   const outputIndex = argumentsAfterScript.indexOf("--output");
