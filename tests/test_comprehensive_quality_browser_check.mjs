@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 
 import {
   DEFAULT_MANIFEST,
-  runComprehensiveBrowserBaseline
+  runComprehensiveBrowserBaseline,
+  runComprehensiveBrowserBaselineWithIsolation
 } from "../scripts/testing/ux/browser/comprehensive_quality_browser_check.mjs";
 
 const helperSource = readFileSync(
@@ -69,6 +70,11 @@ for (const requiredSourceContract of [
 await assert.rejects(
   runComprehensiveBrowserBaseline({ manifest: { version: 1 } }),
   /manifest version 2/
+);
+
+await assert.rejects(
+  runComprehensiveBrowserBaselineWithIsolation({}),
+  /tab isolation support/
 );
 
 console.log("comprehensive quality browser helper contracts passed");

@@ -18,6 +18,11 @@ loading, glossary flows, iframe containers, console exceptions, and responsive
 behavior. Write its JSON result and bounded screenshots to the baseline output
 directory.
 
+Controllers that invalidate selector evaluation after a second explicit
+navigation must use `runComprehensiveBrowserBaselineWithIsolation()` from the
+same module. It applies a fresh controller page to each explicit navigation
+while preserving the manifest, checks, screenshots, and report schema.
+
 Using the same fixed server and controller, run
 `runRuntimePerformanceBaseline()` from
 `../quality/performance/runtime_performance_baseline.mjs`. It performs one
