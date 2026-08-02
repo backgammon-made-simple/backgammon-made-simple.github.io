@@ -1881,8 +1881,8 @@ body.bms-glossary-index
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-heading {
-    justify-content: center;
-    text-align: center;
+    justify-content: space-between;
+    text-align: left;
   }
 
   body:is(
@@ -1895,6 +1895,7 @@ body.bms-glossary-index
     min-height: 1.35rem;
     align-items: center;
     justify-content: center;
+    margin-left: auto;
     padding: 0;
   }
 

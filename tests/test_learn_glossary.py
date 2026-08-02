@@ -1315,6 +1315,9 @@ private code phrase
             "(!glossarySearch || glossaryIndexPage)",
             "if (glossarySearch && !lookup)",
             "const updateGlossaryLookupForScroll = function",
+            "let lastGlossaryScrollY = window.scrollY",
+            "Math.abs(currentScrollY - lastGlossaryScrollY) > 4",
+            "lastGlossaryScrollY = currentScrollY",
             "let desktopCollapsed = !refinedRightRailPage;",
             "window.scrollY <= window.innerHeight",
             'window.addEventListener("resize", updateBackToTop)',
@@ -1571,6 +1574,12 @@ private code phrase
             self.assertIn(required, javascript)
         self.assertNotIn("initializeDistractionFreeMode", javascript)
         self.assertNotIn("bms-distraction-free", javascript)
+        glossary_scroll = javascript[
+            javascript.index("    const updateGlossaryLookupForScroll") :
+            javascript.index("    if (form && input && result)")
+        ]
+        self.assertIn("closeLookup();", glossary_scroll)
+        self.assertNotIn("open({ focusInput: false });", glossary_scroll)
 
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
@@ -1596,6 +1605,16 @@ private code phrase
             "@media (min-width: 992px)",
         ):
             self.assertIn(required, css)
+        refined_lookup_heading = re.search(
+            r"\.bms-term-lookup-heading \{([^}]*)\}",
+            css[css.index("body:is(\n      .bms-research-article") :],
+        )
+        self.assertIsNotNone(refined_lookup_heading)
+        self.assertIn(
+            "justify-content: space-between",
+            refined_lookup_heading.group(1),
+        )
+        self.assertIn("margin-left: auto", css)
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar \{[^}]*"

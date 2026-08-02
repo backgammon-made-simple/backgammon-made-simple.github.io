@@ -1214,6 +1214,7 @@
     let marginSidebarCollapsed = false;
     let rightRailScrollCollapsed = false;
     let lastRightRailScrollY = window.scrollY;
+    let lastGlossaryScrollY = window.scrollY;
     let suppressRightRailAutoCollapse = false;
     let mobileDrawerOpen = false;
     let mobileTouchStart = null;
@@ -2011,20 +2012,18 @@
       if (!glossaryIndexPage || !lookup) {
         return;
       }
-      if (!desktopQuery.matches || window.scrollY <= 32) {
+      const currentScrollY = window.scrollY;
+      if (Math.abs(currentScrollY - lastGlossaryScrollY) > 4) {
         if (!lookup.hidden) {
           closeLookup();
         }
-      } else if (lookup.hidden) {
-        open({ focusInput: false });
+        lastGlossaryScrollY = currentScrollY;
       }
     };
     if (glossaryIndexPage) {
       window.addEventListener("scroll", updateGlossaryLookupForScroll, {
         passive: true
       });
-      desktopQuery.addEventListener("change", updateGlossaryLookupForScroll);
-      updateGlossaryLookupForScroll();
     }
 
     if (form && input && result) {
