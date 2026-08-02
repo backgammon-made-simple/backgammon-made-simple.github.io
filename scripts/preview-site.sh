@@ -43,7 +43,11 @@ if ! command -v quarto >/dev/null 2>&1; then
   exit 127
 fi
 
-if command -v py >/dev/null 2>&1; then
+PROJECT_PYTHON="${REPO_ROOT}/.venv/Scripts/python.exe"
+if [[ -x "${PROJECT_PYTHON}" ]] &&
+  "${PROJECT_PYTHON}" -c 'import sys' >/dev/null 2>&1; then
+  PYTHON_COMMAND=("${PROJECT_PYTHON}")
+elif command -v py >/dev/null 2>&1; then
   PYTHON_COMMAND=(py)
 elif command -v python >/dev/null 2>&1; then
   PYTHON_COMMAND=(python)

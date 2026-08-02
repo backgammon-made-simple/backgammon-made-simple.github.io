@@ -149,6 +149,21 @@ class ReleaseUiStaticCheckTests(unittest.TestCase):
         ):
             self.assertIn(expected, shell_runner)
 
+    def test_preview_prefers_usable_project_python(self) -> None:
+        preview = (ROOT / "scripts" / "preview-site.sh").read_text(
+            encoding="utf-8"
+        )
+        project_python = (
+            'PROJECT_PYTHON="${REPO_ROOT}/.venv/Scripts/python.exe"'
+        )
+        project_selection = 'PYTHON_COMMAND=("${PROJECT_PYTHON}")'
+        fallback_selection = "elif command -v py"
+
+        self.assertIn(project_python, preview)
+        self.assertIn('"${PROJECT_PYTHON}" -c \'import sys\'', preview)
+        self.assertIn(project_selection, preview)
+        self.assertLess(preview.index(project_selection), preview.index(fallback_selection))
+
 
 if __name__ == "__main__":
     unittest.main()
