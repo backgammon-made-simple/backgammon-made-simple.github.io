@@ -28,6 +28,7 @@ class PageDocument:
     main_count: int = 0
     h1_count: int = 0
     viewport_meta: bool = False
+    redirect_target: str = ""
 
 
 @dataclass(frozen=True)
@@ -71,6 +72,14 @@ class RenderedPageParser(HTMLParser):
             and attributes.get("content")
         ):
             self.document.viewport_meta = True
+        if (
+            tag == "meta"
+            and str(attributes.get("http-equiv") or "").casefold()
+            == "refresh"
+        ):
+            content = str(attributes.get("content") or "")
+            _separator, _url_marker, target = content.partition("url=")
+            self.document.redirect_target = target.strip().strip("'\"")
 
 
 def load_manifest(path: Path = DEFAULT_MANIFEST) -> dict[str, object]:
@@ -137,14 +146,28 @@ def audit_page(
         return [Finding(route, f"rendered page is missing: {page_path}")]
 
     source, document = parse_page(page_path)
-    if document.main_count != 1:
-        findings.append(
-            Finding(route, f"expected one <main>; found {document.main_count}")
+    if document.redirect_target:
+        redirect_file, _fragment = resolve_public_target(
+            site_dir,
+            route,
+            document.redirect_target,
         )
-    if document.h1_count < 1:
-        findings.append(Finding(route, "page has no <h1>"))
-    if not document.viewport_meta:
-        findings.append(Finding(route, "viewport meta tag is missing"))
+        if redirect_file is not None and not redirect_file.exists():
+            findings.append(
+                Finding(
+                    route,
+                    "broken redirect target: " + document.redirect_target,
+                )
+            )
+    else:
+        if document.main_count != 1:
+            findings.append(
+                Finding(route, f"expected one <main>; found {document.main_count}")
+            )
+        if document.h1_count < 1:
+            findings.append(Finding(route, "page has no <h1>"))
+        if not document.viewport_meta:
+            findings.append(Finding(route, "viewport meta tag is missing"))
 
     duplicate_ids = sorted(
         item for item, count in Counter(document.ids).items() if count > 1

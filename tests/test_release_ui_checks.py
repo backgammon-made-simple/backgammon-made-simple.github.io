@@ -82,6 +82,40 @@ class ReleaseUiStaticCheckTests(unittest.TestCase):
         )
         self.assertTrue(any("broken internal link" in message for message in messages))
 
+    def test_intentional_redirect_skips_content_landmarks_but_checks_target(
+        self,
+    ) -> None:
+        self.write("glossary/index.html", page_html("Glossary"))
+        redirect = (
+            "<!doctype html><html><head>"
+            '<meta http-equiv="refresh" content="0; url=/glossary/">'
+            "</head><body>Moved</body></html>"
+        )
+        self.write("learn/glossary/index.html", redirect)
+        self.assertEqual(
+            release_check.audit_page(
+                site_dir=self.site_dir,
+                route="/learn/glossary/",
+            ),
+            [],
+        )
+
+        self.write(
+            "learn/glossary/index.html",
+            redirect.replace("/glossary/", "/missing-glossary/"),
+        )
+        messages = [
+            finding.message
+            for finding in release_check.audit_page(
+                site_dir=self.site_dir,
+                route="/learn/glossary/",
+            )
+        ]
+        self.assertEqual(
+            messages,
+            ["broken redirect target: /missing-glossary/"],
+        )
+
     def test_manifest_uses_only_current_public_pages(self) -> None:
         manifest = json.loads(
             (ROOT / "scripts" / "ui_release_manifest.json").read_text(
