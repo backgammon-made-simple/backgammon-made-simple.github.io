@@ -9,6 +9,7 @@ renv/library/
 renv/staging/
 rsconnect/
 .venv/
+.r-library/
 venv/
 __pycache__/
 *.py[cod]

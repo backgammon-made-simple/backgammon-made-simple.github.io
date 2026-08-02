@@ -7,6 +7,18 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-Location $RepoRoot
 
+function Invoke-NativeCommand {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Command,
+    [Parameter(ValueFromRemainingArguments = $true)]
+    [string[]]$Arguments
+  )
+
+  & $Command @Arguments
+  if ($LASTEXITCODE -ne 0) { throw "Command failed with exit code ${LASTEXITCODE}: $Command $($Arguments -join ' ')" }
+}
+
 foreach ($required in @('social_generator/requirements-social.txt', 'social_generator/requirements-social.R', 'site/_quarto.yml')) {
   if (-not (Test-Path $required -PathType Leaf)) { throw "Missing repository dependency source: $required" }
 }
@@ -38,17 +50,17 @@ if ($quartoVersion -ne '1.10.15') { throw "Quarto 1.10.15 is required by scripts
 $venv = Join-Path $RepoRoot '.venv'
 $python = Join-Path $venv 'Scripts/python.exe'
 if (-not (Test-Path $python -PathType Leaf)) {
-  & $selectedPython.Path -m venv $venv
+  Invoke-NativeCommand $selectedPython.Path -m venv $venv
 }
 
-& $python -m pip install --upgrade pip
-& $python -m pip install -r 'social_generator/requirements-social.txt'
-& $python -m pip check
-& $python -m playwright install chromium
+Invoke-NativeCommand $python -m pip install --upgrade pip
+Invoke-NativeCommand $python -m pip install -r 'social_generator/requirements-social.txt'
+Invoke-NativeCommand $python -m pip check
+Invoke-NativeCommand $python -m playwright install chromium
 
 $rLibrary = Join-Path $RepoRoot '.r-library'
 New-Item -ItemType Directory -Force -Path $rLibrary | Out-Null
 $env:R_LIBS_USER = $rLibrary
-& Rscript --vanilla -e 'source("social_generator/requirements-social.R"); stopifnot(requireNamespace("yaml", quietly = TRUE))'
+Invoke-NativeCommand -Command Rscript -Arguments @('--vanilla', '-e', "options(repos = c(CRAN = 'https://cran.r-project.org')); source('social_generator/requirements-social.R'); stopifnot(requireNamespace('yaml', quietly = TRUE))")
 
 Write-Host 'Project configuration completed.'
