@@ -4,6 +4,7 @@ import {
   classifyBrowserFinding,
   summarizeStability
 } from "../../quality/browser/finding_stability.mjs";
+import { groupFindingsByRootCause } from "../../quality/browser/root_cause_groups.mjs";
 
 const manifestUrl = new URL("./ui_release_manifest.json", import.meta.url);
 
@@ -1621,6 +1622,7 @@ export async function runReleaseUiChecks({
     failures,
     findings,
     stabilitySummary: summarizeStability(findings),
+    rootCauseGroups: groupFindingsByRootCause(findings),
     limitations,
     continuousLoading,
     focusTraversal,
