@@ -353,7 +353,7 @@ const interactWithMobileNavigation = async (tab, check, context) => {
   if (count !== 1) {
     return;
   }
-  await toggle.click();
+  await clickInPlace(tab, toggle);
   check(
     (await toggle.getAttribute("aria-expanded")) === "true",
     context,
@@ -365,7 +365,7 @@ const interactWithMobileNavigation = async (tab, check, context) => {
     context,
     "mobile navigation links are visible"
   );
-  await toggle.click();
+  await clickInPlace(tab, toggle);
   check(
     (await toggle.getAttribute("aria-expanded")) === "false",
     context,
@@ -676,14 +676,14 @@ const interactWithGlossary = async (tab, check, context) => {
   );
   check((await trackFilter.count()) === 1, context, "glossary track filter exists");
   if ((await trackFilter.count()) === 1) {
-    await trackFilter.click();
+    await clickInPlace(tab, trackFilter);
     check(
       (await trackFilter.getAttribute("aria-pressed")) === "true" &&
         (await countVisible(entries)) < total,
       context,
       "glossary track filter narrows definitions"
     );
-    await trackFilter.click();
+    await clickInPlace(tab, trackFilter);
   }
   await tab.goto(new URL("#active-builder", await tab.url()).href);
   check(
