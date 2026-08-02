@@ -4,7 +4,8 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../../.." && pwd)"
 
-if [[ -x "${REPO_ROOT}/.venv/Scripts/python.exe" ]]; then
+if [[ -x "${REPO_ROOT}/.venv/Scripts/python.exe" ]] &&
+  "${REPO_ROOT}/.venv/Scripts/python.exe" -c 'import sys' >/dev/null 2>&1; then
   PYTHON_COMMAND=("${REPO_ROOT}/.venv/Scripts/python.exe")
 elif command -v py >/dev/null 2>&1; then
   PYTHON_COMMAND=(py)
