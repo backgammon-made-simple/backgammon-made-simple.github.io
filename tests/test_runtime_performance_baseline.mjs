@@ -4,7 +4,8 @@ import { readFileSync } from "node:fs";
 import {
   PERFORMANCE_CONTRACT,
   median,
-  runRuntimePerformanceBaseline
+  runRuntimePerformanceBaseline,
+  runRuntimePerformanceBaselineWithIsolation
 } from "../scripts/testing/quality/performance/runtime_performance_baseline.mjs";
 
 assert.equal(PERFORMANCE_CONTRACT.warmup_loads, 1);
@@ -45,6 +46,11 @@ assert.ok(source.includes("interactionMeasurements"));
 await assert.rejects(
   runRuntimePerformanceBaseline({}),
   /tab, viewport, and baseUrl are required/
+);
+
+await assert.rejects(
+  runRuntimePerformanceBaselineWithIsolation({}),
+  /tab isolation support/
 );
 
 console.log("runtime performance baseline contracts passed");

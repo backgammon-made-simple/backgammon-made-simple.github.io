@@ -1,4 +1,5 @@
 import { DEFAULT_MANIFEST } from "../../ux/browser/comprehensive_quality_browser_check.mjs";
+import { withIsolatedBrowserTab } from "../browser/isolated_browser_tab.mjs";
 
 export const PERFORMANCE_CONTRACT = {
   version: 1,
@@ -388,4 +389,13 @@ export async function runRuntimePerformanceBaseline({
     })),
     duration_ms: Date.now() - started
   };
+}
+
+export async function runRuntimePerformanceBaselineWithIsolation({
+  browser,
+  ...options
+}) {
+  return withIsolatedBrowserTab(browser, (tab) =>
+    runRuntimePerformanceBaseline({ ...options, tab })
+  );
 }

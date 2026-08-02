@@ -29,6 +29,10 @@ Using the same fixed server and controller, run
 warm-up plus three measured loads on the contract subset at desktop and mobile,
 then records medians and glossary interaction timings.
 
+Use `runRuntimePerformanceBaselineWithIsolation()` when the controller needs
+the same fresh-page navigation isolation. The performance contract, measured
+loads, medians, interaction names, and report schema remain unchanged.
+
 When lesson-analysis changed, also run `runLessonAnalysisBrowserChecks()` from
 `browser/lesson_analysis_browser_check.mjs`. It exercises cube paths, nested
 disclosures, independent instances, checker candidates, missing values, image
