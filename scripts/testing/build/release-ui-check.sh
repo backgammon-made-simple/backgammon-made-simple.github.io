@@ -56,7 +56,9 @@ if (( PORT < 1 || PORT > 65535 )); then
   exit 2
 fi
 
-if command -v py >/dev/null 2>&1; then
+if [[ -x "${REPO_ROOT}/.venv/Scripts/python.exe" ]]; then
+  PYTHON_COMMAND=("${REPO_ROOT}/.venv/Scripts/python.exe")
+elif command -v py >/dev/null 2>&1; then
   PYTHON_COMMAND=(py)
 elif command -v python >/dev/null 2>&1; then
   PYTHON_COMMAND=(python)
