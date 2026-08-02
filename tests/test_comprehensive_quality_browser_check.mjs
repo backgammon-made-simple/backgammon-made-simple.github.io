@@ -38,6 +38,7 @@ assert.deepEqual(continuousConfigForPage({ kind: "learn-lesson" }), {
   markerSelector: ".bms-learn-scroll-lesson-marker",
   routeAttribute: "data-bms-learn-scroll-lesson-route",
   sentinelSelector: ".bms-learn-scroll-sentinel",
+  endSelector: "[data-bms-learn-scroll-end]",
   namespace: "bms-learn-scroll-"
 });
 assert.equal(continuousConfigForPage({ kind: "ordinary" }), null);
@@ -68,6 +69,13 @@ assert.deepEqual(
 for (const requiredSourceContract of [
   "accessibilitySnapshot",
   "focusSnapshot",
+  "locator(\":focus\")",
+  "pressFocused(\"Tab\")",
+  "focusTraversal",
+  "keyboard traversal incomplete",
+  "mobileNavigation",
+  "mobileDrawer",
+  "skipLink",
   "interactWithMobileNavigation",
   "interactWithGlossarySidebar",
   "failure_screenshot_limit",

@@ -144,41 +144,165 @@ const accessibilitySnapshot = (tab) =>
     };
   });
 
-const focusSnapshot = async (tab) => {
-  const body = tab.playwright.locator("body");
-  if ((await body.count()) !== 1) {
-    return { distinct: 0, missingIndicators: ["body unavailable"] };
-  }
-  const identities = [];
-  const missingIndicators = [];
-  for (let index = 0; index < 8; index += 1) {
-    await body.press("TAB");
-    const state = await tab.playwright.locator("html").evaluate(() => {
-      const active = document.activeElement;
-      if (!active || active === document.body) {
-        return { identity: "body", visibleIndicator: false };
-      }
-      const style = window.getComputedStyle(active);
-      const identity =
-        active.id ||
-        active.getAttribute("data-bms-analysis-choice") ||
-        active.getAttribute("aria-label") ||
-        active.textContent.trim().slice(0, 80) ||
-        active.tagName.toLowerCase();
-      const visibleIndicator =
-        (style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) > 0) ||
+const focusedElementState = (tab) =>
+  tab.playwright.locator("html").evaluate(() => {
+    const active = document.activeElement;
+    if (!active || active === document.body || active === document.documentElement) {
+      return {
+        identity: "body",
+        interactive: false,
+        selector: "body",
+        visibleIndicator: false
+      };
+    }
+    const style = window.getComputedStyle(active);
+    const tag = active.tagName.toLowerCase();
+    const selector = active.id
+      ? `#${active.id}`
+      : active.hasAttribute("data-bms-mobile-tools-edge")
+        ? "[data-bms-mobile-tools-edge]"
+        : active.hasAttribute("data-bms-mobile-tools-close")
+          ? "[data-bms-mobile-tools-close]"
+          : active.matches("button.navbar-toggler")
+            ? "button.navbar-toggler"
+            : `${tag}${active.getAttribute("href") ? `[href='${active.getAttribute("href")}']` : ""}`;
+    const identity =
+      active.id ||
+      active.getAttribute("data-bms-analysis-choice") ||
+      active.getAttribute("aria-label") ||
+      active.textContent.trim().replace(/\s+/g, " ").slice(0, 80) ||
+      tag;
+    const visibleIndicator =
+      active.matches(":focus-visible") &&
+      ((style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) > 0) ||
         style.boxShadow !== "none" ||
-        style.borderColor !== "rgba(0, 0, 0, 0)";
-      return { identity, visibleIndicator };
-    });
-    identities.push(state.identity);
-    if (!state.visibleIndicator) {
+        (Number.parseFloat(style.borderWidth) > 0 &&
+          style.borderColor !== "rgba(0, 0, 0, 0)"));
+    return {
+      identity,
+      interactive: active.matches(
+        "a[href],button,input,select,textarea,[tabindex]:not([tabindex='-1'])"
+      ),
+      selector,
+      tag,
+      role: active.getAttribute("role"),
+      href: active.getAttribute("href"),
+      visibleIndicator
+    };
+  });
+
+const focusSnapshot = async (tab, { mobile }) => {
+  const keyboardSeed = await visibleLocator(
+    tab.playwright.locator(
+      "a[href],button,input,select,textarea,[tabindex]:not([tabindex='-1'])"
+    )
+  );
+  if (keyboardSeed) {
+    await keyboardSeed.press("Shift+Tab");
+  }
+  const pressFocused = async (key) => {
+    const focused = tab.playwright.locator(":focus");
+    if ((await focused.count()) !== 1) {
+      return false;
+    }
+    await focused.press(key);
+    return true;
+  };
+  const pageFeatures = await tab.playwright.locator("html").evaluate(() => ({
+    mobileDrawerPresent: Boolean(
+      document.querySelector("[data-bms-mobile-tools-edge]")
+    ),
+    mobileNavigationPresent: Boolean(document.querySelector("button.navbar-toggler")),
+    skipLinkPresent: Boolean(
+      Array.from(document.querySelectorAll("a[href^='#']")).find((link) =>
+        /skip/i.test(link.textContent || "")
+      )
+    )
+  }));
+  const reached = [];
+  const missingIndicators = [];
+  let mobileNavigation = null;
+  let mobileDrawer = null;
+  let skipLink = null;
+  for (let index = 0; index < 20; index += 1) {
+    await pressFocused("Tab");
+    const state = await focusedElementState(tab);
+    reached.push({ order: index + 1, ...state });
+    if (state.interactive && !state.visibleIndicator) {
       missingIndicators.push(state.identity);
     }
+    if (mobile && state.selector === "button.navbar-toggler" && !mobileNavigation) {
+      await pressFocused("Enter");
+      await delay(100);
+      const opened = await tab.playwright.locator("html").evaluate(() => ({
+        expanded:
+          document.querySelector("button.navbar-toggler")?.getAttribute("aria-expanded") ||
+          null,
+        menuVisible: Boolean(
+          document.querySelector("#navbarCollapse")?.getClientRects().length
+        )
+      }));
+      await pressFocused("Tab");
+      const menuFocus = await focusedElementState(tab);
+      await pressFocused("Escape");
+      await delay(100);
+      const returned = await focusedElementState(tab);
+      mobileNavigation = { opened, menuFocus, returned };
+    }
+    if (
+      mobile &&
+      state.selector === "[data-bms-mobile-tools-edge]" &&
+      !mobileDrawer
+    ) {
+      await pressFocused("Enter");
+      await delay(100);
+      const opened = await tab.playwright.locator("html").evaluate(() => ({
+        expanded:
+          document
+            .querySelector("[data-bms-mobile-tools-edge]")
+            ?.getAttribute("aria-expanded") || null,
+        drawerVisible: Boolean(
+          document
+            .querySelector("[data-bms-mobile-tools-drawer]")
+            ?.getClientRects().length
+        )
+      }));
+      await pressFocused("Tab");
+      const drawerFocus = await focusedElementState(tab);
+      await pressFocused("Escape");
+      await delay(100);
+      const returned = await focusedElementState(tab);
+      mobileDrawer = { opened, drawerFocus, returned };
+    }
+    if (!skipLink && state.href?.startsWith("#") && /skip/i.test(state.identity)) {
+      await pressFocused("Enter");
+      await delay(100);
+      skipLink = {
+        trigger: state,
+        destination: await focusedElementState(tab),
+        url: await tab.url()
+      };
+    }
   }
+  const interactiveReached = reached.filter((item) => item.interactive);
+  const identities = interactiveReached.map((item) => item.selector);
+  const trapDetected = identities.some(
+    (identity, index) =>
+      index >= 2 &&
+      identities[index - 1] === identity &&
+      identities[index - 2] === identity
+  );
   return {
-    distinct: new Set(identities.filter((identity) => identity !== "body")).size,
-    missingIndicators: Array.from(new Set(missingIndicators)).sort()
+    reached,
+    interactiveReached: interactiveReached.length,
+    distinct: new Set(identities).size,
+    meaningfulOrder: identities.length >= 2 && new Set(identities).size >= 2,
+    trapDetected,
+    missingIndicators: Array.from(new Set(missingIndicators)).sort(),
+    pageFeatures,
+    mobileNavigation,
+    mobileDrawer,
+    skipLink
   };
 };
 
@@ -221,6 +345,7 @@ export const continuousConfigForPage = (page) => {
       markerSelector: ".bms-learn-scroll-lesson-marker",
       routeAttribute: "data-bms-learn-scroll-lesson-route",
       sentinelSelector: ".bms-learn-scroll-sentinel",
+      endSelector: "[data-bms-learn-scroll-end]",
       namespace: "bms-learn-scroll-"
     };
   }
@@ -229,6 +354,7 @@ export const continuousConfigForPage = (page) => {
       markerSelector: ".bms-research-scroll-marker",
       routeAttribute: "data-bms-research-scroll-marker",
       sentinelSelector: ".bms-research-scroll-sentinel",
+      endSelector: ".bms-research-scroll-end",
       namespace: "bms-research-scroll-"
     };
   }
@@ -260,9 +386,10 @@ const continuousStateSnapshot = (tab, config) =>
       };
     });
     const sentinel = document.querySelector(stateConfig.sentinelSelector);
+    const endAvailable = Boolean(document.querySelector(stateConfig.endSelector));
     let historyState = null;
     try {
-      historyState = JSON.parse(JSON.stringify(history.state));
+      historyState = JSON.parse(JSON.stringify(window.history?.state ?? null));
     } catch (_error) {
       historyState = "unserializable";
     }
@@ -284,7 +411,10 @@ const continuousStateSnapshot = (tab, config) =>
               sentinel.getAttribute("data-bms-research-scroll-sentinel")
           }
         : { available: false, loading: false, route: null },
-      completionSignal: Boolean(sentinel && !sentinel.classList.contains("is-loading")),
+      completionSignal: Boolean(
+        endAvailable || (sentinel && !sentinel.classList.contains("is-loading"))
+      ),
+      endAvailable,
       scrollPosition: {
         clientHeight: document.documentElement.clientHeight,
         scrollHeight: document.documentElement.scrollHeight,
@@ -292,7 +422,7 @@ const continuousStateSnapshot = (tab, config) =>
       },
       url: window.location.href,
       history: {
-        length: history.length,
+        length: window.history?.length ?? null,
         state: historyState
       }
     };
@@ -922,14 +1052,15 @@ export async function runReleaseUiChecks({
   const consoleSeen = new Set();
   const limitations = [];
   const continuousLoading = [];
+  const focusTraversal = [];
   const screenshots = [];
   let failureScreenshots = 0;
   let checks = 0;
   let pages = 0;
-  const check = (condition, context, message) => {
+  const check = (condition, context, message, metadata = {}) => {
     checks += 1;
     if (!condition) {
-      failures.push({ context, message });
+      failures.push({ context, message, ...metadata });
     }
   };
   const acquireTab = async () => {
@@ -1119,26 +1250,104 @@ export async function runReleaseUiChecks({
               "Match Predictor iframe container is present without requiring iframe success"
             );
           }
-          const focus = await focusSnapshot(activeTab);
-          if (focus.distinct === 0) {
-            limitations.push({
-              context,
-              check: "sampled keyboard focus visibility and obvious focus trap",
-              evidence: "The browser controller kept document.activeElement on body after sampled Tab presses."
-            });
-          } else {
+          const focus = await focusSnapshot(activeTab, {
+            mobile: viewportCase.width < 992
+          });
+          focusTraversal.push({ context, ...focus });
+          check(
+            focus.interactiveReached > 0,
+            context,
+            focus.interactiveReached > 0
+              ? "keyboard traversal reaches an interactive element"
+              : "keyboard traversal incomplete: no interactive element received focus",
+            focus.interactiveReached > 0
+              ? {}
+              : { category: "test-infrastructure", incomplete: true }
+          );
+          check(
+            audit.focusableControls < 2 || focus.meaningfulOrder,
+            context,
+            `keyboard focus follows a meaningful order: ${focus.reached
+              .filter((item) => item.interactive)
+              .map((item) => item.selector)
+              .join(" -> ")}`
+          );
+          check(
+            !focus.trapDetected,
+            context,
+            "keyboard traversal has no obvious focus trap"
+          );
+          check(
+            focus.missingIndicators.length === 0,
+            context,
+            `sampled keyboard focus has a visible indicator${
+              focus.missingIndicators.length ? `: ${focus.missingIndicators.join(", ")}` : ""
+            }`
+          );
+          if (viewportCase.width < 992 && focus.pageFeatures.mobileNavigationPresent) {
             check(
-              audit.focusableControls < 2 || focus.distinct >= 2,
+              Boolean(focus.mobileNavigation),
               context,
-              "keyboard focus advances without an obvious focus trap"
+              "keyboard traversal reaches the mobile-navigation toggle"
             );
+            if (focus.mobileNavigation) {
+              check(
+                focus.mobileNavigation.opened.expanded === "true" &&
+                  focus.mobileNavigation.opened.menuVisible,
+                context,
+                "keyboard activation opens mobile navigation"
+              );
+              check(
+                focus.mobileNavigation.menuFocus.interactive,
+                context,
+                `mobile-navigation focus enters an interactive item: ${focus.mobileNavigation.menuFocus.selector}`
+              );
+              check(
+                focus.mobileNavigation.returned.selector === "button.navbar-toggler",
+                context,
+                `mobile-navigation focus returns after closing: ${focus.mobileNavigation.returned.selector}`
+              );
+            }
+          }
+          if (viewportCase.width < 992 && focus.pageFeatures.mobileDrawerPresent) {
             check(
-              focus.missingIndicators.length === 0,
+              Boolean(focus.mobileDrawer),
               context,
-              `sampled keyboard focus has a visible indicator${
-                focus.missingIndicators.length ? `: ${focus.missingIndicators.join(", ")}` : ""
-              }`
+              "keyboard traversal reaches the mobile page-tools drawer"
             );
+            if (focus.mobileDrawer) {
+              check(
+                focus.mobileDrawer.opened.expanded === "true" &&
+                  focus.mobileDrawer.opened.drawerVisible,
+                context,
+                "keyboard activation opens the mobile page-tools drawer"
+              );
+              check(
+                focus.mobileDrawer.drawerFocus.interactive,
+                context,
+                `mobile drawer receives focus: ${focus.mobileDrawer.drawerFocus.selector}`
+              );
+              check(
+                focus.mobileDrawer.returned.selector ===
+                  "[data-bms-mobile-tools-edge]",
+                context,
+                `mobile drawer returns focus after closing: ${focus.mobileDrawer.returned.selector}`
+              );
+            }
+          }
+          if (focus.pageFeatures.skipLinkPresent) {
+            check(
+              Boolean(focus.skipLink),
+              context,
+              "keyboard traversal reaches and activates the skip link"
+            );
+            if (focus.skipLink) {
+              check(
+                focus.skipLink.destination.selector !== "body",
+                context,
+                `skip link moves focus to its target: ${focus.skipLink.destination.selector}`
+              );
+            }
           }
           if (
             (manifest.baseline_screenshot_route_ids || []).includes(page.id) &&
@@ -1409,6 +1618,7 @@ export async function runReleaseUiChecks({
     }),
     limitations,
     continuousLoading,
+    focusTraversal,
     consoleMessages,
     screenshots,
     durationMs: Date.now() - started
