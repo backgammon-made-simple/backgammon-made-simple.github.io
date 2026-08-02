@@ -82,11 +82,15 @@ const accessibilitySnapshot = (tab) =>
       .filter((link) => !link.sheet && new URL(link.href).origin === window.location.origin)
       .slice(0, 20)
       .map((link) => link.href);
-    const resourceFailures = window.performance
-      .getEntriesByType("resource")
-      .filter((entry) => Number(entry.responseStatus || 0) >= 400)
-      .slice(0, 20)
-      .map((entry) => ({ name: entry.name, status: entry.responseStatus }));
+    const resourceFailures =
+      window.performance &&
+      typeof window.performance.getEntriesByType === "function"
+        ? window.performance
+            .getEntriesByType("resource")
+            .filter((entry) => Number(entry.responseStatus || 0) >= 400)
+            .slice(0, 20)
+            .map((entry) => ({ name: entry.name, status: entry.responseStatus }))
+        : [];
     const fixedOrSticky = Array.from(document.querySelectorAll("body *"))
       .filter(visible)
       .filter((element) => {

@@ -79,19 +79,31 @@ const roundMetric = (value, digits = 3) =>
 
 const collectPageMetrics = (tab) =>
   tab.playwright.locator("html").evaluate(() => {
-    const navigation = window.performance.getEntriesByType("navigation")[0];
-    const resources = window.performance.getEntriesByType("resource");
+    const performanceAvailable = Boolean(
+      window.performance &&
+        typeof window.performance.getEntriesByType === "function"
+    );
+    const navigation = performanceAvailable
+      ? window.performance.getEntriesByType("navigation")[0]
+      : null;
+    const resources = performanceAvailable
+      ? window.performance.getEntriesByType("resource")
+      : [];
     const paints = Object.fromEntries(
-      window.performance
+      performanceAvailable
+        ? window.performance
         .getEntriesByType("paint")
         .map((entry) => [entry.name, entry.startTime])
+        : []
     );
-    const lcpEntries = window.performance.getEntriesByType(
-      "largest-contentful-paint"
-    );
-    const layoutShifts = window.performance
-      .getEntriesByType("layout-shift")
-      .filter((entry) => !entry.hadRecentInput);
+    const lcpEntries = performanceAvailable
+      ? window.performance.getEntriesByType("largest-contentful-paint")
+      : [];
+    const layoutShifts = performanceAvailable
+      ? window.performance
+          .getEntriesByType("layout-shift")
+          .filter((entry) => !entry.hadRecentInput)
+      : [];
     const categoryFor = (entry) => {
       const pathname = new URL(entry.name).pathname.toLowerCase();
       if (entry.entryType === "navigation") return "html";
@@ -128,7 +140,15 @@ const collectPageMetrics = (tab) =>
         bytes[category][key] += value;
       }
     }
+    if (!performanceAvailable) {
+      for (const category of Object.values(bytes)) {
+        category.transfer = null;
+        category.encoded_body = null;
+        category.decoded_body = null;
+      }
+    }
     return {
+      performance_api_available: performanceAvailable,
       navigation: navigation
         ? {
             dns_ms: navigation.domainLookupEnd - navigation.domainLookupStart,
@@ -156,10 +176,10 @@ const collectPageMetrics = (tab) =>
       },
       dom: { node_count: document.querySelectorAll("*").length },
       requests: {
-        count: resources.length + (navigation ? 1 : 0),
-        failure_count: resources.filter(
+        count: performanceAvailable ? resources.length + (navigation ? 1 : 0) : null,
+        failure_count: performanceAvailable ? resources.filter(
           (entry) => Number(entry.responseStatus || 0) >= 400
-        ).length
+        ).length : null
       },
       bytes
     };
@@ -263,11 +283,26 @@ export async function runRuntimePerformanceBaseline({
         }
         const samples = [];
         for (let repetition = 1; repetition <= contract.measured_loads; repetition += 1) {
+          const wallStarted = Date.now();
           await tab.goto(new URL(page.route, baseUrl).href);
           await tab.playwright.waitForLoadState({ state: "load", timeoutMs: 30000 });
+          const wallLoadDuration = Date.now() - wallStarted;
           await delay(350);
           try {
-            samples.push(await collectPageMetrics(tab));
+            const sample = await collectPageMetrics(tab);
+            if (!sample.navigation) {
+              sample.navigation = {
+                dns_ms: null,
+                connect_ms: null,
+                request_ms: null,
+                response_ms: null,
+                dom_interactive_ms: null,
+                dom_content_loaded_ms: null,
+                load_event_ms: null,
+                duration_ms: wallLoadDuration
+              };
+            }
+            samples.push(sample);
           } catch (error) {
             errors.push({ viewport: viewportName, route: page.route, repetition, error: String(error) });
           }
@@ -304,7 +339,13 @@ export async function runRuntimePerformanceBaseline({
       ? "measured"
       : "not exposed by browser controller",
     transfer_sizes:
-      "Resource Timing values; zero can indicate a cached or restricted cross-origin response"
+      measurements.some((item) => item.samples.some((sample) => sample.performance_api_available))
+        ? "Resource Timing values; zero can indicate a cached or restricted cross-origin response"
+        : "not exposed by browser controller; byte metrics are null",
+    navigation_duration:
+      measurements.some((item) => item.samples.some((sample) => sample.performance_api_available))
+        ? "Navigation Timing"
+        : "controller wall time from navigation start through load state"
   };
   return {
     schema_version: 1,

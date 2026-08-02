@@ -36,6 +36,8 @@ const source = readFileSync(
   "utf8"
 );
 assert.ok(source.includes("Resource Timing values"));
+assert.ok(source.includes("controller wall time"));
+assert.ok(source.includes("performance_api_available"));
 assert.ok(source.includes("safe_for_automated_remediation"));
 
 await assert.rejects(
