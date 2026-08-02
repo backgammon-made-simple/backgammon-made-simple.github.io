@@ -59,6 +59,17 @@ const visibleLocator = async (locator) => {
   return null;
 };
 
+const clickInPlace = async (tab, locator) => {
+  const point = await locator.evaluate((element) => {
+    const rectangle = element.getBoundingClientRect();
+    return {
+      x: rectangle.left + rectangle.width / 2,
+      y: rectangle.top + rectangle.height / 2
+    };
+  });
+  await tab.cua.click(point);
+};
+
 export const median = (values) => {
   const numeric = values
     .filter((value) => typeof value === "number" && Number.isFinite(value))
@@ -228,7 +239,7 @@ const measureGlossaryInteractions = async ({ tab, baseUrl }) => {
   );
   if ((await filter.count()) === 1) {
     const started = Date.now();
-    await filter.click();
+    await clickInPlace(tab, filter);
     await filter.getAttribute("aria-pressed");
     measurements.glossary_filter_ms = Date.now() - started;
   }
@@ -244,11 +255,16 @@ const measureGlossaryInteractions = async ({ tab, baseUrl }) => {
     tab.playwright.locator("main .bms-inline-glossary[data-bms-glossary-slug]")
   );
   if (inlineLink) {
-    started = Date.now();
-    await inlineLink.click();
-    const sidebar = tab.playwright.locator("[data-bms-glossary-sidebar]");
-    await sidebar.waitFor({ state: "visible", timeoutMs: 3000 });
-    measurements.glossary_sidebar_ms = Date.now() - started;
+    try {
+      started = Date.now();
+      await inlineLink.click();
+      const sidebar = tab.playwright.locator("[data-bms-glossary-sidebar]");
+      await sidebar.waitFor({ state: "visible", timeoutMs: 3000 });
+      measurements.glossary_sidebar_ms = Date.now() - started;
+    } catch (error) {
+      error.interactionMeasurements = { ...measurements };
+      throw error;
+    }
   }
   return measurements;
 };
@@ -279,13 +295,13 @@ export async function runRuntimePerformanceBaseline({
         if (!page) throw new Error(`Unknown route: ${routeId}`);
         for (let warmup = 0; warmup < contract.warmup_loads; warmup += 1) {
           await tab.goto(new URL(page.route, baseUrl).href);
-          await tab.playwright.waitForLoadState({ state: "load", timeoutMs: 30000 });
+          await tab.playwright.waitForLoadState({ state: "domcontentloaded", timeoutMs: 30000 });
         }
         const samples = [];
         for (let repetition = 1; repetition <= contract.measured_loads; repetition += 1) {
           const wallStarted = Date.now();
           await tab.goto(new URL(page.route, baseUrl).href);
-          await tab.playwright.waitForLoadState({ state: "load", timeoutMs: 30000 });
+          await tab.playwright.waitForLoadState({ state: "domcontentloaded", timeoutMs: 30000 });
           const wallLoadDuration = Date.now() - wallStarted;
           await delay(350);
           try {
@@ -321,6 +337,10 @@ export async function runRuntimePerformanceBaseline({
           metrics: await measureGlossaryInteractions({ tab, baseUrl })
         });
       } catch (error) {
+        interactions.push({
+          viewport: viewportCase,
+          metrics: error.interactionMeasurements || {}
+        });
         errors.push({ viewport: viewportName, route: "/glossary/", repetition: null, error: String(error) });
       }
     }

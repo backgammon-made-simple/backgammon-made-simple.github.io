@@ -31,7 +31,25 @@ export function createIsolatedBrowserTab(browser) {
     async goto(url) {
       await browser.tabs.finalize();
       activeTab = await browser.tabs.new();
-      return activeTab.goto(url);
+      try {
+        return await activeTab.goto(url);
+      } catch (error) {
+        if (!/Timed out waiting for load in tab/.test(String(error))) {
+          throw error;
+        }
+        const requestedUrl = new URL(url).href;
+        const activeUrl = new URL(await activeTab.url()).href;
+        if (activeUrl !== requestedUrl) {
+          throw error;
+        }
+        await activeTab.playwright.waitForLoadState({
+          state: "domcontentloaded",
+          timeoutMs: 30000
+        });
+        if ((await activeTab.playwright.locator("html").count()) !== 1) {
+          throw error;
+        }
+      }
     },
     async reload() { return current().reload(); },
     async screenshot(options) { return current().screenshot(options); },

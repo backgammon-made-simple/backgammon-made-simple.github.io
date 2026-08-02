@@ -39,6 +39,8 @@ assert.ok(source.includes("Resource Timing values"));
 assert.ok(source.includes("controller wall time"));
 assert.ok(source.includes("performance_api_available"));
 assert.ok(source.includes("safe_for_automated_remediation"));
+assert.ok(source.includes('state: "domcontentloaded"'));
+assert.ok(source.includes("interactionMeasurements"));
 
 await assert.rejects(
   runRuntimePerformanceBaseline({}),

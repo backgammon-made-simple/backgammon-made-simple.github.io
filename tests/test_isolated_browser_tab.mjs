@@ -50,4 +50,32 @@ await assert.rejects(
   /isolated browser operation/
 );
 
+const timeoutBrowser = {
+  tabs: {
+    async finalize() {},
+    async new() {
+      let requestedUrl;
+      return {
+        playwright: {
+          async waitForLoadState(options) {
+            assert.equal(options.state, "domcontentloaded");
+          },
+          locator(selector) {
+            assert.equal(selector, "html");
+            return { async count() { return 1; } };
+          }
+        },
+        async goto(url) {
+          requestedUrl = url;
+          throw new Error("Timed out waiting for load in tab 42.");
+        },
+        async url() { return requestedUrl; }
+      };
+    }
+  }
+};
+const timeoutIsolated = createIsolatedBrowserTab(timeoutBrowser);
+await timeoutIsolated.goto("https://example.test/iframe-container");
+await timeoutIsolated.close();
+
 console.log("isolated browser tab contracts passed");
