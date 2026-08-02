@@ -53,13 +53,50 @@
     );
   }
 
-  function itemMatchesLesson(item, query, difficulties, terms) {
+  function lessonSearchRank(item, query) {
     const normalizedQuery = normalizeLearnSearch(query);
-    const matchesSearch =
-      normalizedQuery.length === 0 ||
-      item.searchValues.some(function (value) {
+    if (!normalizedQuery) {
+      return 0;
+    }
+    const primaryValues =
+      item.primarySearchValues || item.searchValues || [];
+    const bodyValues = item.bodySearchValues || [];
+    if (
+      primaryValues.some(function (value) {
         return normalizeLearnSearch(value).includes(normalizedQuery);
-      });
+      })
+    ) {
+      return 1;
+    }
+    if (
+      bodyValues.some(function (value) {
+        return normalizeLearnSearch(value).includes(normalizedQuery);
+      })
+    ) {
+      return 2;
+    }
+    return Number.POSITIVE_INFINITY;
+  }
+
+  function rankLessonItems(items, query) {
+    return Array.from(items).sort(function (left, right) {
+      const rankDifference =
+        lessonSearchRank(left, query) - lessonSearchRank(right, query);
+      if (rankDifference !== 0) {
+        return rankDifference;
+      }
+      return left.originalIndex - right.originalIndex;
+    });
+  }
+
+  function lessonGroupSearchRank(items, query) {
+    return Array.from(items).reduce(function (best, item) {
+      return Math.min(best, lessonSearchRank(item, query));
+    }, Number.POSITIVE_INFINITY);
+  }
+
+  function itemMatchesLesson(item, query, difficulties, terms) {
+    const matchesSearch = Number.isFinite(lessonSearchRank(item, query));
     return (
       matchesSearch &&
       matchesAny(item.difficulties, difficulties) &&
@@ -160,6 +197,14 @@
       })
     ) {
       return 8;
+    }
+    const shortDefinition = normalizeLearnSearch(entry.short_definition);
+    const fullDefinition = normalizeLearnSearch(entry.definition);
+    if (shortDefinition.includes(normalizedQuery)) {
+      return 9;
+    }
+    if (fullDefinition.includes(normalizedQuery)) {
+      return 10;
     }
     return Number.POSITIVE_INFINITY;
   }
@@ -315,7 +360,10 @@
           heading.textContent = entry.term;
           const definition = document.createElement("span");
           definition.textContent = summary;
-          tooltip.replaceChildren(heading, definition);
+          const instruction = document.createElement("span");
+          instruction.className = "bms-inline-glossary-tooltip-action";
+          instruction.textContent = "Click for full definition";
+          tooltip.replaceChildren(heading, definition, instruction);
           tooltip.hidden = false;
           link.setAttribute("aria-describedby", tooltip.id);
           positionTooltip(link);
@@ -337,6 +385,15 @@
       });
       link.addEventListener("blur", function () {
         hideTooltip(link);
+      });
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        hideTooltip(link);
+        document.dispatchEvent(
+          new CustomEvent("bms:open-glossary-term", {
+            detail: { slug: link.dataset.bmsGlossarySlug }
+          })
+        );
       });
     });
 
@@ -384,17 +441,25 @@
     }
 
     const items = Array.from(list.querySelectorAll(LESSON_SELECTOR)).map(
-      function (element) {
+      function (element, originalIndex) {
         return {
           element: element,
           difficulties: parseList(element.dataset.bmsDifficulties),
           track: element.dataset.bmsTrack || "",
           terms: parseList(element.dataset.bmsTerms),
-          searchValues: parseList(element.dataset.bmsSearch)
+          primarySearchValues: parseList(element.dataset.bmsSearchPrimary),
+          bodySearchValues: parseList(element.dataset.bmsSearchBody),
+          originalIndex: originalIndex,
+          originalParent: element.parentElement
         };
       }
     );
     const groups = Array.from(list.querySelectorAll(GROUP_SELECTOR));
+    const groupOrder = new Map(
+      groups.map(function (group, index) {
+        return [group, index];
+      })
+    );
     const difficultyButtons = Array.from(
       panel.querySelectorAll(DIFFICULTY_SELECTOR)
     );
@@ -572,6 +637,32 @@
             (groupVisibleCount === 1 ? " lesson" : " lessons");
         }
       });
+
+      const groupParent = groups[0] ? groups[0].parentElement : null;
+      if (groupParent) {
+        Array.from(groups)
+          .sort(function (left, right) {
+            const leftRank = lessonGroupSearchRank(
+              items.filter(function (item) {
+                return left.contains(item.element);
+              }),
+              query
+            );
+            const rightRank = lessonGroupSearchRank(
+              items.filter(function (item) {
+                return right.contains(item.element);
+              }),
+              query
+            );
+            return (
+              leftRank - rightRank ||
+              groupOrder.get(left) - groupOrder.get(right)
+            );
+          })
+          .forEach(function (group) {
+            groupParent.appendChild(group);
+          });
+      }
 
       setPressed(
         difficultyButtons,
@@ -920,7 +1011,7 @@
       'aria-expanded="true" aria-label="Collapse term lookup">' +
       '<span aria-hidden="true">&rarr;</span></button>' +
       "</div>" +
-      '<form action="/learn/glossary/" method="get" data-bms-term-lookup-form>' +
+      '<form action="/glossary/" method="get" data-bms-term-lookup-form>' +
       '<label class="visually-hidden" for="bms-term-lookup-input">' +
       "Term or alias</label>" +
       '<div class="bms-term-lookup-controls">' +
@@ -944,7 +1035,7 @@
       const fullSearch = document.createElement("a");
       fullSearch.className = "bms-term-lookup-full";
       fullSearch.href =
-        "/learn/glossary/?q=" + encodeURIComponent(query);
+        "/glossary/?q=" + encodeURIComponent(query);
       fullSearch.textContent = "Search the Full Glossary \u2192";
       container.append(message, fullSearch);
       return;
@@ -952,6 +1043,7 @@
 
     const heading = document.createElement("h3");
     heading.textContent = entry.term;
+    heading.tabIndex = -1;
     container.appendChild(heading);
 
     if (Array.isArray(entry.aliases) && entry.aliases.length > 0) {
@@ -961,10 +1053,48 @@
       container.appendChild(aliases);
     }
 
+    const shortDefinition = document.createElement("p");
+    shortDefinition.className = "bms-term-lookup-short-definition";
+    shortDefinition.textContent = entry.short_definition;
+    container.appendChild(shortDefinition);
+
     const definition = document.createElement("p");
     definition.className = "bms-term-lookup-definition";
     definition.textContent = entry.definition;
     container.appendChild(definition);
+
+    if (Array.isArray(entry.categories) && entry.categories.length > 0) {
+      const categories = document.createElement("p");
+      categories.className = "bms-term-lookup-categories";
+      categories.textContent =
+        (entry.categories.length === 1 ? "Category: " : "Categories: ") +
+        entry.categories.join(", ");
+      container.appendChild(categories);
+    }
+
+    const resolvedRelated = Array.isArray(entry.related_terms)
+      ? entry.related_terms.filter(function (related) {
+          return related && related.slug;
+        })
+      : [];
+    if (resolvedRelated.length > 0) {
+      const relatedTermsHeading = document.createElement("p");
+      relatedTermsHeading.className = "bms-term-lookup-related-heading";
+      relatedTermsHeading.textContent = "Related terms";
+      const relatedTermsList = document.createElement("ul");
+      relatedTermsList.className = "bms-term-lookup-related";
+      resolvedRelated.forEach(function (related) {
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bms-term-lookup-related-term";
+        button.dataset.bmsTermLookupRelated = related.slug;
+        button.textContent = related.term;
+        item.appendChild(button);
+        relatedTermsList.appendChild(item);
+      });
+      container.append(relatedTermsHeading, relatedTermsList);
+    }
 
     if (
       Array.isArray(entry.related_lessons) &&
@@ -988,20 +1118,36 @@
 
     const fullEntry = document.createElement("a");
     fullEntry.className = "bms-term-lookup-full";
-    fullEntry.href = "/learn/glossary/#" + encodeURIComponent(entry.slug);
-    fullEntry.textContent = "Full Glossary Lookup \u2192";
+    fullEntry.href = "/glossary/#" + encodeURIComponent(entry.slug);
+    fullEntry.textContent = "Go to glossary entry";
     container.appendChild(fullEntry);
   }
 
   function initializeTermLookup() {
-    const lookupDisabled = isMainSiteIndex();
+    const glossaryIndexPage = document.body.classList.contains(
+      "bms-glossary-index"
+    );
+    const lookupDisabled =
+      isMainSiteIndex() ||
+      document.body.classList.contains("bms-learn-index") ||
+      document.body.classList.contains("bms-learn-track-index") ||
+      document.body.classList.contains("bms-analyze-page") ||
+      document.body.classList.contains("bms-match-predictor-page");
     const glossarySearch = document.querySelector(
       "[data-bms-glossary-search]"
     );
-    let lookup = lookupDisabled
-      ? null
-      : document.querySelector("[data-bms-term-lookup]");
-    if (!lookupDisabled && !lookup && !glossarySearch) {
+    const lookupCandidates = lookupDisabled
+      ? []
+      : Array.from(document.querySelectorAll("[data-bms-term-lookup]"));
+    let lookup =
+      lookupCandidates.find(function (candidate) {
+        return !candidate.closest(".quarto-sidebar-toggle-contents");
+      }) || lookupCandidates[0] || null;
+    if (
+      !lookupDisabled &&
+      !lookup &&
+      (!glossarySearch || glossaryIndexPage)
+    ) {
       lookup = createTermLookup();
     }
     if (lookup) {
@@ -1036,15 +1182,15 @@
       'data-bms-site-back-to-top hidden>Back to top ' +
       '<span aria-hidden="true">\u25b4</span></button>';
 
-    const termToggle = tools.querySelector("[data-bms-site-term-toggle]");
+    let termToggle = tools.querySelector("[data-bms-site-term-toggle]");
     const tocToggle = tools.querySelector("[data-bms-toc-toggle]");
     const marginSidebarToggle = tools.querySelector(
       "[data-bms-margin-sidebar-toggle]"
     );
     const backToTop = tools.querySelector("[data-bms-site-back-to-top]");
     if (termToggle && !lookup && !glossarySearch) {
-      termToggle.removeAttribute("aria-controls");
-      termToggle.hidden = true;
+      termToggle.remove();
+      termToggle = null;
     }
     const form = lookup
       ? lookup.querySelector("[data-bms-term-lookup-form]")
@@ -1057,10 +1203,15 @@
       ? lookup.querySelector("[data-bms-term-lookup-close]")
       : null;
     const desktopQuery = window.matchMedia("(min-width: 992px)");
-    const marginSidebar = document.getElementById("quarto-margin-sidebar");
+    let marginSidebar =
+      document.querySelector(
+        "#quarto-margin-sidebar:not(.quarto-sidebar-toggle-contents)"
+      ) || document.getElementById("quarto-margin-sidebar");
     let toc = null;
     let tocHeadingToggle = null;
     let tocObserver = null;
+    let tocCloneObserver = null;
+    const boundTocHeadingToggles = new WeakSet();
     let desktopCollapsed = !refinedRightRailPage;
     let tocCollapsed = false;
     let marginSidebarCollapsed = false;
@@ -1138,22 +1289,28 @@
       window.setTimeout(restore, 180);
     };
 
-    const bindTocHeadingToggle = function (toggle) {
-      if (!toggle || toggle.dataset.bmsTocToggleBound === "true") {
-        return;
-      }
-      toggle.dataset.bmsTocToggleBound = "true";
-      toggle.addEventListener("click", function () {
+    const activateTocHeadingToggle = function (clickedToggle) {
+        tocHeadingToggle = clickedToggle;
+        toc = clickedToggle.closest("#TOC") || toc;
+        marginSidebar =
+          clickedToggle.closest("#quarto-margin-sidebar") || marginSidebar;
         suppressRightRailAutoCollapse = true;
-        rightRailScrollCollapsed = false;
+        const visiblyCollapsed =
+          clickedToggle.getAttribute("aria-expanded") === "false";
+        if (visiblyCollapsed) {
+          rightRailScrollCollapsed = false;
+          tocCollapsed = false;
+        } else {
+          tocCollapsed = !tocCollapsed;
+        }
         if (marginSidebar) {
           marginSidebar.classList.remove(
             "bms-refined-right-rail-scroll-collapsed"
           );
         }
         preservePagePosition(function () {
-          tocCollapsed = !tocCollapsed;
           updateToc();
+          positionRefinedRightTools();
           document
             .querySelectorAll("[data-bms-lesson-track-nav]")
             .forEach(function (trackNav) {
@@ -1173,6 +1330,16 @@
           lastRightRailScrollY = window.scrollY;
           suppressRightRailAutoCollapse = false;
         }, 220);
+    };
+
+    const bindTocHeadingToggle = function (toggle) {
+      if (!toggle || boundTocHeadingToggles.has(toggle)) {
+        return;
+      }
+      boundTocHeadingToggles.add(toggle);
+      toggle.dataset.bmsTocToggleBound = "true";
+      toggle.addEventListener("click", function () {
+        activateTocHeadingToggle(toggle);
       });
     };
 
@@ -1204,6 +1371,11 @@
       }
       const tocCandidates = Array.from(document.querySelectorAll("#TOC"));
       toc =
+        (marginSidebar
+          ? tocCandidates.find(function (candidate) {
+              return marginSidebar.contains(candidate) && tocHasHashLinks(candidate);
+            })
+          : null) ||
         tocCandidates.find(tocHasHashLinks) ||
         (marginSidebar ? marginSidebar.querySelector("#TOC") : null);
       if (!toc || !tocHasHashLinks(toc)) {
@@ -1244,7 +1416,7 @@
       if (formElement && !lookup.querySelector(".bms-term-lookup-browse")) {
         const browseGlossary = document.createElement("a");
         browseGlossary.className = "bms-term-lookup-browse";
-        browseGlossary.href = "/learn/glossary/";
+        browseGlossary.href = "/glossary/";
         browseGlossary.textContent = "Browse the full glossary";
         formElement.insertAdjacentElement("afterend", browseGlossary);
       }
@@ -1400,8 +1572,9 @@
     }
 
     const open = function (options) {
-      const focusInput = !options || options.focusInput !== false;
-      if (glossarySearch) {
+      const settings = options || {};
+      const focusInput = settings.focusInput !== false;
+      if (glossarySearch && !lookup) {
         glossarySearch.scrollIntoView({ behavior: "smooth", block: "center" });
         glossarySearch.focus();
         return;
@@ -1494,23 +1667,28 @@
       const refined = inRefinedRightRail() && Boolean(tocHeadingToggle);
       marginSidebar.classList.toggle("bms-refined-right-rail", refined);
       if (refined) {
-        marginSidebar.classList.toggle("bms-toc-collapsed", tocCollapsed);
+        const effectivelyCollapsed =
+          tocCollapsed || rightRailScrollCollapsed;
+        marginSidebar.classList.toggle(
+          "bms-toc-collapsed",
+          effectivelyCollapsed
+        );
         if (tocToggle) {
           tocToggle.hidden = true;
         }
         tocHeadingToggle.hidden = false;
         tocHeadingToggle.setAttribute(
           "aria-expanded",
-          tocCollapsed ? "false" : "true"
+          effectivelyCollapsed ? "false" : "true"
         );
         tocHeadingToggle.setAttribute(
           "aria-label",
-          tocCollapsed
+          effectivelyCollapsed
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = tocCollapsed
-          ? "Contents \u25be"
+        tocHeadingToggle.textContent = effectivelyCollapsed
+          ? "Table of Contents \u25be"
           : "\u25b4";
         return;
       }
@@ -1539,22 +1717,35 @@
       if (!inRefinedRightRail()) {
         tools.style.removeProperty("--bms-refined-tools-left");
         tools.style.removeProperty("--bms-refined-tools-width");
+        tools.style.removeProperty("--bms-refined-tools-top");
         if (backToTop) {
           backToTop.style.removeProperty("--bms-refined-tools-right");
         }
         return;
       }
       const sidebarBounds = marginSidebar.getBoundingClientRect();
+      const viewportWidth = document.documentElement.clientWidth;
+      const toolsWidth = Math.min(
+        sidebarBounds.width * 3,
+        viewportWidth - 32
+      );
+      const tocBounds =
+        toc && toc.getClientRects().length > 0
+          ? toc.getBoundingClientRect()
+          : sidebarBounds;
       tools.style.setProperty(
         "--bms-refined-tools-left",
-        Math.max(8, sidebarBounds.left) + "px"
+        Math.max(16, sidebarBounds.right - toolsWidth) + "px"
       );
       tools.style.setProperty(
         "--bms-refined-tools-width",
-        sidebarBounds.width + "px"
+        toolsWidth + "px"
+      );
+      tools.style.setProperty(
+        "--bms-refined-tools-top",
+        Math.max(sidebarBounds.top, tocBounds.bottom) + 4 + "px"
       );
       if (backToTop) {
-        const viewportWidth = document.documentElement.clientWidth;
         backToTop.style.setProperty(
           "--bms-refined-tools-right",
           Math.max(8, viewportWidth - sidebarBounds.right) + "px"
@@ -1605,6 +1796,8 @@
         "bms-refined-right-rail-scroll-collapsed",
         rightRailScrollCollapsed
       );
+      updateToc();
+      positionRefinedRightTools();
       if (Math.abs(currentScrollY - lastRightRailScrollY) > 6) {
         lastRightRailScrollY = currentScrollY;
       }
@@ -1622,7 +1815,23 @@
         if (lookup) {
           lookup.classList.remove("bms-term-lookup--floating");
         }
-        marginSidebar.appendChild(tools);
+        if (inRefinedRightRail()) {
+          document.body.appendChild(tools);
+        } else {
+          let tocAnchor = toc;
+          while (
+            tocAnchor &&
+            tocAnchor.parentElement &&
+            tocAnchor.parentElement !== marginSidebar
+          ) {
+            tocAnchor = tocAnchor.parentElement;
+          }
+          if (tocAnchor && tocAnchor.parentElement === marginSidebar) {
+            marginSidebar.insertBefore(tools, tocAnchor.nextSibling);
+          } else {
+            marginSidebar.appendChild(tools);
+          }
+        }
         if (lookup && !desktopCollapsed) {
           open({ focusInput: false });
         } else if (lookup) {
@@ -1702,6 +1911,21 @@
         subtree: true
       });
     }
+    if (refinedRightRailPage && "MutationObserver" in window) {
+      tocCloneObserver = new MutationObserver(function () {
+        document
+          .querySelectorAll("[data-bms-toc-heading-toggle]")
+          .forEach(bindTocHeadingToggle);
+        positionRefinedRightTools();
+      });
+      tocCloneObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+      document
+        .querySelectorAll("[data-bms-toc-heading-toggle]")
+        .forEach(bindTocHeadingToggle);
+    }
 
     if (termToggle) {
       termToggle.addEventListener("click", function () {
@@ -1754,9 +1978,19 @@
     window.addEventListener("resize", positionRefinedRightTools, {
       passive: true
     });
+    window.addEventListener("scroll", positionRefinedRightTools, {
+      passive: true
+    });
+    window.addEventListener("load", positionRefinedRightTools, { once: true });
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(positionRefinedRightTools);
+    });
 
     const updateLookupForScroll = function () {
       if (!lookup || !inRefinedRightRail()) {
+        return;
+      }
+      if (suppressRightRailAutoCollapse) {
         return;
       }
       if (window.scrollY <= 32) {
@@ -1764,7 +1998,7 @@
           open({ focusInput: false });
         }
       } else if (!lookup.hidden) {
-        closeLookup({ rememberDesktop: true });
+        closeLookup();
       }
     };
     if (refinedRightRailPage) {
@@ -1775,6 +2009,25 @@
         passive: true
       });
       updateLookupForScroll();
+    }
+    const updateGlossaryLookupForScroll = function () {
+      if (!glossaryIndexPage || !lookup) {
+        return;
+      }
+      if (!desktopQuery.matches || window.scrollY <= 32) {
+        if (!lookup.hidden) {
+          closeLookup();
+        }
+      } else if (lookup.hidden) {
+        open({ focusInput: false });
+      }
+    };
+    if (glossaryIndexPage) {
+      window.addEventListener("scroll", updateGlossaryLookupForScroll, {
+        passive: true
+      });
+      desktopQuery.addEventListener("change", updateGlossaryLookupForScroll);
+      updateGlossaryLookupForScroll();
     }
 
     if (form && input && result) {
@@ -1798,10 +2051,77 @@
           })
           .catch(function () {
             window.location.href =
-              "/learn/glossary/?q=" + encodeURIComponent(query);
+              "/glossary/?q=" + encodeURIComponent(query);
           });
       });
     }
+
+    if (result) {
+      result.addEventListener("click", function (event) {
+        const target =
+          event.target && typeof event.target.closest === "function"
+            ? event.target.closest("[data-bms-term-lookup-related]")
+            : null;
+        if (!target || !result.contains(target)) {
+          return;
+        }
+        const slug = target.dataset.bmsTermLookupRelated;
+        if (!slug) {
+          return;
+        }
+        event.preventDefault();
+        document.dispatchEvent(
+          new CustomEvent("bms:open-glossary-term", {
+            detail: { slug: slug, focusResult: true }
+          })
+        );
+      });
+    }
+
+    document.addEventListener("bms:open-glossary-term", function (event) {
+      const slug = event && event.detail ? event.detail.slug : "";
+      if (!slug || !lookup || !result) {
+        return;
+      }
+      suppressRightRailAutoCollapse = true;
+      rightRailScrollCollapsed = false;
+      if (marginSidebar) {
+        marginSidebar.classList.remove(
+          "bms-refined-right-rail-scroll-collapsed"
+        );
+      }
+      if (!desktopQuery.matches && mobileDrawer) {
+        setMobileDrawerOpen(true);
+      } else {
+        preservePagePosition(function () {
+          open({ focusInput: false });
+        });
+      }
+      result.hidden = false;
+      result.textContent = "Looking up\u2026";
+      loadGlossaryLookupEntries()
+        .then(function (entries) {
+          const entry = canonicalEntryBySlug(entries, slug);
+          if (entry && input) {
+            input.value = entry.term;
+          }
+          renderLookupResult(result, entry, entry ? entry.term : slug);
+          if (entry && event.detail.focusResult) {
+            const heading = result.querySelector("h3");
+            if (heading) {
+              heading.focus({ preventScroll: true });
+            }
+          }
+        })
+        .catch(function () {
+          window.location.href =
+            "/glossary/#" + encodeURIComponent(slug);
+        });
+      window.setTimeout(function () {
+        lastRightRailScrollY = window.scrollY;
+        suppressRightRailAutoCollapse = false;
+      }, 220);
+    });
 
     const legacyBackToTop = document.querySelector(
       "[data-bms-glossary-back-to-top]"
@@ -1903,11 +2223,13 @@
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const sidebarScroller =
       sidebar.querySelector(".sidebar-menu-container") || sidebar;
+    const pageHeader = document.getElementById("quarto-header");
     const toggle = document.createElement("button");
     let collapsed = false;
     let lastScrollY = window.scrollY;
     let lastSidebarScrollTop = sidebarScroller.scrollTop;
     let scrollingDown = false;
+    let pageScrollingDown = false;
     let autoCollapsePending = window.scrollY <= 32;
     toggle.type = "button";
     toggle.className = "bms-learn-left-sidebar-toggle";
@@ -1915,11 +2237,30 @@
     toggle.setAttribute("aria-controls", sidebar.id);
     document.body.appendChild(toggle);
 
+    const positionExpandedToggle = function () {
+      const sidebarRight = sidebar.getBoundingClientRect().right;
+      toggle.style.left =
+        Math.max(8, sidebarRight - toggle.offsetWidth - 24) + "px";
+    };
+
     const updateVisibility = function () {
+      const navbarHidden = Boolean(
+        pageHeader && pageHeader.classList.contains("headroom--unpinned")
+      );
+      toggle.classList.toggle(
+        "bms-learn-left-sidebar-toggle--nav-hidden",
+        desktopQuery.matches &&
+          window.scrollY > 32 &&
+          (pageScrollingDown || navbarHidden)
+      );
       toggle.hidden =
         !desktopQuery.matches ||
-        (scrollingDown &&
+        (!collapsed &&
+          scrollingDown &&
           (window.scrollY > 32 || sidebarScroller.scrollTop > 4));
+      if (!toggle.hidden && !collapsed) {
+        positionExpandedToggle();
+      }
     };
 
     const update = function () {
@@ -1936,9 +2277,7 @@
       if (active) {
         toggle.style.left = "0.5rem";
       } else {
-        const sidebarRight = sidebar.getBoundingClientRect().right;
-        toggle.style.left =
-          Math.max(8, sidebarRight - toggle.offsetWidth - 14) + "px";
+        positionExpandedToggle();
       }
     };
 
@@ -1955,7 +2294,8 @@
           autoCollapsePending = true;
         }
         if (Math.abs(currentScrollY - lastScrollY) > 4) {
-          scrollingDown = currentScrollY > lastScrollY;
+          pageScrollingDown = currentScrollY > lastScrollY;
+          scrollingDown = pageScrollingDown;
           lastScrollY = currentScrollY;
           if (
             autoCollapsePending &&
@@ -1986,6 +2326,19 @@
       },
       { passive: true }
     );
+    if (pageHeader && "MutationObserver" in window) {
+      new MutationObserver(updateVisibility).observe(pageHeader, {
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+    }
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(function () {
+        if (!toggle.hidden && !collapsed) {
+          positionExpandedToggle();
+        }
+      }).observe(sidebar);
+    }
     desktopQuery.addEventListener("change", update);
     update();
   }
@@ -2103,6 +2456,8 @@
     isMobileDrawerSwipe: isMobileDrawerSwipe,
     isSamePageTocHref: isSamePageTocHref,
     itemMatchesLesson: itemMatchesLesson,
+    lessonSearchRank: lessonSearchRank,
+    lessonGroupSearchRank: lessonGroupSearchRank,
     itemMatchesTaxonomy: itemMatchesTaxonomy,
     matchesAny: matchesAny,
     normalizeLearnSearch: normalizeLearnSearch,
@@ -2110,6 +2465,7 @@
     lookupMatchRank: lookupMatchRank,
     mountLesson: mountLesson,
     parseList: parseList,
+    rankLessonItems: rankLessonItems,
     setAllGroupsExpanded: setAllGroupsExpanded
   };
 
@@ -2123,6 +2479,10 @@
 
   if (typeof document !== "undefined") {
     document.addEventListener("DOMContentLoaded", function () {
+      if (document.documentElement.dataset.bmsLearnInitialized === "true") {
+        return;
+      }
+      document.documentElement.dataset.bmsLearnInitialized = "true";
       initializeLearnFilters();
       initializeLearnSidebarControls();
       initializeInlineGlossary();

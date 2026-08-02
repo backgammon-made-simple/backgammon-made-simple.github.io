@@ -128,104 +128,6 @@
   padding: 1rem 1.15rem;
 }
 
-.bms-scroll-fixture-disclosure {
-  overflow: clip;
-}
-
-.bms-scroll-fixture-content {
-  display: grid;
-  gap: 1rem;
-}
-
-.bms-scroll-fixture-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 28rem;
-  border-radius: 8px;
-}
-
-.bms-scroll-fixture-content > .bms-decision-prompt {
-  padding: 0.25rem 0;
-}
-
-.bms-scroll-fixture-question {
-  margin: 0;
-  font-weight: 650;
-}
-
-.bms-scroll-fixture-explanation {
-  margin: 0;
-}
-
-.bms-scroll-fixture-nested {
-  margin: 0;
-}
-
-.bms-scroll-fixture-nested > .bms-answer-panel-content {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.bms-scroll-fixture-nested p {
-  margin: 0;
-}
-
-.bms-ui-edge-fixture {
-  min-width: 0;
-  margin: 1.25rem 0;
-  padding: 1rem;
-  border: 1px solid var(--bms-border);
-  border-radius: 8px;
-  background: var(--bms-surface);
-}
-
-.bms-ui-edge-fixture > :first-child {
-  margin-top: 0;
-}
-
-.bms-ui-edge-fixture > :last-child {
-  margin-bottom: 0;
-}
-
-.bms-ui-edge-unbroken,
-.bms-ui-edge-fixture a {
-  overflow-wrap: anywhere;
-}
-
-.bms-ui-edge-panel .bms-answer-panel-content {
-  display: grid;
-  min-width: 0;
-  gap: 1rem;
-}
-
-.bms-ui-edge-panel .bms-answer-panel-content > * {
-  min-width: 0;
-  margin-block: 0;
-}
-
-.bms-ui-edge-scroll-region,
-.bms-ui-edge-code {
-  max-width: 100%;
-  overflow: auto;
-}
-
-.bms-ui-edge-scroll-region:focus-visible {
-  outline: 3px solid var(--bms-navy);
-  outline-offset: 3px;
-}
-
-.bms-ui-edge-scroll-region table {
-  min-width: 50rem;
-  margin: 0;
-}
-
-.bms-ui-edge-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .bms-analyzer-placeholder {
   min-height: 150px;
   padding: 1.15rem;
@@ -738,7 +640,7 @@ body.bms-learn-track-index .bms-learn-filter-count {
 .bms-learn-section-actions,
 .bms-learn-sidebar-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 0.35rem;
 }
 
@@ -801,7 +703,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 .bms-learn-catalogue-section-heading {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.75rem;
   padding: 0.35rem 0.15rem;
   border-bottom: 0;
@@ -826,8 +728,9 @@ body:is(.bms-learn-index, .bms-learn-track-index)
   text-decoration: none;
 }
 
-.bms-learn-catalogue-section-heading > span:last-child {
+.bms-learn-track-heading [data-bms-learn-group-count] {
   flex: 0 0 auto;
+  margin-left: 0.35rem;
   color: var(--bms-text-muted);
   font-family: "Source Code Pro", ui-monospace, monospace;
   font-size: 0.64rem;
@@ -1070,12 +973,18 @@ body:is(.bms-learn-index, .bms-learn-article)
 }
 
 .bms-glossary-definition,
+.bms-glossary-short-definition,
 .bms-glossary-aliases,
 .bms-glossary-category,
 .bms-glossary-usage-note,
 .bms-glossary-related-tracks,
 .bms-glossary-canonical {
   margin: 0.65rem 0 0;
+}
+
+.bms-glossary-short-definition {
+  color: var(--bms-text-secondary);
+  font-weight: 650;
 }
 
 .bms-glossary-definition > p {
@@ -1187,6 +1096,85 @@ body:is(.bms-learn-index, .bms-learn-article)
   color: var(--bms-link-hover);
 }
 
+.bms-glossary-sidebar {
+  position: fixed;
+  top: max(5rem, 12vh);
+  right: max(1rem, calc((100vw - 1120px) / 2));
+  z-index: 1070;
+  box-sizing: border-box;
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: min(76vh, 46rem);
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid var(--bms-border-strong);
+  border-radius: 8px;
+  background: var(--bms-page-background);
+  box-shadow: 0 0.5rem 1.6rem rgb(24 51 65 / 20%);
+  color: var(--bms-text);
+}
+
+.bms-glossary-sidebar[hidden] {
+  display: none;
+}
+
+.bms-glossary-sidebar-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--bms-border);
+}
+
+.bms-glossary-sidebar-heading h2 {
+  margin: 0;
+  color: var(--bms-navy-dark);
+  font-size: 1.25rem;
+}
+
+.bms-glossary-sidebar-close {
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--bms-border);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--bms-text-muted);
+  font-size: 0.78rem;
+}
+
+.bms-glossary-sidebar-content .bms-glossary-entry-body {
+  padding-bottom: 0;
+}
+
+.bms-glossary-sidebar-content .bms-glossary-related-groups {
+  display: none;
+}
+
+.bms-glossary-sidebar-entry-link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-weight: 680;
+}
+
+.bms-glossary-sidebar :focus-visible {
+  outline: 3px solid var(--bms-link-hover);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767.98px) {
+  .bms-glossary-sidebar {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 72vh;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 12px 12px 0 0;
+  }
+}
+
 /* Shared lesson and Research term lookup */
 
 .bms-term-lookup {
@@ -1253,6 +1241,12 @@ body:is(.bms-learn-index, .bms-learn-article)
 
 .bms-inline-glossary-tooltip strong {
   margin-bottom: 0.25rem;
+}
+
+.bms-inline-glossary-tooltip .bms-inline-glossary-tooltip-action {
+  margin-top: 0.35rem;
+  color: var(--bms-text-muted);
+  font-size: 0.78rem;
 }
 
 .bms-term-lookup-heading {
@@ -1349,6 +1343,28 @@ body:is(.bms-learn-index, .bms-learn-article)
   padding-left: 1rem;
   font-size: 0.78rem;
   line-height: 1.35;
+}
+
+.bms-term-lookup-related-term {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bms-link);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.bms-term-lookup-related-term:hover,
+.bms-term-lookup-related-term:focus-visible {
+  color: var(--bms-link-hover);
+}
+
+.bms-term-lookup-related-term:focus-visible {
+  outline: 2px solid var(--bms-link-hover);
+  outline-offset: 2px;
 }
 
 .bms-term-lookup-full {
@@ -1455,6 +1471,20 @@ body:is(.bms-learn-index, .bms-learn-article)
   box-shadow: 0 8px 28px rgb(17 24 47 / 18%);
 }
 
+@media (min-width: 992px) {
+  body.bms-glossary-index .bms-site-tools--floating {
+    top: 5rem;
+    right: 1rem;
+    bottom: auto;
+  }
+
+  body.bms-glossary-index .bms-term-lookup--floating {
+    top: 7.8rem;
+    right: 1rem;
+    bottom: auto;
+  }
+}
+
 @media (min-width: 1200px) {
   body.bms-analyze-page .bms-site-tools--floating,
   body.bms-analyze-page .bms-term-lookup--floating {
@@ -1480,6 +1510,21 @@ body:is(.bms-learn-index, .bms-learn-article)
   border-color: var(--bms-border);
   background: var(--bms-page-background);
   color: var(--bms-text-muted);
+  white-space: nowrap;
+}
+
+body.bms-glossary-index
+  .bms-site-tools--floating
+  .bms-term-lookup-reveal {
+  width: auto;
+  min-height: 1.45rem;
+  padding-inline: 0.45rem;
+  border-color: var(--bms-border);
+  background: var(--bms-page-background);
+  color: var(--bms-text-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -1555,7 +1600,14 @@ body:is(.bms-learn-index, .bms-learn-article)
     cursor: pointer;
     font-size: 0.75rem;
     line-height: 1;
+    transition: top 160ms ease;
     white-space: nowrap;
+  }
+
+  .bms-learn-left-sidebar-toggle--nav-hidden,
+  body:has(#quarto-header.headroom--unpinned)
+    .bms-learn-left-sidebar-toggle {
+    top: 0.5rem;
   }
 
   .bms-learn-left-sidebar-toggle:focus-visible {
@@ -1635,7 +1687,13 @@ body:is(.bms-learn-index, .bms-learn-article)
   }
 
   #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed
-    > * {
+    > :not(#TOC):not(.bms-site-tools) {
+    display: none !important;
+  }
+
+  #quarto-margin-sidebar.bms-refined-right-rail-scroll-collapsed
+    #TOC
+    > :not(.bms-toc-toggle-divider) {
     display: none !important;
   }
 
@@ -1751,19 +1809,25 @@ body:is(.bms-learn-index, .bms-learn-article)
     )
     .bms-site-tools--sidebar {
     position: fixed;
-    top: 50%;
-    right: 0.75rem;
+    top: var(--bms-refined-tools-top, 8rem);
     left: var(--bms-refined-tools-left, auto);
     z-index: 1050;
-    width: var(
-      --bms-refined-tools-width,
-      clamp(10rem, 16vw, 18rem)
-    );
-    align-items: center;
+    width: var(--bms-refined-tools-width, min(42rem, calc(100vw - 2rem)));
+    max-width: calc(100vw - 2rem);
+    align-items: flex-end;
     margin-top: 0;
     padding-top: 0.15rem;
-    transform: translateY(-50%);
     border-top: 0;
+    pointer-events: none;
+  }
+
+  body:is(
+      .bms-research-article,
+      .bms-learn-article:not(.bms-learn-track-index)
+    )
+    .bms-site-tools--sidebar
+    > * {
+    pointer-events: auto;
   }
 
   body:is(
@@ -1773,9 +1837,10 @@ body:is(.bms-learn-index, .bms-learn-article)
     .bms-site-tools--sidebar
     .bms-term-lookup {
     position: static;
-    width: 100%;
+    width: 50%;
     max-height: calc(100vh - 6rem);
     margin: 0;
+    align-self: flex-end;
     overflow-y: auto;
     border-color: var(--bms-border);
     background: var(--bms-page-background);

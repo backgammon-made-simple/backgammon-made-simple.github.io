@@ -135,6 +135,18 @@
     return candidate;
   }
 
+  function checkerCandidateIdentityMatches(fixture, candidate) {
+    const hasIdentity = Boolean(
+      fixture && fixture.position_id && fixture.state_hash && fixture.analysis_id
+    );
+    return !hasIdentity || Boolean(
+      candidate &&
+      candidate.position_id === fixture.position_id &&
+      candidate.state_hash === fixture.state_hash &&
+      candidate.analysis_id === fixture.analysis_id
+    );
+  }
+
   function validateFixtureDocument(data) {
     if (!data || data.schema_version !== FIXTURE_SCHEMA) {
       throw new Error("Unsupported lesson analysis fixture schema.");
@@ -485,6 +497,7 @@
   function candidateMetricRows(candidate) {
     const rows = [
       ["Selected move", candidate.label],
+      ["Rank", optionalText(candidate.rank)],
       ["Equity", formatEquity(candidate.equity)],
       ["Equity loss", formatEquity(candidate.equity_loss)]
     ];
@@ -524,6 +537,9 @@
     heading.id = instanceId + "-title";
     article.setAttribute("aria-labelledby", heading.id);
     article.dataset.bmsAnalysisInstance = instanceId;
+    article.dataset.positionId = optionalText(fixture.position_id, "");
+    article.dataset.stateHash = optionalText(fixture.state_hash, "");
+    article.dataset.analysisId = optionalText(fixture.analysis_id, "");
     group.setAttribute("role", "group");
     group.setAttribute("aria-label", fixture.prompt);
     status.setAttribute("aria-live", "polite");
@@ -539,6 +555,9 @@
       const button = choiceButton(candidate.label, candidate.id);
       button.addEventListener("click", function () {
         const selected = checkerCandidateState(fixture, candidate.id);
+        if (!checkerCandidateIdentityMatches(fixture, selected)) {
+          throw new Error("Checker candidate identity does not match its fixture.");
+        }
         setPressed(group, candidate.id);
         position.image.src = assetUrl(fixtures.asset_root, selected.image);
         position.image.alt = optionalText(
@@ -562,7 +581,10 @@
 
     const engineAnalysis = disclosure(
       instanceId + "-engine-analysis",
-      "Show engine-analysis fixture",
+      optionalText(
+        fixture.analysis && fixture.analysis.label,
+        "Show engine analysis"
+      ),
       "bms-analysis-disclosure"
     );
     engineAnalysis.content.append(
@@ -687,6 +709,7 @@
 
   const publicApi = {
     assetUrl: assetUrl,
+    checkerCandidateIdentityMatches: checkerCandidateIdentityMatches,
     checkerCandidateState: checkerCandidateState,
     cubeDecisionState: cubeDecisionState,
     formatEquity: formatEquity,
