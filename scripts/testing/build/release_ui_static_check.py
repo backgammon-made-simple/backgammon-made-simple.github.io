@@ -13,7 +13,7 @@ from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_SITE_DIR = REPOSITORY_ROOT / "site" / "_site"
 DEFAULT_MANIFEST = (
     Path(__file__).parents[1] / "ux" / "browser" / "ui_release_manifest.json"
