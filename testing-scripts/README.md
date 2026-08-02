@@ -1,9 +1,9 @@
-# Testing scripts
+# Compatibility testing commands
 
-- `run-browserless-short.sh` is the fast source and representative-render gate.
-- `run-browserless-long.sh` runs the complete Python suite, a full Quarto build,
-  full rendered-site checks, and an optional backgammonboard renderer gate.
+These legacy paths delegate to the canonical build runners:
 
-Run both scripts from any directory with `bash`. See
-[`../testing-sop.md`](../testing-sop.md) for prerequisites, browser procedures,
-failure classifications, and reporting requirements.
+- `run-browserless-short.sh` -> `scripts/testing/build/quick.sh`
+- `run-browserless-long.sh` -> `scripts/testing/build/comprehensive.sh`
+
+New work should use the common entrypoints documented in
+`scripts/testing/README.md`.
