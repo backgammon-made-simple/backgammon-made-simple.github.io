@@ -48,6 +48,18 @@ export const classifyFindingStability = (failure) => {
   ) {
     return "volatile";
   }
+  if (
+    /restoring the TOC rail also restores the lesson track/i.test(message) &&
+    failure.component === "learn-lesson"
+  ) {
+    return "volatile";
+  }
+  if (
+    /appended container IDs are namespaced/i.test(message) &&
+    ["learn-lesson", "research-article"].includes(failure.component)
+  ) {
+    return "volatile";
+  }
   return "stable";
 };
 

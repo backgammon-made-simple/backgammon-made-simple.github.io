@@ -42,6 +42,22 @@ assert.equal(
   }),
   "volatile"
 );
+
+assert.equal(
+  classifyFindingStability({
+    component: "learn-lesson",
+    message: "restoring the TOC rail also restores the lesson track"
+  }),
+  "volatile"
+);
+
+assert.equal(
+  classifyFindingStability({
+    component: "research-article",
+    message: "appended container IDs are namespaced: lazy-id"
+  }),
+  "volatile"
+);
 assert.equal(
   classifyFindingStability({
     message: "duplicate IDs after scrolling: TOC",
