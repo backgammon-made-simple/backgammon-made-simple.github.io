@@ -58,6 +58,8 @@ for (const requiredSourceContract of [
   "interactWithMobileNavigation",
   "interactWithGlossarySidebar",
   "failure_screenshot_limit",
+  "limitations",
+  "domcontentloaded",
   "safe_for_automated_remediation",
   "needs_review"
 ]) {
