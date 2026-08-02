@@ -42,6 +42,12 @@ export const classifyFindingStability = (failure) => {
   if (failure.volatile === true) {
     return "volatile";
   }
+  if (
+    /initial IDs are unique/i.test(message) &&
+    ["learn-lesson", "research-article"].includes(failure.component)
+  ) {
+    return "volatile";
+  }
   return "stable";
 };
 
@@ -70,7 +76,10 @@ export const classifyBrowserFinding = ({
   viewport,
   screenshot
 }) => {
-  const stability = classifyFindingStability(failure);
+  const stability = classifyFindingStability({
+    ...failure,
+    component: failure.component || page?.kind
+  });
   const category = failure.category || "product-defect";
   const route = page?.route || failure.context;
   const selector = failure.selector || null;

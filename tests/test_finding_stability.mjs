@@ -35,6 +35,20 @@ assert.equal(
   classifyFindingStability({ message: "sampled", volatile: true }),
   "volatile"
 );
+assert.equal(
+  classifyFindingStability({
+    message: "initial IDs are unique: TOC",
+    component: "research-article"
+  }),
+  "volatile"
+);
+assert.equal(
+  classifyFindingStability({
+    message: "duplicate IDs after scrolling: TOC",
+    component: "research-article"
+  }),
+  "stable"
+);
 
 const identityInput = {
   category: "product-defect",
