@@ -18,9 +18,24 @@ foreach ($command in @('git', 'bash', 'py', 'node', 'quarto', 'Rscript')) {
 }
 
 if (Get-Command py -ErrorAction SilentlyContinue) {
-  $pythonParts = & py -c 'import sys; print(sys.version_info[0]); print(sys.version_info[1])'
-  $pythonVersion = "$($pythonParts[0]).$($pythonParts[1])"
-  if ([version]$pythonVersion -ge [version]'3.11') { Write-Host "PASS Python version: $pythonVersion" } else { $failures.Add("Python 3.11+ required by testing-sop.md; found $pythonVersion") }
+  $pythonCandidates = @(
+    foreach ($registryRoot in @('HKCU:\Software\Python\PythonCore', 'HKLM:\Software\Python\PythonCore')) {
+      if (Test-Path $registryRoot) {
+        Get-ChildItem $registryRoot | ForEach-Object {
+          if ($_.PSChildName -match '^(?<major>\d+)\.(?<minor>\d+)$') {
+            $installPath = (Get-ItemProperty "$($_.PSPath)\InstallPath" -ErrorAction SilentlyContinue).'(default)'
+            $candidatePath = Join-Path $installPath 'python.exe'
+            if ($installPath -and (Test-Path $candidatePath -PathType Leaf)) {
+              [pscustomobject]@{ Version = [version]"$($Matches.major).$($Matches.minor)"; Path = $candidatePath }
+            }
+          }
+        }
+      }
+    }
+  )
+  $python = $pythonCandidates | Where-Object { $_.Version -ge [version]'3.11' } |
+    Sort-Object Version -Descending | Select-Object -First 1
+  if ($python) { Write-Host "PASS Python version: $($python.Version) ($($python.Path))" } else { $failures.Add('Python 3.11+ required by testing-sop.md; no qualifying py launcher registration was found') }
 }
 if (Get-Command quarto -ErrorAction SilentlyContinue) {
   $quartoVersion = (& quarto --version | Select-Object -First 1).Trim()

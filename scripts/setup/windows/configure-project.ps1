@@ -13,16 +13,32 @@ foreach ($required in @('social_generator/requirements-social.txt', 'social_gene
 foreach ($command in @('py', 'Rscript', 'quarto')) {
   if (-not (Get-Command $command -ErrorAction SilentlyContinue)) { throw "Required system tool is missing: $command" }
 }
-$pythonParts = & py -c 'import sys; print(sys.version_info[0]); print(sys.version_info[1])'
-$pythonVersion = "$($pythonParts[0]).$($pythonParts[1])"
-if ([version]$pythonVersion -lt [version]'3.11') { throw "Python 3.11+ is required by testing-sop.md; found $pythonVersion" }
+$pythonCandidates = @(
+  foreach ($registryRoot in @('HKCU:\Software\Python\PythonCore', 'HKLM:\Software\Python\PythonCore')) {
+    if (Test-Path $registryRoot) {
+      Get-ChildItem $registryRoot | ForEach-Object {
+        if ($_.PSChildName -match '^(?<major>\d+)\.(?<minor>\d+)$') {
+          $installPath = (Get-ItemProperty "$($_.PSPath)\InstallPath" -ErrorAction SilentlyContinue).'(default)'
+          $candidatePath = Join-Path $installPath 'python.exe'
+          if ($installPath -and (Test-Path $candidatePath -PathType Leaf)) {
+            [pscustomobject]@{ Version = [version]"$($Matches.major).$($Matches.minor)"; Path = $candidatePath }
+          }
+        }
+      }
+    }
+  }
+)
+$selectedPython = $pythonCandidates | Where-Object { $_.Version -ge [version]'3.11' } |
+  Sort-Object Version -Descending | Select-Object -First 1
+if (-not $selectedPython) { throw 'Python 3.11+ is required by testing-sop.md; no qualifying py launcher registration was found' }
+$pythonVersion = $selectedPython.Version
 $quartoVersion = (& quarto --version | Select-Object -First 1).Trim()
 if ($quartoVersion -ne '1.10.15') { throw "Quarto 1.10.15 is required by scripts/bms-setup-server-environment.sh; found $quartoVersion" }
 
 $venv = Join-Path $RepoRoot '.venv'
 $python = Join-Path $venv 'Scripts/python.exe'
 if (-not (Test-Path $python -PathType Leaf)) {
-  & py -m venv $venv
+  & $selectedPython.Path -m venv $venv
 }
 
 & $python -m pip install --upgrade pip
