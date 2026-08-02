@@ -16,6 +16,10 @@ class StaticInventoryTests(unittest.TestCase):
             (root / "scripts").mkdir()
             (root / "tests").mkdir()
             (root / "docs").mkdir()
+            (root / "task-work").mkdir()
+            (root / "task-work" / "generated-evidence.json").write_text(
+                '{"generated": true}', encoding="utf-8"
+            )
             (root / "site" / "index.qmd").write_text(
                 '<img src="/assets/used.svg">', encoding="utf-8"
             )
@@ -44,6 +48,10 @@ class StaticInventoryTests(unittest.TestCase):
             self.assertEqual(first, second)
             self.assertFalse(first["evidence_contract"]["reference_scanning_is_proof"])
             self.assertFalse(first["evidence_contract"]["files_moved_or_deleted"])
+            self.assertNotIn(
+                "task-work/generated-evidence.json",
+                [item["path"] for item in first["largest_source_files"]],
+            )
             self.assertEqual(
                 [item["path"] for item in first["unreferenced_site_assets"]],
                 ["site/assets/unused.svg"],

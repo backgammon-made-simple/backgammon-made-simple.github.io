@@ -22,6 +22,7 @@ EXCLUDED_PARTS = {
     ".venv",
     "__pycache__",
     "node_modules",
+    "task-work",
 }
 TEXT_EXTENSIONS = {
     ".css",
