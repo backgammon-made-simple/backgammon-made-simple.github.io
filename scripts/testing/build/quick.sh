@@ -39,6 +39,7 @@ node --check scripts/testing/ux/browser/release_ui_browser_check.mjs
 node --check scripts/testing/ux/browser/lesson_analysis_browser_check.mjs
 node --check scripts/testing/ux/browser/comprehensive_quality_browser_check.mjs
 node --check scripts/testing/quality/performance/runtime_performance_baseline.mjs
+node --check scripts/testing/quality/browser/isolated_browser_tab.mjs
 
 printf '\n[3/5] Focused JavaScript behavior\n'
 node tests/test_learn_filters.js
@@ -49,6 +50,7 @@ node tests/test_release_ui_browser_check.mjs
 node tests/test_lesson_analysis_browser_check.mjs
 node tests/test_comprehensive_quality_browser_check.mjs
 node tests/test_runtime_performance_baseline.mjs
+node tests/test_isolated_browser_tab.mjs
 
 printf '\n[4/5] Focused Python contracts\n'
 "${PYTHON_COMMAND[@]}" -m unittest \
