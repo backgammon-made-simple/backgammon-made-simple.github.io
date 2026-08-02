@@ -92,6 +92,8 @@ for (const requiredSourceContract of [
   "safe_for_automated_remediation",
   "needs_review",
   "continuousLoading",
+  "interactionStates",
+  "continuous loading reset reaches a fresh initial state",
   "expectedAppendedPageCount",
   "browserHistoryState",
   "timeoutReason",

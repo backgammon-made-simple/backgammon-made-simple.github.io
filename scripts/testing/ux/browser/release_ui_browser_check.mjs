@@ -1078,6 +1078,7 @@ export async function runReleaseUiChecks({
   const limitations = [];
   const continuousLoading = [];
   const focusTraversal = [];
+  const interactionStates = [];
   const screenshots = [];
   let failureScreenshots = 0;
   let checks = 0;
@@ -1391,6 +1392,50 @@ export async function runReleaseUiChecks({
             check
           });
 
+          if (continuousConfig) {
+            const postInteractionUrl = await activeTab.url();
+            const routePreserved =
+              new URL(postInteractionUrl).pathname === page.route;
+            check(
+              routePreserved,
+              context,
+              `page interactions preserve the continuous-loading route: ${postInteractionUrl}`
+            );
+            phase = "continuous loading state reset";
+            await activeTab.goto(new URL(page.route, baseUrl).href);
+            await activeTab.playwright.waitForLoadState({
+              state: "domcontentloaded",
+              timeoutMs: 30000
+            });
+            await scrollTo(activeTab, 0);
+            await delay(500);
+            const resetState = await waitForContinuousState(
+              activeTab,
+              continuousConfig,
+              (state) =>
+                state.markerCount === 1 &&
+                state.appendedPages.length === 0 &&
+                state.sentinel.available &&
+                !state.sentinel.loading
+            );
+            initialContinuousState = resetState.state;
+            check(
+              resetState.timeoutReason === null,
+              context,
+              resetState.timeoutReason ||
+                "continuous loading reset reaches a fresh initial state"
+            );
+            interactionStates.push({
+              context,
+              initialRoute: page.route,
+              postInteractionUrl,
+              routePreserved,
+              resetDocumentIdentity: initialContinuousState.documentIdentity,
+              resetLoadedPageOrder: initialContinuousState.loadedPageOrder,
+              resetTimeoutReason: resetState.timeoutReason
+            });
+          }
+
           phase = "middle scroll";
           if (page.kind !== "research-article") {
             await scrollTo(
@@ -1658,6 +1703,7 @@ export async function runReleaseUiChecks({
     limitations,
     continuousLoading,
     focusTraversal,
+    interactionStates,
     consoleMessages,
     screenshots,
     durationMs: Date.now() - started
