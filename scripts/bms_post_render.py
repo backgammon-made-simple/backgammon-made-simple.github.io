@@ -226,6 +226,17 @@ def normalized_glossary_sitemap_text(text: str) -> tuple[str, bool]:
 
     if dirty_count == 0 and clean_count == 1:
         return text, False
+    if dirty_count == 1 and clean_count == 1:
+        clean_entry = re.compile(
+            r"\s*<url>\s*"
+            + re.escape(clean_location)
+            + r".*?</url>",
+            re.DOTALL,
+        )
+        without_stale_clean, removed = clean_entry.subn("", text, count=1)
+        if removed != 1:
+            raise RuntimeError("Could not remove the stale clean glossary sitemap entry")
+        return without_stale_clean.replace(dirty_location, clean_location), True
     if dirty_count != 1 or clean_count != 0:
         raise RuntimeError(
             "Glossary sitemap contract requires exactly one dirty or one clean "

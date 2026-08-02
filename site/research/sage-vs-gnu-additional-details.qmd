@@ -7,8 +7,6 @@ terms:
   - equity
   - error-rate
   - rollout
-highlighted-terms:
-  - equity
 
 format:
   html:

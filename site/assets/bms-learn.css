@@ -730,7 +730,7 @@ body:is(.bms-learn-index, .bms-learn-track-index)
 
 .bms-learn-track-heading [data-bms-learn-group-count] {
   flex: 0 0 auto;
-  margin-left: 1.5rem;
+  margin-left: 0.35rem;
   color: var(--bms-text-muted);
   font-family: "Source Code Pro", ui-monospace, monospace;
   font-size: 0.64rem;
@@ -973,12 +973,18 @@ body:is(.bms-learn-index, .bms-learn-article)
 }
 
 .bms-glossary-definition,
+.bms-glossary-short-definition,
 .bms-glossary-aliases,
 .bms-glossary-category,
 .bms-glossary-usage-note,
 .bms-glossary-related-tracks,
 .bms-glossary-canonical {
   margin: 0.65rem 0 0;
+}
+
+.bms-glossary-short-definition {
+  color: var(--bms-text-secondary);
+  font-weight: 650;
 }
 
 .bms-glossary-definition > p {
@@ -1088,6 +1094,85 @@ body:is(.bms-learn-index, .bms-learn-article)
 .bms-glossary-back-to-top:focus-visible {
   border-color: var(--bms-link-hover);
   color: var(--bms-link-hover);
+}
+
+.bms-glossary-sidebar {
+  position: fixed;
+  top: max(5rem, 12vh);
+  right: max(1rem, calc((100vw - 1120px) / 2));
+  z-index: 1070;
+  box-sizing: border-box;
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: min(76vh, 46rem);
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid var(--bms-border-strong);
+  border-radius: 8px;
+  background: var(--bms-page-background);
+  box-shadow: 0 0.5rem 1.6rem rgb(24 51 65 / 20%);
+  color: var(--bms-text);
+}
+
+.bms-glossary-sidebar[hidden] {
+  display: none;
+}
+
+.bms-glossary-sidebar-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--bms-border);
+}
+
+.bms-glossary-sidebar-heading h2 {
+  margin: 0;
+  color: var(--bms-navy-dark);
+  font-size: 1.25rem;
+}
+
+.bms-glossary-sidebar-close {
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--bms-border);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--bms-text-muted);
+  font-size: 0.78rem;
+}
+
+.bms-glossary-sidebar-content .bms-glossary-entry-body {
+  padding-bottom: 0;
+}
+
+.bms-glossary-sidebar-content .bms-glossary-related-groups {
+  display: none;
+}
+
+.bms-glossary-sidebar-entry-link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-weight: 680;
+}
+
+.bms-glossary-sidebar :focus-visible {
+  outline: 3px solid var(--bms-link-hover);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767.98px) {
+  .bms-glossary-sidebar {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 72vh;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 12px 12px 0 0;
+  }
 }
 
 /* Shared lesson and Research term lookup */
@@ -1386,6 +1471,20 @@ body:is(.bms-learn-index, .bms-learn-article)
   box-shadow: 0 8px 28px rgb(17 24 47 / 18%);
 }
 
+@media (min-width: 992px) {
+  body.bms-glossary-index .bms-site-tools--floating {
+    top: 5rem;
+    right: 1rem;
+    bottom: auto;
+  }
+
+  body.bms-glossary-index .bms-term-lookup--floating {
+    top: 7.8rem;
+    right: 1rem;
+    bottom: auto;
+  }
+}
+
 @media (min-width: 1200px) {
   body.bms-analyze-page .bms-site-tools--floating,
   body.bms-analyze-page .bms-term-lookup--floating {
@@ -1411,6 +1510,21 @@ body:is(.bms-learn-index, .bms-learn-article)
   border-color: var(--bms-border);
   background: var(--bms-page-background);
   color: var(--bms-text-muted);
+  white-space: nowrap;
+}
+
+body.bms-glossary-index
+  .bms-site-tools--floating
+  .bms-term-lookup-reveal {
+  width: auto;
+  min-height: 1.45rem;
+  padding-inline: 0.45rem;
+  border-color: var(--bms-border);
+  background: var(--bms-page-background);
+  color: var(--bms-text-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -1486,7 +1600,14 @@ body:is(.bms-learn-index, .bms-learn-article)
     cursor: pointer;
     font-size: 0.75rem;
     line-height: 1;
+    transition: top 160ms ease;
     white-space: nowrap;
+  }
+
+  .bms-learn-left-sidebar-toggle--nav-hidden,
+  body:has(#quarto-header.headroom--unpinned)
+    .bms-learn-left-sidebar-toggle {
+    top: 0.5rem;
   }
 
   .bms-learn-left-sidebar-toggle:focus-visible {
@@ -1716,7 +1837,7 @@ body:is(.bms-learn-index, .bms-learn-article)
     .bms-site-tools--sidebar
     .bms-term-lookup {
     position: static;
-    width: 100%;
+    width: 50%;
     max-height: calc(100vh - 6rem);
     margin: 0;
     align-self: flex-end;

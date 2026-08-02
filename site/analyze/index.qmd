@@ -4,6 +4,7 @@ description: "Analyze a backgammon position, compare checker plays and cube deci
 subtitle: "OPEN ANALYSIS :: UNDERSTAND A POSITION"
 page-layout: full
 toc: false
+term-lookup: false
 format:
   html:
     title-block-style: plain

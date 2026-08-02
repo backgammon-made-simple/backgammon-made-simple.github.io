@@ -1124,10 +1124,15 @@
   }
 
   function initializeTermLookup() {
+    const glossaryIndexPage = document.body.classList.contains(
+      "bms-glossary-index"
+    );
     const lookupDisabled =
       isMainSiteIndex() ||
       document.body.classList.contains("bms-learn-index") ||
-      document.body.classList.contains("bms-learn-track-index");
+      document.body.classList.contains("bms-learn-track-index") ||
+      document.body.classList.contains("bms-analyze-page") ||
+      document.body.classList.contains("bms-match-predictor-page");
     const glossarySearch = document.querySelector(
       "[data-bms-glossary-search]"
     );
@@ -1138,7 +1143,11 @@
       lookupCandidates.find(function (candidate) {
         return !candidate.closest(".quarto-sidebar-toggle-contents");
       }) || lookupCandidates[0] || null;
-    if (!lookupDisabled && !lookup && !glossarySearch) {
+    if (
+      !lookupDisabled &&
+      !lookup &&
+      (!glossarySearch || glossaryIndexPage)
+    ) {
       lookup = createTermLookup();
     }
     if (lookup) {
@@ -1209,7 +1218,6 @@
     let rightRailScrollCollapsed = false;
     let lastRightRailScrollY = window.scrollY;
     let suppressRightRailAutoCollapse = false;
-    let lookupPinnedOpen = false;
     let mobileDrawerOpen = false;
     let mobileTouchStart = null;
     let mobileDrawer = null;
@@ -1566,16 +1574,13 @@
     const open = function (options) {
       const settings = options || {};
       const focusInput = settings.focusInput !== false;
-      if (glossarySearch) {
+      if (glossarySearch && !lookup) {
         glossarySearch.scrollIntoView({ behavior: "smooth", block: "center" });
         glossarySearch.focus();
         return;
       }
       if (!lookup) {
         return;
-      }
-      if (settings.pinOpen) {
-        lookupPinnedOpen = true;
       }
       if (inDesktopDock()) {
         desktopCollapsed = false;
@@ -1602,9 +1607,6 @@
       const settings = options || {};
       if (!lookup) {
         return;
-      }
-      if (!settings.preservePinned) {
-        lookupPinnedOpen = false;
       }
       if (settings.rememberDesktop && inDesktopDock()) {
         desktopCollapsed = true;
@@ -1928,7 +1930,7 @@
     if (termToggle) {
       termToggle.addEventListener("click", function () {
         preservePagePosition(function () {
-          open({ pinOpen: true });
+          open();
         });
       });
     }
@@ -1991,15 +1993,12 @@
       if (suppressRightRailAutoCollapse) {
         return;
       }
-      if (lookupPinnedOpen) {
-        return;
-      }
       if (window.scrollY <= 32) {
         if (lookup.hidden) {
           open({ focusInput: false });
         }
       } else if (!lookup.hidden) {
-        closeLookup({ preservePinned: true });
+        closeLookup();
       }
     };
     if (refinedRightRailPage) {
@@ -2010,6 +2009,25 @@
         passive: true
       });
       updateLookupForScroll();
+    }
+    const updateGlossaryLookupForScroll = function () {
+      if (!glossaryIndexPage || !lookup) {
+        return;
+      }
+      if (!desktopQuery.matches || window.scrollY <= 32) {
+        if (!lookup.hidden) {
+          closeLookup();
+        }
+      } else if (lookup.hidden) {
+        open({ focusInput: false });
+      }
+    };
+    if (glossaryIndexPage) {
+      window.addEventListener("scroll", updateGlossaryLookupForScroll, {
+        passive: true
+      });
+      desktopQuery.addEventListener("change", updateGlossaryLookupForScroll);
+      updateGlossaryLookupForScroll();
     }
 
     if (form && input && result) {
@@ -2076,7 +2094,7 @@
         setMobileDrawerOpen(true);
       } else {
         preservePagePosition(function () {
-          open({ focusInput: false, pinOpen: true });
+          open({ focusInput: false });
         });
       }
       result.hidden = false;
@@ -2205,11 +2223,13 @@
     const desktopQuery = window.matchMedia("(min-width: 992px)");
     const sidebarScroller =
       sidebar.querySelector(".sidebar-menu-container") || sidebar;
+    const pageHeader = document.getElementById("quarto-header");
     const toggle = document.createElement("button");
     let collapsed = false;
     let lastScrollY = window.scrollY;
     let lastSidebarScrollTop = sidebarScroller.scrollTop;
     let scrollingDown = false;
+    let pageScrollingDown = false;
     let autoCollapsePending = window.scrollY <= 32;
     toggle.type = "button";
     toggle.className = "bms-learn-left-sidebar-toggle";
@@ -2217,12 +2237,30 @@
     toggle.setAttribute("aria-controls", sidebar.id);
     document.body.appendChild(toggle);
 
+    const positionExpandedToggle = function () {
+      const sidebarRight = sidebar.getBoundingClientRect().right;
+      toggle.style.left =
+        Math.max(8, sidebarRight - toggle.offsetWidth - 24) + "px";
+    };
+
     const updateVisibility = function () {
+      const navbarHidden = Boolean(
+        pageHeader && pageHeader.classList.contains("headroom--unpinned")
+      );
+      toggle.classList.toggle(
+        "bms-learn-left-sidebar-toggle--nav-hidden",
+        desktopQuery.matches &&
+          window.scrollY > 32 &&
+          (pageScrollingDown || navbarHidden)
+      );
       toggle.hidden =
         !desktopQuery.matches ||
         (!collapsed &&
           scrollingDown &&
           (window.scrollY > 32 || sidebarScroller.scrollTop > 4));
+      if (!toggle.hidden && !collapsed) {
+        positionExpandedToggle();
+      }
     };
 
     const update = function () {
@@ -2239,9 +2277,7 @@
       if (active) {
         toggle.style.left = "0.5rem";
       } else {
-        const sidebarRight = sidebar.getBoundingClientRect().right;
-        toggle.style.left =
-          Math.max(8, sidebarRight - toggle.offsetWidth - 14) + "px";
+        positionExpandedToggle();
       }
     };
 
@@ -2258,7 +2294,8 @@
           autoCollapsePending = true;
         }
         if (Math.abs(currentScrollY - lastScrollY) > 4) {
-          scrollingDown = currentScrollY > lastScrollY;
+          pageScrollingDown = currentScrollY > lastScrollY;
+          scrollingDown = pageScrollingDown;
           lastScrollY = currentScrollY;
           if (
             autoCollapsePending &&
@@ -2289,6 +2326,19 @@
       },
       { passive: true }
     );
+    if (pageHeader && "MutationObserver" in window) {
+      new MutationObserver(updateVisibility).observe(pageHeader, {
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+    }
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(function () {
+        if (!toggle.hidden && !collapsed) {
+          positionExpandedToggle();
+        }
+      }).observe(sidebar);
+    }
     desktopQuery.addEventListener("change", update);
     update();
   }

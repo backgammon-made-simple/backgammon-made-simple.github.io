@@ -59,4 +59,12 @@ execute:
 <a class="bms-glossary-back-to-top" href="#bms-glossary-top" data-bms-glossary-back-to-top hidden>
   Back to top
 </a>
+<aside class="bms-glossary-sidebar" data-bms-glossary-sidebar role="dialog" aria-modal="false" aria-labelledby="bms-glossary-sidebar-title" aria-hidden="true" hidden>
+  <div class="bms-glossary-sidebar-heading">
+    <h2 id="bms-glossary-sidebar-title" tabindex="-1" data-bms-glossary-sidebar-title>Glossary definition</h2>
+    <button type="button" class="bms-glossary-sidebar-close" data-bms-glossary-sidebar-close aria-label="Close glossary definition">Close</button>
+  </div>
+  <div class="bms-glossary-sidebar-content" data-bms-glossary-sidebar-content></div>
+  <a class="bms-glossary-sidebar-entry-link" href="/glossary/" data-bms-glossary-sidebar-entry-link>Go to glossary entry</a>
+</aside>
 ```

@@ -3,6 +3,10 @@ title: "Match Predictor"
 description: "Explore OpenGammon player performance and skill data in the existing OpenGammon Skill Analytics dashboard."
 page-layout: full
 bibliography: ../references.bib
+term-lookup: false
+format:
+  html:
+    body-classes: "bms-match-predictor-page"
 ---
 
 <style>

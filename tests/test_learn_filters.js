@@ -523,7 +523,7 @@ assert.equal(
 );
 assert.equal(
   generatedGlossaryItems.length,
-  625,
+  12,
   "the JavaScript integration fixture uses every canonical entry"
 );
 assert.equal(
@@ -531,7 +531,7 @@ assert.equal(
     (count, item) => count + item.aliasSlugs.length,
     0
   ),
-  184,
+  3,
   "the JavaScript integration fixture uses every canonical alias"
 );
 
@@ -604,6 +604,18 @@ assert.equal(
   glossary.allGroupsExpanded(letterGroups),
   true,
   "all alphabetical sections initially report expanded"
+);
+
+assert.equal(glossary.isGlossaryDisclosureKey("Enter"), true);
+assert.equal(glossary.isGlossaryDisclosureKey(" "), true);
+assert.equal(glossary.isGlossaryDisclosureKey("Escape"), false);
+assert.equal(
+  glossary.canonicalSlugForFragment(
+    [{ slug: "abt", aliasSlugs: [], redirectSlugs: ["old-abt"] }],
+    "#old-abt"
+  ),
+  "abt",
+  "redirect slugs resolve without becoming aliases"
 );
 assert.deepEqual(
   glossary.sectionControlState(letterGroups),
@@ -728,13 +740,13 @@ const lookupData = JSON.parse(
     "utf8"
   )
 );
-assert.equal(lookupData.entries.length, 625);
+assert.equal(lookupData.entries.length, 12);
 assert.equal(
   lookupData.entries.reduce(
     (total, entry) => total + entry.aliases.length,
     0
   ),
-  184
+  3
 );
 assert.equal(
   learn.bestLookupEntry(lookupData.entries, "Ahead in the Race").term,

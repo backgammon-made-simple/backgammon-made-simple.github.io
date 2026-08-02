@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the unified glossary Markdown and generate public glossary JSON."""
+"""Validate the canonical glossary JSON and generate website compatibility data."""
 
 from __future__ import annotations
 
@@ -18,10 +18,11 @@ except ModuleNotFoundError:  # Direct execution sets sys.path to scripts/.
     import learn_glossary  # type: ignore[no-redef]
 
 
-GLOSSARY_SOURCE_PATH = learn_glossary.REPOSITORY_ROOT / "glossary" / "glossary.md"
+GLOSSARY_SOURCE_PATH = learn_glossary.REPOSITORY_ROOT / "glossary" / "glossary.json"
 # Compatibility name for review tooling. It points to the one production source.
 CONFIRMED_SOURCE_PATH = GLOSSARY_SOURCE_PATH
 PRODUCTION_SOURCE_PATH = learn_glossary.PUBLIC_DATA_PATH
+LEGACY_MARKDOWN_PATH = learn_glossary.REPOSITORY_ROOT / "glossary" / "glossary_old.md"
 DOCUMENT_TITLE = "# BMS glossary"
 ENTRY_HEADING = re.compile(r"^# ([^\r\n]+)$")
 SECTION_HEADING = re.compile(r"^## ([^\r\n]+)$")
@@ -44,6 +45,35 @@ REQUIRED_SECTIONS = (
 OPTIONAL_SECTIONS = ("Alias notes", "Usage note", "Editorial notes")
 ALLOWED_STATUSES = ("Confirmed", "Legacy unconfirmed")
 NONE_MARKERS = {"None", "None selected yet."}
+
+PUBLIC_FIELD_ORDER = (
+    "term",
+    "aliases",
+    "redirect_slugs",
+    "short_definition",
+    "long_definition",
+    "categories",
+    "tracks",
+    "related_terms",
+    "inline_terms",
+    "status",
+    "added",
+    "updated",
+)
+PUBLIC_OPTIONAL_FIELDS = ("usage_note", "editorial_note")
+REFERENCE_TYPES = {
+    "book",
+    "article",
+    "manual",
+    "website",
+    "online_glossary",
+    "forum",
+    "reddit",
+    "video",
+    "software",
+    "editorial",
+    "unresolved",
+}
 
 ValidationError = learn_glossary.ValidationError
 
@@ -95,6 +125,249 @@ def alias_slug(value: str) -> str:
     if not SLUG_VALUE.fullmatch(slug):
         raise ValidationError(f"Alias cannot form a valid lookup slug: {value!r}")
     return slug
+
+
+def _reject_duplicate_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValidationError(f"Duplicate raw JSON key: {key!r}")
+        result[key] = value
+    return result
+
+
+def load_contract_json(path: Path = GLOSSARY_SOURCE_PATH) -> dict[str, dict[str, object]]:
+    raw_bytes = path.read_bytes()
+    try:
+        raw_text = raw_bytes.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValidationError("Canonical glossary JSON must use UTF-8") from error
+    if "\r" in raw_text:
+        raise ValidationError("Canonical glossary JSON must use LF line endings")
+    if "\u2014" in raw_text:
+        raise ValidationError("Canonical glossary JSON contains a prohibited em dash")
+    try:
+        parsed = json.loads(raw_text, object_pairs_hook=_reject_duplicate_keys)
+    except json.JSONDecodeError as error:
+        raise ValidationError(f"Malformed canonical glossary JSON: {error}") from error
+    if not isinstance(parsed, dict) or not parsed:
+        raise ValidationError("Canonical glossary JSON must be a non-empty object")
+    return validate_contract_entries(parsed)
+
+
+def _require_contract_string(entry: dict[str, object], field: str, slug: str) -> str:
+    value = entry.get(field)
+    if not isinstance(value, str) or not value.strip():
+        raise ValidationError(f"{slug} requires a non-empty {field}")
+    if value != value.strip():
+        raise ValidationError(f"{slug} {field} has unstable outer whitespace")
+    return value
+
+
+def _require_string_list(entry: dict[str, object], field: str, slug: str) -> list[str]:
+    value = entry.get(field)
+    if not isinstance(value, list) or any(
+        not isinstance(item, str) or not item.strip() for item in value
+    ):
+        raise ValidationError(f"{slug} {field} must be a list of non-empty strings")
+    return value
+
+
+def _validate_reference(reference: object, slug: str, index: int) -> None:
+    if not isinstance(reference, dict):
+        raise ValidationError(f"{slug} reference {index} must be an object")
+    reference_type = reference.get("type")
+    if reference_type not in REFERENCE_TYPES:
+        raise ValidationError(f"{slug} reference {index} has an invalid type")
+    if reference_type == "book":
+        for field in ("title", "author"):
+            _require_contract_string(reference, field, f"{slug} reference {index}")
+        if not reference.get("pages") and not reference.get("section"):
+            raise ValidationError(
+                f"{slug} reference {index} requires pages or a section"
+            )
+    elif reference_type in {"article", "manual", "website", "online_glossary"}:
+        for field in ("title", "url"):
+            _require_contract_string(reference, field, f"{slug} reference {index}")
+    elif reference_type in {"forum", "reddit"}:
+        for field in ("title", "url", "note"):
+            _require_contract_string(reference, field, f"{slug} reference {index}")
+    elif reference_type in {"editorial", "unresolved"}:
+        _require_contract_string(reference, "note", f"{slug} reference {index}")
+
+
+def validate_contract_entries(
+    data: dict[str, object],
+) -> dict[str, dict[str, object]]:
+    if list(data) != sorted(data):
+        raise ValidationError("Canonical glossary entries must be ordered by slug")
+
+    entries: dict[str, dict[str, object]] = {}
+    normalized_names: dict[str, str] = {}
+    canonical_slugs = set(data)
+    alias_owners: dict[str, str] = {}
+    redirect_owners: dict[str, str] = {}
+    category_rank = {
+        value: index for index, value in enumerate(learn_glossary.GLOSSARY_CATEGORIES)
+    }
+    track_rank = {value: index for index, value in enumerate(learn_glossary.TRACKS)}
+
+    for slug, raw_entry in data.items():
+        if not SLUG_VALUE.fullmatch(slug):
+            raise ValidationError(f"Malformed canonical glossary slug: {slug!r}")
+        if not isinstance(raw_entry, dict):
+            raise ValidationError(f"{slug} must be an object")
+        keys = list(raw_entry)
+        expected = list(PUBLIC_FIELD_ORDER)
+        for optional in PUBLIC_OPTIONAL_FIELDS:
+            if optional in raw_entry:
+                expected.append(optional)
+        expected.append("references")
+        if keys != expected:
+            raise ValidationError(
+                f"{slug} fields are missing, unexpected, or out of contract order"
+            )
+
+        term = _require_contract_string(raw_entry, "term", slug)
+        if "<" in term or ">" in term or "[" in term or "](" in term:
+            raise ValidationError(f"{slug} term must not contain HTML or Markdown links")
+        normalized_term = normalize_lookup(term)
+        if normalized_term in normalized_names:
+            raise ValidationError(
+                f"Duplicate normalized canonical terms: {normalized_names[normalized_term]!r} and {term!r}"
+            )
+        normalized_names[normalized_term] = term
+
+        aliases = _require_string_list(raw_entry, "aliases", slug)
+        if aliases != sorted(aliases, key=str.casefold) or len(aliases) != len(set(aliases)):
+            raise ValidationError(f"{slug} aliases must be unique and alphabetized")
+        for alias in aliases:
+            validate_alias(alias, term)
+
+        redirects = _require_string_list(raw_entry, "redirect_slugs", slug)
+        for redirect in redirects:
+            if not SLUG_VALUE.fullmatch(redirect) or redirect == slug:
+                raise ValidationError(f"{slug} has an invalid redirect slug: {redirect!r}")
+
+        _require_contract_string(raw_entry, "short_definition", slug)
+        _require_contract_string(raw_entry, "long_definition", slug)
+
+        categories = _require_string_list(raw_entry, "categories", slug)
+        if not categories:
+            raise ValidationError(f"{slug} requires at least one category")
+        if any(value not in category_rank for value in categories):
+            raise ValidationError(f"{slug} contains an unknown category")
+        if len(categories) != len(set(categories)) or categories != sorted(
+            categories, key=category_rank.__getitem__
+        ):
+            raise ValidationError(f"{slug} categories are duplicated or out of order")
+
+        tracks = _require_string_list(raw_entry, "tracks", slug)
+        if any(value not in track_rank for value in tracks):
+            raise ValidationError(f"{slug} contains an unknown learning track")
+        if len(tracks) != len(set(tracks)) or tracks != sorted(
+            tracks, key=track_rank.__getitem__
+        ):
+            raise ValidationError(f"{slug} tracks are duplicated or out of order")
+
+        related = _require_string_list(raw_entry, "related_terms", slug)
+        if slug in related or len(related) != len(set(related)):
+            raise ValidationError(f"{slug} related terms contain a self-link or duplicate")
+        if any(not SLUG_VALUE.fullmatch(value) for value in related):
+            raise ValidationError(f"{slug} contains a malformed related-term slug")
+
+        inline_terms = raw_entry.get("inline_terms")
+        if not isinstance(inline_terms, dict):
+            raise ValidationError(f"{slug} inline_terms must be an object")
+        for phrase, target in inline_terms.items():
+            if not isinstance(phrase, str) or not phrase.strip():
+                raise ValidationError(f"{slug} has an invalid inline phrase")
+            if not isinstance(target, str) or target not in canonical_slugs:
+                raise ValidationError(f"{slug} has a broken inline target: {target!r}")
+            if target == slug:
+                raise ValidationError(f"{slug} has a self-referencing inline target")
+
+        if raw_entry.get("status") != "published":
+            raise ValidationError(f"{slug} public status must be published")
+        added = _require_contract_string(raw_entry, "added", slug)
+        updated = _require_contract_string(raw_entry, "updated", slug)
+        try:
+            added_date = date.fromisoformat(added)
+            updated_date = date.fromisoformat(updated)
+        except ValueError as error:
+            raise ValidationError(f"{slug} has an invalid publication date") from error
+        if updated_date < added_date:
+            raise ValidationError(f"{slug} updated date is earlier than added")
+
+        for optional in PUBLIC_OPTIONAL_FIELDS:
+            if optional in raw_entry:
+                _require_contract_string(raw_entry, optional, slug)
+        references = raw_entry.get("references")
+        if not isinstance(references, list):
+            raise ValidationError(f"{slug} references must be a list")
+        for index, reference in enumerate(references):
+            _validate_reference(reference, slug, index)
+        entries[slug] = raw_entry
+
+    for slug, entry in entries.items():
+        for alias in entry["aliases"]:
+            normalized = normalize_lookup(str(alias))
+            if normalized in normalized_names and normalized_names[normalized] != entry["term"]:
+                raise ValidationError(f"Alias {alias!r} conflicts with a canonical term")
+            if normalized in alias_owners:
+                raise ValidationError(f"Alias {alias!r} has multiple owners")
+            alias_owners[normalized] = slug
+        for redirect in entry["redirect_slugs"]:
+            redirect = str(redirect)
+            if redirect in canonical_slugs or redirect in redirect_owners:
+                raise ValidationError(f"Redirect slug {redirect!r} collides with another slug")
+            redirect_owners[redirect] = slug
+    return entries
+
+
+def build_public_data_from_contract(
+    entries: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    public_entries: list[dict[str, object]] = []
+    for slug, entry in entries.items():
+        definition_links = [
+            {"text": phrase, "slug": str(target)}
+            for phrase, target in entry["inline_terms"].items()
+        ]
+        related_terms = []
+        for target_slug in entry["related_terms"]:
+            target = entries.get(str(target_slug))
+            related: dict[str, str] = {
+                "term": str(target["term"]) if target else str(target_slug).replace("-", " ").title()
+            }
+            if target:
+                related["slug"] = str(target_slug)
+            related_terms.append(related)
+        public: dict[str, object] = {
+            "aliases": [
+                {"slug": alias_slug(str(alias)), "term": str(alias)}
+                for alias in entry["aliases"]
+            ],
+            "categories": list(entry["categories"]),
+            "category": entry["categories"][0],
+            "date_added": entry["added"],
+            "definition": entry["long_definition"],
+            "definition_links": definition_links,
+            "learning_tracks": list(entry["tracks"]),
+            "redirect_slugs": list(entry["redirect_slugs"]),
+            "references": list(entry["references"]),
+            "related_terms": related_terms,
+            "short_definition": entry["short_definition"],
+            "slug": slug,
+            "term": entry["term"],
+        }
+        if entry.get("usage_note"):
+            public["usage_note"] = entry["usage_note"]
+        public_entries.append(public)
+    public_entries.sort(key=lambda item: (str(item["term"]).casefold(), str(item["slug"])))
+    data: dict[str, object] = {"schema_version": "1.0", "entries": public_entries}
+    validate_with_observed_counts(data)
+    return data
 
 
 def parse_list(content: str, *, section: str) -> list[str]:
@@ -469,21 +742,21 @@ def validate_with_observed_counts(
 
 
 def build_production_source() -> tuple[str, dict[str, object]]:
-    parsed = parse_markdown(GLOSSARY_SOURCE_PATH.read_text(encoding="utf-8"))
-    data = build_public_data(parsed)
+    entries = load_contract_json()
+    data = build_public_data_from_contract(entries)
     serialized = learn_glossary.json_text(data)
     learn_glossary.assert_no_forbidden_text(
         serialized, "generated production glossary data"
     )
-    status_counts = {
-        status: sum(entry.status == status for entry in parsed)
-        for status in ALLOWED_STATUSES
-    }
     report: dict[str, object] = {
-        "aliases": sum(len(entry.aliases) for entry in parsed),
-        "canonical_entries": len(parsed),
-        "confirmed_entries": status_counts["Confirmed"],
-        "legacy_unconfirmed_entries": status_counts["Legacy unconfirmed"],
+        "aliases": sum(len(entry["aliases"]) for entry in entries.values()),
+        "canonical_entries": len(entries),
+        "published_entries": len(entries),
+        "unresolved_related_terms": sum(
+            target not in entries
+            for entry in entries.values()
+            for target in entry["related_terms"]
+        ),
     }
     return serialized, report
 
@@ -565,7 +838,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser(
         "generate-source",
-        help="Generate production JSON from the unified glossary Markdown",
+        help="Generate website compatibility JSON from canonical glossary JSON",
     )
     commands.add_parser(
         "check-source",

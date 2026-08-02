@@ -42,8 +42,8 @@ QUARTO_CONFIG_PATH = SITE_ROOT / "_quarto.yml"
 
 SAFE_INPUT_SHA256 = "ce10ecccc983ab87b7a43bfb46a04e91b44a00d93ba9ee86765638be991595e4"
 EXPECTED_SOURCE_ENTRIES = 805
-EXPECTED_CANONICAL_ENTRIES = 625
-EXPECTED_ALIAS_ENTRIES = 184
+EXPECTED_CANONICAL_ENTRIES = 12
+EXPECTED_ALIAS_ENTRIES = 3
 FULL_BUILD_MARKER_NAME = ".bms-full-build.json"
 FULL_BUILD_MARKER_SCHEMA = 1
 RENDERED_CORE_PATHS = (
@@ -480,6 +480,8 @@ def validate_public_data(
             "definition",
             "definition_links",
             "learning_tracks",
+            "redirect_slugs",
+            "references",
             "related_terms",
             "short_definition",
             "slug",
@@ -516,6 +518,17 @@ def validate_public_data(
             validate_related_terms(entry, f"tracked entry {slug}")
         )
         validate_learning_tracks(entry, f"tracked entry {slug}")
+        redirect_slugs = entry.get("redirect_slugs", [])
+        if not isinstance(redirect_slugs, list) or any(
+            not isinstance(value, str) or not CANONICAL_SLUG_PATTERN.fullmatch(value)
+            for value in redirect_slugs
+        ):
+            raise ValidationError(f"Tracked entry {slug} redirect_slugs must be valid slugs")
+        references = entry.get("references", [])
+        if not isinstance(references, list) or any(
+            not isinstance(reference, dict) for reference in references
+        ):
+            raise ValidationError(f"Tracked entry {slug} references must be objects")
         optional_string(entry, "usage_note")
         if slug in canonical_slugs:
             raise ValidationError(f"Duplicate canonical term slug: {slug}")
@@ -1655,6 +1668,34 @@ def usage_notes_html(entry: dict[str, object]) -> str:
     return "\n".join(notes)
 
 
+def public_references_html(entry: dict[str, object]) -> str:
+    references = [
+        reference
+        for reference in entry.get("references", [])
+        if isinstance(reference, dict)
+        and reference.get("type") not in {"editorial", "unresolved"}
+    ]
+    if not references:
+        return ""
+    lines = [
+        '<section class="bms-glossary-references">',
+        "<h4>References</h4>",
+        "<ul>",
+    ]
+    for reference in references:
+        title = html.escape(str(reference.get("title") or "Reference"))
+        url = str(reference.get("url") or "").strip()
+        author = str(reference.get("author") or "").strip()
+        detail = str(reference.get("pages") or reference.get("section") or "").strip()
+        label = title
+        if url:
+            label = f'<a href="{html_attr(url)}">{title}</a>'
+        suffix = ", ".join(html.escape(value) for value in (author, detail) if value)
+        lines.append(f"<li>{label}{(': ' + suffix) if suffix else ''}</li>")
+    lines.extend(["</ul>", "</section>"])
+    return "\n".join(lines)
+
+
 @lru_cache(maxsize=None)
 def inline_term_pattern(phrase: str) -> re.Pattern[str] | None:
     """Compile each glossary phrase once across all generated definitions."""
@@ -1933,6 +1974,7 @@ def build_entries_html(
                     f"{category_attributes}"
                     f'data-bms-tracks="{html_attr(json.dumps(tracks, ensure_ascii=False))}" '
                     f'data-bms-aliases="{html_attr(json.dumps(alias_slugs, ensure_ascii=False))}" '
+                    f'data-bms-redirects="{html_attr(json.dumps(entry.get("redirect_slugs", []), ensure_ascii=False))}" '
                     f'data-bms-alias-names="{html_attr(json.dumps(alias_names, ensure_ascii=False))}" '
                     f'data-bms-search="{html_attr(json.dumps(search_values, ensure_ascii=False))}">',
                     '<summary class="bms-glossary-entry-summary">'
@@ -1940,10 +1982,14 @@ def build_entries_html(
                     f'{html.escape(str(entry["term"]))}</span></summary>',
                     '<div class="bms-glossary-entry-body">',
                     alias_html(entry["aliases"]),  # type: ignore[arg-type]
+                    '<p class="bms-glossary-short-definition">'
+                    f'{html.escape(str(entry.get("short_definition") or entry["definition"]))}'
+                    "</p>",
                     full_definition_html(entry, entries),
                     category_html(entry, categories),
                     related_terms_html(entry),
                     usage_notes_html(entry),
+                    public_references_html(entry),
                 ]
             )
             lines.extend(related_sections_html(related_lessons, related_research))
@@ -2013,6 +2059,8 @@ def build_lookup_data(
             "definition_links",
             "learning_tracks",
             "related_terms",
+            "redirect_slugs",
+            "references",
         ):
             if field in entry:
                 lookup_entry[field] = entry[field]

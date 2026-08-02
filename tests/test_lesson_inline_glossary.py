@@ -362,9 +362,13 @@ highlighted-terms: [ace]
             if lesson["relative_path"] == "cube/what-the-cube-is-asking.qmd"
         )
         related = learn_glossary.validate_lessons(lessons, self.entries)
+        public_slugs = {str(entry["slug"]) for entry in self.entries}
         for slug in selected["terms"]:
             with self.subTest(slug=slug):
-                self.assertIn(selected, related.get(slug, []))
+                if slug in public_slugs:
+                    self.assertIn(selected, related.get(slug, []))
+                else:
+                    self.assertNotIn(slug, related)
 
     def test_real_research_article_uses_the_same_highlight_contract(self) -> None:
         articles = learn_glossary.discover_research_articles()
@@ -374,21 +378,17 @@ highlighted-terms: [ace]
             if article["relative_path"]
             == "research/sage-vs-gnu-additional-details.qmd"
         )
-        self.assertEqual(selected["highlighted_terms"], ["equity"])
+        self.assertEqual(selected["highlighted_terms"], [])
         self.assertIn("equity", selected["terms"])
         related = learn_glossary.validate_research_articles(
             articles,
             self.entries,
         )
-        self.assertIn(selected, related["equity"])
+        self.assertNotIn("equity", related)
 
         result = self.render(selected["path"].read_text(encoding="utf-8"))
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(
-            result.stdout.count('data-bms-glossary-slug="equity"'),
-            1,
-        )
-        self.assertIn('href="/glossary/#equity"', result.stdout)
+        self.assertNotIn('data-bms-glossary-slug="equity"', result.stdout)
 
     def test_research_highlighted_term_must_be_canonical_and_in_terms(self) -> None:
         base = {
