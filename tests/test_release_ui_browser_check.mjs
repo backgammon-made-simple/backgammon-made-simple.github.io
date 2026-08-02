@@ -10,6 +10,13 @@ const helperSource = readFileSync(
   new URL("../scripts/release_ui_browser_check.mjs", import.meta.url),
   "utf8"
 );
+const canonicalHelperSource = readFileSync(
+  new URL(
+    "../scripts/testing/ux/browser/release_ui_browser_check.mjs",
+    import.meta.url
+  ),
+  "utf8"
+);
 
 assert.equal(DEFAULT_MANIFEST.version, 2);
 assert.deepEqual(
@@ -69,6 +76,16 @@ assert.ok(
 );
 assert.ok(
   helperSource.includes("restoring the TOC rail also restores the lesson track")
+);
+assert.ok(
+  /waitForLocatorVisibility\(lessonTrack,\s*false\)/.test(
+    canonicalHelperSource
+  )
+);
+assert.ok(
+  /waitForLocatorVisibility\(lessonTrack,\s*true\)/.test(
+    canonicalHelperSource
+  )
 );
 assert.ok(!helperSource.includes("[data-bms-lesson-track-toggle]"));
 assert.match(

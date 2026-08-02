@@ -386,6 +386,23 @@ export const continuousConfigForPage = (page) => {
   return null;
 };
 
+const waitForLocatorVisibility = async (
+  locator,
+  expectedVisible,
+  attempts = 20
+) => {
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const visible = Boolean(await visibleLocator(locator));
+    if (visible === expectedVisible) {
+      return true;
+    }
+    if (attempt < attempts) {
+      await delay(50);
+    }
+  }
+  return false;
+};
+
 const continuousStateSnapshot = (tab, config) =>
   retryControllerDeadline(() => tab.playwright.locator("#quarto-document-content").evaluate((_root, stateConfig) => {
     const markers = Array.from(
@@ -724,7 +741,7 @@ const interactWithToc = async (
   );
   if (lessonTrack) {
     check(
-      !(await visibleLocator(lessonTrack)),
+      await waitForLocatorVisibility(lessonTrack, false),
       context,
       "TOC rail collapse also hides the lesson track"
     );
@@ -741,7 +758,7 @@ const interactWithToc = async (
   );
   if (lessonTrack) {
     check(
-      Boolean(await visibleLocator(lessonTrack)),
+      await waitForLocatorVisibility(lessonTrack, true),
       context,
       "restoring the TOC rail also restores the lesson track"
     );
