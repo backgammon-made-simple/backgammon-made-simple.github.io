@@ -36,6 +36,7 @@ node --check site/assets/bms-learn-scroll.js
 node --check site/assets/bms-lesson-analysis.js
 node --check scripts/testing/ux/browser/release_ui_browser_check.mjs
 node --check scripts/testing/ux/browser/lesson_analysis_browser_check.mjs
+node --check scripts/testing/ux/browser/comprehensive_quality_browser_check.mjs
 
 printf '\n[3/5] Focused JavaScript behavior\n'
 node tests/test_learn_filters.js
@@ -44,6 +45,7 @@ node tests/test_continuous_research.js
 node tests/test_lesson_analysis.js
 node tests/test_release_ui_browser_check.mjs
 node tests/test_lesson_analysis_browser_check.mjs
+node tests/test_comprehensive_quality_browser_check.mjs
 
 printf '\n[4/5] Focused Python contracts\n'
 "${PYTHON_COMMAND[@]}" -m unittest \

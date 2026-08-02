@@ -1,15 +1,43 @@
 {
-  "version": 1,
+  "version": 2,
+  "baseline_screenshot_route_ids": [
+    "home",
+    "learn-index",
+    "cube-lesson",
+    "research-article",
+    "glossary",
+    "analyze"
+  ],
+  "baseline_screenshot_viewport_names": [
+    "desktop-1440",
+    "mobile-390"
+  ],
+  "failure_screenshot_limit": 30,
   "viewports": [
     {
-      "name": "desktop",
+      "name": "desktop-1440",
       "width": 1440,
-      "height": 1000
+      "height": 900
     },
     {
-      "name": "mobile",
+      "name": "laptop-1280",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "name": "tablet-1024",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "name": "mobile-390",
       "width": 390,
       "height": 844
+    },
+    {
+      "name": "small-mobile-320",
+      "width": 320,
+      "height": 568
     }
   ],
   "pages": [
@@ -42,11 +70,53 @@
       "required_markers": ["data-bms-cube-decision"]
     },
     {
+      "id": "take-point-lesson",
+      "name": "Take-point lesson",
+      "route": "/learn/cube/why-is-25-percent-the-basic-take-point.html",
+      "kind": "learn-lesson",
+      "required_markers": ["data-bms-checker-decision"]
+    },
+    {
+      "id": "research-index",
+      "name": "Research index",
+      "route": "/research/",
+      "kind": "research-index",
+      "required_markers": ["data-bms-research-list"]
+    },
+    {
       "id": "research-article",
       "name": "Research continuous article",
       "route": "/research/sage-vs-gnu-additional-details.html",
       "kind": "research-article",
       "required_markers": ["bms-research-article"]
+    },
+    {
+      "id": "engine-benchmark",
+      "name": "Engine benchmark index",
+      "route": "/engine-benchmark/",
+      "kind": "ordinary",
+      "required_markers": ["Engine Benchmark"]
+    },
+    {
+      "id": "sage-vs-gnu",
+      "name": "Sage versus GNU benchmark",
+      "route": "/engine-benchmark/sage-vs-gnu-stage1/",
+      "kind": "ordinary",
+      "required_markers": ["Sage", "GNU"]
+    },
+    {
+      "id": "analyze",
+      "name": "Analyzer landing page",
+      "route": "/analyze/",
+      "kind": "analyzer",
+      "required_markers": ["bms-position-preview-frame"]
+    },
+    {
+      "id": "match-predictor",
+      "name": "Match Predictor",
+      "route": "/match-predictor/",
+      "kind": "match-predictor",
+      "required_markers": ["bms-dashboard-frame"]
     },
     {
       "id": "glossary",
@@ -56,13 +126,6 @@
       "required_markers": ["data-bms-glossary-filters", "data-bms-glossary-entry"]
     },
     {
-      "id": "analyze",
-      "name": "Analyzer landing page",
-      "route": "/analyze/",
-      "kind": "ordinary",
-      "required_markers": ["Paste an XGID"]
-    },
-    {
       "id": "about",
       "name": "About page",
       "route": "/about.html",
@@ -70,11 +133,25 @@
       "required_markers": ["About"]
     },
     {
-      "id": "engine-benchmark",
-      "name": "Engine benchmark landing page",
-      "route": "/engine-benchmark/",
+      "id": "licensing",
+      "name": "Licensing page",
+      "route": "/licensing.html",
       "kind": "ordinary",
-      "required_markers": ["Engine Benchmark"]
+      "required_markers": ["Licensing"]
+    },
+    {
+      "id": "updates",
+      "name": "Updates index",
+      "route": "/updates/",
+      "kind": "ordinary",
+      "required_markers": ["Updates"]
+    },
+    {
+      "id": "404",
+      "name": "Rendered 404 page",
+      "route": "/404.html",
+      "kind": "ordinary",
+      "required_markers": ["404"]
     }
   ]
 }

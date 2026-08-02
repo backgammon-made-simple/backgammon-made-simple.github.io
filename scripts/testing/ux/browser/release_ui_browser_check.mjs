@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
 const manifestUrl = new URL("./ui_release_manifest.json", import.meta.url);
 
@@ -8,6 +9,174 @@ export const DEFAULT_MANIFEST = JSON.parse(
 
 const delay = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+const safeName = (value) => value.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
+
+const accessibilitySnapshot = (tab) =>
+  tab.playwright.locator("html").evaluate(() => {
+    const visible = (element) => {
+      const style = window.getComputedStyle(element);
+      const rectangle = element.getBoundingClientRect();
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        rectangle.width > 0 &&
+        rectangle.height > 0
+      );
+    };
+    const describe = (element) =>
+      element.id ||
+      element.getAttribute("name") ||
+      element.getAttribute("aria-label") ||
+      element.tagName.toLowerCase();
+    const allIds = Array.from(document.querySelectorAll("[id]"), (item) => item.id);
+    const duplicateIds = Array.from(
+      new Set(allIds.filter((id, index) => allIds.indexOf(id) !== index))
+    ).sort();
+    const headings = Array.from(document.querySelectorAll("h1,h2,h3,h4,h5,h6"))
+      .filter(visible)
+      .map((heading) => Number(heading.tagName.slice(1)));
+    const headingSkips = headings
+      .map((level, index) => ({ from: headings[index - 1], to: level }))
+      .filter((item, index) => index > 0 && item.to > item.from + 1);
+    const controls = Array.from(
+      document.querySelectorAll("a[href],button,input,select,textarea,[tabindex]")
+    ).filter(visible);
+    const clippedControls = controls
+      .filter((element) => {
+        const rectangle = element.getBoundingClientRect();
+        const inVerticalViewport =
+          rectangle.bottom > 0 && rectangle.top < window.innerHeight;
+        return (
+          inVerticalViewport &&
+          (rectangle.left < -1 || rectangle.right > window.innerWidth + 1)
+        );
+      })
+      .slice(0, 20)
+      .map(describe);
+    const unlabeledControls = Array.from(
+      document.querySelectorAll("input:not([type='hidden']),select,textarea")
+    )
+      .filter(visible)
+      .filter((element) => {
+        const id = element.id;
+        return !(
+          element.getAttribute("aria-label") ||
+          element.getAttribute("aria-labelledby") ||
+          (id && document.querySelector(`label[for='${CSS.escape(id)}']`)) ||
+          element.closest("label")
+        );
+      })
+      .map(describe);
+    const missingImageAlt = Array.from(document.querySelectorAll("img"))
+      .filter((image) => !image.hasAttribute("alt"))
+      .slice(0, 20)
+      .map((image) => image.getAttribute("src") || "img");
+    const failedImages = Array.from(document.images)
+      .filter((image) => image.complete && image.naturalWidth === 0)
+      .slice(0, 20)
+      .map((image) => image.currentSrc || image.src);
+    const failedStylesheets = Array.from(
+      document.querySelectorAll("link[rel='stylesheet']")
+    )
+      .filter((link) => !link.sheet && new URL(link.href).origin === window.location.origin)
+      .slice(0, 20)
+      .map((link) => link.href);
+    const resourceFailures = window.performance
+      .getEntriesByType("resource")
+      .filter((entry) => Number(entry.responseStatus || 0) >= 400)
+      .slice(0, 20)
+      .map((entry) => ({ name: entry.name, status: entry.responseStatus }));
+    const fixedOrSticky = Array.from(document.querySelectorAll("body *"))
+      .filter(visible)
+      .filter((element) => {
+        const position = window.getComputedStyle(element).position;
+        return position === "fixed" || position === "sticky";
+      });
+    const coveredTargets = controls
+      .concat(Array.from(document.querySelectorAll("h1,h2,h3")).filter(visible))
+      .filter((element) => {
+        const rectangle = element.getBoundingClientRect();
+        if (
+          rectangle.bottom <= 0 ||
+          rectangle.top >= window.innerHeight ||
+          rectangle.right <= 0 ||
+          rectangle.left >= window.innerWidth
+        ) {
+          return false;
+        }
+        const x = Math.max(0, Math.min(window.innerWidth - 1, rectangle.left + rectangle.width / 2));
+        const y = Math.max(0, Math.min(window.innerHeight - 1, rectangle.top + rectangle.height / 2));
+        const covering = document.elementFromPoint(x, y);
+        return fixedOrSticky.some(
+          (overlay) => overlay !== element && overlay.contains(covering) && !overlay.contains(element)
+        );
+      })
+      .slice(0, 20)
+      .map(describe);
+    return {
+      duplicateIds,
+      failedImages,
+      failedStylesheets,
+      resourceFailures,
+      clippedControls,
+      coveredTargets,
+      focusableControls: controls.filter(
+        (element) => !element.hasAttribute("disabled") && element.tabIndex >= 0
+      ).length,
+      headingSkips,
+      h1Count: headings.filter((level) => level === 1).length,
+      landmarks: {
+        main: document.querySelectorAll("main,[role='main']").length,
+        navigation: document.querySelectorAll("nav,[role='navigation']").length,
+        footer: document.querySelectorAll("footer,[role='contentinfo']").length
+      },
+      missingImageAlt,
+      unlabeledControls,
+      viewport: {
+        clientWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth
+      }
+    };
+  });
+
+const focusSnapshot = async (tab) => {
+  const body = tab.playwright.locator("body");
+  if ((await body.count()) !== 1) {
+    return { distinct: 0, missingIndicators: ["body unavailable"] };
+  }
+  const identities = [];
+  const missingIndicators = [];
+  for (let index = 0; index < 8; index += 1) {
+    await body.press("TAB");
+    const state = await tab.playwright.locator("html").evaluate(() => {
+      const active = document.activeElement;
+      if (!active || active === document.body) {
+        return { identity: "body", visibleIndicator: false };
+      }
+      const style = window.getComputedStyle(active);
+      const identity =
+        active.id ||
+        active.getAttribute("data-bms-analysis-choice") ||
+        active.getAttribute("aria-label") ||
+        active.textContent.trim().slice(0, 80) ||
+        active.tagName.toLowerCase();
+      const visibleIndicator =
+        (style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) > 0) ||
+        style.boxShadow !== "none" ||
+        style.borderColor !== "rgba(0, 0, 0, 0)";
+      return { identity, visibleIndicator };
+    });
+    identities.push(state.identity);
+    if (!state.visibleIndicator) {
+      missingIndicators.push(state.identity);
+    }
+  }
+  return {
+    distinct: new Set(identities.filter((identity) => identity !== "body")).size,
+    missingIndicators: Array.from(new Set(missingIndicators)).sort()
+  };
+};
 
 const visibleLocator = async (locator) => {
   const count = await locator.count();
@@ -171,6 +340,57 @@ const interactWithMobileDrawer = async (tab, check, context) => {
     context,
     "mobile page-tools drawer closes"
   );
+};
+
+const interactWithMobileNavigation = async (tab, check, context) => {
+  const toggle = tab.playwright.locator("button.navbar-toggler");
+  const count = await toggle.count();
+  check(count === 1, context, "mobile navigation has one menu toggle");
+  if (count !== 1) {
+    return;
+  }
+  await toggle.click();
+  check(
+    (await toggle.getAttribute("aria-expanded")) === "true",
+    context,
+    "mobile navigation menu opens"
+  );
+  const menu = tab.playwright.locator("#navbarCollapse");
+  check(
+    (await menu.count()) === 1 && (await menu.isVisible()),
+    context,
+    "mobile navigation links are visible"
+  );
+  await toggle.click();
+  check(
+    (await toggle.getAttribute("aria-expanded")) === "false",
+    context,
+    "mobile navigation menu closes"
+  );
+};
+
+const interactWithGlossarySidebar = async (tab, check, context) => {
+  const link = await visibleLocator(
+    tab.playwright.locator("main .bms-inline-glossary[data-bms-glossary-slug]")
+  );
+  if (!link) {
+    check(false, context, "inline glossary link is available for sidebar flow");
+    return;
+  }
+  await link.click();
+  const sidebar = tab.playwright.locator("[data-bms-glossary-sidebar]");
+  check(
+    (await sidebar.count()) === 1 && (await sidebar.isVisible()),
+    context,
+    "inline glossary link opens the definition sidebar"
+  );
+  const close = sidebar.locator("[data-bms-glossary-sidebar-close]");
+  if ((await close.count()) === 1) {
+    await close.click();
+    check(!(await sidebar.isVisible()), context, "glossary definition sidebar closes");
+  } else {
+    check(false, context, "glossary definition sidebar has a close control");
+  }
 };
 
 const interactWithToc = async (
@@ -447,6 +667,27 @@ const interactWithGlossary = async (tab, check, context) => {
   } else {
     check(false, context, "glossary clear control is missing");
   }
+  const trackFilter = tab.playwright.locator(
+    "[data-bms-glossary-filter-track='Doubling Cube']"
+  );
+  check((await trackFilter.count()) === 1, context, "glossary track filter exists");
+  if ((await trackFilter.count()) === 1) {
+    await trackFilter.click();
+    check(
+      (await trackFilter.getAttribute("aria-pressed")) === "true" &&
+        (await countVisible(entries)) < total,
+      context,
+      "glossary track filter narrows definitions"
+    );
+    await trackFilter.click();
+  }
+  await tab.goto(new URL("#active-builder", await tab.url()).href);
+  check(
+    (await tab.url()).endsWith("#active-builder") &&
+      (await tab.playwright.locator("#active-builder").getAttribute("open")) !== null,
+    context,
+    "glossary anchor opens the requested definition"
+  );
 };
 
 const runPageInteraction = async ({
@@ -457,6 +698,9 @@ const runPageInteraction = async ({
 }) => {
   const context = `${viewport.name}/${page.id}`;
   const desktop = viewport.width >= 992;
+  if (!desktop) {
+    await interactWithMobileNavigation(tab, check, context);
+  }
   if (page.kind === "learn-index") {
     await interactWithLearnIndex(tab, check, context);
   }
@@ -467,7 +711,10 @@ const runPageInteraction = async ({
     } else {
       await interactWithMobileDrawer(tab, check, context);
     }
-    await interactWithLessonAnalysisFixture(tab, check, context);
+    if ((page.required_markers || []).includes("data-bms-cube-decision")) {
+      await interactWithLessonAnalysisFixture(tab, check, context);
+    }
+    await interactWithGlossarySidebar(tab, check, context);
   }
   if (page.kind === "rich-scroll-fixture") {
     await interactWithRichFixture(tab, check, context);
@@ -482,6 +729,7 @@ const runPageInteraction = async ({
     } else {
       await interactWithMobileDrawer(tab, check, context);
     }
+    await interactWithGlossarySidebar(tab, check, context);
   }
   if (page.kind === "glossary") {
     await interactWithGlossary(tab, check, context);
@@ -553,7 +801,8 @@ export async function runReleaseUiChecks({
   tab,
   viewport,
   baseUrl,
-  manifest = DEFAULT_MANIFEST
+  manifest = DEFAULT_MANIFEST,
+  screenshotDir = null
 }) {
   if ((!browser && !tab) || !viewport || !baseUrl) {
     throw new Error("browser or tab, plus viewport and baseUrl, are required");
@@ -561,6 +810,8 @@ export async function runReleaseUiChecks({
   const started = Date.now();
   const failures = [];
   const consoleMessages = [];
+  const screenshots = [];
+  let failureScreenshots = 0;
   let checks = 0;
   let pages = 0;
   const check = (condition, context, message) => {
@@ -594,6 +845,35 @@ export async function runReleaseUiChecks({
       });
     }
   };
+  const saveScreenshot = async (activeTab, viewportCase, page, kind) => {
+    if (!screenshotDir) {
+      return;
+    }
+    if (
+      kind === "failure" &&
+      failureScreenshots >= (manifest.failure_screenshot_limit || 30)
+    ) {
+      return;
+    }
+    const fileName = `${safeName(viewportCase.name)}-${safeName(page.id)}${
+      kind === "failure" ? `-failure-${failureScreenshots + 1}` : ""
+    }.png`;
+    const relativePath = `screenshots/browser/${fileName}`;
+    try {
+      mkdirSync(screenshotDir, { recursive: true });
+      writeFileSync(join(screenshotDir, fileName), await activeTab.screenshot({ fullPage: false }));
+      screenshots.push({ kind, page: page.id, route: page.route, viewport: viewportCase.name, path: relativePath });
+      if (kind === "failure") {
+        failureScreenshots += 1;
+      }
+    } catch (error) {
+      failures.push({
+        context: `${viewportCase.name}/${page.id}/screenshot`,
+        message: `could not save ${kind} screenshot: ${String(error)}`,
+        category: "test-infrastructure"
+      });
+    }
+  };
 
   try {
     for (const viewportCase of manifest.viewports) {
@@ -605,6 +885,7 @@ export async function runReleaseUiChecks({
         const context = `${viewportCase.name}/${page.id}`;
         pages += 1;
         const activeTab = await acquireTab();
+        const failureCountBeforePage = failures.length;
         let phase = "navigation";
         try {
           await viewport.set({
@@ -616,22 +897,92 @@ export async function runReleaseUiChecks({
           await delay(500);
 
           phase = "landmarks and initial layout";
-          check(
-            (await activeTab.playwright.locator("main").count()) === 1,
-            context,
-            "page has one main landmark"
-          );
-          check(
-            (await activeTab.playwright.locator("h1").count()) >= 1,
-            context,
-            "page has an H1"
-          );
+          const audit = await accessibilitySnapshot(activeTab);
+          check(audit.landmarks.main === 1, context, "page has one main landmark");
+          check(audit.landmarks.navigation >= 1, context, "page has a navigation landmark");
+          check(audit.landmarks.footer >= 1, context, "page has a footer landmark");
+          check(audit.h1Count === 1, context, "page has exactly one visible H1");
+          check(audit.headingSkips.length === 0, context, "heading levels do not skip");
+          check(audit.duplicateIds.length === 0, context, `initial IDs are unique${
+            audit.duplicateIds.length ? `: ${audit.duplicateIds.join(", ")}` : ""
+          }`);
+          check(audit.unlabeledControls.length === 0, context, `form controls have labels${
+            audit.unlabeledControls.length ? `: ${audit.unlabeledControls.join(", ")}` : ""
+          }`);
+          check(audit.missingImageAlt.length === 0, context, `images provide alt attributes${
+            audit.missingImageAlt.length ? `: ${audit.missingImageAlt.join(", ")}` : ""
+          }`);
+          check(audit.failedImages.length === 0, context, `required images load${
+            audit.failedImages.length ? `: ${audit.failedImages.join(", ")}` : ""
+          }`);
+          check(audit.failedStylesheets.length === 0, context, `required stylesheets load${
+            audit.failedStylesheets.length ? `: ${audit.failedStylesheets.join(", ")}` : ""
+          }`);
+          check(audit.resourceFailures.length === 0, context, `required resources avoid HTTP failures${
+            audit.resourceFailures.length ? `: ${JSON.stringify(audit.resourceFailures)}` : ""
+          }`);
+          check(audit.clippedControls.length === 0, context, `visible controls are not horizontally clipped${
+            audit.clippedControls.length ? `: ${audit.clippedControls.join(", ")}` : ""
+          }`);
+          check(audit.coveredTargets.length === 0, context, `fixed or sticky elements do not cover controls or headings${
+            audit.coveredTargets.length ? `: ${audit.coveredTargets.join(", ")}` : ""
+          }`);
           const initialMetrics = await pagePosition(activeTab);
           check(
             initialMetrics.scrollWidth <= initialMetrics.clientWidth + 1,
             context,
             "page has no horizontal overflow"
           );
+          for (const marker of page.required_markers || []) {
+            const markerPresent = await activeTab.playwright.locator("html").evaluate(
+              (root, requiredMarker) => {
+                if (requiredMarker.startsWith("data-")) {
+                  return Boolean(root.querySelector(`[${requiredMarker}]`));
+                }
+                if (requiredMarker.startsWith("bms-")) {
+                  return Boolean(
+                    root.querySelector(`.${requiredMarker}, #${requiredMarker}`)
+                  );
+                }
+                return root.textContent.includes(requiredMarker);
+              },
+              marker
+            );
+            check(markerPresent, context, `required marker is present: ${marker}`);
+          }
+          if (page.kind === "analyzer") {
+            check(
+              (await activeTab.playwright.locator("#bms-position-preview-frame").count()) === 1,
+              context,
+              "analyzer iframe container is present without requiring iframe success"
+            );
+          }
+          if (page.kind === "match-predictor") {
+            check(
+              (await activeTab.playwright.locator(".bms-dashboard-frame iframe").count()) === 1,
+              context,
+              "Match Predictor iframe container is present without requiring iframe success"
+            );
+          }
+          const focus = await focusSnapshot(activeTab);
+          check(
+            audit.focusableControls < 2 || focus.distinct >= 2,
+            context,
+            "keyboard focus advances without an obvious focus trap"
+          );
+          check(
+            focus.missingIndicators.length === 0,
+            context,
+            `sampled keyboard focus has a visible indicator${
+              focus.missingIndicators.length ? `: ${focus.missingIndicators.join(", ")}` : ""
+            }`
+          );
+          if (
+            (manifest.baseline_screenshot_route_ids || []).includes(page.id) &&
+            (manifest.baseline_screenshot_viewport_names || []).includes(viewportCase.name)
+          ) {
+            await saveScreenshot(activeTab, viewportCase, page, "baseline");
+          }
 
           phase = "page interactions";
           await runPageInteraction({
@@ -650,6 +1001,7 @@ export async function runReleaseUiChecks({
           }
           const continuousPage =
             page.kind.includes("scroll-fixture") ||
+            page.kind === "learn-lesson" ||
             page.kind === "research-article";
           const markerSelector =
             page.kind === "research-article"
@@ -752,10 +1104,14 @@ export async function runReleaseUiChecks({
         } catch (error) {
           failures.push({
             context,
-            message: `browser helper error during ${phase}: ${String(error)}`
+            message: `browser helper error during ${phase}: ${String(error)}`,
+            category: "test-infrastructure"
           });
         } finally {
           await collectConsole(activeTab, `${context}/console`);
+          if (failures.length > failureCountBeforePage) {
+            await saveScreenshot(activeTab, viewportCase, page, "failure");
+          }
         }
       }
     }
@@ -805,7 +1161,28 @@ export async function runReleaseUiChecks({
     pages,
     checks,
     failures,
+    findings: failures.map((failure) => {
+      const [viewportName, pageId] = failure.context.split("/");
+      const page = manifest.pages.find((item) => item.id === pageId);
+      const screenshot = screenshots.find(
+        (item) =>
+          item.kind === "failure" &&
+          item.viewport === viewportName &&
+          item.page === pageId
+      );
+      return {
+        category: failure.category || "product-defect",
+        severity: failure.category === "test-infrastructure" ? "blocking" : "major",
+        route_or_file: page?.route || failure.context,
+        viewport: manifest.viewports.find((item) => item.name === viewportName) || null,
+        evidence: `${failure.message}${screenshot ? `; screenshot: ${screenshot.path}` : ""}`,
+        reproduction: `Serve site/_site and run the comprehensive browser baseline for ${failure.context}.`,
+        safe_for_automated_remediation: false,
+        needs_review: true
+      };
+    }),
     consoleMessages,
+    screenshots,
     durationMs: Date.now() - started
   };
   return {

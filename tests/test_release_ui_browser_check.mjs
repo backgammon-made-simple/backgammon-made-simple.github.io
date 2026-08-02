@@ -11,10 +11,16 @@ const helperSource = readFileSync(
   "utf8"
 );
 
-assert.equal(DEFAULT_MANIFEST.version, 1);
+assert.equal(DEFAULT_MANIFEST.version, 2);
 assert.deepEqual(
   DEFAULT_MANIFEST.viewports.map((item) => item.name),
-  ["desktop", "mobile"]
+  [
+    "desktop-1440",
+    "laptop-1280",
+    "tablet-1024",
+    "mobile-390",
+    "small-mobile-320"
+  ]
 );
 assert.ok(DEFAULT_MANIFEST.pages.some((page) => page.id === "home"));
 assert.deepEqual(
