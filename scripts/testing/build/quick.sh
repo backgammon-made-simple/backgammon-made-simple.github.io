@@ -45,6 +45,7 @@ printf '\n[3/5] Focused JavaScript behavior\n'
 node tests/test_learn_filters.js
 node tests/test_continuous_learn.js
 node tests/test_continuous_research.js
+node tests/test_research_filters.js
 node tests/test_lesson_analysis.js
 node tests/test_release_ui_browser_check.mjs
 node tests/test_lesson_analysis_browser_check.mjs

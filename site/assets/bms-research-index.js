@@ -77,6 +77,8 @@
       tagGroup.hidden = true;
     }
 
+    const categoryButtons = Array.from(panel.querySelectorAll(CATEGORY_SELECTOR));
+    const tagButtons = Array.from(panel.querySelectorAll(TAG_SELECTOR));
     let activeCategory = "";
     let activeTag = "";
 
@@ -95,9 +97,6 @@
     }
 
     function updateCounts() {
-      const categoryButtons = Array.from(panel.querySelectorAll(CATEGORY_SELECTOR));
-      const tagButtons = Array.from(panel.querySelectorAll(TAG_SELECTOR));
-
       categoryButtons.forEach(function (button) {
         const category = button.dataset.bmsFilterCategory || "";
         const count = items.filter(function (item) {
@@ -137,9 +136,6 @@
           visibleCount += 1;
         }
       });
-
-      const categoryButtons = Array.from(panel.querySelectorAll(CATEGORY_SELECTOR));
-      const tagButtons = Array.from(panel.querySelectorAll(TAG_SELECTOR));
 
       setPressed(categoryButtons, activeCategory, "bmsFilterCategory");
       setPressed(tagButtons, activeTag, "bmsFilterTag");

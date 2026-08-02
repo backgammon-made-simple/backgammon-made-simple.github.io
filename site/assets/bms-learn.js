@@ -455,11 +455,16 @@
       }
     );
     const groups = Array.from(list.querySelectorAll(GROUP_SELECTOR));
-    const groupOrder = new Map(
-      groups.map(function (group, index) {
-        return [group, index];
-      })
-    );
+    const groupRecords = groups.map(function (group, originalIndex) {
+      return {
+        element: group,
+        items: items.filter(function (item) {
+          return group.contains(item.element);
+        }),
+        count: group.querySelector("[data-bms-learn-group-count]"),
+        originalIndex: originalIndex
+      };
+    });
     const difficultyButtons = Array.from(
       panel.querySelectorAll(DIFFICULTY_SELECTOR)
     );
@@ -618,21 +623,17 @@
         }
       });
 
-      groups.forEach(function (group) {
-        const groupItems = Array.from(
-          group.querySelectorAll(LESSON_SELECTOR)
-        );
-        const groupVisibleCount = groupItems.filter(function (element) {
-          return !element.hidden;
+      groupRecords.forEach(function (groupRecord) {
+        const groupVisibleCount = groupRecord.items.filter(function (item) {
+          return !item.element.hidden;
         }).length;
-        const totalCount = Number(group.dataset.bmsTotalLessons || "0");
-        group.hidden =
-          totalCount > 0 && groupVisibleCount === 0;
-        const groupCount = group.querySelector(
-          "[data-bms-learn-group-count]"
+        const totalCount = Number(
+          groupRecord.element.dataset.bmsTotalLessons || "0"
         );
-        if (groupCount) {
-          groupCount.textContent =
+        groupRecord.element.hidden =
+          totalCount > 0 && groupVisibleCount === 0;
+        if (groupRecord.count) {
+          groupRecord.count.textContent =
             groupVisibleCount +
             (groupVisibleCount === 1 ? " lesson" : " lessons");
         }
@@ -640,27 +641,23 @@
 
       const groupParent = groups[0] ? groups[0].parentElement : null;
       if (groupParent) {
-        Array.from(groups)
+        Array.from(groupRecords)
           .sort(function (left, right) {
             const leftRank = lessonGroupSearchRank(
-              items.filter(function (item) {
-                return left.contains(item.element);
-              }),
+              left.items,
               query
             );
             const rightRank = lessonGroupSearchRank(
-              items.filter(function (item) {
-                return right.contains(item.element);
-              }),
+              right.items,
               query
             );
             return (
               leftRank - rightRank ||
-              groupOrder.get(left) - groupOrder.get(right)
+              left.originalIndex - right.originalIndex
             );
           })
-          .forEach(function (group) {
-            groupParent.appendChild(group);
+          .forEach(function (groupRecord) {
+            groupParent.appendChild(groupRecord.element);
           });
       }
 

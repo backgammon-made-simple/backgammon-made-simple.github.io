@@ -347,6 +347,7 @@
       groupContainer.querySelectorAll(ENTRY_SELECTOR)
     ).map(function (element, originalIndex) {
       const searchValues = parseList(element.dataset.bmsSearch);
+      const categories = parseList(element.dataset.bmsCategories);
       return {
         element: element,
         slug: element.dataset.bmsSlug || "",
@@ -354,12 +355,11 @@
         redirectSlugs: parseList(element.dataset.bmsRedirects),
         letter: element.dataset.bmsLetter || "",
         category: element.dataset.bmsCategory || "",
-        categories:
-          parseList(element.dataset.bmsCategories).length > 0
-            ? parseList(element.dataset.bmsCategories)
-            : element.dataset.bmsCategory
-              ? [element.dataset.bmsCategory]
-              : [],
+        categories: categories.length > 0
+          ? categories
+          : element.dataset.bmsCategory
+            ? [element.dataset.bmsCategory]
+            : [],
         tracks: parseList(element.dataset.bmsTracks),
         searchValues: searchValues,
         canonical: searchValues[0] || "",
@@ -423,9 +423,14 @@
     ).sort(function (left, right) {
       return left.localeCompare(right);
     });
-    categories.forEach(function (category) {
-      categoryContainer.appendChild(createCategoryButton(category));
+    const categoryButtons = categories.map(function (category) {
+      const button = createCategoryButton(category);
+      categoryContainer.appendChild(button);
+      return button;
     });
+    const cardCategoryButtons = Array.from(
+      groupContainer.querySelectorAll("[data-bms-card-category]")
+    );
 
     const initialState = glossaryStateFromSearch(
       window.location.search,
@@ -504,9 +509,6 @@
     }
 
     function updateAvailability() {
-      const categoryButtons = Array.from(
-        panel.querySelectorAll(CATEGORY_SELECTOR)
-      );
       const tracks = sortedValues(selectedTracks);
       const selectedCategoryValues = sortedValues(selectedCategories);
       const query = currentQuery();
@@ -640,12 +642,12 @@
       });
 
       setPressed(
-        Array.from(panel.querySelectorAll(CATEGORY_SELECTOR)),
+        categoryButtons,
         selectedCategories,
         "bmsGlossaryFilterCategory"
       );
       setPressed(
-        Array.from(groupContainer.querySelectorAll("[data-bms-card-category]")),
+        cardCategoryButtons,
         selectedCategories,
         "bmsCardCategory"
       );
