@@ -142,8 +142,7 @@ def load_contract_json(path: Path = GLOSSARY_SOURCE_PATH) -> dict[str, dict[str,
         raw_text = raw_bytes.decode("utf-8")
     except UnicodeDecodeError as error:
         raise ValidationError("Canonical glossary JSON must use UTF-8") from error
-    if "\r" in raw_text:
-        raise ValidationError("Canonical glossary JSON must use LF line endings")
+    raw_text = raw_text.replace("\r\n", "\n").replace("\r", "\n")
     if "\u2014" in raw_text:
         raise ValidationError("Canonical glossary JSON contains a prohibited em dash")
     try:

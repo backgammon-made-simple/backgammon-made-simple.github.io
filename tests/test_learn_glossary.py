@@ -2003,7 +2003,26 @@ private code phrase
                 mock.patch.object(bms_pre_render, "run") as run,
             ):
                 self.assertEqual(bms_pre_render.main(), 0)
-                run.assert_not_called()
+                run.assert_called_once()
+                command = run.call_args.args[0]
+                self.assertIn("learn_glossary.py", " ".join(command))
+                self.assertIn("validate", command)
+
+        with mock.patch.dict(os.environ, {}, clear=True):
+            with (
+                mock.patch.object(
+                    bms_pre_render,
+                    "invalidate_full_build_marker",
+                    return_value=False,
+                ),
+                mock.patch.object(
+                    bms_pre_render,
+                    "run",
+                    side_effect=RuntimeError("Generated files are stale"),
+                ),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "Generated files are stale"):
+                    bms_pre_render.main()
 
         with mock.patch.dict(
             os.environ,

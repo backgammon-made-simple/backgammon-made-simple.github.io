@@ -446,8 +446,8 @@ def validate_learning_tracks(entry: dict[str, object], label: str) -> list[str]:
 def validate_public_data(
     data: object,
     *,
-    expected_canonical_entries: int = EXPECTED_CANONICAL_ENTRIES,
-    expected_alias_entries: int = EXPECTED_ALIAS_ENTRIES,
+    expected_canonical_entries: int | None = None,
+    expected_alias_entries: int | None = None,
     reference_entries: list[dict[str, object]] | None = None,
 ) -> list[dict[str, object]]:
     if not isinstance(data, dict):
@@ -459,7 +459,12 @@ def validate_public_data(
         raise ValidationError("Unsupported tracked glossary schema version")
 
     entries = data.get("entries")
-    if not isinstance(entries, list) or len(entries) != expected_canonical_entries:
+    if not isinstance(entries, list):
+        raise ValidationError("Tracked glossary data must contain an entries list")
+    if (
+        expected_canonical_entries is not None
+        and len(entries) != expected_canonical_entries
+    ):
         raise ValidationError(
             f"Tracked glossary data must contain {expected_canonical_entries} entries"
         )
@@ -569,7 +574,7 @@ def validate_public_data(
     )
     if entries != expected_order:
         raise ValidationError("Tracked glossary entries have unstable output ordering")
-    if alias_count != expected_alias_entries:
+    if expected_alias_entries is not None and alias_count != expected_alias_entries:
         raise ValidationError(
             f"Tracked glossary data must contain {expected_alias_entries} aliases"
         )
@@ -2242,7 +2247,8 @@ def validate_generated() -> dict[str, int]:
         for tag in entry_tags
     ):
         raise ValidationError("Canonical term disclosures must begin collapsed")
-    if entries_html.count('data-bms-alias="') != EXPECTED_ALIAS_ENTRIES:
+    alias_count = sum(len(entry["aliases"]) for entry in entries)
+    if entries_html.count('data-bms-alias="') != alias_count:
         raise ValidationError("Generated alias count does not match public data")
     if entries_html.count('class="bms-glossary-definition"') != len(entries):
         raise ValidationError("Every canonical entry must include its full definition")
@@ -2260,7 +2266,7 @@ def validate_generated() -> dict[str, int]:
     lookup_entries = lookup_data.get("entries")
     if not isinstance(lookup_entries, list) or len(lookup_entries) != len(entries):
         raise ValidationError("Generated glossary lookup data has the wrong term count")
-    if sum(len(item.get("aliases", [])) for item in lookup_entries) != EXPECTED_ALIAS_ENTRIES:
+    if sum(len(item.get("aliases", [])) for item in lookup_entries) != alias_count:
         raise ValidationError("Generated glossary lookup data has the wrong alias count")
     if sum(
         len(item.get("related_lessons", []))

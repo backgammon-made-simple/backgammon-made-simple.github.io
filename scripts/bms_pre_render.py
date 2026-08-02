@@ -29,10 +29,15 @@ def main() -> int:
 
     # Quarto sets this to "1" only when rendering the complete project.
     if os.getenv("QUARTO_PROJECT_RENDER_ALL") != "1":
-        print(
-            "Incremental development render: "
-            "skipping glossary generation and social-card pipeline."
+        print("Incremental development render: verifying glossary freshness.")
+        run(
+            [
+                sys.executable,
+                str(REPO_ROOT / "scripts" / "learn_glossary.py"),
+                "validate",
+            ]
         )
+        print("Incremental development render: glossary outputs are current.")
         return 0
 
     print("Full project render: generating glossary.")
