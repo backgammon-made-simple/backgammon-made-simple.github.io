@@ -1,5 +1,10 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import {
+  classifyBrowserFinding,
+  summarizeStability
+} from "../../quality/browser/finding_stability.mjs";
+import { groupFindingsByRootCause } from "../../quality/browser/root_cause_groups.mjs";
 
 const manifestUrl = new URL("./ui_release_manifest.json", import.meta.url);
 
@@ -9,6 +14,22 @@ export const DEFAULT_MANIFEST = JSON.parse(
 
 const delay = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+const retryControllerDeadline = async (operation, attempts = 3) => {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (!/deadline|timed out/i.test(String(error)) || attempt === attempts) {
+        throw error;
+      }
+      await delay(100);
+    }
+  }
+  throw lastError;
+};
 
 const safeName = (value) => value.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
 
@@ -144,41 +165,165 @@ const accessibilitySnapshot = (tab) =>
     };
   });
 
-const focusSnapshot = async (tab) => {
-  const body = tab.playwright.locator("body");
-  if ((await body.count()) !== 1) {
-    return { distinct: 0, missingIndicators: ["body unavailable"] };
-  }
-  const identities = [];
-  const missingIndicators = [];
-  for (let index = 0; index < 8; index += 1) {
-    await body.press("TAB");
-    const state = await tab.playwright.locator("html").evaluate(() => {
-      const active = document.activeElement;
-      if (!active || active === document.body) {
-        return { identity: "body", visibleIndicator: false };
-      }
-      const style = window.getComputedStyle(active);
-      const identity =
-        active.id ||
-        active.getAttribute("data-bms-analysis-choice") ||
-        active.getAttribute("aria-label") ||
-        active.textContent.trim().slice(0, 80) ||
-        active.tagName.toLowerCase();
-      const visibleIndicator =
-        (style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) > 0) ||
+const focusedElementState = (tab) =>
+  tab.playwright.locator("html").evaluate(() => {
+    const active = document.activeElement;
+    if (!active || active === document.body || active === document.documentElement) {
+      return {
+        identity: "body",
+        interactive: false,
+        selector: "body",
+        visibleIndicator: false
+      };
+    }
+    const style = window.getComputedStyle(active);
+    const tag = active.tagName.toLowerCase();
+    const selector = active.id
+      ? `#${active.id}`
+      : active.hasAttribute("data-bms-mobile-tools-edge")
+        ? "[data-bms-mobile-tools-edge]"
+        : active.hasAttribute("data-bms-mobile-tools-close")
+          ? "[data-bms-mobile-tools-close]"
+          : active.matches("button.navbar-toggler")
+            ? "button.navbar-toggler"
+            : `${tag}${active.getAttribute("href") ? `[href='${active.getAttribute("href")}']` : ""}`;
+    const identity =
+      active.id ||
+      active.getAttribute("data-bms-analysis-choice") ||
+      active.getAttribute("aria-label") ||
+      active.textContent.trim().replace(/\s+/g, " ").slice(0, 80) ||
+      tag;
+    const visibleIndicator =
+      active.matches(":focus-visible") &&
+      ((style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) > 0) ||
         style.boxShadow !== "none" ||
-        style.borderColor !== "rgba(0, 0, 0, 0)";
-      return { identity, visibleIndicator };
-    });
-    identities.push(state.identity);
-    if (!state.visibleIndicator) {
+        (Number.parseFloat(style.borderWidth) > 0 &&
+          style.borderColor !== "rgba(0, 0, 0, 0)"));
+    return {
+      identity,
+      interactive: active.matches(
+        "a[href],button,input,select,textarea,[tabindex]:not([tabindex='-1'])"
+      ),
+      selector,
+      tag,
+      role: active.getAttribute("role"),
+      href: active.getAttribute("href"),
+      visibleIndicator
+    };
+  });
+
+const focusSnapshot = async (tab, { mobile }) => {
+  const keyboardSeed = await visibleLocator(
+    tab.playwright.locator(
+      "a[href],button,input,select,textarea,[tabindex]:not([tabindex='-1'])"
+    )
+  );
+  if (keyboardSeed) {
+    await keyboardSeed.press("Shift+Tab");
+  }
+  const pressFocused = async (key) => {
+    const focused = tab.playwright.locator(":focus");
+    if ((await focused.count()) !== 1) {
+      return false;
+    }
+    await focused.press(key);
+    return true;
+  };
+  const pageFeatures = await tab.playwright.locator("html").evaluate(() => ({
+    mobileDrawerPresent: Boolean(
+      document.querySelector("[data-bms-mobile-tools-edge]")
+    ),
+    mobileNavigationPresent: Boolean(document.querySelector("button.navbar-toggler")),
+    skipLinkPresent: Boolean(
+      Array.from(document.querySelectorAll("a[href^='#']")).find((link) =>
+        /skip/i.test(link.textContent || "")
+      )
+    )
+  }));
+  const reached = [];
+  const missingIndicators = [];
+  let mobileNavigation = null;
+  let mobileDrawer = null;
+  let skipLink = null;
+  for (let index = 0; index < 20; index += 1) {
+    await pressFocused("Tab");
+    const state = await focusedElementState(tab);
+    reached.push({ order: index + 1, ...state });
+    if (state.interactive && !state.visibleIndicator) {
       missingIndicators.push(state.identity);
     }
+    if (mobile && state.selector === "button.navbar-toggler" && !mobileNavigation) {
+      await pressFocused("Enter");
+      await delay(100);
+      const opened = await tab.playwright.locator("html").evaluate(() => ({
+        expanded:
+          document.querySelector("button.navbar-toggler")?.getAttribute("aria-expanded") ||
+          null,
+        menuVisible: Boolean(
+          document.querySelector("#navbarCollapse")?.getClientRects().length
+        )
+      }));
+      await pressFocused("Tab");
+      const menuFocus = await focusedElementState(tab);
+      await pressFocused("Escape");
+      await delay(100);
+      const returned = await focusedElementState(tab);
+      mobileNavigation = { opened, menuFocus, returned };
+    }
+    if (
+      mobile &&
+      state.selector === "[data-bms-mobile-tools-edge]" &&
+      !mobileDrawer
+    ) {
+      await pressFocused("Enter");
+      await delay(100);
+      const opened = await tab.playwright.locator("html").evaluate(() => ({
+        expanded:
+          document
+            .querySelector("[data-bms-mobile-tools-edge]")
+            ?.getAttribute("aria-expanded") || null,
+        drawerVisible: Boolean(
+          document
+            .querySelector("[data-bms-mobile-tools-drawer]")
+            ?.getClientRects().length
+        )
+      }));
+      await pressFocused("Tab");
+      const drawerFocus = await focusedElementState(tab);
+      await pressFocused("Escape");
+      await delay(100);
+      const returned = await focusedElementState(tab);
+      mobileDrawer = { opened, drawerFocus, returned };
+    }
+    if (!skipLink && state.href?.startsWith("#") && /skip/i.test(state.identity)) {
+      await pressFocused("Enter");
+      await delay(100);
+      skipLink = {
+        trigger: state,
+        destination: await focusedElementState(tab),
+        url: await tab.url()
+      };
+    }
   }
+  const interactiveReached = reached.filter((item) => item.interactive);
+  const identities = interactiveReached.map((item) => item.selector);
+  const trapDetected = identities.some(
+    (identity, index) =>
+      index >= 2 &&
+      identities[index - 1] === identity &&
+      identities[index - 2] === identity
+  );
   return {
-    distinct: new Set(identities.filter((identity) => identity !== "body")).size,
-    missingIndicators: Array.from(new Set(missingIndicators)).sort()
+    reached,
+    interactiveReached: interactiveReached.length,
+    distinct: new Set(identities).size,
+    meaningfulOrder: identities.length >= 2 && new Set(identities).size >= 2,
+    trapDetected,
+    missingIndicators: Array.from(new Set(missingIndicators)).sort(),
+    pageFeatures,
+    mobileNavigation,
+    mobileDrawer,
+    skipLink
   };
 };
 
@@ -205,21 +350,157 @@ const clickInPlace = async (tab, locator) => {
 };
 
 const pagePosition = (tab) =>
-  tab.playwright.locator("html").evaluate(() => ({
-    clientHeight: document.documentElement.clientHeight,
-    clientWidth: document.documentElement.clientWidth,
-    scrollHeight: document.documentElement.scrollHeight,
-    scrollWidth: document.documentElement.scrollWidth,
-    scrollY: window.scrollY
-  }));
+  retryControllerDeadline(() => tab.playwright.evaluate(
+    () => ({
+      clientHeight: document.documentElement.clientHeight,
+      clientWidth: document.documentElement.clientWidth,
+      scrollHeight: document.documentElement.scrollHeight,
+      scrollWidth: document.documentElement.scrollWidth,
+      scrollY: window.scrollY
+    }),
+    undefined,
+    { timeoutMs: 10000 }
+  ));
+
+export const EXPECTED_CONTINUOUS_APPEND_COUNT = 1;
+
+export const continuousConfigForPage = (page) => {
+  if (page.kind === "learn-lesson") {
+    return {
+      markerSelector: ".bms-learn-scroll-lesson-marker",
+      routeAttribute: "data-bms-learn-scroll-lesson-route",
+      sentinelSelector: ".bms-learn-scroll-sentinel",
+      endSelector: "[data-bms-learn-scroll-end]",
+      namespace: "bms-learn-scroll-"
+    };
+  }
+  if (page.kind === "research-article") {
+    return {
+      markerSelector: ".bms-research-scroll-marker",
+      routeAttribute: "data-bms-research-scroll-marker",
+      sentinelSelector: ".bms-research-scroll-sentinel",
+      endSelector: ".bms-research-scroll-end",
+      namespace: "bms-research-scroll-"
+    };
+  }
+  return null;
+};
+
+const waitForLocatorVisibility = async (
+  locator,
+  expectedVisible,
+  attempts = 20
+) => {
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const visible = Boolean(await visibleLocator(locator));
+    if (visible === expectedVisible) {
+      return true;
+    }
+    if (attempt < attempts) {
+      await delay(50);
+    }
+  }
+  return false;
+};
+
+const continuousStateSnapshot = (tab, config) =>
+  retryControllerDeadline(() => tab.playwright.locator("#quarto-document-content").evaluate((_root, stateConfig) => {
+    const markers = Array.from(
+      document.querySelectorAll(stateConfig.markerSelector)
+    );
+    const loadedPageOrder = markers.map((marker) =>
+      marker.getAttribute(stateConfig.routeAttribute)
+    );
+    const appendedPages = markers.slice(1).map((marker, index) => {
+      const ids = [];
+      let node = marker.nextElementSibling;
+      const nextMarker = markers[index + 2] || null;
+      while (node && node !== nextMarker && !node.matches(stateConfig.sentinelSelector)) {
+        if (node.id) {
+          ids.push(node.id);
+        }
+        node.querySelectorAll("[id]").forEach((element) => ids.push(element.id));
+        node = node.nextElementSibling;
+      }
+      return {
+        route: marker.getAttribute(stateConfig.routeAttribute),
+        containerIds: Array.from(new Set(ids)).sort()
+      };
+    });
+    const sentinel = document.querySelector(stateConfig.sentinelSelector);
+    const endAvailable = Boolean(document.querySelector(stateConfig.endSelector));
+    let historyState = null;
+    try {
+      historyState = JSON.parse(JSON.stringify(window.history?.state ?? null));
+    } catch (_error) {
+      historyState = "unserializable";
+    }
+    return {
+      documentIdentity: {
+        bodyClasses: Array.from(document.body.classList).sort(),
+        h1: document.querySelector("h1")?.textContent?.trim() || null,
+        route: window.location.pathname
+      },
+      loadedPageOrder,
+      appendedPages,
+      markerCount: markers.length,
+      sentinel: sentinel
+        ? {
+            available: true,
+            loading: sentinel.classList.contains("is-loading"),
+            route:
+              sentinel.getAttribute("data-bms-learn-scroll-sentinel") ||
+              sentinel.getAttribute("data-bms-research-scroll-sentinel")
+          }
+        : { available: false, loading: false, route: null },
+      completionSignal: Boolean(
+        endAvailable || (sentinel && !sentinel.classList.contains("is-loading"))
+      ),
+      endAvailable,
+      scrollPosition: {
+        clientHeight: document.documentElement.clientHeight,
+        scrollHeight: document.documentElement.scrollHeight,
+        scrollY: window.scrollY
+      },
+      url: window.location.href,
+      history: {
+        length: window.history?.length ?? null,
+        state: historyState
+      }
+    };
+  }, config, { timeoutMs: 10000 }));
+
+const waitForContinuousState = async (
+  tab,
+  config,
+  predicate,
+  timeoutMs = 10000
+) => {
+  const started = Date.now();
+  let state = await continuousStateSnapshot(tab, config);
+  while (!predicate(state) && Date.now() - started < timeoutMs) {
+    await delay(100);
+    state = await continuousStateSnapshot(tab, config);
+  }
+  return {
+    state,
+    timeoutReason: predicate(state)
+      ? null
+      : `expected continuous state was not reached within ${timeoutMs}ms`
+  };
+};
 
 const scrollTo = async (tab, position) => {
-  await tab.playwright.locator("html").evaluate(
-    (_element, target) => {
-      window.scrollTo(0, target);
-    },
-    position
-  );
+  const current = await pagePosition(tab);
+  const target = Number.isSafeInteger(position)
+    ? Math.min(position, current.scrollHeight)
+    : current.scrollHeight;
+  await tab.cua.scroll({
+    x: Math.max(1, Math.min(100, current.clientWidth - 1)),
+    y: Math.max(1, Math.min(100, current.clientHeight - 1)),
+    scrollX: 0,
+    scrollY: target - current.scrollY
+  });
   await delay(120);
 };
 
@@ -404,21 +685,17 @@ const interactWithToc = async (
   desktop,
   collapseLessonTrack = false
 ) => {
-  const toggleState = () =>
-    tab.playwright.locator("html").evaluate(() => {
-      const toggle = Array.from(
-        document.querySelectorAll("[data-bms-toc-heading-toggle]")
-      ).find((candidate) => {
-        const rectangle = candidate.getBoundingClientRect();
-        return rectangle.width > 0 && rectangle.height > 0;
-      });
-      return toggle
-        ? {
-            available: true,
-            expanded: toggle.getAttribute("aria-expanded")
-          }
-        : { available: false, expanded: null };
-    });
+  const toggleState = async () => {
+    const toggle = await visibleLocator(
+      tab.playwright.locator("[data-bms-toc-heading-toggle]")
+    );
+    return toggle
+      ? {
+          available: true,
+          expanded: await toggle.getAttribute("aria-expanded")
+        }
+      : { available: false, expanded: null };
+  };
   const clickToggle = async () => {
     const toggle = await visibleLocator(
       tab.playwright.locator("[data-bms-toc-heading-toggle]")
@@ -464,7 +741,7 @@ const interactWithToc = async (
   );
   if (lessonTrack) {
     check(
-      !(await visibleLocator(lessonTrack)),
+      await waitForLocatorVisibility(lessonTrack, false),
       context,
       "TOC rail collapse also hides the lesson track"
     );
@@ -481,7 +758,7 @@ const interactWithToc = async (
   );
   if (lessonTrack) {
     check(
-      Boolean(await visibleLocator(lessonTrack)),
+      await waitForLocatorVisibility(lessonTrack, true),
       context,
       "restoring the TOC rail also restores the lesson track"
     );
@@ -816,14 +1093,20 @@ export async function runReleaseUiChecks({
   const consoleMessages = [];
   const consoleSeen = new Set();
   const limitations = [];
+  const continuousLoading = [];
+  const focusTraversal = [];
+  const interactionStates = [];
   const screenshots = [];
   let failureScreenshots = 0;
   let checks = 0;
+  const checksByContext = {};
   let pages = 0;
-  const check = (condition, context, message) => {
+  const executedPageContexts = [];
+  const check = (condition, context, message, metadata = {}) => {
     checks += 1;
+    checksByContext[context] = (checksByContext[context] || 0) + 1;
     if (!condition) {
-      failures.push({ context, message });
+      failures.push({ context, message, ...metadata });
     }
   };
   const acquireTab = async () => {
@@ -894,8 +1177,11 @@ export async function runReleaseUiChecks({
       for (const page of manifest.pages) {
         const context = `${viewportCase.name}/${page.id}`;
         pages += 1;
+        executedPageContexts.push(context);
         const activeTab = await acquireTab();
         const failureCountBeforePage = failures.length;
+        const continuousConfig = continuousConfigForPage(page);
+        let initialContinuousState = null;
         let phase = "navigation";
         try {
           await viewport.set({
@@ -909,6 +1195,39 @@ export async function runReleaseUiChecks({
           });
           await scrollTo(activeTab, 0);
           await delay(500);
+
+          if (continuousConfig) {
+            phase = "continuous loading initialization";
+            const initialized = await waitForContinuousState(
+              activeTab,
+              continuousConfig,
+              (state) =>
+                state.markerCount === 1 &&
+                state.sentinel.available &&
+                !state.sentinel.loading
+            );
+            initialContinuousState = initialized.state;
+            check(
+              initialized.timeoutReason === null,
+              context,
+              initialized.timeoutReason || "continuous loading initialization is ready"
+            );
+            check(
+              initialContinuousState.documentIdentity.route === page.route,
+              context,
+              `continuous loading starts on the expected route: ${initialContinuousState.documentIdentity.route}`
+            );
+            check(
+              Boolean(initialContinuousState.documentIdentity.h1),
+              context,
+              "continuous loading records the initial document identity"
+            );
+            check(
+              initialContinuousState.appendedPages.length === 0,
+              context,
+              `continuous loading starts before appended pages (actual=${initialContinuousState.appendedPages.length})`
+            );
+          }
 
           phase = "landmarks and initial layout";
           const audit = await accessibilitySnapshot(activeTab);
@@ -978,26 +1297,104 @@ export async function runReleaseUiChecks({
               "Match Predictor iframe container is present without requiring iframe success"
             );
           }
-          const focus = await focusSnapshot(activeTab);
-          if (focus.distinct === 0) {
-            limitations.push({
-              context,
-              check: "sampled keyboard focus visibility and obvious focus trap",
-              evidence: "The browser controller kept document.activeElement on body after sampled Tab presses."
-            });
-          } else {
+          const focus = await focusSnapshot(activeTab, {
+            mobile: viewportCase.width < 992
+          });
+          focusTraversal.push({ context, ...focus });
+          check(
+            focus.interactiveReached > 0,
+            context,
+            focus.interactiveReached > 0
+              ? "keyboard traversal reaches an interactive element"
+              : "keyboard traversal incomplete: no interactive element received focus",
+            focus.interactiveReached > 0
+              ? {}
+              : { category: "test-infrastructure", incomplete: true }
+          );
+          check(
+            audit.focusableControls < 2 || focus.meaningfulOrder,
+            context,
+            `keyboard focus follows a meaningful order: ${focus.reached
+              .filter((item) => item.interactive)
+              .map((item) => item.selector)
+              .join(" -> ")}`
+          );
+          check(
+            !focus.trapDetected,
+            context,
+            "keyboard traversal has no obvious focus trap"
+          );
+          check(
+            focus.missingIndicators.length === 0,
+            context,
+            `sampled keyboard focus has a visible indicator${
+              focus.missingIndicators.length ? `: ${focus.missingIndicators.join(", ")}` : ""
+            }`
+          );
+          if (viewportCase.width < 992 && focus.pageFeatures.mobileNavigationPresent) {
             check(
-              audit.focusableControls < 2 || focus.distinct >= 2,
+              Boolean(focus.mobileNavigation),
               context,
-              "keyboard focus advances without an obvious focus trap"
+              "keyboard traversal reaches the mobile-navigation toggle"
             );
+            if (focus.mobileNavigation) {
+              check(
+                focus.mobileNavigation.opened.expanded === "true" &&
+                  focus.mobileNavigation.opened.menuVisible,
+                context,
+                "keyboard activation opens mobile navigation"
+              );
+              check(
+                focus.mobileNavigation.menuFocus.interactive,
+                context,
+                `mobile-navigation focus enters an interactive item: ${focus.mobileNavigation.menuFocus.selector}`
+              );
+              check(
+                focus.mobileNavigation.returned.selector === "button.navbar-toggler",
+                context,
+                `mobile-navigation focus returns after closing: ${focus.mobileNavigation.returned.selector}`
+              );
+            }
+          }
+          if (viewportCase.width < 992 && focus.pageFeatures.mobileDrawerPresent) {
             check(
-              focus.missingIndicators.length === 0,
+              Boolean(focus.mobileDrawer),
               context,
-              `sampled keyboard focus has a visible indicator${
-                focus.missingIndicators.length ? `: ${focus.missingIndicators.join(", ")}` : ""
-              }`
+              "keyboard traversal reaches the mobile page-tools drawer"
             );
+            if (focus.mobileDrawer) {
+              check(
+                focus.mobileDrawer.opened.expanded === "true" &&
+                  focus.mobileDrawer.opened.drawerVisible,
+                context,
+                "keyboard activation opens the mobile page-tools drawer"
+              );
+              check(
+                focus.mobileDrawer.drawerFocus.interactive,
+                context,
+                `mobile drawer receives focus: ${focus.mobileDrawer.drawerFocus.selector}`
+              );
+              check(
+                focus.mobileDrawer.returned.selector ===
+                  "[data-bms-mobile-tools-edge]",
+                context,
+                `mobile drawer returns focus after closing: ${focus.mobileDrawer.returned.selector}`
+              );
+            }
+          }
+          if (focus.pageFeatures.skipLinkPresent) {
+            check(
+              Boolean(focus.skipLink),
+              context,
+              "keyboard traversal reaches and activates the skip link"
+            );
+            if (focus.skipLink) {
+              check(
+                focus.skipLink.destination.selector !== "body",
+                context,
+                `skip link moves focus to its target: ${focus.skipLink.destination.selector}`
+              );
+            }
           }
           if (
             (manifest.baseline_screenshot_route_ids || []).includes(page.id) &&
@@ -1014,6 +1411,50 @@ export async function runReleaseUiChecks({
             check
           });
 
+          if (continuousConfig) {
+            const postInteractionUrl = await activeTab.url();
+            const routePreserved =
+              new URL(postInteractionUrl).pathname === page.route;
+            check(
+              routePreserved,
+              context,
+              `page interactions preserve the continuous-loading route: ${postInteractionUrl}`
+            );
+            phase = "continuous loading state reset";
+            await activeTab.goto(new URL(page.route, baseUrl).href);
+            await activeTab.playwright.waitForLoadState({
+              state: "domcontentloaded",
+              timeoutMs: 30000
+            });
+            await scrollTo(activeTab, 0);
+            await delay(500);
+            const resetState = await waitForContinuousState(
+              activeTab,
+              continuousConfig,
+              (state) =>
+                state.markerCount === 1 &&
+                state.appendedPages.length === 0 &&
+                state.sentinel.available &&
+                !state.sentinel.loading
+            );
+            initialContinuousState = resetState.state;
+            check(
+              resetState.timeoutReason === null,
+              context,
+              resetState.timeoutReason ||
+                "continuous loading reset reaches a fresh initial state"
+            );
+            interactionStates.push({
+              context,
+              initialRoute: page.route,
+              postInteractionUrl,
+              routePreserved,
+              resetDocumentIdentity: initialContinuousState.documentIdentity,
+              resetLoadedPageOrder: initialContinuousState.loadedPageOrder,
+              resetTimeoutReason: resetState.timeoutReason
+            });
+          }
+
           phase = "middle scroll";
           if (page.kind !== "research-article") {
             await scrollTo(
@@ -1021,36 +1462,99 @@ export async function runReleaseUiChecks({
               Math.floor(initialMetrics.scrollHeight / 2)
             );
           }
-          const continuousPage =
-            page.kind.includes("scroll-fixture") ||
-            page.kind === "learn-lesson" ||
-            page.kind === "research-article";
+          const continuousPage = Boolean(continuousConfig);
           const markerSelector =
             page.kind === "research-article"
               ? ".bms-research-scroll-marker"
               : ".bms-learn-scroll-lesson-marker";
           const markersBeforeScroll = continuousPage
-            ? await activeTab.playwright.locator(markerSelector).count()
+            ? initialContinuousState.markerCount
             : 0;
           phase = "bottom scroll and continuous loading";
           await scrollTo(activeTab, Number.MAX_SAFE_INTEGER);
-          await delay(
-            continuousPage ? 2500 : 180
-          );
+          await delay(continuousPage ? 100 : 180);
           let bottomMetrics = await pagePosition(activeTab);
           if (continuousPage) {
-            const markersAfterScroll = await activeTab.playwright
-              .locator(markerSelector)
-              .count();
+            const completed = await waitForContinuousState(
+              activeTab,
+              continuousConfig,
+              (state) =>
+                state.markerCount ===
+                  markersBeforeScroll + EXPECTED_CONTINUOUS_APPEND_COUNT &&
+                state.completionSignal
+            );
+            const finalState = completed.state;
+            const markersAfterScroll = finalState.markerCount;
+            const actualAppendedPageCount =
+              markersAfterScroll - markersBeforeScroll;
             check(
-              markersAfterScroll > markersBeforeScroll,
+              completed.timeoutReason === null,
+              context,
+              completed.timeoutReason || "continuous loading reached its completion signal"
+            );
+            check(
+              actualAppendedPageCount === EXPECTED_CONTINUOUS_APPEND_COUNT,
               context,
               page.kind === "research-article"
-                ? "continuous scrolling appends the next Research article"
-                : "continuous scrolling appends the next lesson"
+                ? `continuous scrolling appends exactly one Research article (expected=${EXPECTED_CONTINUOUS_APPEND_COUNT}, actual=${actualAppendedPageCount})`
+                : `continuous scrolling appends exactly one lesson (expected=${EXPECTED_CONTINUOUS_APPEND_COUNT}, actual=${actualAppendedPageCount})`
             );
-            await scrollTo(activeTab, Number.MAX_SAFE_INTEGER);
-            await delay(500);
+            check(
+              finalState.loadedPageOrder.length === markersAfterScroll &&
+                new Set(finalState.loadedPageOrder).size === markersAfterScroll,
+              context,
+              `continuous loading records unique loaded-page order: ${finalState.loadedPageOrder.join(" -> ")}`
+            );
+            check(
+              finalState.appendedPages.every((item) => Boolean(item.route)),
+              context,
+              `continuous loading records each appended page identity: ${finalState.appendedPages.map((item) => item.route).join(", ")}`
+            );
+            const namespacedContainerIds = finalState.appendedPages.flatMap(
+              (item) => item.containerIds
+            );
+            check(
+              namespacedContainerIds.length > 0 &&
+                namespacedContainerIds.every((id) =>
+                  id.startsWith(continuousConfig.namespace)
+                ),
+              context,
+              `appended container IDs are namespaced: ${namespacedContainerIds.join(", ")}`
+            );
+            check(
+              finalState.url === initialContinuousState.url,
+              context,
+              `continuous loading preserves the final URL: ${finalState.url}`
+            );
+            check(
+              finalState.history.length === initialContinuousState.history.length &&
+                JSON.stringify(finalState.history.state) ===
+                  JSON.stringify(initialContinuousState.history.state),
+              context,
+              "continuous loading preserves browser history state"
+            );
+            check(
+              finalState.scrollPosition.scrollY > 0,
+              context,
+              `continuous loading records the final scroll position: ${finalState.scrollPosition.scrollY}`
+            );
+            continuousLoading.push({
+              context,
+              initialRoute: page.route,
+              initialDocumentIdentity: initialContinuousState.documentIdentity,
+              expectedAppendedPageCount: EXPECTED_CONTINUOUS_APPEND_COUNT,
+              actualAppendedPageCount,
+              appendedPages: finalState.appendedPages,
+              loadedPageOrder: finalState.loadedPageOrder,
+              loadingCompletionSignal: finalState.completionSignal,
+              scrollTrigger: "browser wheel scroll to document bottom",
+              finalScrollPosition: finalState.scrollPosition,
+              namespacedContainerIds,
+              finalUrl: finalState.url,
+              browserHistoryState: finalState.history,
+              timeoutReason: completed.timeoutReason
+            });
+            await delay(400);
             const navigationState = await activeTab.playwright
               .locator("html")
               .evaluate(() => ({
@@ -1115,7 +1619,7 @@ export async function runReleaseUiChecks({
             bottomMetrics.scrollY > 0 &&
             page.kind !== "research-article"
           ) {
-            await backToTop.click();
+            await clickInPlace(activeTab, backToTop);
             await delay(1200);
             check(
               (await pagePosition(activeTab)).scrollY <= 80,
@@ -1177,33 +1681,49 @@ export async function runReleaseUiChecks({
     }
   }
 
+  const findings = failures.map((failure) => {
+    const [viewportName, pageId] = failure.context.split("/");
+    const page = manifest.pages.find((item) => item.id === pageId);
+    const viewportCase = manifest.viewports.find(
+      (item) => item.name === viewportName
+    );
+    const screenshot = screenshots.find(
+      (item) =>
+        item.kind === "failure" &&
+        item.viewport === viewportName &&
+        item.page === pageId
+    );
+    return classifyBrowserFinding({
+      failure,
+      page,
+      viewport: viewportCase,
+      screenshot
+    });
+  });
   const report = {
     version: manifest.version,
+    comparisonContractVersion: 2,
     baseUrl,
     pages,
     checks,
+    checksByContext,
+    coverage: {
+      routeIds: manifest.pages.map((page) => page.id),
+      viewportNames: manifest.viewports.map((item) => item.name),
+      expectedPageCount: manifest.pages.length * manifest.viewports.length,
+      executedPageContexts,
+      complete:
+        executedPageContexts.length ===
+        manifest.pages.length * manifest.viewports.length
+    },
     failures,
-    findings: failures.map((failure) => {
-      const [viewportName, pageId] = failure.context.split("/");
-      const page = manifest.pages.find((item) => item.id === pageId);
-      const screenshot = screenshots.find(
-        (item) =>
-          item.kind === "failure" &&
-          item.viewport === viewportName &&
-          item.page === pageId
-      );
-      return {
-        category: failure.category || "product-defect",
-        severity: failure.category === "test-infrastructure" ? "blocking" : "major",
-        route_or_file: page?.route || failure.context,
-        viewport: manifest.viewports.find((item) => item.name === viewportName) || null,
-        evidence: `${failure.message}${screenshot ? `; screenshot: ${screenshot.path}` : ""}`,
-        reproduction: `Serve site/_site and run the comprehensive browser baseline for ${failure.context}.`,
-        safe_for_automated_remediation: false,
-        needs_review: true
-      };
-    }),
+    findings,
+    stabilitySummary: summarizeStability(findings),
+    rootCauseGroups: groupFindingsByRootCause(findings),
     limitations,
+    continuousLoading,
+    focusTraversal,
+    interactionStates,
     consoleMessages,
     screenshots,
     durationMs: Date.now() - started

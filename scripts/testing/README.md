@@ -30,6 +30,12 @@ The exact routes, viewports, repetitions, metrics, commands, screenshot bounds,
 and schemas that later comparisons must reuse are versioned in
 `quality/comparison-contract.json`.
 
+The reusable deterministic comparison process, retention rules, status
+interpretation, and evidence policy are in [TESTING-SOP.md](TESTING-SOP.md).
+Controller operation, two-shard logical browser runs, continuous-loading state,
+and keyboard-focus procedure are in
+[ux/UX-TESTING-SOP.md](ux/UX-TESTING-SOP.md).
+
 Use [TESTING-SOP.md](TESTING-SOP.md) to select a gate. Browser and human
 procedures are under [ux/](ux/README.md). Legacy commands in `testing-scripts/`
 and `scripts/release-ui-check.sh` are compatibility wrappers.
