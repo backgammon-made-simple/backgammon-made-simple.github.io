@@ -94,7 +94,9 @@ for (const requiredSourceContract of [
   "continuousLoading",
   "expectedAppendedPageCount",
   "browserHistoryState",
-  "timeoutReason"
+  "timeoutReason",
+  "timeoutMs: 10000",
+  "clickInPlace(activeTab, backToTop)"
 ]) {
   assert.ok(
     browserContractSource.includes(requiredSourceContract),

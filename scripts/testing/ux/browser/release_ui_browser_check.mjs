@@ -15,6 +15,22 @@ export const DEFAULT_MANIFEST = JSON.parse(
 const delay = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
 
+const retryControllerDeadline = async (operation, attempts = 3) => {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (!/deadline|timed out/i.test(String(error)) || attempt === attempts) {
+        throw error;
+      }
+      await delay(100);
+    }
+  }
+  throw lastError;
+};
+
 const safeName = (value) => value.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
 
 const accessibilitySnapshot = (tab) =>
@@ -334,13 +350,17 @@ const clickInPlace = async (tab, locator) => {
 };
 
 const pagePosition = (tab) =>
-  tab.playwright.locator("html").evaluate(() => ({
-    clientHeight: document.documentElement.clientHeight,
-    clientWidth: document.documentElement.clientWidth,
-    scrollHeight: document.documentElement.scrollHeight,
-    scrollWidth: document.documentElement.scrollWidth,
-    scrollY: window.scrollY
-  }));
+  retryControllerDeadline(() => tab.playwright.evaluate(
+    () => ({
+      clientHeight: document.documentElement.clientHeight,
+      clientWidth: document.documentElement.clientWidth,
+      scrollHeight: document.documentElement.scrollHeight,
+      scrollWidth: document.documentElement.scrollWidth,
+      scrollY: window.scrollY
+    }),
+    undefined,
+    { timeoutMs: 10000 }
+  ));
 
 export const EXPECTED_CONTINUOUS_APPEND_COUNT = 1;
 
@@ -367,7 +387,7 @@ export const continuousConfigForPage = (page) => {
 };
 
 const continuousStateSnapshot = (tab, config) =>
-  tab.playwright.locator("html").evaluate((_root, stateConfig) => {
+  retryControllerDeadline(() => tab.playwright.locator("#quarto-document-content").evaluate((_root, stateConfig) => {
     const markers = Array.from(
       document.querySelectorAll(stateConfig.markerSelector)
     );
@@ -431,7 +451,7 @@ const continuousStateSnapshot = (tab, config) =>
         state: historyState
       }
     };
-  }, config);
+  }, config, { timeoutMs: 10000 }));
 
 const waitForContinuousState = async (
   tab,
@@ -454,12 +474,16 @@ const waitForContinuousState = async (
 };
 
 const scrollTo = async (tab, position) => {
-  await tab.playwright.locator("html").evaluate(
-    (_element, target) => {
-      window.scrollTo(0, target);
-    },
-    position
-  );
+  const current = await pagePosition(tab);
+  const target = Number.isSafeInteger(position)
+    ? Math.min(position, current.scrollHeight)
+    : current.scrollHeight;
+  await tab.cua.scroll({
+    x: Math.max(1, Math.min(100, current.clientWidth - 1)),
+    y: Math.max(1, Math.min(100, current.clientHeight - 1)),
+    scrollX: 0,
+    scrollY: target - current.scrollY
+  });
   await delay(120);
 };
 
@@ -644,21 +668,17 @@ const interactWithToc = async (
   desktop,
   collapseLessonTrack = false
 ) => {
-  const toggleState = () =>
-    tab.playwright.locator("html").evaluate(() => {
-      const toggle = Array.from(
-        document.querySelectorAll("[data-bms-toc-heading-toggle]")
-      ).find((candidate) => {
-        const rectangle = candidate.getBoundingClientRect();
-        return rectangle.width > 0 && rectangle.height > 0;
-      });
-      return toggle
-        ? {
-            available: true,
-            expanded: toggle.getAttribute("aria-expanded")
-          }
-        : { available: false, expanded: null };
-    });
+  const toggleState = async () => {
+    const toggle = await visibleLocator(
+      tab.playwright.locator("[data-bms-toc-heading-toggle]")
+    );
+    return toggle
+      ? {
+          available: true,
+          expanded: await toggle.getAttribute("aria-expanded")
+        }
+      : { available: false, expanded: null };
+  };
   const clickToggle = async () => {
     const toggle = await visibleLocator(
       tab.playwright.locator("[data-bms-toc-heading-toggle]")
@@ -1463,7 +1483,7 @@ export async function runReleaseUiChecks({
               appendedPages: finalState.appendedPages,
               loadedPageOrder: finalState.loadedPageOrder,
               loadingCompletionSignal: finalState.completionSignal,
-              scrollTrigger: "window.scrollTo(0, Number.MAX_SAFE_INTEGER)",
+              scrollTrigger: "browser wheel scroll to document bottom",
               finalScrollPosition: finalState.scrollPosition,
               namespacedContainerIds,
               finalUrl: finalState.url,
@@ -1535,7 +1555,7 @@ export async function runReleaseUiChecks({
             bottomMetrics.scrollY > 0 &&
             page.kind !== "research-article"
           ) {
-            await backToTop.click();
+            await clickInPlace(activeTab, backToTop);
             await delay(1200);
             check(
               (await pagePosition(activeTab)).scrollY <= 80,
