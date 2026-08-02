@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "name": "Homepage",
+      "route": "/",
+      "kind": "home",
+      "required_markers": ["Backgammon Made Simple"]
+    },
+    {
+      "id": "learn-index",
+      "name": "Learn index",
+      "route": "/learn/",
+      "kind": "learn-index",
+      "required_markers": ["data-bms-learn-filters", "data-bms-learn-list"]
+    },
+    {
+      "id": "cube-index",
+      "name": "Cube track index",
+      "route": "/learn/cube/",
+      "kind": "learn-index",
+      "required_markers": ["data-bms-learn-filters", "data-bms-learn-list"]
+    },
+    {
+      "id": "cube-lesson",
+      "name": "Cube lesson",
+      "route": "/learn/cube/what-the-cube-is-asking.html",
+      "kind": "learn-lesson",
+      "required_markers": ["data-bms-cube-decision"]
+    },
+    {
+      "id": "research-article",
+      "name": "Research continuous article",
+      "route": "/research/sage-vs-gnu-additional-details.html",
+      "kind": "research-article",
+      "required_markers": ["bms-research-article"]
+    },
+    {
+      "id": "glossary",
+      "name": "Glossary",
+      "route": "/glossary/",
+      "kind": "glossary",
+      "required_markers": ["data-bms-glossary-filters", "data-bms-glossary-entry"]
+    },
+    {
+      "id": "analyze",
+      "name": "Analyzer landing page",
+      "route": "/analyze/",
+      "kind": "ordinary",
+      "required_markers": ["Paste an XGID"]
+    },
+    {
+      "id": "about",
+      "name": "About page",
+      "route": "/about.html",
+      "kind": "ordinary",
+      "required_markers": ["About"]
+    },
+    {
+      "id": "engine-benchmark",
+      "name": "Engine benchmark landing page",
+      "route": "/engine-benchmark/",
+      "kind": "ordinary",
+      "required_markers": ["Engine Benchmark"]
+    }
+  ]
+}
