@@ -1415,6 +1415,11 @@ private code phrase
         )
         self.assertRegex(
             css,
+            r"\.bms-site-tools--editorial-dock \{[^}]*"
+            r"padding-top: 0;[^}]*border-top: 0;",
+        )
+        self.assertRegex(
+            css,
             r"\.bms-site-tools--sidebar \.bms-term-lookup-reveal \{[^}]*"
             r"width: auto;[^}]*"
             r"background: var\(--bms-page-background\);[^}]*"

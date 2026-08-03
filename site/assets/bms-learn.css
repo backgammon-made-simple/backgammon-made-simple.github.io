@@ -1571,6 +1571,8 @@ body.bms-glossary-index
   width: clamp(10rem, 16vw, 18rem);
   max-height: calc(100vh - 5.75rem);
   margin: 0;
+  padding-top: 0;
+  border-top: 0;
   overflow-y: auto;
 }
 
