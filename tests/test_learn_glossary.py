@@ -1347,6 +1347,11 @@ private code phrase
         )
         self.assertIn("color: var(--bms-ivory)", css)
         self.assertIn(
+            ".bms-site-tools--floating .bms-term-lookup-close",
+            css,
+        )
+        self.assertIn("margin-right: calc(-0.75rem - 1px)", css)
+        self.assertIn(
             "body:is(.bms-learn-index, .bms-learn-track-index)"
             " .bms-learn-clear",
             css,

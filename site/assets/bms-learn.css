@@ -1472,6 +1472,11 @@ body:is(.bms-learn-index, .bms-learn-article)
 }
 
 @media (min-width: 992px) {
+  .bms-site-tools--floating .bms-term-lookup-close,
+  .bms-site-tools--sidebar .bms-term-lookup-close {
+    margin-right: calc(-0.75rem - 1px);
+  }
+
   body.bms-glossary-index .bms-site-tools--floating {
     top: 5rem;
     right: 1rem;
