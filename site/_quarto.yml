@@ -45,6 +45,7 @@ website:
   navbar:
     logo: assets/logo.svg
     logo-alt: "Backgammon Made Simple"
+    collapse-below: xl
     left:
       - text: Learn
         href: learn/index.qmd
