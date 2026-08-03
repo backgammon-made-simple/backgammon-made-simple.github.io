@@ -1350,7 +1350,9 @@ private code phrase
             ".bms-site-tools--floating .bms-term-lookup-close",
             css,
         )
-        self.assertIn("margin-right: calc(-0.75rem - 1px)", css)
+        self.assertIn("position: absolute", css)
+        self.assertIn("top: 0.75rem", css)
+        self.assertIn("right: 0", css)
         self.assertIn(
             "body:is(.bms-learn-index, .bms-learn-track-index)"
             " .bms-learn-clear",
@@ -1629,7 +1631,7 @@ private code phrase
             "justify-content: space-between",
             refined_lookup_heading.group(1),
         )
-        self.assertIn("margin-left: auto", css)
+        self.assertIn("top: 0.9rem", css)
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar \{[^}]*"

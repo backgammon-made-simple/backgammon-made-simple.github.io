@@ -1472,9 +1472,10 @@ body:is(.bms-learn-index, .bms-learn-article)
 }
 
 @media (min-width: 992px) {
-  .bms-site-tools--floating .bms-term-lookup-close,
-  .bms-site-tools--sidebar .bms-term-lookup-close {
-    margin-right: calc(-0.75rem - 1px);
+  .bms-site-tools--floating .bms-term-lookup-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0;
   }
 
   body.bms-glossary-index .bms-site-tools--floating {
@@ -1895,12 +1896,14 @@ body.bms-glossary-index
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0;
     display: inline-flex;
     width: 1.35rem;
     min-height: 1.35rem;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
     padding: 0;
   }
 
