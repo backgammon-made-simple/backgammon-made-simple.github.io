@@ -1762,6 +1762,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-toc-toggle-divider {
@@ -1772,6 +1773,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-toc-heading-toggle {
@@ -1793,6 +1795,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-toc-heading-toggle[aria-expanded="false"] {
@@ -1802,8 +1805,17 @@ body.bms-glossary-index
     white-space: nowrap;
   }
 
+  body.bms-engine-benchmark-page
+    .bms-toc-heading-toggle[aria-expanded] {
+    width: auto;
+    padding: 0.1rem 0.4rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-site-tools--sidebar
@@ -1813,6 +1825,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-site-tools--sidebar {
@@ -1831,6 +1844,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-site-tools--sidebar
@@ -1840,6 +1854,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-site-tools--sidebar
@@ -1856,6 +1871,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-site-tools--sidebar
@@ -1886,6 +1902,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-heading {
@@ -1895,6 +1912,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-close {
@@ -1911,6 +1929,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-controls {
@@ -1920,6 +1939,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-controls
@@ -1929,6 +1949,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-browse {
@@ -1943,6 +1964,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-term-lookup-full {
@@ -1960,6 +1982,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-track-index)
     )
     .bms-toc-heading-toggle:focus-visible {
@@ -2076,7 +2099,11 @@ body.bms-glossary-index
   }
 
   .bms-mobile-tools-drawer .bms-term-lookup-close,
-  body:is(.bms-research-article, .bms-learn-article)
+  body:is(
+      .bms-research-article,
+      .bms-engine-benchmark-page,
+      .bms-learn-article
+    )
     [data-bms-site-term-toggle] {
     display: none !important;
   }
@@ -2147,6 +2174,7 @@ body.bms-glossary-index
 
   body:is(
       .bms-research-article,
+      .bms-engine-benchmark-page,
       .bms-learn-article:not(.bms-learn-index):not(.bms-learn-track-index)
     )
     .bms-site-tools--floating

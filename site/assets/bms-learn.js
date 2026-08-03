@@ -1152,10 +1152,14 @@
       lookup.id = lookup.id || "bms-term-lookup-panel";
       lookup.hidden = true;
     }
+    const engineBenchmarkPage = document.body.classList.contains(
+      "bms-engine-benchmark-page"
+    );
     const refinedRightRailPage =
       (document.body.classList.contains("bms-learn-article") &&
         !document.body.classList.contains("bms-learn-track-index")) ||
-      document.body.classList.contains("bms-research-article");
+      document.body.classList.contains("bms-research-article") ||
+      engineBenchmarkPage;
 
     const tools = document.createElement("div");
     tools.className = "bms-site-tools";
@@ -1685,9 +1689,13 @@
             ? "Expand table of contents"
             : "Collapse table of contents"
         );
-        tocHeadingToggle.textContent = effectivelyCollapsed
-          ? "Table of Contents \u25be"
-          : "\u25b4";
+        tocHeadingToggle.textContent = engineBenchmarkPage
+          ? effectivelyCollapsed
+            ? "Expand TOC"
+            : "Collapse TOC"
+          : effectivelyCollapsed
+            ? "Table of Contents \u25be"
+            : "\u25b4";
         return;
       }
       if (tocHeadingToggle) {

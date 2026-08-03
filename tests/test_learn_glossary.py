@@ -550,6 +550,13 @@ private code phrase
             learn_glossary.SITE_ROOT / "engine-benchmark" / "index.qmd"
         ).read_text(encoding="utf-8")
         self.assertIn("bms-engine-benchmark-page", engine_benchmark)
+        engine_stage = (
+            learn_glossary.SITE_ROOT
+            / "engine-benchmark"
+            / "sage-vs-gnu-stage1"
+            / "index.qmd"
+        ).read_text(encoding="utf-8")
+        self.assertIn("bms-engine-benchmark-page", engine_stage)
 
         research_index = (
             learn_glossary.SITE_ROOT / "research" / "index.qmd"
@@ -1522,6 +1529,9 @@ private code phrase
         ).read_text(encoding="utf-8")
         for required in (
             "refinedRightRailPage",
+            "engineBenchmarkPage",
+            '? "Expand TOC"',
+            ': "Collapse TOC"',
             "bms-research-article",
             "bms-lesson-track-content",
             'querySelectorAll("[data-bms-lesson-track-nav]")',
@@ -1637,6 +1647,14 @@ private code phrase
             refined_lookup_heading.group(1),
         )
         self.assertIn("top: 0.9rem", css)
+        self.assertGreaterEqual(css.count(".bms-engine-benchmark-page"), 18)
+        self.assertRegex(
+            css,
+            r"body\.bms-engine-benchmark-page\s+"
+            r"\.bms-toc-heading-toggle\[aria-expanded\] "
+            r"\{[^}]*width: auto;[^}]*"
+            r"white-space: nowrap;",
+        )
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar \{[^}]*"
