@@ -41,17 +41,18 @@ branches to conceal it.
 
 ## 2. Build and run automation
 
-Run the focused contracts first, then the canonical comprehensive gate. The
-comprehensive gate rebuilds `site/_site` and runs the static and rendered-site
-checks. Do not run Quarto renders concurrently.
+Open Git Bash at the website repository. Run the focused contracts first, then
+the canonical comprehensive gate. The comprehensive gate rebuilds `site/_site`
+and runs the static and rendered-site checks. Do not run Quarto renders
+concurrently.
 
-```powershell
-Set-Location $WebsiteRepo
-& .\.venv\Scripts\python.exe tests\test_release_ui_checks.py
-node tests\test_release_ui_browser_check.mjs
+```bash
+cd /c/Users/andre/Documents/backgammon-made-simple.github.io
+.venv/Scripts/python.exe tests/test_release_ui_checks.py
+node tests/test_release_ui_browser_check.mjs
 bash scripts/testing/quick.sh
 bash scripts/testing/comprehensive.sh
-& .\.venv\Scripts\python.exe scripts\testing\build\release_ui_static_check.py
+.venv/Scripts/python.exe scripts/testing/build/release_ui_static_check.py
 git diff --check
 ```
 
@@ -65,10 +66,10 @@ completed evidence, not an automatic pass.
 
 ## 3. Start the fixed preview
 
-Run this in a dedicated terminal and leave it running during capture:
+Run this in a dedicated Git Bash terminal and leave it running during capture:
 
-```powershell
-Set-Location $WebsiteRepo
+```bash
+cd /c/Users/andre/Documents/backgammon-made-simple.github.io
 bash scripts/preview-site.sh 8765
 ```
 
