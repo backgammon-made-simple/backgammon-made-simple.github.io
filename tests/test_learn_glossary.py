@@ -550,6 +550,13 @@ private code phrase
             learn_glossary.SITE_ROOT / "engine-benchmark" / "index.qmd"
         ).read_text(encoding="utf-8")
         self.assertIn("bms-engine-benchmark-page", engine_benchmark)
+        engine_stage = (
+            learn_glossary.SITE_ROOT
+            / "engine-benchmark"
+            / "sage-vs-gnu-stage1"
+            / "index.qmd"
+        ).read_text(encoding="utf-8")
+        self.assertIn("bms-engine-benchmark-page", engine_stage)
 
         research_index = (
             learn_glossary.SITE_ROOT / "research" / "index.qmd"
@@ -1315,6 +1322,9 @@ private code phrase
             "(!glossarySearch || glossaryIndexPage)",
             "if (glossarySearch && !lookup)",
             "const updateGlossaryLookupForScroll = function",
+            "let lastGlossaryScrollY = window.scrollY",
+            "Math.abs(currentScrollY - lastGlossaryScrollY) > 4",
+            "lastGlossaryScrollY = currentScrollY",
             "let desktopCollapsed = !refinedRightRailPage;",
             "window.scrollY <= window.innerHeight",
             'window.addEventListener("resize", updateBackToTop)',
@@ -1343,6 +1353,13 @@ private code phrase
             css,
         )
         self.assertIn("color: var(--bms-ivory)", css)
+        self.assertIn(
+            ".bms-site-tools--floating .bms-term-lookup-close",
+            css,
+        )
+        self.assertIn("position: absolute", css)
+        self.assertIn("top: 0.75rem", css)
+        self.assertIn("right: 0", css)
         self.assertIn(
             "body:is(.bms-learn-index, .bms-learn-track-index)"
             " .bms-learn-clear",
@@ -1402,6 +1419,11 @@ private code phrase
             r"body\.bms-engine-benchmark-page #quarto-margin-sidebar \{[^}]*"
             r"width: clamp\(10rem, 16vw, 18rem\);[^}]*"
             r"min-width: clamp\(10rem, 16vw, 18rem\);",
+        )
+        self.assertRegex(
+            css,
+            r"\.bms-site-tools--editorial-dock \{[^}]*"
+            r"padding-top: 0;[^}]*border-top: 0;",
         )
         self.assertRegex(
             css,
@@ -1507,6 +1529,9 @@ private code phrase
         ).read_text(encoding="utf-8")
         for required in (
             "refinedRightRailPage",
+            "engineBenchmarkPage",
+            '? "Expand TOC"',
+            ': "Collapse TOC"',
             "bms-research-article",
             "bms-lesson-track-content",
             'querySelectorAll("[data-bms-lesson-track-nav]")',
@@ -1563,6 +1588,8 @@ private code phrase
             "const positionExpandedToggle = function",
             "if (!toggle.hidden && !collapsed)",
             "const updateVisibility = function",
+            "const keepExpandedWhileScrolling =",
+            "!keepExpandedWhileScrolling &&",
             "sidebarScroller.addEventListener",
             "let autoCollapsePending = window.scrollY <= 32",
             "autoCollapsePending &&",
@@ -1571,6 +1598,20 @@ private code phrase
             self.assertIn(required, javascript)
         self.assertNotIn("initializeDistractionFreeMode", javascript)
         self.assertNotIn("bms-distraction-free", javascript)
+        left_sidebar_toggle = javascript[
+            javascript.index("  function initializeLearnLeftSidebarToggle") :
+            javascript.index("  function findIdWithinRoot")
+        ]
+        self.assertEqual(
+            left_sidebar_toggle.count("!keepExpandedWhileScrolling &&"),
+            2,
+        )
+        glossary_scroll = javascript[
+            javascript.index("    const updateGlossaryLookupForScroll") :
+            javascript.index("    if (form && input && result)")
+        ]
+        self.assertIn("closeLookup();", glossary_scroll)
+        self.assertNotIn("open({ focusInput: false });", glossary_scroll)
 
         css = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
@@ -1596,6 +1637,24 @@ private code phrase
             "@media (min-width: 992px)",
         ):
             self.assertIn(required, css)
+        refined_lookup_heading = re.search(
+            r"\.bms-term-lookup-heading \{([^}]*)\}",
+            css[css.index("body:is(\n      .bms-research-article") :],
+        )
+        self.assertIsNotNone(refined_lookup_heading)
+        self.assertIn(
+            "justify-content: space-between",
+            refined_lookup_heading.group(1),
+        )
+        self.assertIn("top: 0.9rem", css)
+        self.assertGreaterEqual(css.count(".bms-engine-benchmark-page"), 18)
+        self.assertRegex(
+            css,
+            r"body\.bms-engine-benchmark-page\s+"
+            r"\.bms-toc-heading-toggle\[aria-expanded\] "
+            r"\{[^}]*width: auto;[^}]*"
+            r"white-space: nowrap;",
+        )
         self.assertRegex(
             css,
             r"\.bms-site-tools--sidebar \{[^}]*"
