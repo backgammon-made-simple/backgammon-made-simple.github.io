@@ -49,15 +49,62 @@ function Get-CodexKnownToolPaths {
       )
     }
     'Rscript' {
+      $localR = @()
+      $localRRoot = Join-Path $env:LOCALAPPDATA 'Programs\R'
+      if (Test-Path -LiteralPath $localRRoot -PathType Container) {
+        Get-ChildItem -Path $localRRoot -Directory -Filter 'R-*' -ErrorAction SilentlyContinue |
+          ForEach-Object {
+            if ($_.Name -match '^R-(?<version>\d+(?:\.\d+)*)$' ) {
+              try {
+                [version]$version = $Matches.version
+                [pscustomobject]@{ Path = (Join-Path $_.FullName 'bin\Rscript.exe'); Version = $version }
+              } catch {
+                $null
+              }
+            }
+          } |
+          Sort-Object -Property @{ Expression = { $_.Version }; Descending = $true } |
+          ForEach-Object { $_.Path }
+      }
+
+      $programFilesR = @()
+      if (Test-Path -LiteralPath (Join-Path $env:ProgramFiles 'R') -PathType Container) {
+        $programFilesR = Get-ChildItem -Path (Join-Path $env:ProgramFiles 'R') -Directory -Filter 'R-*' -ErrorAction SilentlyContinue |
+          ForEach-Object {
+            if ($_.Name -match '^R-(?<version>\d+(?:\.\d+)*)$' ) {
+              try {
+                [version]$version = $Matches.version
+                [pscustomobject]@{ Path = (Join-Path $_.FullName 'bin\Rscript.exe'); Version = $version }
+              } catch {
+                $null
+              }
+            }
+          } |
+          Sort-Object -Property @{ Expression = { $_.Version }; Descending = $true } |
+          ForEach-Object { $_.Path }
+      }
+
+      $programFilesX86R = @()
+      if (Test-Path -LiteralPath (Join-Path ${env:ProgramFiles(x86)} 'R') -PathType Container) {
+        $programFilesX86R = Get-ChildItem -Path (Join-Path ${env:ProgramFiles(x86)} 'R') -Directory -Filter 'R-*' -ErrorAction SilentlyContinue |
+          ForEach-Object {
+            if ($_.Name -match '^R-(?<version>\d+(?:\.\d+)*)$' ) {
+              try {
+                [version]$version = $Matches.version
+                [pscustomobject]@{ Path = (Join-Path $_.FullName 'bin\Rscript.exe'); Version = $version }
+              } catch {
+                $null
+              }
+            }
+          } |
+          Sort-Object -Property @{ Expression = { $_.Version }; Descending = $true } |
+          ForEach-Object { $_.Path }
+      }
+
       return @(
-        (Join-Path $env:ProgramFiles 'R\R-4.4.3\bin\Rscript.exe'),
-        (Join-Path $env:ProgramFiles 'R\R-4.4.1\bin\Rscript.exe'),
-        (Join-Path $env:ProgramFiles 'R\R-4.3.2\bin\Rscript.exe'),
-        (Join-Path $env:ProgramFiles 'R\R-4.3.1\bin\Rscript.exe'),
-        (Join-Path $env:ProgramFiles 'R\R-4.2.3\bin\Rscript.exe'),
-        (Join-Path $env:ProgramFiles 'R\R-4.2.0\bin\Rscript.exe'),
-        (Join-Path ${env:ProgramFiles(x86)} 'R\R-4.4.1\bin\Rscript.exe'),
-        (Join-Path ${env:ProgramFiles(x86)} 'R\R-4.3.2\bin\Rscript.exe')
+        $localR,
+        $programFilesR,
+        $programFilesX86R
       )
     }
     'git-bash' {
@@ -76,11 +123,18 @@ function Get-CodexKnownToolPaths {
 }
 
 function Resolve-CodexNodeBootstrapSource {
-  param([Parameter(Mandatory = $true)][string]$RepoRoot)
+  param(
+    [Parameter(Mandatory = $true)][string]$RepoRoot,
+    [switch]$PreferInstalledOnly
+  )
 
   $candidates = [System.Collections.Generic.List[string]]::new()
   $nodePaths = Get-CodexKnownToolPaths -Name 'node' -RepoRoot $RepoRoot
+  $projectLocalNode = Join-Path $RepoRoot '.tools\node\node.exe'
   foreach ($path in $nodePaths) {
+    if ($PreferInstalledOnly -and [IO.Path]::GetFullPath($path).Equals([IO.Path]::GetFullPath($projectLocalNode), [System.StringComparison]::OrdinalIgnoreCase)) {
+      continue
+    }
     if ($path) { $candidates.Add((Split-Path -Path $path -Parent)) }
   }
 
@@ -130,18 +184,44 @@ function Invoke-CodexNodeBootstrap {
     throw "Node source path is not a directory: $sourceRoot"
   }
 
+  $destinationRootResolved = Resolve-Path -Path $destinationRoot -ErrorAction SilentlyContinue
+  if ($destinationRootResolved) {
+    if ((Resolve-Path -LiteralPath $sourceRoot).Path -eq $destinationRootResolved.Path) {
+      $alreadyProvisioned = (Test-Path -LiteralPath $destinationNode -PathType Leaf) -and
+        (Test-Path -LiteralPath $destinationNpm -PathType Leaf) -and
+        (Test-Path -LiteralPath (Join-Path $destinationRoot 'node_modules\npm\bin\npm-cli.js') -PathType Leaf)
+      if ($alreadyProvisioned) {
+        return [pscustomobject]@{
+          Source = $sourceRoot
+          Destination = $destinationRoot
+        }
+      }
+      try {
+        $sourceRoot = Resolve-CodexNodeBootstrapSource -RepoRoot $RepoRoot -PreferInstalledOnly
+        Write-Host ('Source was incomplete; retrying from installed runtime: {0}' -f $sourceRoot)
+      } catch {
+        throw "Existing project-local Node runtime at '$sourceRoot' is incomplete and no installed fallback was found."
+      }
+    }
+  }
+
   New-Item -ItemType Directory -Force -Path $destinationRoot | Out-Null
   try {
     Copy-Item -Path (Join-Path $sourceRoot 'node.exe') -Destination $destinationNode -Force
     Copy-Item -Path (Join-Path $sourceRoot 'npm.cmd') -Destination $destinationNpm -Force
     $sourceNpmDirectory = Join-Path $sourceRoot 'node_modules\npm'
-    $destinationNpmDirectory = Join-Path $destinationRoot 'node_modules'
+    $destinationNpmDirectory = Join-Path $destinationRoot 'node_modules\npm'
     if (Test-Path -LiteralPath $destinationNpmDirectory -PathType Container) {
       Remove-Item -LiteralPath $destinationNpmDirectory -Recurse -Force
     }
     Copy-Item -Path (Join-Path $sourceNpmDirectory 'bin') -Destination (Join-Path $destinationNpmDirectory 'bin') -Recurse -Force
-    Copy-Item -Path (Join-Path $sourceNpmDirectory 'node_modules') -Destination (Join-Path $destinationNpmDirectory 'node_modules') -Recurse -Force
-    Copy-Item -Path (Join-Path $sourceNpmDirectory 'package.json') -Destination (Join-Path $destinationNpmDirectory 'package.json') -Force
+    if (Test-Path -LiteralPath (Join-Path $sourceNpmDirectory 'node_modules') -PathType Container) {
+      Copy-Item -Path (Join-Path $sourceNpmDirectory 'node_modules') -Destination (Join-Path $destinationNpmDirectory 'node_modules') -Recurse -Force
+    }
+    $sourceNpmPackageJson = Join-Path $sourceNpmDirectory 'package.json'
+    if (Test-Path -LiteralPath $sourceNpmPackageJson -PathType Leaf) {
+      Copy-Item -Path $sourceNpmPackageJson -Destination (Join-Path $destinationNpmDirectory 'package.json') -Force
+    }
   } catch {
     throw [System.UnauthorizedAccessException]::new(
       "Permission denied while copying Node runtime from '$sourceRoot' to '$destinationRoot': $($_.Exception.Message)",
@@ -601,7 +681,7 @@ function Get-CodexInvocationSpec {
   }
 }
 
-Export-ModuleMember -Function Find-CodexTool, ConvertTo-CodexLaunchException, Invoke-CodexChildProcess, Get-CodexToolVersion, `
+Export-ModuleMember -Function Find-CodexTool, Get-CodexKnownToolPaths, ConvertTo-CodexLaunchException, Invoke-CodexChildProcess, Get-CodexToolVersion, `
   Resolve-CodexTools, Get-CodexEnvironmentPath, Get-CodexInvocationSpec, Invoke-CodexPreviewSmoke, `
   Resolve-CodexNodeBootstrapSource, Invoke-CodexNodeBootstrap, `
   ConvertTo-CodexCommandLineArgument, ConvertTo-CodexCommandLine
