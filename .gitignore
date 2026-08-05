@@ -1,6 +1,7 @@
 _site/
 .quarto/
 .freeze/
+.tools/
 .Rproj.user/
 .agents/
 .Rhistory

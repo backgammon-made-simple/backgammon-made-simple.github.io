@@ -20,6 +20,7 @@ function Get-CodexKnownToolPaths {
     }
     'node' {
       return @(
+        (Join-Path $RepoRoot '.tools\node\node.exe'),
         (Join-Path $env:LOCALAPPDATA 'Programs\nodejs\node.exe'),
         (Join-Path $env:ProgramFiles 'nodejs\node.exe'),
         (Join-Path ${env:ProgramFiles(x86)} 'nodejs\node.exe'),
@@ -29,6 +30,7 @@ function Get-CodexKnownToolPaths {
     }
     'npm' {
       return @(
+        (Join-Path $RepoRoot '.tools\node\npm.cmd'),
         (Join-Path $env:LOCALAPPDATA 'Programs\nodejs\npm.cmd'),
         (Join-Path $env:ProgramFiles 'nodejs\npm.cmd'),
         (Join-Path ${env:ProgramFiles(x86)} 'nodejs\npm.cmd'),
@@ -48,6 +50,7 @@ function Get-CodexKnownToolPaths {
     }
     'Rscript' {
       return @(
+        (Join-Path $env:ProgramFiles 'R\R-4.4.3\bin\Rscript.exe'),
         (Join-Path $env:ProgramFiles 'R\R-4.4.1\bin\Rscript.exe'),
         (Join-Path $env:ProgramFiles 'R\R-4.3.2\bin\Rscript.exe'),
         (Join-Path $env:ProgramFiles 'R\R-4.3.1\bin\Rscript.exe'),
@@ -69,6 +72,93 @@ function Get-CodexKnownToolPaths {
     default {
       throw "Unknown tool name: $Name"
     }
+  }
+}
+
+function Resolve-CodexNodeBootstrapSource {
+  param([Parameter(Mandatory = $true)][string]$RepoRoot)
+
+  $candidates = [System.Collections.Generic.List[string]]::new()
+  $nodePaths = Get-CodexKnownToolPaths -Name 'node' -RepoRoot $RepoRoot
+  foreach ($path in $nodePaths) {
+    if ($path) { $candidates.Add((Split-Path -Path $path -Parent)) }
+  }
+
+  $fromCommand = Get-Command node -CommandType Application, ExternalScript -ErrorAction SilentlyContinue |
+    Select-Object -First 1 -ExpandProperty Source
+  if ($fromCommand) { $candidates.Add((Split-Path -Path $fromCommand -Parent)) }
+
+  $normalized = [System.Collections.Generic.List[string]]::new()
+  $seen = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+  foreach ($candidate in $candidates) {
+    if ($candidate -and $seen.Add($candidate)) { $normalized.Add($candidate) }
+  }
+
+  $requiredFiles = @('node.exe', 'npm.cmd')
+  foreach ($candidate in $normalized) {
+    $hasRuntime = $true
+    foreach ($requiredFile in $requiredFiles) {
+      $candidateFile = Join-Path $candidate $requiredFile
+      if (-not (Test-Path -LiteralPath $candidateFile -PathType Leaf)) {
+        $hasRuntime = $false
+        break
+      }
+    }
+    if (-not $hasRuntime) { continue }
+    if (-not (Test-Path -LiteralPath (Join-Path $candidate 'node_modules\npm\bin\npm-cli.js') -PathType Leaf)) {
+      continue
+    }
+    return (Resolve-Path -LiteralPath $candidate).Path
+  }
+
+  $candidateText = if ($normalized.Count -eq 0) { '(none)' } else { $normalized -join '; ' }
+  throw "Unable to locate installed Node runtime with npm support. Searched: $candidateText"
+}
+
+function Invoke-CodexNodeBootstrap {
+  param([Parameter(Mandatory = $true)][string]$RepoRoot)
+
+  $sourceRoot = Resolve-CodexNodeBootstrapSource -RepoRoot $RepoRoot
+  $destinationRoot = Join-Path $RepoRoot '.tools\node'
+  $destinationNode = Join-Path $destinationRoot 'node.exe'
+  $destinationNpm = Join-Path $destinationRoot 'npm.cmd'
+
+  Write-Host ("Source: {0}" -f $sourceRoot)
+  Write-Host ("Destination: {0}" -f $destinationRoot)
+
+  if (-not (Test-Path -LiteralPath $sourceRoot -PathType Container)) {
+    throw "Node source path is not a directory: $sourceRoot"
+  }
+
+  New-Item -ItemType Directory -Force -Path $destinationRoot | Out-Null
+  try {
+    Copy-Item -Path (Join-Path $sourceRoot 'node.exe') -Destination $destinationNode -Force
+    Copy-Item -Path (Join-Path $sourceRoot 'npm.cmd') -Destination $destinationNpm -Force
+    $sourceNpmDirectory = Join-Path $sourceRoot 'node_modules\npm'
+    $destinationNpmDirectory = Join-Path $destinationRoot 'node_modules'
+    if (Test-Path -LiteralPath $destinationNpmDirectory -PathType Container) {
+      Remove-Item -LiteralPath $destinationNpmDirectory -Recurse -Force
+    }
+    Copy-Item -Path (Join-Path $sourceNpmDirectory 'bin') -Destination (Join-Path $destinationNpmDirectory 'bin') -Recurse -Force
+    Copy-Item -Path (Join-Path $sourceNpmDirectory 'node_modules') -Destination (Join-Path $destinationNpmDirectory 'node_modules') -Recurse -Force
+    Copy-Item -Path (Join-Path $sourceNpmDirectory 'package.json') -Destination (Join-Path $destinationNpmDirectory 'package.json') -Force
+  } catch {
+    throw [System.UnauthorizedAccessException]::new(
+      "Permission denied while copying Node runtime from '$sourceRoot' to '$destinationRoot': $($_.Exception.Message)",
+      $_.Exception
+    )
+  }
+
+  $copiedNpmCli = Test-Path -LiteralPath (Join-Path $destinationRoot 'node_modules\npm\bin\npm-cli.js') -PathType Leaf
+  if (-not (Test-Path -LiteralPath $destinationNode -PathType Leaf) -or
+      -not (Test-Path -LiteralPath $destinationNpm -PathType Leaf) -or
+      -not $copiedNpmCli) {
+    throw "Bootstrap did not complete because required Node runtime files are missing from $destinationRoot"
+  }
+
+  return [pscustomobject]@{
+    Source = $sourceRoot
+    Destination = $destinationRoot
   }
 }
 
@@ -513,4 +603,5 @@ function Get-CodexInvocationSpec {
 
 Export-ModuleMember -Function Find-CodexTool, ConvertTo-CodexLaunchException, Invoke-CodexChildProcess, Get-CodexToolVersion, `
   Resolve-CodexTools, Get-CodexEnvironmentPath, Get-CodexInvocationSpec, Invoke-CodexPreviewSmoke, `
+  Resolve-CodexNodeBootstrapSource, Invoke-CodexNodeBootstrap, `
   ConvertTo-CodexCommandLineArgument, ConvertTo-CodexCommandLine

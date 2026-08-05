@@ -13,23 +13,36 @@ Import-Module (Join-Path $PSScriptRoot 'CodexTools.psm1') -Force
 
 function Show-Usage {
   Write-Host 'Usage: powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 <command> [arguments]'
-  Write-Host 'Commands: verify, browser-contract, quick, comprehensive, preview [PORT], preview-smoke [PORT]'
+  Write-Host 'Commands: verify, browser-contract, quick, comprehensive, preview [PORT], preview-smoke [PORT], bootstrap-node'
 }
 
 if ($Command -in @('help', '-h', '--help')) { Show-Usage; exit 0 }
-if ($Command -notin @('verify', 'browser-contract', 'quick', 'comprehensive', 'preview', 'preview-smoke')) {
+if ($Command -notin @('verify', 'browser-contract', 'quick', 'comprehensive', 'preview', 'preview-smoke', 'bootstrap-node')) {
   Write-Host "Unknown command '$Command'."
   Show-Usage
   exit 2
 }
 
 $required = switch ($Command) {
+  'bootstrap-node' { @() }
   'browser-contract' { @('node') }
   'quick' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
   'comprehensive' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
   'preview' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
   'preview-smoke' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
   default { @('python', 'node', 'npm', 'quarto', 'Rscript', 'git-bash') }
+}
+
+if ($Command -eq 'bootstrap-node') {
+  try {
+    $result = Invoke-CodexNodeBootstrap -RepoRoot $repoRoot
+    Write-Host ("Source: {0}" -f $result.Source)
+    Write-Host ("Destination: {0}" -f $result.Destination)
+    exit 0
+  } catch {
+    Write-Error $_.Exception.Message
+    exit 1
+  }
 }
 
 try {

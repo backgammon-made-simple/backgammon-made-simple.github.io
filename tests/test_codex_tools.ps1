@@ -5,6 +5,13 @@ $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Import-Module (Join-Path $repoRoot 'scripts\dev\windows\CodexTools.psm1') -Force
 $failures = [System.Collections.Generic.List[string]]::new()
 $skips = [System.Collections.Generic.List[string]]::new()
+$originalEnv = @{
+  LOCALAPPDATA = $env:LOCALAPPDATA
+  PROGRAMFILES = $env:ProgramFiles
+  PROGRAMFILES_X86 = ${env:ProgramFiles(x86)}
+  USERPROFILE = $env:USERPROFILE
+  PATH = $env:PATH
+}
 
 function Add-Failure([string]$Message) {
   $script:failures.Add($Message)
@@ -42,6 +49,63 @@ try {
   New-Item -ItemType File -Path $knownNode | Out-Null
   $tool = Find-CodexTool -Name node -RepoRoot $fixture -CommandLookup { param($name) $null } -KnownPaths @($knownNode)
   Assert-Equal (Resolve-Path $knownNode).Path $tool.Path 'tool discovery must use known installed locations'
+
+  $projectNode = Join-Path $fixture '.tools\node\node.exe'
+  $projectNpm = Join-Path $fixture '.tools\node\npm.cmd'
+  New-Item -ItemType Directory -Path (Split-Path $projectNode -Parent) | Out-Null
+  New-Item -ItemType File -Path $projectNode | Out-Null
+  New-Item -ItemType File -Path $projectNpm | Out-Null
+  $legacyNode = Join-Path $fixture 'legacy\node.exe'
+  New-Item -ItemType Directory -Path (Split-Path $legacyNode -Parent) | Out-Null
+  New-Item -ItemType File -Path $legacyNode | Out-Null
+  $tool = Find-CodexTool -Name node -RepoRoot $fixture -CommandLookup { param($name) $null } -KnownPaths @($legacyNode, $projectNode)
+  Assert-Equal (Resolve-Path $projectNode).Path $tool.Path 'project-local Node should be preferred over other known locations'
+
+  $env:LOCALAPPDATA = Join-Path $fixture 'bootstrap\appdata'
+  $env:ProgramFiles = Join-Path $fixture 'bootstrap\programfiles'
+  $env:ProgramFiles(x86) = Join-Path $fixture 'bootstrap\programfilesx86'
+  $env:USERPROFILE = Join-Path $fixture 'bootstrap\user'
+  $env:PATH = 'C:\Windows\System32'
+  $bootstrapWorkspace = Join-Path $fixture 'bootstrap'
+  $sourceRoot = Join-Path $env:LOCALAPPDATA 'Programs\nodejs'
+  New-Item -ItemType Directory -Path (Split-Path $sourceRoot -Parent) -Force | Out-Null
+  New-Item -ItemType Directory -Path (Join-Path $sourceRoot 'node_modules\npm\bin') -Force | Out-Null
+  Set-Content -Path (Join-Path $sourceRoot 'node.exe') -Value 'bootstrap source node placeholder'
+  Set-Content -Path (Join-Path $sourceRoot 'npm.cmd') -Value '@echo off'
+  Set-Content -Path (Join-Path $sourceRoot 'node_modules\npm\bin\npm-cli.js') -Value 'console.log(''npm-cli placeholder'')'
+  Set-Content -Path (Join-Path $sourceRoot 'node_modules\npm\package.json') -Value '{ }'
+  $bootstrapResult = Invoke-CodexNodeBootstrap -RepoRoot $bootstrapWorkspace
+  Assert-Equal (Resolve-Path $sourceRoot).Path $bootstrapResult.Source 'bootstrap should discover node source from installed path'
+  Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\node.exe') -PathType Leaf) 'bootstrap should copy node.exe to .tools\\node'
+  Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\npm.cmd') -PathType Leaf) 'bootstrap should copy npm.cmd to .tools\\node'
+  Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\node_modules\npm\bin\npm-cli.js') -PathType Leaf) 'bootstrap should copy npm runtime support files'
+  Assert-Equal 'bootstrap source node placeholder' (Get-Content -Path (Join-Path $bootstrapWorkspace '.tools\node\node.exe') -Raw) 'copying node must copy content only, not execute node.exe'
+
+  $firstNodeHash = (Get-FileHash -Path (Join-Path $bootstrapWorkspace '.tools\node\node.exe')).Hash
+  Invoke-CodexNodeBootstrap -RepoRoot $bootstrapWorkspace
+  $secondNodeHash = (Get-FileHash -Path (Join-Path $bootstrapWorkspace '.tools\node\node.exe')).Hash
+  Assert-Equal $firstNodeHash $secondNodeHash 'repeated bootstrap should be idempotent'
+
+  Remove-Item -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\npm.cmd') -Force
+  Invoke-CodexNodeBootstrap -RepoRoot $bootstrapWorkspace
+  Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\npm.cmd') -PathType Leaf) 'incomplete bootstrap should be repaired'
+
+  $missingWorkspace = Join-Path $fixture 'missing-source'
+  $env:LOCALAPPDATA = Join-Path $missingWorkspace 'appdata'
+  $env:ProgramFiles = Join-Path $missingWorkspace 'programfiles'
+  $env:ProgramFiles(x86) = Join-Path $missingWorkspace 'programfilesx86'
+  $env:USERPROFILE = Join-Path $missingWorkspace 'user'
+  try {
+    Invoke-CodexNodeBootstrap -RepoRoot $missingWorkspace | Out-Null
+    Add-Failure 'bootstrap must fail when no source runtime exists'
+  } catch {
+    Assert-True ($_.Exception.Message -match 'Unable to locate installed Node runtime') 'missing source should produce a clear error'
+  }
+  $env:LOCALAPPDATA = $originalEnv.LOCALAPPDATA
+  $env:ProgramFiles = $originalEnv.PROGRAMFILES
+  $env:ProgramFiles(x86) = $originalEnv.PROGRAMFILES_X86
+  $env:USERPROFILE = $originalEnv.USERPROFILE
+  $env:PATH = $originalEnv.PATH
 
   $venvPython = Join-Path $fixture '.venv\Scripts\python.exe'
   New-Item -ItemType Directory -Path (Split-Path $venvPython -Parent) | Out-Null
@@ -130,6 +194,19 @@ try {
   $badLauncher = Invoke-Launcher @('nonsense')
   Assert-Equal 2 $badLauncher.ExitCode 'unknown command must return 2'
 
+  $gitignore = Get-Content -Path (Join-Path $repoRoot '.gitignore')
+  Assert-True ($gitignore -contains '.tools/') '.tools/ must be gitignored for project runtime'
+  Assert-True (Get-CodexKnownToolPaths -Name node -RepoRoot $repoRoot | Select-Object -First 1).EndsWith('.tools\node\node.exe') 'project-local node should be preferred in known paths'
+  Assert-True (Get-CodexKnownToolPaths -Name npm -RepoRoot $repoRoot | Select-Object -First 1).EndsWith('.tools\node\npm.cmd') 'project-local npm should be preferred in known paths'
+
+  $projectNodeForExecution = Join-Path $bootstrapWorkspace '.tools\node\node.exe'
+  $projectNodeRun = Invoke-CodexChildProcess -FilePath $projectNodeForExecution -ArgumentList @('--version') -WorkingDirectory $bootstrapWorkspace -PrependPath @((Split-Path $projectNodeForExecution -Parent)) -CaptureOutput
+  Assert-True ($projectNodeRun.ExitCode -eq 0) 'project-local Node execution should complete with --version'
+  Assert-True ($projectNodeRun.StdOut.Trim().StartsWith('v22.14.0') -or $projectNodeRun.StdOut.Trim().StartsWith('v')) 'project-local Node execution output should resemble a version'
+
+  $browserContract = Invoke-Launcher @('browser-contract')
+  Assert-Equal 0 $browserContract.ExitCode 'browser-contract should run in the project-local Node flow'
+
   if (Get-Command node -CommandType Application -ErrorAction SilentlyContinue) {
     $badLauncher = Invoke-Launcher @('preview-smoke', 'foo')
     Assert-True ($badLauncher.ExitCode -ne 0) 'invalid port value must fail'
@@ -160,10 +237,17 @@ try {
       Add-Failure "preview-smoke must complete cleanly (exit $($smoke.ExitCode))"
     }
   } else {
-    Add-Skip 'Node is not available in this Spark environment; skipping preview-smoke launcher execution checks.'
+    Add-Failure 'Node is not available in this Spark environment; preview-smoke execution check must not be skipped'
   }
 } finally {
   Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
+  if ($originalEnv) {
+    $env:LOCALAPPDATA = $originalEnv.LOCALAPPDATA
+    $env:ProgramFiles = $originalEnv.PROGRAMFILES
+    $env:ProgramFiles(x86) = $originalEnv.PROGRAMFILES_X86
+    $env:USERPROFILE = $originalEnv.USERPROFILE
+    $env:PATH = $originalEnv.PATH
+  }
 }
 
 if ($failures.Count -gt 0) {
