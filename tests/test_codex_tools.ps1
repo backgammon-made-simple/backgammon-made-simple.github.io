@@ -58,12 +58,12 @@ try {
   $legacyNode = Join-Path $fixture 'legacy\node.exe'
   New-Item -ItemType Directory -Path (Split-Path $legacyNode -Parent) | Out-Null
   New-Item -ItemType File -Path $legacyNode | Out-Null
-  $tool = Find-CodexTool -Name node -RepoRoot $fixture -CommandLookup { param($name) $null } -KnownPaths @($legacyNode, $projectNode)
+  $tool = Find-CodexTool -Name node -RepoRoot $fixture -CommandLookup { param($name) $null } -KnownPaths @($projectNode, $legacyNode)
   Assert-Equal (Resolve-Path $projectNode).Path $tool.Path 'project-local Node should be preferred over other known locations'
 
   $env:LOCALAPPDATA = Join-Path $fixture 'bootstrap\appdata'
   $env:ProgramFiles = Join-Path $fixture 'bootstrap\programfiles'
-  $env:ProgramFiles(x86) = Join-Path $fixture 'bootstrap\programfilesx86'
+  ${env:ProgramFiles(x86)} = Join-Path $fixture 'bootstrap\programfilesx86'
   $env:USERPROFILE = Join-Path $fixture 'bootstrap\user'
   $env:PATH = 'C:\Windows\System32'
   $bootstrapWorkspace = Join-Path $fixture 'bootstrap'
@@ -79,7 +79,7 @@ try {
   Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\node.exe') -PathType Leaf) 'bootstrap should copy node.exe to .tools\\node'
   Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\npm.cmd') -PathType Leaf) 'bootstrap should copy npm.cmd to .tools\\node'
   Assert-True (Test-Path -LiteralPath (Join-Path $bootstrapWorkspace '.tools\node\node_modules\npm\bin\npm-cli.js') -PathType Leaf) 'bootstrap should copy npm runtime support files'
-  Assert-Equal 'bootstrap source node placeholder' (Get-Content -Path (Join-Path $bootstrapWorkspace '.tools\node\node.exe') -Raw) 'copying node must copy content only, not execute node.exe'
+  Assert-Equal 'bootstrap source node placeholder' ((Get-Content -Path (Join-Path $bootstrapWorkspace '.tools\node\node.exe') -Raw).Trim()) 'copying node must copy content only, not execute node.exe'
 
   $firstNodeHash = (Get-FileHash -Path (Join-Path $bootstrapWorkspace '.tools\node\node.exe')).Hash
   Invoke-CodexNodeBootstrap -RepoRoot $bootstrapWorkspace
@@ -93,7 +93,7 @@ try {
   $missingWorkspace = Join-Path $fixture 'missing-source'
   $env:LOCALAPPDATA = Join-Path $missingWorkspace 'appdata'
   $env:ProgramFiles = Join-Path $missingWorkspace 'programfiles'
-  $env:ProgramFiles(x86) = Join-Path $missingWorkspace 'programfilesx86'
+  ${env:ProgramFiles(x86)} = Join-Path $missingWorkspace 'programfilesx86'
   $env:USERPROFILE = Join-Path $missingWorkspace 'user'
   try {
     Invoke-CodexNodeBootstrap -RepoRoot $missingWorkspace | Out-Null
@@ -103,7 +103,7 @@ try {
   }
   $env:LOCALAPPDATA = $originalEnv.LOCALAPPDATA
   $env:ProgramFiles = $originalEnv.PROGRAMFILES
-  $env:ProgramFiles(x86) = $originalEnv.PROGRAMFILES_X86
+  ${env:ProgramFiles(x86)} = $originalEnv.PROGRAMFILES_X86
   $env:USERPROFILE = $originalEnv.USERPROFILE
   $env:PATH = $originalEnv.PATH
 
@@ -196,20 +196,56 @@ try {
 
   $gitignore = Get-Content -Path (Join-Path $repoRoot '.gitignore')
   Assert-True ($gitignore -contains '.tools/') '.tools/ must be gitignored for project runtime'
-  Assert-True (Get-CodexKnownToolPaths -Name node -RepoRoot $repoRoot | Select-Object -First 1).EndsWith('.tools\node\node.exe') 'project-local node should be preferred in known paths'
-  Assert-True (Get-CodexKnownToolPaths -Name npm -RepoRoot $repoRoot | Select-Object -First 1).EndsWith('.tools\node\npm.cmd') 'project-local npm should be preferred in known paths'
+  $resolvedTools = Resolve-CodexTools -Names @('node', 'npm') -RepoRoot $repoRoot
+  $resolvedNode = $resolvedTools | Where-Object Name -eq node
+  $resolvedNpm = $resolvedTools | Where-Object Name -eq npm
+  Assert-True ($resolvedNode.Path.EndsWith('.tools\node\node.exe')) 'project-local node should be preferred in known paths'
+  Assert-True ($resolvedNpm.Path.EndsWith('.tools\node\npm.cmd')) 'project-local npm should be preferred in known paths'
 
-  $projectNodeForExecution = Join-Path $bootstrapWorkspace '.tools\node\node.exe'
-  $projectNodeRun = Invoke-CodexChildProcess -FilePath $projectNodeForExecution -ArgumentList @('--version') -WorkingDirectory $bootstrapWorkspace -PrependPath @((Split-Path $projectNodeForExecution -Parent)) -CaptureOutput
+  $env:LOCALAPPDATA = Join-Path $fixture 'R\Local'
+  $env:ProgramFiles = Join-Path $fixture 'R\ProgramFiles'
+  ${env:ProgramFiles(x86)} = Join-Path $fixture 'R\ProgramFilesX86'
+  New-Item -ItemType Directory -Path (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.2.1\bin') -Force | Out-Null
+  New-Item -ItemType Directory -Path (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.4.3\bin') -Force | Out-Null
+  New-Item -ItemType File -Path (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.2.1\bin\Rscript.exe') | Out-Null
+  New-Item -ItemType File -Path (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.4.3\bin\Rscript.exe') | Out-Null
+  $rPaths = Get-CodexKnownToolPaths -Name Rscript -RepoRoot $repoRoot
+  Assert-Equal (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.4.3\bin\Rscript.exe') $rPaths[0] 'user-local R discovery should include highest-local version first'
+
+  New-Item -ItemType Directory -Path (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.3.5\bin') -Force | Out-Null
+  New-Item -ItemType File -Path (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.3.5\bin\Rscript.exe') | Out-Null
+  $rPaths = Get-CodexKnownToolPaths -Name Rscript -RepoRoot $repoRoot
+  Assert-Equal (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.4.3\bin\Rscript.exe') $rPaths[0] 'multiple local R versions should choose highest'
+  Assert-Equal (Join-Path $env:LOCALAPPDATA 'Programs\R\R-4.3.5\bin\Rscript.exe') $rPaths[1] 'remaining local R versions should be deterministic'
+  $rPathsRepeated = Get-CodexKnownToolPaths -Name Rscript -RepoRoot $repoRoot
+  Assert-Equal $rPaths[0] $rPathsRepeated[0] 'local R ordering should be deterministic'
+  Assert-Equal $rPaths[1] $rPathsRepeated[1] 'local R tie ordering should be deterministic'
+
+  $missingRWorkspace = Join-Path $fixture 'missing-r'
+  $env:LOCALAPPDATA = Join-Path $missingRWorkspace 'LocalAppData'
+  $env:ProgramFiles = Join-Path $missingRWorkspace 'ProgramFiles'
+  ${env:ProgramFiles(x86)} = Join-Path $missingRWorkspace 'ProgramFilesX86'
+  try {
+    Find-CodexTool -Name Rscript -RepoRoot $missingRWorkspace -CommandLookup { param($name) $null } -KnownPaths @() | Out-Null
+    Add-Failure 'missing R reporting must fail when no Rscript is discoverable'
+  } catch {
+    Assert-True ($_.Exception.Message -match "Missing tool 'Rscript'") 'missing R reporting should mention missing Rscript'
+  } finally {
+    $env:LOCALAPPDATA = $originalEnv.LOCALAPPDATA
+    $env:ProgramFiles = $originalEnv.PROGRAMFILES
+    ${env:ProgramFiles(x86)} = $originalEnv.PROGRAMFILES_X86
+  }
+
+  $projectNodeForExecution = Join-Path $repoRoot '.tools\node\node.exe'
+  $projectNodeRun = Invoke-CodexChildProcess -FilePath $projectNodeForExecution -ArgumentList @('--version') -WorkingDirectory $repoRoot -PrependPath @((Split-Path $projectNodeForExecution -Parent)) -CaptureOutput
   Assert-True ($projectNodeRun.ExitCode -eq 0) 'project-local Node execution should complete with --version'
   Assert-True ($projectNodeRun.StdOut.Trim().StartsWith('v22.14.0') -or $projectNodeRun.StdOut.Trim().StartsWith('v')) 'project-local Node execution output should resemble a version'
 
   $browserContract = Invoke-Launcher @('browser-contract')
   Assert-Equal 0 $browserContract.ExitCode 'browser-contract should run in the project-local Node flow'
 
-  if (Get-Command node -CommandType Application -ErrorAction SilentlyContinue) {
-    $badLauncher = Invoke-Launcher @('preview-smoke', 'foo')
-    Assert-True ($badLauncher.ExitCode -ne 0) 'invalid port value must fail'
+  $badLauncher = Invoke-Launcher @('preview-smoke', 'foo')
+  Assert-True ($badLauncher.ExitCode -ne 0) 'invalid port value must fail'
 
     $occupiedPort = 9987
     $occupier = Start-Process -FilePath (Get-Command powershell.exe).Source -ArgumentList @(
@@ -236,15 +272,13 @@ try {
     } else {
       Add-Failure "preview-smoke must complete cleanly (exit $($smoke.ExitCode))"
     }
-  } else {
-    Add-Failure 'Node is not available in this Spark environment; preview-smoke execution check must not be skipped'
-  }
+  if ($badLauncher.ExitCode -eq 0) { Add-Failure 'invalid preview-smoke call unexpectedly passed' }
 } finally {
   Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
   if ($originalEnv) {
     $env:LOCALAPPDATA = $originalEnv.LOCALAPPDATA
     $env:ProgramFiles = $originalEnv.PROGRAMFILES
-    $env:ProgramFiles(x86) = $originalEnv.PROGRAMFILES_X86
+    ${env:ProgramFiles(x86)} = $originalEnv.PROGRAMFILES_X86
     $env:USERPROFILE = $originalEnv.USERPROFILE
     $env:PATH = $originalEnv.PATH
   }
