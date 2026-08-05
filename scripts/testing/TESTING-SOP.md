@@ -11,6 +11,11 @@ Use the smallest gate that covers the change:
 | Comprehensive with social cards | `bash scripts/testing/comprehensive.sh --with-social-cards` | Authorized release preparation |
 | Comprehensive quality baseline | `bash scripts/testing/comprehensive-quality.sh --output-dir <OUTPUT_DIR>` | Reproducible build, browser, performance, bloat, and human-status baseline |
 
+On Windows, use `scripts/codex-tools.ps1 quick` or
+`scripts/codex-tools.ps1 comprehensive` through the PowerShell command shown in
+the testing README. The launcher supplies the discovered tools to one Git Bash
+child process without persisting `PATH` changes.
+
 Stop after the same approach fails twice. Record both attempts instead of
 repeating them. Do not run two Quarto renders concurrently.
 

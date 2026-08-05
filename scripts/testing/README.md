@@ -12,6 +12,18 @@ bash scripts/testing/comprehensive.sh
 bash scripts/testing/comprehensive-quality.sh --output-dir <OUTPUT_DIR>
 ```
 
+On Windows, including fresh Codex chats, use the repository launcher instead
+of bare Bash or Node commands:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 browser-contract
+powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 quick
+powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 comprehensive
+```
+
+Run `powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 verify`
+first when checking the local tool environment.
+
 The root entrypoints delegate to two layers:
 
 - `build/quick.sh` and `build/comprehensive.sh` run deterministic source,
