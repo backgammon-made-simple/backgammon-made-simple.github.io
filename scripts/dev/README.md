@@ -16,6 +16,7 @@ powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 browser-contrac
 powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 quick
 powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 comprehensive
 powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 preview 8765
+powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 preview-smoke 8765
 ```
 
 `preview` defaults to port `8765` when the port is omitted and serves

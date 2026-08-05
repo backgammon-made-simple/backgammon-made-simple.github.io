@@ -9,55 +9,67 @@ function Get-CodexKnownToolPaths {
 
   switch ($Name) {
     'python' {
-      $paths = @(
+      return @(
         (Join-Path $RepoRoot '.venv\Scripts\python.exe'),
         (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python313\python.exe'),
         (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python312\python.exe'),
         (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python311\python.exe'),
+        (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python310\python.exe'),
         (Join-Path $env:SystemRoot 'py.exe')
       )
     }
     'node' {
-      $paths = @(
+      return @(
         (Join-Path $env:LOCALAPPDATA 'Programs\nodejs\node.exe'),
         (Join-Path $env:ProgramFiles 'nodejs\node.exe'),
+        (Join-Path ${env:ProgramFiles(x86)} 'nodejs\node.exe'),
         (Join-Path $env:USERPROFILE 'scoop\apps\nodejs\current\node.exe'),
         'C:\ProgramData\chocolatey\bin\node.exe'
       )
     }
     'npm' {
-      $paths = @(
+      return @(
         (Join-Path $env:LOCALAPPDATA 'Programs\nodejs\npm.cmd'),
         (Join-Path $env:ProgramFiles 'nodejs\npm.cmd'),
+        (Join-Path ${env:ProgramFiles(x86)} 'nodejs\npm.cmd'),
         (Join-Path $env:USERPROFILE 'scoop\apps\nodejs\current\npm.cmd'),
         'C:\ProgramData\chocolatey\bin\npm.exe'
       )
     }
     'quarto' {
-      $paths = @(
+      return @(
         (Join-Path $env:LOCALAPPDATA 'Programs\Quarto\bin\quarto.exe'),
         (Join-Path $env:LOCALAPPDATA 'Programs\Quarto\bin\quarto.cmd'),
         (Join-Path $env:ProgramFiles 'Quarto\bin\quarto.exe'),
-        (Join-Path $env:ProgramFiles 'Quarto\bin\quarto.cmd')
+        (Join-Path $env:ProgramFiles 'Quarto\bin\quarto.cmd'),
+        (Join-Path ${env:ProgramFiles(x86)} 'Quarto\bin\quarto.exe'),
+        (Join-Path ${env:ProgramFiles(x86)} 'Quarto\bin\quarto.cmd')
       )
     }
     'Rscript' {
-      $paths = @(
-        Get-ChildItem (Join-Path $env:ProgramFiles 'R\R-*\bin\Rscript.exe') -File -ErrorAction SilentlyContinue |
-          Sort-Object FullName -Descending |
-          Select-Object -ExpandProperty FullName
+      return @(
+        (Join-Path $env:ProgramFiles 'R\R-4.4.1\bin\Rscript.exe'),
+        (Join-Path $env:ProgramFiles 'R\R-4.3.2\bin\Rscript.exe'),
+        (Join-Path $env:ProgramFiles 'R\R-4.3.1\bin\Rscript.exe'),
+        (Join-Path $env:ProgramFiles 'R\R-4.2.3\bin\Rscript.exe'),
+        (Join-Path $env:ProgramFiles 'R\R-4.2.0\bin\Rscript.exe'),
+        (Join-Path ${env:ProgramFiles(x86)} 'R\R-4.4.1\bin\Rscript.exe'),
+        (Join-Path ${env:ProgramFiles(x86)} 'R\R-4.3.2\bin\Rscript.exe')
       )
     }
     'git-bash' {
-      $paths = @(
+      return @(
         (Join-Path $env:ProgramFiles 'Git\bin\bash.exe'),
         (Join-Path $env:ProgramFiles 'Git\usr\bin\bash.exe'),
+        (Join-Path $env:ProgramFiles 'Git\git-bash.exe'),
+        (Join-Path ${env:ProgramFiles(x86)} 'Git\bin\bash.exe'),
         (Join-Path $env:LOCALAPPDATA 'Programs\Git\bin\bash.exe')
       )
     }
-    default { throw "Unknown tool name: $Name" }
+    default {
+      throw "Unknown tool name: $Name"
+    }
   }
-  return @($paths | Where-Object { $_ })
 }
 
 function Find-CodexTool {
@@ -88,12 +100,11 @@ function Find-CodexTool {
   $commandName = if ($Name -eq 'git-bash') { 'bash' } else { $Name }
   $candidates = [System.Collections.Generic.List[string]]::new()
 
-  # The repository interpreter is deliberately considered before inherited PATH.
-  if ($Name -eq 'python') {
-    $candidates.Add((Join-Path $RepoRoot '.venv\Scripts\python.exe'))
-  }
+  if ($Name -eq 'python') { $candidates.Add((Join-Path $RepoRoot '.venv\Scripts\python.exe')) }
+
   $fromCommand = & $CommandLookup $commandName
   if ($fromCommand) { $candidates.Add([string]$fromCommand) }
+
   if ($null -eq $KnownPaths) { $KnownPaths = Get-CodexKnownToolPaths -Name $Name -RepoRoot $RepoRoot }
   foreach ($path in $KnownPaths) { if ($path) { $candidates.Add($path) } }
 
@@ -112,8 +123,15 @@ function Find-CodexTool {
 
 function ConvertTo-CodexCommandLineArgument {
   param([AllowEmptyString()][string]$Value)
+  if ($null -eq $Value) { return '' }
+  if ($Value -eq '') { return '""' }
   if ($Value -notmatch '[\s"]') { return $Value }
   return '"' + ($Value -replace '(\\*)"', '$1$1\"' -replace '(\\+)$', '$1$1') + '"'
+}
+
+function ConvertTo-CodexCommandLine {
+  param([string[]]$ArgumentList)
+  return (($ArgumentList | ForEach-Object { ConvertTo-CodexCommandLineArgument $_ }) -join ' ')
 }
 
 function ConvertTo-CodexLaunchException {
@@ -122,23 +140,59 @@ function ConvertTo-CodexLaunchException {
     [Parameter(Mandatory = $true)][string]$FilePath,
     [string]$DisplayCommand
   )
+
   $cause = $Exception
   $denied = $false
   while ($cause) {
-    if ($cause -is [System.UnauthorizedAccessException] -or
-      ($cause -is [System.ComponentModel.Win32Exception] -and $cause.NativeErrorCode -eq 5)) {
+    if (
+      $cause -is [System.UnauthorizedAccessException] -or
+      ($cause -is [System.ComponentModel.Win32Exception] -and $cause.NativeErrorCode -eq 5)
+    ) {
       $denied = $true
       break
     }
     $cause = $cause.InnerException
   }
+
   if ($denied) {
     $shown = if ($DisplayCommand) { $DisplayCommand } else { $FilePath }
     return [System.UnauthorizedAccessException]::new(
-      "Permission denied launching '$FilePath' for command '$shown'.", $Exception
+      "Permission denied launching '$FilePath' for command '$shown'.",
+      $Exception
     )
   }
+
   return $Exception
+}
+
+function New-CodexStartInfo {
+  param(
+    [Parameter(Mandatory = $true)][string]$FilePath,
+    [Parameter(Mandatory = $true)][string]$Arguments,
+    [Parameter(Mandatory = $true)][string]$WorkingDirectory,
+    [string[]]$PrependPath = @()
+  )
+
+  $pathParts = [System.Collections.Generic.List[string]]::new()
+  foreach ($path in $PrependPath) {
+    if ($path -and -not $pathParts.Contains($path)) { $pathParts.Add($path) }
+  }
+  $systemPath = [Environment]::GetEnvironmentVariable('PATH', 'Process')
+  if ($systemPath) { $pathParts.Add($systemPath) }
+  $childPath = $pathParts -join [IO.Path]::PathSeparator
+
+  $psi = [System.Diagnostics.ProcessStartInfo]::new()
+  $psi.FileName = $FilePath
+  $psi.WorkingDirectory = $WorkingDirectory
+  $psi.UseShellExecute = $false
+  $psi.CreateNoWindow = $true
+  $psi.Arguments = $Arguments
+  if ($null -ne $psi.Environment) {
+    $psi.Environment['PATH'] = $childPath
+  } else {
+    $psi.EnvironmentVariables['PATH'] = $childPath
+  }
+  return $psi
 }
 
 function Invoke-CodexChildProcess {
@@ -151,49 +205,75 @@ function Invoke-CodexChildProcess {
     [string]$DisplayCommand
   )
 
-  $psi = [System.Diagnostics.ProcessStartInfo]::new()
-  $psi.FileName = $FilePath
-  $psi.WorkingDirectory = $WorkingDirectory
-  $psi.UseShellExecute = $false
-  $psi.CreateNoWindow = $false
-  $psi.Arguments = (($ArgumentList | ForEach-Object { ConvertTo-CodexCommandLineArgument $_ }) -join ' ')
-  if ($CaptureOutput) {
-    $psi.RedirectStandardOutput = $true
-    $psi.RedirectStandardError = $true
+  $argumentText = ConvertTo-CodexCommandLine -ArgumentList $ArgumentList
+  if (-not $DisplayCommand) { $DisplayCommand = "$FilePath $argumentText" }
+
+  $attempts = @(
+    @{
+      Label = 'ProcessStartInfo'
+      File = $FilePath
+      Args = $ArgumentList
+      Fallback = $false
+    },
+    @{
+      Label = 'cmd /c'
+      File = $env:ComSpec
+      Args = @('/d', '/c', ('{0} {1}' -f (ConvertTo-CodexCommandLineArgument $FilePath), $argumentText))
+      Fallback = $true
+    }
+  )
+
+  $attemptErrors = [System.Collections.Generic.List[string]]::new()
+  foreach ($attempt in $attempts) {
+    $commandForDisplay = if ($attempt.Fallback) {
+      ('{0} {1}' -f $attempt.File, (ConvertTo-CodexCommandLine -ArgumentList $attempt.Args))
+    } else {
+      $DisplayCommand
+    }
+    try {
+      $psi = New-CodexStartInfo -FilePath $attempt.File -Arguments (ConvertTo-CodexCommandLine -ArgumentList $attempt.Args) `
+        -WorkingDirectory $WorkingDirectory -PrependPath $PrependPath
+      if ($CaptureOutput) {
+        $psi.RedirectStandardOutput = $true
+        $psi.RedirectStandardError = $true
+      }
+
+      $process = [System.Diagnostics.Process]::new()
+      $process.StartInfo = $psi
+      if (-not $process.Start()) { throw [System.InvalidOperationException]::new('The process did not start.') }
+
+      if ($CaptureOutput) {
+        $stdout = $process.StandardOutput.ReadToEnd()
+        $stderr = $process.StandardError.ReadToEnd()
+      }
+      $process.WaitForExit()
+      return [pscustomobject]@{
+        ExitCode = $process.ExitCode
+        StdOut = if ($CaptureOutput) { $stdout } else { '' }
+        StdErr = if ($CaptureOutput) { $stderr } else { '' }
+      }
+    } catch {
+      $mapped = ConvertTo-CodexLaunchException -Exception $_.Exception -FilePath $attempt.File -DisplayCommand $commandForDisplay
+      if ($attempt.Fallback) {
+        $attemptErrors.Add($mapped.Message)
+        throw [System.UnauthorizedAccessException]::new(
+          "Permission denied invoking '$FilePath' after trying multiple launch methods: $($attemptErrors -join '; ')",
+          $_.Exception
+        )
+      }
+
+      if ($mapped -is [System.UnauthorizedAccessException]) {
+        $attemptErrors.Add($mapped.Message)
+        continue
+      }
+
+      throw $mapped
+    }
   }
 
-  $pathParts = [System.Collections.Generic.List[string]]::new()
-  foreach ($path in $PrependPath) {
-    if ($path -and -not $pathParts.Contains($path)) { $pathParts.Add($path) }
-  }
-  $inheritedPath = [Environment]::GetEnvironmentVariable('PATH', 'Process')
-  if ($inheritedPath) { $pathParts.Add($inheritedPath) }
-  $childPath = $pathParts -join [IO.Path]::PathSeparator
-  if (($psi.PSObject.Properties.Name -contains 'Environment') -and $null -ne $psi.Environment) {
-    $psi.Environment.Item('PATH') = $childPath
-  } else {
-    $psi.EnvironmentVariables.Item('PATH') = $childPath
-  }
-
-  try {
-    $process = [System.Diagnostics.Process]::new()
-    $process.StartInfo = $psi
-    if (-not $process.Start()) { throw "The process did not start." }
-    if ($CaptureOutput) {
-      $stdout = $process.StandardOutput.ReadToEnd()
-      $stderr = $process.StandardError.ReadToEnd()
-    }
-    $process.WaitForExit()
-    return [pscustomobject]@{
-      ExitCode = $process.ExitCode
-      StdOut = if ($CaptureOutput) { $stdout } else { '' }
-      StdErr = if ($CaptureOutput) { $stderr } else { '' }
-    }
-  } catch {
-    $mapped = ConvertTo-CodexLaunchException -Exception $_.Exception -FilePath $FilePath -DisplayCommand $DisplayCommand
-    if ($mapped -ne $_.Exception) { throw $mapped }
-    throw
-  }
+  throw [System.UnauthorizedAccessException]::new(
+    "Permission denied invoking '$FilePath' after trying multiple launch methods: $($attemptErrors -join '; ')"
+  )
 }
 
 function Get-CodexToolVersion {
@@ -208,19 +288,23 @@ function Get-CodexToolVersion {
     'Rscript' { @('--version') }
     default { @('--version') }
   }
-  if ([IO.Path]::GetExtension($Tool.Path) -eq '.cmd') {
+
+  if ([IO.Path]::GetExtension($Tool.Path).ToLowerInvariant() -eq '.cmd') {
     $executable = $env:ComSpec
     $arguments = @('/d', '/c', 'call', $Tool.Path) + $arguments
-  } elseif ([IO.Path]::GetExtension($Tool.Path) -eq '.ps1') {
+  } elseif ([IO.Path]::GetExtension($Tool.Path).ToLowerInvariant() -eq '.ps1') {
     $executable = (Get-Command powershell.exe -CommandType Application -ErrorAction Stop).Source
     $arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $Tool.Path) + $arguments
   }
+
   $result = Invoke-CodexChildProcess -FilePath $executable -ArgumentList $arguments `
     -WorkingDirectory $RepoRoot -PrependPath $EnvironmentPath -CaptureOutput `
     -DisplayCommand "$($Tool.Name) --version"
+
   if ($result.ExitCode -ne 0) {
     throw "Unable to read $($Tool.Name) version (exit $($result.ExitCode)): $($result.StdErr.Trim())"
   }
+
   return (($result.StdOut + "`n" + $result.StdErr).Trim() -split "`r?`n" | Select-Object -First 1)
 }
 
@@ -229,18 +313,169 @@ function Resolve-CodexTools {
     [Parameter(Mandatory = $true)][string[]]$Names,
     [Parameter(Mandatory = $true)][string]$RepoRoot
   )
-  $tools = foreach ($name in $Names) { Find-CodexTool -Name $name -RepoRoot $RepoRoot }
-  return @($tools)
+  return @($Names | ForEach-Object { Find-CodexTool -Name $_ -RepoRoot $RepoRoot })
 }
 
 function Get-CodexEnvironmentPath {
   param([Parameter(Mandatory = $true)][object[]]$Tools)
-  return @($Tools | ForEach-Object { Split-Path $_.Path -Parent } | Select-Object -Unique)
+  $paths = [System.Collections.Generic.List[string]]::new()
+  foreach ($tool in $Tools) {
+    $toolDir = Split-Path $tool.Path -Parent
+    if ($toolDir -and -not $paths.Contains($toolDir)) {
+      $paths.Add($toolDir)
+    }
+  }
+  return @($paths)
+}
+
+function Get-CodexListeningProcesses {
+  param([Parameter(Mandatory = $true)][int]$Port, [string]$Address = '127.0.0.1')
+  try {
+    return Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction Stop |
+      Where-Object {
+        $_.LocalAddress -eq $Address -or $_.LocalAddress -eq '0.0.0.0' -or $_.LocalAddress -eq '::' -or $_.LocalAddress -eq '::1'
+      }
+  } catch {
+    $pattern = ".*$([regex]::Escape("${Address}:$Port"))"
+    $listeners = netstat -ano -p tcp 2>$null | Select-String $pattern
+    if (-not $listeners) { return @() }
+    return @(
+      $listeners | ForEach-Object {
+        $parts = ($_ -replace '^\s+', '').Split(' ', [StringSplitOptions]::RemoveEmptyEntries)
+        if ($parts.Count -ge 5 -and $parts[3] -eq 'LISTENING') {
+          [pscustomobject]@{
+            ProcessId = [int]$parts[4]
+            LocalAddress = $parts[1]
+            State = $parts[3]
+          }
+        }
+      }
+    )
+  }
+}
+
+function Get-CodexProcessTree {
+  param([Parameter(Mandatory = $true)][int]$ParentProcessId)
+  $queue = [System.Collections.Generic.Queue[object]]::new()
+  $queue.Enqueue([int]$ParentProcessId)
+  $output = [System.Collections.Generic.List[object]]::new()
+  while ($queue.Count -gt 0) {
+    $parent = [int]$queue.Dequeue()
+    $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { [int]$_.ParentProcessId -eq $parent }
+    foreach ($child in $children) {
+      $output.Add($child)
+      $queue.Enqueue([int]$child.ProcessId)
+    }
+  }
+  return @($output)
+}
+
+function Stop-CodexProcessTree {
+  param([Parameter(Mandatory = $true)][int]$RootProcessId)
+  $children = Get-CodexProcessTree -ParentProcessId $RootProcessId
+  foreach ($child in ($children | Sort-Object { $_.ProcessId } -Descending)) {
+    try { Stop-Process -Id [int]$child.ProcessId -Force -ErrorAction Stop } catch { }
+  }
+  try { Stop-Process -Id $RootProcessId -Force -ErrorAction Stop } catch { }
+
+  1..20 | ForEach-Object {
+    if (-not (Get-Process -Id $RootProcessId -ErrorAction SilentlyContinue)) { return }
+    Start-Sleep -Milliseconds 250
+  }
+}
+
+function Wait-CodexHttpReady {
+  param(
+    [Parameter(Mandatory = $true)][string]$Uri,
+    [int]$TimeoutSeconds = 20
+  )
+
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  while ((Get-Date) -lt $deadline) {
+    try {
+      $response = Invoke-WebRequest -UseBasicParsing -Uri $Uri -TimeoutSec 1
+      if ($response.StatusCode -eq 200) { return $true }
+    } catch {
+      # keep waiting
+    }
+    Start-Sleep -Milliseconds 250
+  }
+  return $false
+}
+
+function Invoke-CodexPreviewSmoke {
+  param(
+    [Parameter(Mandatory = $true)][string]$RepoRoot,
+    [Parameter(Mandatory = $true)][hashtable]$ToolsByName,
+    [string[]]$CommandArguments = @()
+  )
+
+  if ($CommandArguments.Count -gt 1) { throw 'preview-smoke accepts zero or one port.' }
+  $port = if ($CommandArguments.Count -eq 1) { $CommandArguments[0] } else { '8765' }
+  if ($port -notmatch '^[0-9]+$' -or [int]$port -lt 1 -or [int]$port -gt 65535) {
+    throw "Invalid preview-smoke port: $port"
+  }
+
+  $hostAddress = '127.0.0.1'
+  $uri = "http://$($hostAddress):$port/"
+  $existing = Get-CodexListeningProcesses -Port [int]$port -Address $hostAddress
+  if ($existing) {
+    throw "Port $port is already in use; refusing to start preview-smoke."
+  }
+
+  $environmentPath = Get-CodexEnvironmentPath -Tools @($ToolsByName.Values)
+  $bashPath = $ToolsByName.'git-bash'.Path
+  if (-not $bashPath) { throw 'Missing tool git-bash.' }
+
+  $psi = New-CodexStartInfo -FilePath $bashPath -Arguments (ConvertTo-CodexCommandLine -ArgumentList @('./scripts/preview-site.sh', $port)) `
+    -WorkingDirectory $RepoRoot -PrependPath $environmentPath
+
+  $process = [System.Diagnostics.Process]::new()
+  $process.StartInfo = $psi
+  if (-not $process.Start()) { throw 'Unable to start preview process.' }
+
+  try {
+    if (-not (Wait-CodexHttpReady -Uri $uri -TimeoutSeconds 20)) {
+      $startCode = if ($process.HasExited) { $process.ExitCode } else { 1 }
+      throw "preview-smoke failed to observe HTTP 200 on $uri (code $startCode)."
+    }
+
+    Stop-CodexProcessTree -RootProcessId $process.Id
+    $process.WaitForExit(3000) | Out-Null
+
+    $remaining = Get-CodexProcessTree -ParentProcessId $process.Id | ForEach-Object {
+      [pscustomobject]@{
+        ProcessId = [int]$_.ProcessId
+        Executable = $_.Name
+        CommandLine = $_.CommandLine
+        ParentProcessId = [int]$_.ParentProcessId
+      }
+    } | Where-Object { Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue }
+
+    if ($remaining) {
+      Write-Host 'Remaining launcher-created processes:'
+      $remaining | ForEach-Object {
+        Write-Host ("PID $($_.ProcessId): $($_.Executable) (PPID $($_.ParentProcessId))")
+        Write-Host ("  $_")
+      }
+      return 1
+    }
+
+    $listeners = Get-CodexListeningProcesses -Port [int]$port -Address $hostAddress
+    if ($listeners) {
+      Write-Host "Port $port is still bound after shutdown."
+      return 1
+    }
+
+    return 0
+  } finally {
+    Stop-CodexProcessTree -RootProcessId $process.Id
+  }
 }
 
 function Get-CodexInvocationSpec {
   param(
-    [Parameter(Mandatory = $true)][ValidateSet('verify', 'browser-contract', 'quick', 'comprehensive', 'preview')][string]$Command,
+    [Parameter(Mandatory = $true)][ValidateSet('verify', 'browser-contract', 'quick', 'comprehensive', 'preview', 'preview-smoke')][string]$Command,
     [Parameter(Mandatory = $true)][string]$RepoRoot,
     [Parameter(Mandatory = $true)][hashtable]$ToolsByName,
     [string[]]$CommandArguments = @()
@@ -250,26 +485,32 @@ function Get-CodexInvocationSpec {
     'verify' {
       return [pscustomobject]@{
         FilePath = (Get-Command powershell.exe -CommandType Application -ErrorAction Stop).Source
-        Arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
-          (Join-Path $RepoRoot 'scripts\setup\windows\verify.ps1'), '-RepoRoot', $RepoRoot)
+        Arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $RepoRoot 'scripts\\setup\\windows\\verify.ps1'), '-RepoRoot', $RepoRoot)
       }
     }
     'browser-contract' {
-      return [pscustomobject]@{ FilePath = $ToolsByName.node.Path; Arguments = @('tests/test_release_ui_browser_check.mjs') }
+      return [pscustomobject]@{
+        FilePath = $ToolsByName.node.Path
+        Arguments = @('tests/test_release_ui_browser_check.mjs')
+      }
     }
     'quick' {
-      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('scripts/testing/quick.sh') }
+      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('./scripts/testing/quick.sh') }
     }
     'comprehensive' {
-      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('scripts/testing/comprehensive.sh') + $CommandArguments }
+      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('./scripts/testing/comprehensive.sh') + $CommandArguments }
     }
     'preview' {
       if ($CommandArguments.Count -gt 1) { throw 'preview accepts zero or one port.' }
       $port = if ($CommandArguments.Count -eq 1) { $CommandArguments[0] } else { '8765' }
-      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('scripts/preview-site.sh', $port) }
+      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('./scripts/preview-site.sh', $port) }
+    }
+    'preview-smoke' {
+      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('./scripts/preview-site.sh') + $CommandArguments }
     }
   }
 }
 
 Export-ModuleMember -Function Find-CodexTool, ConvertTo-CodexLaunchException, Invoke-CodexChildProcess, Get-CodexToolVersion, `
-  Resolve-CodexTools, Get-CodexEnvironmentPath, Get-CodexInvocationSpec
+  Resolve-CodexTools, Get-CodexEnvironmentPath, Get-CodexInvocationSpec, Invoke-CodexPreviewSmoke, `
+  ConvertTo-CodexCommandLineArgument, ConvertTo-CodexCommandLine

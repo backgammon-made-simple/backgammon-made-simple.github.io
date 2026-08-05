@@ -19,6 +19,7 @@ of bare Bash or Node commands:
 powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 browser-contract
 powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 quick
 powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 comprehensive
+powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 preview-smoke 8765
 ```
 
 Run `powershell -ExecutionPolicy Bypass -File scripts/codex-tools.ps1 verify`
