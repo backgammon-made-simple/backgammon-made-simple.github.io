@@ -1770,6 +1770,42 @@ private code phrase
             self.assertIn(required, css)
         self.assertNotIn("@keyframes bms-term-lookup-slide-in", css)
 
+    def test_research_index_mobile_auxiliary_controls_are_suppressed(self) -> None:
+        css = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.css"
+        ).read_text(encoding="utf-8")
+        suppression_rule = re.search(
+            r"@media \(max-width:\s*390px\)\s*\{\s*"
+            r"body\.bms-research-index \.bms-site-tools--floating,\s*"
+            r"\s*body\.bms-research-index \.bms-term-lookup--floating\s*\{"
+            r"\s*display:\s*none;\s*"
+            r"\}\s*",
+            css,
+            re.MULTILINE,
+        )
+        self.assertIsNotNone(suppression_rule)
+
+        self.assertIn(
+            "body.bms-research-index .bms-site-tools--floating,",
+            css,
+        )
+        self.assertIn(
+            "body.bms-research-index .bms-term-lookup--floating {",
+            css,
+        )
+        self.assertIn(
+            "display: none;",
+            suppression_rule.group(0),
+        )
+
+        javascript = (
+            learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "const inEditorialDock = function () {",
+            javascript,
+        )
+
     def test_lookup_result_uses_full_definition(self) -> None:
         javascript = (
             learn_glossary.SITE_ROOT / "assets" / "bms-learn.js"
