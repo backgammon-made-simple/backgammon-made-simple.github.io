@@ -1776,8 +1776,7 @@ private code phrase
         ).read_text(encoding="utf-8")
         suppression_rule = re.search(
             r"@media \(max-width:\s*390px\)\s*\{\s*"
-            r"body\.bms-research-index \.bms-site-tools--floating,\s*"
-            r"\s*body\.bms-research-index \.bms-term-lookup--floating\s*\{"
+            r"body\.bms-research-index \.bms-site-tools \[data-bms-site-term-toggle\]\s*\{"
             r"\s*display:\s*none;\s*"
             r"\}\s*",
             css,
@@ -1786,11 +1785,7 @@ private code phrase
         self.assertIsNotNone(suppression_rule)
 
         self.assertIn(
-            "body.bms-research-index .bms-site-tools--floating,",
-            css,
-        )
-        self.assertIn(
-            "body.bms-research-index .bms-term-lookup--floating {",
+            "body.bms-research-index .bms-site-tools [data-bms-site-term-toggle] {",
             css,
         )
         self.assertIn(

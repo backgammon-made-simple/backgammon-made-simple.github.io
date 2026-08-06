@@ -1472,8 +1472,7 @@ body:is(.bms-learn-index, .bms-learn-article)
 }
 
 @media (max-width: 390px) {
-  body.bms-research-index .bms-site-tools--floating,
-  body.bms-research-index .bms-term-lookup--floating {
+  body.bms-research-index .bms-site-tools [data-bms-site-term-toggle] {
     display: none;
   }
 }
