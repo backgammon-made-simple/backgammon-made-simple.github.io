@@ -335,6 +335,19 @@ function ConvertTo-CodexLaunchException {
   return $Exception
 }
 
+function ConvertTo-CodexBashPath {
+  param([Parameter(Mandatory = $true)][string]$Path)
+
+  $expanded = [Environment]::ExpandEnvironmentVariables($Path)
+  if ($expanded -match '^(?<drive>[A-Za-z]):\\(?<rest>.*)$') {
+    return ('/{0}/{1}' -f $Matches['drive'].ToLower(), ($Matches['rest'] -replace '\\', '/'))
+  }
+  if ($expanded -match '^(?<drive>[A-Za-z]):/(?<rest>.*)$') {
+    return ('/{0}/{1}' -f $Matches['drive'].ToLower(), $Matches['rest'])
+  }
+  return $expanded
+}
+
 function New-CodexStartInfo {
   param(
     [Parameter(Mandatory = $true)][string]$FilePath,
@@ -343,13 +356,40 @@ function New-CodexStartInfo {
     [string[]]$PrependPath = @()
   )
 
+  $isGitBash = $FilePath -match '(?i)(?:^|[\\\/])(?:git-)?bash(?:\.exe)?$'
   $pathParts = [System.Collections.Generic.List[string]]::new()
   foreach ($path in $PrependPath) {
-    if ($path -and -not $pathParts.Contains($path)) { $pathParts.Add($path) }
+    $candidate = if ($isGitBash) { ConvertTo-CodexBashPath -Path $path } else { $path }
+    if ($candidate -and -not $pathParts.Contains($candidate)) { $pathParts.Add($candidate) }
+  }
+  if ($isGitBash) {
+    $bashDirectory = Split-Path -Path $FilePath -Parent
+    $bashParent = Split-Path -Path $bashDirectory -Parent
+    $gitBashSupplement = @(
+      $bashDirectory,
+      (Join-Path $bashDirectory 'usr\bin'),
+      (Join-Path $bashParent 'usr\bin')
+    ) | Where-Object { $_ } | Select-Object -Unique
+    foreach ($path in $gitBashSupplement) {
+      $candidate = ConvertTo-CodexBashPath -Path $path
+      if ($candidate -and -not $pathParts.Contains($candidate)) { $pathParts.Add($candidate) }
+    }
   }
   $systemPath = [Environment]::GetEnvironmentVariable('PATH', 'Process')
-  if ($systemPath) { $pathParts.Add($systemPath) }
-  $childPath = $pathParts -join [IO.Path]::PathSeparator
+  if ($systemPath) {
+    if ($isGitBash) {
+      $systemParts = $systemPath -split [IO.Path]::PathSeparator
+      foreach ($path in $systemParts) {
+        $candidate = if ([string]::IsNullOrWhiteSpace($path)) { continue }
+        $candidate = ConvertTo-CodexBashPath -Path $path
+        if (-not $pathParts.Contains($candidate)) { $pathParts.Add($candidate) }
+      }
+    } else {
+      $pathParts.Add($systemPath)
+    }
+  }
+  $pathSeparator = if ($isGitBash) { ':' } else { [IO.Path]::PathSeparator }
+  $childPath = $pathParts -join $pathSeparator
 
   $psi = [System.Diagnostics.ProcessStartInfo]::new()
   $psi.FileName = $FilePath
@@ -665,7 +705,7 @@ function Get-CodexInvocationSpec {
       }
     }
     'quick' {
-      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('./scripts/testing/quick.sh') }
+      return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('-lc', './scripts/testing/quick.sh') }
     }
     'comprehensive' {
       return [pscustomobject]@{ FilePath = $ToolsByName.'git-bash'.Path; Arguments = @('./scripts/testing/comprehensive.sh') + $CommandArguments }

@@ -26,10 +26,10 @@ if ($Command -notin @('verify', 'browser-contract', 'quick', 'comprehensive', 'p
 $required = switch ($Command) {
   'bootstrap-node' { @() }
   'browser-contract' { @('node') }
-  'quick' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
-  'comprehensive' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
-  'preview' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
-  'preview-smoke' { @('python', 'node', 'npm', 'quarto', 'git-bash') }
+  'quick' { @('python', 'node', 'git-bash') }
+  'comprehensive' { @('python', 'node', 'quarto', 'git-bash') }
+  'preview' { @('python', 'quarto', 'git-bash') }
+  'preview-smoke' { @('python', 'quarto', 'git-bash') }
   default { @('python', 'node', 'npm', 'quarto', 'Rscript', 'git-bash') }
 }
 
@@ -51,25 +51,59 @@ try {
   $toolsByName = @{}
   foreach ($tool in $tools) { $toolsByName[$tool.Name] = $tool }
 
-  Write-Host "Repository: $repoRoot"
-  foreach ($tool in $tools) {
-    $version = Get-CodexToolVersion -Tool $tool -RepoRoot $repoRoot -EnvironmentPath $environmentPath
-    Write-Host ("{0}: {1}" -f $tool.Name, $tool.Path)
-    Write-Host ("{0} version: {1}" -f $tool.Name, $version)
-  }
+  $originalGitConfigGlobal = $env:GIT_CONFIG_GLOBAL
+  $quickGitConfigPath = $null
+  try {
+    if ($Command -eq 'quick') {
+      $quickGitConfigPath = Join-Path $env:TEMP ("bms-quick-safe-{0}.config" -f [guid]::NewGuid())
+      Set-Content -Path $quickGitConfigPath -Value "[safe]`n`tdirectory = *`n"
+      $env:GIT_CONFIG_GLOBAL = $quickGitConfigPath
+    }
 
-  if ($Command -eq 'preview-smoke') {
-    $result = Invoke-CodexPreviewSmoke -RepoRoot $repoRoot -ToolsByName $toolsByName -CommandArguments $CommandArguments
-    exit $result
-  }
+    Write-Host "Repository: $repoRoot"
+    foreach ($tool in $tools) {
+      $version = Get-CodexToolVersion -Tool $tool -RepoRoot $repoRoot -EnvironmentPath $environmentPath
+      Write-Host ("{0}: {1}" -f $tool.Name, $tool.Path)
+      Write-Host ("{0} version: {1}" -f $tool.Name, $version)
+    }
 
-  $spec = Get-CodexInvocationSpec -Command $Command -RepoRoot $repoRoot `
-    -ToolsByName $toolsByName -CommandArguments $CommandArguments
-  $display = @($spec.FilePath) + $spec.Arguments
-  Write-Host ("Running: {0}" -f ($display -join ' '))
-  $result = Invoke-CodexChildProcess -FilePath $spec.FilePath -ArgumentList $spec.Arguments `
-    -WorkingDirectory $repoRoot -PrependPath $environmentPath -DisplayCommand ($display -join ' ')
-  exit $result.ExitCode
+    if ($Command -eq 'preview-smoke') {
+      $result = Invoke-CodexPreviewSmoke -RepoRoot $repoRoot -ToolsByName $toolsByName -CommandArguments $CommandArguments
+      exit $result
+    }
+
+    $spec = Get-CodexInvocationSpec -Command $Command -RepoRoot $repoRoot `
+      -ToolsByName $toolsByName -CommandArguments $CommandArguments
+    $quickOutputPath = $null
+    $quickArguments = [string[]]$spec.Arguments
+    if ($Command -eq 'quick') {
+      $quickOutputPath = "tmp-quick-output-{0}.log" -f [guid]::NewGuid()
+      $quickScript = $quickArguments[1]
+      $quickArguments = @(
+        $quickArguments[0],
+        ("{0} > ./{1} 2>&1" -f $quickScript, $quickOutputPath)
+      )
+    }
+    $display = @($spec.FilePath) + $spec.Arguments
+    Write-Host ("Running: {0}" -f ($display -join ' '))
+    $result = Invoke-CodexChildProcess -FilePath $spec.FilePath -ArgumentList $quickArguments `
+      -WorkingDirectory $repoRoot -PrependPath $environmentPath -DisplayCommand ($display -join ' ')
+    if ($quickOutputPath -and (Test-Path -LiteralPath $quickOutputPath -PathType Leaf)) {
+      Write-Host (Get-Content -Raw -Path $quickOutputPath)
+      Remove-Item -LiteralPath $quickOutputPath -Force -ErrorAction SilentlyContinue
+    }
+    exit $result.ExitCode
+  } finally {
+    if ($null -ne $quickGitConfigPath) {
+      Remove-Item -LiteralPath $quickGitConfigPath -Force -ErrorAction SilentlyContinue
+    }
+
+    if ($originalGitConfigGlobal) {
+      $env:GIT_CONFIG_GLOBAL = $originalGitConfigGlobal
+    } else {
+      Remove-Item Env:GIT_CONFIG_GLOBAL -ErrorAction SilentlyContinue
+    }
+  }
 } catch [System.IO.FileNotFoundException] {
   Write-Error $_.Exception.Message
   exit 127

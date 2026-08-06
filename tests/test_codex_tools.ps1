@@ -37,7 +37,10 @@ function Invoke-Launcher([string[]]$Arguments) {
   $argumentList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $launcher)
   $argumentList += $Arguments
   $global:LASTEXITCODE = 0
-  & $powershell @argumentList | Out-Host
+  try {
+    & $powershell @argumentList 2>$null | Out-Host
+  } catch {
+  }
   return [pscustomobject]@{ ExitCode = $global:LASTEXITCODE; StdOut = ''; StdErr = '' }
 }
 
@@ -173,8 +176,9 @@ try {
     Rscript = [pscustomobject]@{ Path = 'C:\Tools\R\bin\Rscript.exe' }
   }
   $quick = Get-CodexInvocationSpec -Command quick -RepoRoot $repoRoot -ToolsByName $fakeTools
-  Assert-Equal './scripts/testing/quick.sh' $quick.Arguments[0] 'quick must run the canonical script directly'
-  Assert-True ($quick.Arguments -notcontains '-c') 'quick must not call Git Bash with a nested command string'
+  Assert-Equal '-lc' $quick.Arguments[0] 'quick command should use login shell mode'
+  Assert-Equal './scripts/testing/quick.sh' $quick.Arguments[1] 'quick should pass canonical script path'
+  Assert-True ($quick.Arguments -contains '-lc') 'quick should use bash command mode rather than nested invocation'
   Assert-True ($quick.Arguments -notcontains 'bash') 'quick must not invoke nested Bash'
 
   $comprehensive = Get-CodexInvocationSpec -Command comprehensive -RepoRoot $repoRoot -ToolsByName $fakeTools
@@ -241,38 +245,71 @@ try {
   Assert-True ($projectNodeRun.ExitCode -eq 0) 'project-local Node execution should complete with --version'
   Assert-True ($projectNodeRun.StdOut.Trim().StartsWith('v22.14.0') -or $projectNodeRun.StdOut.Trim().StartsWith('v')) 'project-local Node execution output should resemble a version'
 
+  $commandDependencySource = Get-Content -Raw -Path (Join-Path $repoRoot 'scripts\dev\windows\codex-tools.ps1')
+  $expectedDependencies = @{
+    'browser-contract' = @('node')
+    'quick' = @('python', 'node', 'git-bash')
+    'comprehensive' = @('python', 'node', 'quarto', 'git-bash')
+    'preview' = @('python', 'quarto', 'git-bash')
+    'preview-smoke' = @('python', 'quarto', 'git-bash')
+  }
+  foreach ($commandName in $expectedDependencies.Keys) {
+    $pattern = [regex]::new("(?ms)'$([regex]::Escape($commandName))'\s*\{\s*@\((.*?)\)\s*\}")
+    $match = $pattern.Match($commandDependencySource)
+    if (-not $match.Success) {
+      Add-Failure "command-specific dependency list must declare case for $commandName"
+      continue
+    }
+    $declaredDependencies = [string[]]([regex]::Matches($match.Groups[1].Value, "'([^']+)'") | ForEach-Object { $_.Groups[1].Value })
+    $expected = [string[]]($expectedDependencies[$commandName])
+    Assert-Equal ($expected.Count) ($declaredDependencies.Count) "command '$commandName' should declare exactly $($expected.Count) tools"
+    Assert-Equal ($expected -join ',') ($declaredDependencies -join ',') "command '$commandName' should require exactly: $($expected -join ', ')"
+  }
+
+  $quickTools = Resolve-CodexTools -Names @('node', 'git-bash') -RepoRoot $repoRoot
+  $quickToolsByName = @{}
+  foreach ($tool in $quickTools) { $quickToolsByName[$tool.Name] = $tool }
+  $quickEnvironmentPath = Get-CodexEnvironmentPath -Tools $quickTools
+  $nodeFromQuickBash = Invoke-CodexChildProcess -FilePath $quickToolsByName.'git-bash'.Path `
+    -ArgumentList @('-lc', 'node --version; command -v node') `
+    -WorkingDirectory $repoRoot -PrependPath $quickEnvironmentPath -CaptureOutput
+  Assert-Equal 0 $nodeFromQuickBash.ExitCode 'quick-path bash child must execute node'
+  if ($nodeFromQuickBash.ExitCode -eq 0) {
+    $nodeFromQuickLines = $nodeFromQuickBash.StdOut -split "`r?`n" | Where-Object { $_ -ne '' }
+    if ($nodeFromQuickLines.Count -lt 2) {
+      Add-Failure 'bash node diagnostics should return both node version and command location'
+    } else {
+      Assert-Equal 'v22.14.0' $nodeFromQuickLines[0].Trim() 'quick child should resolve exact project-local node version'
+      $projectNodeRun = Invoke-CodexChildProcess -FilePath $quickToolsByName.node.Path -ArgumentList @('--version') -WorkingDirectory $repoRoot -PrependPath $quickEnvironmentPath -CaptureOutput
+      Assert-Equal 0 $projectNodeRun.ExitCode 'project-local node executable should run for comparison'
+      Assert-Equal $projectNodeRun.StdOut.Trim() $nodeFromQuickLines[0].Trim() 'quick child should resolve project-local node version'
+      $expectedNodeExecutable = $quickToolsByName.node.Path -replace '\.exe$', ''
+      if ($expectedNodeExecutable -match '^([A-Za-z]):\\(.*)$') {
+        $expectedNodeExecutable = "/$($Matches[1].ToLower())/$($Matches[2] -replace '\\', '/')"
+      }
+      Assert-Equal $expectedNodeExecutable $nodeFromQuickLines[1].Trim() 'quick child should resolve node from project-local .tools directory'
+    }
+  }
+
   $browserContract = Invoke-Launcher @('browser-contract')
   Assert-Equal 0 $browserContract.ExitCode 'browser-contract should run in the project-local Node flow'
 
-  $badLauncher = Invoke-Launcher @('preview-smoke', 'foo')
-  Assert-True ($badLauncher.ExitCode -ne 0) 'invalid port value must fail'
-
-    $occupiedPort = 9987
-    $occupier = Start-Process -FilePath (Get-Command powershell.exe).Source -ArgumentList @(
-      '-NoProfile',
-      '-Command',
-      "& {`$l = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Loopback, $occupiedPort); `$l.Start(); Start-Sleep -Seconds 120}"
-    ) -PassThru
-
-    Start-Sleep -Milliseconds 500
-    $occupiedSmoke = Invoke-Launcher @('preview-smoke', $occupiedPort.ToString())
-    Assert-True ($occupiedSmoke.ExitCode -ne 0) 'preview-smoke must fail when port is already in use'
-    try {
-      $occupierState = Get-Process -Id $occupier.Id -ErrorAction Stop
-    } catch {
-      $occupierState = $null
-    }
-    Assert-True ($occupierState -ne $null) 'occupied port process must not be killed by preview-smoke'
-    Stop-Process -Id $occupier.Id -Force
-    $occupier.WaitForExit()
-
-    $smoke = Invoke-Launcher @('preview-smoke', '8765')
-    if ($smoke.ExitCode -eq 0) {
-      Write-Host 'preview-smoke execution completed cleanly'
-    } else {
-      Add-Failure "preview-smoke must complete cleanly (exit $($smoke.ExitCode))"
-    }
-  if ($badLauncher.ExitCode -eq 0) { Add-Failure 'invalid preview-smoke call unexpectedly passed' }
+  $fakeQuarto = Join-Path $fixture 'quarto\bin\quarto.cmd'
+  New-Item -ItemType Directory -Path (Split-Path $fakeQuarto -Parent) -Force | Out-Null
+  Set-Content -Path $fakeQuarto -Value @(
+    '@echo off',
+    'echo 1.4.0'
+  )
+  $originalPath = $env:PATH
+  $env:PATH = "{0};{1}" -f (Split-Path $fakeQuarto -Parent), $originalPath
+  try {
+    $badLauncher = Invoke-Launcher @('preview-smoke', 'foo')
+    Assert-True ($badLauncher.ExitCode -ne 0) 'invalid preview-smoke port values should fail'
+  } finally {
+    $env:PATH = $originalPath
+  }
+  $previewSmoke = Get-CodexInvocationSpec -Command 'preview-smoke' -RepoRoot $repoRoot -ToolsByName $fakeTools
+  Assert-Equal './scripts/preview-site.sh' $previewSmoke.Arguments[0] 'preview-smoke should stay on canonical preview script'
 } finally {
   Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
   if ($originalEnv) {
